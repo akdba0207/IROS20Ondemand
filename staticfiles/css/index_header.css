@@ -1,0 +1,162 @@
+:root {
+  /* Color */
+  --grey-light-color: aliceblue;
+
+  /* Size */
+  --spacing: 15px;
+}
+
+header {
+  padding: 0 var(--spacing) ;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9;
+  overflow: hidden;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 10%;
+  /*background-color: rgb(20, 20, 20);*/
+  background-color: transparent;
+  color: var(--grey-light-color);
+  font-size: 1.2rem;
+}
+
+.logo {
+  width: 18%;
+  height: 130%;
+}
+
+.logo a img {
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  object-position: center;
+}
+
+.logo .header-toggleBtn {
+  display: none;
+}
+
+/* ===== categories ===== */
+.categories {
+  width: 100%;
+  padding-left: 0%;
+
+  font-size: 100%;
+  display: flex;
+  list-style: none;
+}
+
+.categories .category {
+  width: fit-content;
+  padding: 0px 25px;
+  cursor: pointer;
+  border-radius: 4px;
+  /*float: left;*/
+}
+
+/* ===== search_notice_info ===== */
+.search_notice_info {
+    width: 50%;
+	position:static;
+  	padding:0;
+	margin: auto;
+    display: flex;
+    justify-content: flex-end;
+    /* [disabled]align-items: center; */
+    list-style: none;
+}
+
+.search_notice_info .signUp,
+.search_notice_info .search,
+.search_notice_info .kids,
+.search_notice_info .notice1,
+.search_notice_info .notice2,
+.search_notice_info .info {
+  cursor: pointer;
+  width: fit-content;
+  padding: 4% 4% 4% 4%;
+  border-radius: 4px;
+}
+
+i {
+  font-size: 1.3rem;
+}
+
+.notices {
+  width: 30%;
+  list-style: none;
+  padding: 0;
+
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+/* ===== media query ===== */
+@media screen and (max-width: 768px) {
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .logo {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .logo a img {
+    width: 20%;
+    object-fit: fill;
+    object-position: center;
+  }
+
+  .logo .header-toggleBtn {
+    display: block;
+    all: unset;
+  }
+
+  .logo .header-toggleBtn i {
+    font-size: 1.2rem;
+  }
+
+  /* ===== categories ===== */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  .categories {
+    display: none;
+    margin: 0;
+    flex-direction: column;
+  }
+
+  .categories.active {
+    display: flex;
+    animation: fadeIn 0.5s linear;
+  }
+
+  .categories .category {
+    width: 100%;
+    text-align: center;
+
+    margin: 0;
+    margin-bottom: 2%;
+    cursor: pointer;
+  }
+
+  /* ===== search_notice_info ===== */
+  .search_notice_info {
+    display: none;
+  }
+}

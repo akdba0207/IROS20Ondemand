@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="90a40d19-b8ea-4d37-8a37-d16692d6c4d4" name="IROSOnDemand" url="http://iros2020.org">
+        <fileTransfer rootFolder="/iros2020.org/public/onDemand" host="iros2020.org" port="21">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
