@@ -66,28 +66,30 @@ Sessions5 = sorted(list(set(Pavilion5['Session title'])))
 def main(request):
 
     return render(request, 'practiceICRA.html',
-                      {'Pavilion': Cartegories['Pavilion'],
-                       'Aerial': Sessions1,
-                       'Humanoid': Sessions2,
-                       'Medical': Sessions3,
-                       'Driverless': Sessions4,
-                       'EndEffector': Sessions5})
+                  {'Pavilion': Cartegories['Pavilion'],
+                   'Aerial': Sessions1,
+                   'Humanoid': Sessions2,
+                   'Medical': Sessions3,
+                   'Driverless': Sessions4,
+                   'EndEffector': Sessions5})
 
 def tvshow(request):
     selectedSession = request.GET['id']
     selectedPavilion = request.GET['id2']
     selectedPavilionNum = request.GET['id3']
-    print(selectedPavilionNum)
-    if selectedPavilionNum ==0:
+
+    if selectedPavilion ==Cartegories['Pavilion'][0]:
         selectedSessionList = Sessions1
-    elif selectedPavilionNum ==1:
+    elif selectedPavilion ==Cartegories['Pavilion'][1]:
         selectedSessionList = Sessions2
-    elif selectedPavilionNum ==2:
+    elif selectedPavilion ==Cartegories['Pavilion'][2]:
         selectedSessionList = Sessions3
-    elif selectedPavilionNum ==3:
+    elif selectedPavilion ==Cartegories['Pavilion'][3]:
         selectedSessionList = Sessions4
-    elif selectedPavilionNum ==4:
+    elif selectedPavilion ==Cartegories['Pavilion'][4]:
         selectedSessionList = Sessions5
+    else:
+        selectedSessionList = []
 
     EpisodeList = icra_Monday[(icra_Monday['Session title']==selectedSession)]
     AuthorList = EpisodeList['Author1'].reset_index()
@@ -95,11 +97,11 @@ def tvshow(request):
     TitleList = EpisodeList['Title'].reset_index()
     PDFList = EpisodeList['FN'].reset_index()
     EpisodeContext = zip(AuthorList['Author1'],AffiliationList['Affiliation1'],TitleList['Title'],
-                        PDFList['FN'])
+                         PDFList['FN'])
     EpisodeCount = EpisodeList.shape[0]+1
-    print(EpisodeCount)
 
     return render(request, 'practiceICRA2.html', {'Pavilion': selectedPavilion,
+                                                  'PavilionNum': selectedPavilionNum,
                                                   'SessionList':selectedSessionList,
                                                   'Session': selectedSession,
                                                   'EpisodeContext':EpisodeContext,
