@@ -59,7 +59,7 @@
         <div class="swiper-container">
             <div class="swiper-wrapper">
                 {% for j in SessionList %}
-                    <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion }}&id3={{PavilionNum}}">{{ j }}<img src="{% static 'img'%}/pavilion{{ PavilionNum|add:1 }}/{{ j }}.jpg">
+                    <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion }}&id3={{PavilionNum}}" style="color:white; text-decoration: none;">{{ j }}<img src="{% static 'img'%}/pavilion{{ PavilionNum|add:1 }}/{{ j }}.jpg">
                     </a></img>
                     </div>
                 {% endfor %}
