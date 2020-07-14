@@ -9,6 +9,8 @@ import pandas as pd
 import openpyxl
 import os
 
+from polls.search import searchByKeyword, findSimilarTopic
+
 pre = os.path.dirname(os.path.realpath(__file__))
 
 # First Call : Pavilion
@@ -64,7 +66,8 @@ Sessions4 = sorted(list(set(Pavilion4['Session title'])))
 Sessions5 = sorted(list(set(Pavilion5['Session title'])))
 
 def main(request):
-
+    #print(searchByKeyword('Chen'))
+    #print(findSimilarTopic(335))
     return render(request, 'practiceICRA.html',
                       {'Pavilion': Cartegories['Pavilion'],
                        'Aerial': Sessions1,
@@ -77,6 +80,7 @@ def tvshow(request):
     selectedSession = request.GET['id']
     selectedPavilion = request.GET['id2']
     selectedPavilionNum = request.GET['id3']
+
     print(selectedPavilionNum)
     if selectedPavilionNum ==0:
         selectedSessionList = Sessions1
@@ -88,6 +92,8 @@ def tvshow(request):
         selectedSessionList = Sessions4
     elif selectedPavilionNum ==4:
         selectedSessionList = Sessions5
+    else:
+        selectedSessionList = []
 
     EpisodeList = icra_Monday[(icra_Monday['Session title']==selectedSession)]
     AuthorList = EpisodeList['Author1'].reset_index()
