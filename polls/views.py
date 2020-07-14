@@ -67,7 +67,7 @@ Sessions5 = sorted(list(set(Pavilion5['Session title'])))
 
 def main(request):
     #print(searchByKeyword('Chen'))
-    #print(findSimilarTopic(335))
+    print(findSimilarTopic(335))
     return render(request, 'practiceICRA.html',
                   {'Pavilion': Cartegories['Pavilion'],
                    'Aerial': Sessions1,

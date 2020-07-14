@@ -1,3 +1,5 @@
+import re
+
 import nltk
 from django.shortcuts import render
 import pandas as pd
@@ -26,27 +28,36 @@ def searchByKeyword(keyword):
                (data['Author4'].str.find(keyword) >= 0) |
                (data['Affiliation4'].str.find(keyword) >= 0) |
                (data['Author5'].str.find(keyword) >= 0) |
-               (data['Affiliation5'].str.find(keyword) >= 0)
-               ]
+               (data['Affiliation5'].str.find(keyword) >= 0) |
+               (data['Keyword1'].str.find(keyword) >= 0) |
+               (data['Keyword2'].str.find(keyword) >= 0) |
+               (data['Keyword3'].str.find(keyword) >= 0)]
     return ret
 
-
+def strip_suffixes(s,suffixes):
+    for suf in suffixes:
+        if s.endswith(suf):
+            return s.rstrip(suf)
+    return s
 def findSimilarTopic(index, n_count=20):
     obj = data[(data['Nr'] == index)].iloc[0]
-    title = obj['Title']
+    keyword = obj['Keyword1'] + " " + obj['Keyword2'] + " " + obj['Keyword2'] + " " + obj['Keyword3'] + " " + obj[
+        'Title']
     s_title = obj['Session title']
-
-    key = str.split(title)
+    key = str.split(keyword)
 
     pos_tagged = nltk.pos_tag(key)
-    f = filter(lambda x: x[1] != 'IN' and x[1] != 'CC'
+    f = filter(lambda x: x[1] != 'IN' and x[1] != 'CC' and x[0].lower() != 'using'
                , pos_tagged)
 
-    key = [k[0] for k in f]
+    key = set([strip_suffixes(re.sub('\W+', '', k[0]), ['s', 'es']) for k in f])
 
     scores = {}
     for c in key:
-        ret = data[((data['Title'].str.find(c) >= 0) &
+        ret = data[(((data['Title'].str.find(c) >= 0) |
+                     (data['Keyword1'].str.find(c) >= 0) |
+                     (data['Keyword2'].str.find(c) >= 0) |
+                     (data['Keyword3'].str.find(c) >= 0)) &
                     (data['Nr'] != index))]
 
         for _, r in ret.iterrows():
@@ -60,8 +71,6 @@ def findSimilarTopic(index, n_count=20):
                 scores[r['Nr']] = 1
 
     scores = sorted(scores.items(), key=lambda x: x[1], reverse=True)
-    # scores = [k for k, _ in scores[0:n_count]]
+    scores = [k for k, _ in scores[0:n_count]]
 
     return scores
-
-
