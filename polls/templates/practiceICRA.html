@@ -59,8 +59,8 @@
         <div class="swiper-container">
             <div class="swiper-wrapper">
                 {% for j in Aerial %}
-                    {#        <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.0 }}">{{ j }}<img src="{% static 'img'%}/{{Pavilion.0}}/{{ forloop.counter0 }}.jpg">#}
-                    <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.0 }}">{{ j }}<img src="{% static './resources/logo.png'%}">
+                    <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.0 }}&id3={{ Pavilion.index.0 }}">{{ j }}<img src="{% static 'img'%}/pavilion{{ Pavilion.index.0|add:1 }}/{{ j }}.jpg">
+                        {#                    <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.0 }}">{{ j }}<img src="{% static './resources/logo.png'%}">#}
 
                     </a></img>
                     </div>
@@ -78,8 +78,8 @@
         <div class="swiper-container">
             <div class="swiper-wrapper">
                 {% for j in Humanoid %}
-                    {#        <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.0 }}">{{ j }}<img src="{% static 'img'%}/{{Pavilion.0}}/{{ forloop.counter0 }}.jpg">#}
-                    <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.1 }}">{{ j }}<img src="{% static './resources/logo.png'%}">
+                    <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.1 }}&id3={{ Pavilion.index.1 }}">{{ j }}<img src="{% static 'img'%}/pavilion{{ Pavilion.index.1|add:1 }}/{{ j }}.jpg">
+                        {#                    <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.1 }}">{{ j }}<img src="{% static './resources/logo.png'%}">#}
 
                     </a></img>
                     </div>
@@ -97,8 +97,8 @@
         <div class="swiper-container">
             <div class="swiper-wrapper">
                 {% for j in Medical %}
-                    {#        <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.0 }}">{{ j }}<img src="{% static 'img'%}/{{Pavilion.0}}/{{ forloop.counter0 }}.jpg">#}
-                    <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.2 }}">{{ j }}<img src="{% static './resources/logo.png'%}">
+                    <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.2 }}&id3={{ Pavilion.index.2 }}">{{ j }}<img src="{% static 'img'%}/pavilion{{ Pavilion.index.2|add:1 }}/{{ j }}.jpg">
+                        {#                    <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.2 }}&id3=3">{{ j }}<img src="{% static './resources/logo.png'%}">#}
 
                     </a></img>
                     </div>
@@ -116,8 +116,8 @@
         <div class="swiper-container">
             <div class="swiper-wrapper">
                 {% for j in Driverless %}
-                    {#        <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.0 }}">{{ j }}<img src="{% static 'img'%}/{{Pavilion.0}}/{{ forloop.counter0 }}.jpg">#}
-                    <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.3 }}">{{ j }}<img src="{% static './resources/logo.png'%}">
+                    <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.3 }}&id3={{ Pavilion.index.3 }}">{{ j }}<img src="{% static 'img'%}/pavilion{{ Pavilion.index.3|add:1 }}/{{ j }}.jpg">
+                        {#                    <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.3 }}&id3=4">{{ j }}<img src="{% static './resources/logo.png'%}">#}
 
                     </a></img>
                     </div>
@@ -135,8 +135,8 @@
         <div class="swiper-container">
             <div class="swiper-wrapper">
                 {% for j in EndEffector %}
-                    {#        <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.0 }}">{{ j }}<img src="{% static 'img'%}/{{Pavilion.0}}/{{ forloop.counter0 }}.jpg">#}
-                    <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.4 }}">{{ j }}<img src="{% static './resources/logo.png'%}">
+                    <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.4 }}&id3={{ Pavilion.index.4 }}">{{ j }}<img src="{% static 'img'%}/pavilion{{ Pavilion.index.4|add:1 }}/{{ j }}.jpg">
+                        {#                    <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.4 }}&id3=5">{{ j }}<img src="{% static './resources/logo.png'%}">#}
 
                     </a></img>
                     </div>
@@ -154,7 +154,7 @@
         <div class="swiper-container">
             {#        <div class="swiper-wrapper">#}
             {#            {% for j in Aerial %}#}
-            {#        <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.0 }}">{{ j }}<img src="{% static 'img'%}/{{Pavilion.0}}/{{ forloop.counter0 }}.jpg">#}
+            {#        <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.5 }}">{{ j }}<img src="{% static 'img'%}/pavilion6/{{ forloop.counter0 }}.jpg">#}
             {#                <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.0 }}">{{ j }}<img src="{% static './resources/logo.png'%}">#}
             {##}
             {#                </a></img>#}
@@ -163,8 +163,8 @@
             {#        </div>#}
             {#        <!-- Add Pagination -->#}
             {#      <div class="swiper-pagination"></div>#}
-                    <div class="swiper-button-next"></div>
-                    <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
         </div>
     </div>
 
@@ -173,7 +173,7 @@
         <div class="swiper-container">
             {#        <div class="swiper-wrapper">#}
             {#            {% for j in Aerial %}#}
-            {#        <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.0 }}">{{ j }}<img src="{% static 'img'%}/{{Pavilion.0}}/{{ forloop.counter0 }}.jpg">#}
+            {#        <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.6 }}">{{ j }}<img src="{% static 'img'%}/pavilion7/{{ forloop.counter0 }}.jpg">#}
             {#                <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.0 }}">{{ j }}<img src="{% static './resources/logo.png'%}">#}
             {##}
             {#                </a></img>#}
@@ -182,8 +182,8 @@
             {#        </div>#}
             {#        <!-- Add Pagination -->#}
             {#      <div class="swiper-pagination"></div>#}
-                    <div class="swiper-button-next"></div>
-                    <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
         </div>
     </div>
 
@@ -192,7 +192,7 @@
         <div class="swiper-container">
             {#        <div class="swiper-wrapper">#}
             {#            {% for j in Aerial %}#}
-            {#        <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.0 }}">{{ j }}<img src="{% static 'img'%}/{{Pavilion.0}}/{{ forloop.counter0 }}.jpg">#}
+            {#        <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.7 }}">{{ j }}<img src="{% static 'img'%}/pavilion8/{{ forloop.counter0 }}.jpg">#}
             {#                <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.0 }}">{{ j }}<img src="{% static './resources/logo.png'%}">#}
             {##}
             {#                </a></img>#}
@@ -201,8 +201,8 @@
             {#        </div>#}
             {#        <!-- Add Pagination -->#}
             {#      <div class="swiper-pagination"></div>#}
-                    <div class="swiper-button-next"></div>
-                    <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
         </div>
     </div>
 
@@ -211,7 +211,7 @@
         <div class="swiper-container">
             {#        <div class="swiper-wrapper">#}
             {#            {% for j in Aerial %}#}
-            {#        <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.0 }}">{{ j }}<img src="{% static 'img'%}/{{Pavilion.0}}/{{ forloop.counter0 }}.jpg">#}
+            {#        <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.8 }}">{{ j }}<img src="{% static 'img'%}/pavilion9/{{ forloop.counter0 }}.jpg">#}
             {#                <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.0 }}">{{ j }}<img src="{% static './resources/logo.png'%}">#}
             {##}
             {#                </a></img>#}
@@ -220,8 +220,8 @@
             {#        </div>#}
             {#        <!-- Add Pagination -->#}
             {#      <div class="swiper-pagination"></div>#}
-                    <div class="swiper-button-next"></div>
-                    <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
         </div>
     </div>
 
@@ -230,7 +230,7 @@
         <div class="swiper-container">
             {#        <div class="swiper-wrapper">#}
             {#            {% for j in Aerial %}#}
-            {#        <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.0 }}">{{ j }}<img src="{% static 'img'%}/{{Pavilion.0}}/{{ forloop.counter0 }}.jpg">#}
+            {#        <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.9 }}">{{ j }}<img src="{% static 'img'%}/pavilion10/{{ forloop.counter0 }}.jpg">#}
             {#                <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.0 }}">{{ j }}<img src="{% static './resources/logo.png'%}">#}
             {##}
             {#                </a></img>#}
@@ -239,8 +239,8 @@
             {#        </div>#}
             {#        <!-- Add Pagination -->#}
             {#      <div class="swiper-pagination"></div>#}
-                    <div class="swiper-button-next"></div>
-                    <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
         </div>
     </div>
 
@@ -250,7 +250,7 @@
         <div class="swiper-container">
             {#        <div class="swiper-wrapper">#}
             {#            {% for j in Aerial %}#}
-            {#        <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.0 }}">{{ j }}<img src="{% static 'img'%}/{{Pavilion.0}}/{{ forloop.counter0 }}.jpg">#}
+            {#        <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.10 }}">{{ j }}<img src="{% static 'img'%}/pavilion11/{{ forloop.counter0 }}.jpg">#}
             {#                <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.0 }}">{{ j }}<img src="{% static './resources/logo.png'%}">#}
             {##}
             {#                </a></img>#}
@@ -259,8 +259,8 @@
             {#        </div>#}
             {#        <!-- Add Pagination -->#}
             {#      <div class="swiper-pagination"></div>#}
-                    <div class="swiper-button-next"></div>
-                    <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
         </div>
     </div>
 
@@ -270,7 +270,7 @@
         <div class="swiper-container">
             {#        <div class="swiper-wrapper">#}
             {#            {% for j in Aerial %}#}
-            {#        <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.0 }}">{{ j }}<img src="{% static 'img'%}/{{Pavilion.0}}/{{ forloop.counter0 }}.jpg">#}
+            {#        <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.11 }}">{{ j }}<img src="{% static 'img'%}/pavilion12/{{ forloop.counter0 }}.jpg">#}
             {#                <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.0 }}">{{ j }}<img src="{% static './resources/logo.png'%}">#}
             {##}
             {#                </a></img>#}
@@ -279,8 +279,8 @@
             {#        </div>#}
             {#        <!-- Add Pagination -->#}
             {#      <div class="swiper-pagination"></div>#}
-                    <div class="swiper-button-next"></div>
-                    <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
         </div>
     </div>
 
