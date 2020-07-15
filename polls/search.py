@@ -16,23 +16,38 @@ path3 = os.path.join(pre, 'ICRA20Digest4369_1.xlsx')
 data = pd.read_excel(path3, sheet_name=0)
 
 
-def searchByKeyword(keyword):
-    ret = data[(data['Session title'].str.find(keyword) >= 0) |
-               (data['Title'].str.find(keyword) >= 0) |
-               (data['Author1'].str.find(keyword) >= 0) |
-               (data['Affiliation1'].str.find(keyword) >= 0) |
-               (data['Author2'].str.find(keyword) >= 0) |
-               (data['Affiliation2'].str.find(keyword) >= 0) |
-               (data['Author3'].str.find(keyword) >= 0) |
-               (data['Affiliation3'].str.find(keyword) >= 0) |
-               (data['Author4'].str.find(keyword) >= 0) |
-               (data['Affiliation4'].str.find(keyword) >= 0) |
-               (data['Author5'].str.find(keyword) >= 0) |
-               (data['Affiliation5'].str.find(keyword) >= 0) |
-               (data['Keyword1'].str.find(keyword) >= 0) |
-               (data['Keyword2'].str.find(keyword) >= 0) |
-               (data['Keyword3'].str.find(keyword) >= 0)]
-    return ret
+def searchByKeyword(keyword, n_count=10):
+
+    key = str.split(keyword.lower())
+
+
+    scores = {}
+    for c in key:
+        ret = data[(data['Session title'].str.lower().str.find(c) >= 0) |
+                   (data['Title'].str.lower().str.find(c) >= 0) |
+                   (data['Author1'].str.lower().str.find(c) >= 0) |
+                   (data['Affiliation1'].str.lower().str.find(c) >= 0) |
+                   (data['Author2'].str.lower().str.find(c) >= 0) |
+                   (data['Affiliation2'].str.lower().str.find(c) >= 0) |
+                   (data['Author3'].str.lower().str.find(c) >= 0) |
+                   (data['Affiliation3'].str.lower().str.find(c) >= 0) |
+                   (data['Author4'].str.lower().str.find(c) >= 0) |
+                   (data['Affiliation4'].str.lower().str.find(c) >= 0) |
+                   (data['Author5'].str.lower().str.find(c) >= 0) |
+                   (data['Affiliation5'].str.lower().str.find(c) >= 0) |
+                   (data['Keyword1'].str.lower().str.find(c) >= 0) |
+                   (data['Keyword2'].str.lower().str.find(c) >= 0) |
+                   (data['Keyword3'].str.lower().str.find(c) >= 0)]
+
+        for _, r in ret.iterrows():
+            if r['Nr'] in scores:
+                scores[r['Nr']] += 1
+            else:
+                scores[r['Nr']] = 1
+
+    scores = sorted(scores.items(), key=lambda x: x[1], reverse=True)
+    scores = [k for k, _ in scores[0:n_count]]
+    return scores
 
 def strip_suffixes(s,suffixes):
     for suf in suffixes:
