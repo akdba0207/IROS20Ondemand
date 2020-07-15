@@ -3,11 +3,11 @@
   --grey-light-color: aliceblue;
 
   /* Size */
-  --spacing: 15px;
+  --spacing: 0px;
 }
 
 header {
-  padding: 0 var(--spacing) ;
+  padding: 0px 0px;
   position: fixed;
   top: 0;
   left: 0;
@@ -17,16 +17,17 @@ header {
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  height: 10%;
-  /*background-color: rgb(20, 20, 20);*/
-  background-color: transparent;
+  height: 7%;
+  background-color: rgba(20, 20, 20, 0.7);
   color: var(--grey-light-color);
   font-size: 1.2rem;
 }
 
 .logo {
-  width: 18%;
-  height: 130%;
+  width: 300px;
+  height: auto;
+  padding-left: 50px;
+  /*text-align: center;*/
 }
 
 .logo a img {
@@ -43,42 +44,38 @@ header {
 /* ===== categories ===== */
 .categories {
   width: 100%;
-  padding-left: 0%;
+  padding-left: 4%;
 
-  font-size: 100%;
+  /*font-size: 100%;*/
   display: flex;
   list-style: none;
 }
 
 .categories .category {
   width: fit-content;
-  padding: 0px 25px;
+  padding: 0px 10px;
   cursor: pointer;
   border-radius: 4px;
-  /*float: left;*/
 }
 
 /* ===== search_notice_info ===== */
 .search_notice_info {
-    width: 50%;
-	position:static;
-  	padding:0;
-	margin: auto;
-    display: flex;
-    justify-content: flex-end;
-    /* [disabled]align-items: center; */
-    list-style: none;
+  width: 100%;
+  margin: auto;
+  padding-right: 80px;
+  display: flex;
+  justify-content: flex-end;
+  /* [disabled]align-items: center; */
+  list-style: none;
+  text-align: center;
 }
 
-.search_notice_info .signUp,
 .search_notice_info .search,
-.search_notice_info .kids,
-.search_notice_info .notice1,
-.search_notice_info .notice2,
 .search_notice_info .info {
   cursor: pointer;
   width: fit-content;
-  padding: 4% 4% 4% 4%;
+  padding-right: 20px;
+  padding-left: 20px;
   border-radius: 4px;
 }
 
@@ -97,66 +94,108 @@ i {
 }
 
 /* ===== media query ===== */
-@media screen and (max-width: 768px) {
+@media only screen and (max-width: 600px) and (min-width: 200px) {
   header {
-    flex-direction: column;
-    align-items: flex-start;
+    height: 40px;
   }
 
   .logo {
-    width: 100%;
+    width: 180px;
+    padding-left: 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
 
   .logo a img {
-    width: 20%;
+    width: 100%;
     object-fit: fill;
     object-position: center;
+    transform: translate(0,0px) scale(1.1);
   }
-
-  .logo .header-toggleBtn {
-    display: block;
-    all: unset;
-  }
-
-  .logo .header-toggleBtn i {
-    font-size: 1.2rem;
-  }
-
-  /* ===== categories ===== */
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
-
   .categories {
-    display: none;
-    margin: 0;
-    flex-direction: column;
+    width: 80%;
+    padding-left: 30px;
+    font-size: 40%;
+    text-align: center;
+    transform: translate(0,10px);
   }
-
-  .categories.active {
-    display: flex;
-    animation: fadeIn 0.5s linear;
-  }
-
   .categories .category {
+    width: fit-content;
+    padding-right: 10px;
+    padding-left: 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    text-align: center;
+    margin: auto;
+  }
+  .search_notice_info {
+    padding-right: 10px;
+    font-size: 12px;
+  }
+  .search_notice_info .search,
+  .search_notice_info .info{
+    padding-right: 10px;
+    padding-left: 10px;
+  }
+  .search_notice_info .signUp,
+  .search_notice_info .kids,
+  .search_notice_info .notice1,
+  .search_notice_info .notice2 {
+    display: none;
+  }
+
+}
+
+@media only screen and (max-width: 900px) and (min-width: 601px) {
+   header {
+    height: 50px;
+  }
+
+  .logo {
+    width: 160px;
+    padding-left: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .logo a img {
     width: 100%;
+    object-fit: fill;
+    object-position: center;
+    transform: translate(0,-5px) scale(1.1);
+  }
+  .categories {
+    width: 80%;
+    padding-left: 30px;
+    font-size: 80%;
     text-align: center;
 
-    margin: 0;
-    margin-bottom: 2%;
-    cursor: pointer;
   }
-
-  /* ===== search_notice_info ===== */
+  .categories .category {
+    width: fit-content;
+    padding-right: 10px;
+    padding-left: 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    text-align: center;
+    margin: auto;
+  }
   .search_notice_info {
+    padding-right: 10px;
+    font-size: 12px;
+  }
+  .search_notice_info .search,
+  .search_notice_info .info{
+    padding-right: 10px;
+    padding-left: 10px;
+  }
+  .search_notice_info .signUp,
+  .search_notice_info .kids,
+  .search_notice_info .notice1,
+  .search_notice_info .notice2 {
     display: none;
   }
+
 }

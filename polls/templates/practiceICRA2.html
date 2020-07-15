@@ -26,55 +26,31 @@
     <link rel="stylesheet" href="{% static 'css/index_header.css'%}" />
 </head>
 <body>
-<div style="width:1020pt; margin:0 auto;" align="justify">
-
-    <header>
-        <div class="logo">
-            <a href="./">
-                <img src="{% static './resources/logo.png'%}"/>
-            </a>
-            <button class="header-toggleBtn"><i class="fa fa-bars"></i></button>
-        </div>
-
-        <ul class="categories">
-            <a href="./" style="color:white; text-decoration:none;">
-                <li class="category category1">Home</li></a>
-            <li class="category category2">My Lists</li>
-            <li class="category category3">Recently Added</li>
-        </ul>
-
-        <ul class="search_notice_info">
-            <li class="notice1"><i class="fas fa-gift"></i></li>
-            <li class="notice2"><i class="fas fa-bell"></i></li>
-            <li class="info"><i class="fas fa-user"></i></li>
-        </ul>
-    </header>
-
-    <p>&nbsp;</p>
-    <p>&nbsp;</p>
-    <p>&nbsp;</p>
-
-    <div class="netflix-slider">
-        <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pavilion : {{Pavilion}}</h3>
-        <div class="swiper-container">
-            <div class="swiper-wrapper">
-                {% for j in SessionList %}
-                    <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion }}&id3={{PavilionNum}}" style="color:white; text-decoration: none;">{{ j }}<img src="{% static 'img'%}/pavilion{{ PavilionNum|add:1 }}/{{ j }}.jpg">
-                    </a></img>
-                    </div>
-                {% endfor %}
-            </div>
-            <!-- Add Pagination -->
-            {#      <div class="swiper-pagination"></div>#}
-            <div class="swiper-button-next"></div>
-            <div class="swiper-button-prev"></div>
-        </div>
+<header>
+    <div class="logo">
+        <a href="./">
+            <img src="{% static './resources/logo.png'%}"/>
+        </a>
+        <button class="header-toggleBtn"><i class="fa fa-bars"></i></button>
     </div>
 
+    <ul class="categories">
+
+        <li class="category category1"><a href="./" style="color:white; text-decoration: none;">Home</a></li>
+        <li class="category category2">My Lists</li>
+        <li class="category category3">Recently Added</li>
+    </ul>
+
+    <ul class="search_notice_info">
+        <li class="search"><i class="fa fa-search"></i></li>
+        <li class="info"><i class="fa fa-user"></i></li>
+    </ul>
+</header>
+<div style="width:95%; margin:0 auto; padding-top: 5%;" align="justify">
     <p>&nbsp;</p>
-    <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Session Episode</h3>
+    <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pavilion : {{Pavilion}} - Session</h3>
     <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" data-interval="false" data-pause="hover">
-        <ol class="carousel-indicators">
+        <ol class="carousel-indicators ">
             <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
             {% for i in EpisodeCount %}
                 <li data-target="#carouselExampleIndicators" data-slide-to="{{i}}"></li>
@@ -82,31 +58,34 @@
         </ol>
         <div class="carousel-inner">
             {#        <div class="carousel-item active"><img class="d-block w-50" src="{% static 'img'%}/{{Pavilion}}/0.jpg">#}
-            <div class="carousel-item active"><img class="d-block w-50" src="{% static './resources/logo.png'%}">
+            <div class="carousel-item active">
+                <div class="bgcolor"> <img class="d-block" src="{% static './resources/logo.png'%}">
 
-                <div class="imgtext">
-                    <p style="color: white;">&nbsp;&nbsp;&nbsp;Welcome to Session :</p>
-                    <p style="color: white;">&nbsp;&nbsp;&nbsp; {{ Session }}</p>
-                </div>
-                <div class="carousel-caption">
-                    <p style="font-size: 15pt">Welcome to Session :</p>
-                    <p style="font-size: 15pt">{{ Session }}</p>
+                    <div class="imgtext">
+                        <p style="color: white;">&nbsp;&nbsp;&nbsp;Welcome to Session :</p>
+                        <p style="color: white;">&nbsp;&nbsp;&nbsp; {{ Session }}</p>
+                    </div>
+                    <div class="carousel-caption">
+                        <p style="color: white;">Welcome to Session :</p>
+                        <p style="color: white;">{{ Session }}</p>
+                    </div>
                 </div>
             </div>
             {% for AuthorList, AffiliationList, TitleList, PDFList in EpisodeContext %}
                 <div class="carousel-item">
-                    {#                <a href="episode?id={{TitleList}}&id2={{ Session }}&id3={{ Pavilion }}">{{ TitleList }}<img class="d-block w-50" src="{% static 'img'%}/{{Pavilion}}/{{ forloop.counter0 }}.jpg">#}
-                    <a href="episode?id={{TitleList}}&id2={{ Session }}&id3={{ Pavilion }}">{{ TitleList }}<img class="d-block w-50" src="{% static './resources/logo.png'%}">
+                    <div class="bgcolor">
+                        <a href="episode?id={{TitleList}}&id2={{ Session }}&id3={{ Pavilion }}"><img class="d-block" src="{% static './resources/logo.png'%}">
 
-                    </a>
-                    <div class="imgtext">
-                        <p style="color: white;">&nbsp;&nbsp;&nbsp;Session : {{ Session }}</p>
-                        <p style="color: white;">&nbsp;&nbsp;&nbsp;Title : {{ TitleList }}</p>
-                    </div>
-                    <div class="carousel-caption">
-                        <p style="font-size: 15pt">Author : {{ AuthorList }}</p>
-                        <p style="font-size: 15pt">Affiliation : {{ AffiliationList }}</p>
-                        <p style="font-size: 15pt"><a href="https://ras.papercept.net/proceedings/ICRA20/{{ PDFList }}" target="_blank"> Open PDF files</a></p>
+                        </a>
+                        <div class="imgtext">
+                            <p style="color: white;">&nbsp;&nbsp;&nbsp;Session : {{ Session }}</p>
+                            <p style="color: white;">&nbsp;&nbsp;&nbsp;Title : {{ TitleList }}</p>
+                        </div>
+                        <div class="carousel-caption">
+                            <p style="color: white;">Author : {{ AuthorList }}</p>
+                            <p style="color: white;">Affiliation : {{ AffiliationList }}</p>
+                            <p style="color: white;"><a href="https://ras.papercept.net/proceedings/ICRA20/{{ PDFList }}" target="_blank"> Open PDF files</a></p>
+                        </div>
                     </div>
                 </div>
             {% endfor %}
@@ -118,14 +97,35 @@
             <span class="carousel-control-next-icon" aria-hidden="true"></span>
             <span class="sr-only">Next</span> </a>
     </div>
+    <p>&nbsp;</p>
+    <div class="netflix-slider">
+        <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{Pavilion}} - Other Sessions</h3>
+        <div class="swiper-container">
+            <div class="swiper-wrapper">
+                {% for j in SessionList %}
+                    <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion }}&id3={{PavilionNum}}" style="color:white; text-decoration: none;">
+                        <img src="{% static 'img'%}/pavilion{{ PavilionNum|add:1 }}/{{ j }}.jpg">
+                        <div class="onimg-caption">{{ j }}
+                        </div>
+                    </a>
+                    </div>
+                {% endfor %}
+            </div>
+            <!-- Add Pagination -->
+            {#      <div class="swiper-pagination"></div>#}
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+        </div>
+    </div>
+
 
     <script src="{% static 'js/index_header.js' %}"></script>
     <script src="{% static 'package/js/swiper.min.js' %}"></script>
     <!-- Initialize Swiper -->
     <script>
         var swiper = new Swiper('.swiper-container', {
-            slidesPerView: 5,
-            spaceBetween: 10,
+            {#slidesPerView: 7,#}
+            {#spaceBetween: 10,#}
             slidesPerGroup: 2,
             pagination: {
                 el: '.swiper-pagination',
@@ -135,6 +135,24 @@
                 nextEl: '.swiper-button-next',
                 prevEl: '.swiper-button-prev',
             },
+            breakpoints: {
+                // when window width is >= 320px
+                200: {
+                    slidesPerView: 4,
+                    slidesPerColumnFill:'row',
+                    spaceBetween: 4
+                },
+                // when window width is >= 480px
+                600: {
+                    slidesPerView: 5,
+                    spaceBetween: 5
+                },
+                // when window width is >= 640px
+                900: {
+                    slidesPerView: 6,
+                    spaceBetween: 6
+                }
+            }
         });
     </script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

@@ -26,7 +26,6 @@
     <link rel="stylesheet" href="{% static 'css/index_header.css'%}" />
 </head>
 <body>
-        <div style="width:1020pt; margin:0 auto;" align="justify">
 <header>
     <div class="logo">
         <a href="./">
@@ -43,51 +42,85 @@
     </ul>
 
     <ul class="search_notice_info">
-        <li class="notice1"><i class="fas fa-gift"></i></li>
-        <li class="notice2"><i class="fas fa-bell"></i></li>
-        <li class="info"><i class="fas fa-user"></i></li>
+        <li class="search"><i class="fa fa-search"></i></li>
+        <li class="info"><i class="fa fa-user"></i></li>
     </ul>
 </header>
+<div style="width:95%; margin:0 auto; padding-top: 12%;" align="justify">
+    <h3>&nbsp;&nbsp;Title : {{Title}}</h3>
+    <p>&nbsp;</p>
 
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<button onclick="goBack()">Go Back</button>
+    <video style="display:block; margin: 0 auto;" width="90%" height=auto controls>
+        <source src="https://ras.papercept.net/proceedings/ICRA20/{{ VideoList.0 }}" type="video/mp4">
+    </video>
 
-<h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Title : {{Title}}</h3>
+    <p>&nbsp;</p>
+    <center><button onclick="goBack()">Go Back</button></center>
 
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<video style="display:block; margin: 0 auto;" width="70%" height=auto controls>
-    <source src="https://ras.papercept.net/proceedings/ICRA20/{{ VideoList.0 }}" type="video/mp4">
-</video>
-
-<script src="{% static 'js/index_header.js' %}"></script>
-<script src="{% static 'package/js/swiper.min.js' %}"></script>
-<!-- Initialize Swiper -->
-<script>
-    var swiper = new Swiper('.swiper-container', {
-        slidesPerView: 5,
-        spaceBetween: 10,
-        slidesPerGroup: 2,
-        pagination: {
-            el: '.swiper-pagination',
-            clickable: true,
-        },
-        navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
-        },
-    });
-</script>
-<script>
-    function goBack() {
-        window.history.back();
-    }
-</script>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+    <div class="netflix-slider">
+        <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Similar to this contribution</h3>
+        <div class="swiper-container">
+            <div class="swiper-wrapper">
+                {% for j in SuggestNumber %}
+                    <div class="swiper-slide"><a href="suggestion?id1={{j}}" style="color:white; text-decoration: none;">
+                        <img src="{% static './resources/logo.png'%}">
+                        <div class="onimg-caption">{{ j }}
+                        </div>
+                    </a>
+                    </div>
+                {% endfor %}
+            </div>
+            <!-- Add Pagination -->
+            {#      <div class="swiper-pagination"></div>#}
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
         </div>
+    </div>
+
+    <script src="{% static 'js/index_header.js' %}"></script>
+    <script src="{% static 'package/js/swiper.min.js' %}"></script>
+    <!-- Initialize Swiper -->
+    <script>
+        var swiper = new Swiper('.swiper-container', {
+            {#slidesPerView: 7,#}
+            {#spaceBetween: 10,#}
+            slidesPerGroup: 2,
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            breakpoints: {
+                // when window width is >= 320px
+                200: {
+                    slidesPerView: 4,
+                    slidesPerColumnFill:'row',
+                    spaceBetween: 4
+                },
+                // when window width is >= 480px
+                600: {
+                    slidesPerView: 5,
+                    spaceBetween: 5
+                },
+                // when window width is >= 640px
+                900: {
+                    slidesPerView: 6,
+                    spaceBetween: 6
+                }
+            }
+        });
+    </script>
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+</div>
 </body>
 </html>

@@ -14,13 +14,13 @@ pre = os.path.dirname(os.path.realpath(__file__))
 
 path3 = os.path.join(pre, 'ICRA20Digest4369_1.xlsx')
 data = pd.read_excel(path3, sheet_name=0)
-
+# data1 = pd.read_excel(path3, sheet_name=0)
+# data = data1[(data1['SchCode'].str[0]=='M')&(data1['SchCode'].str[1]=='o')]
+data = data.fillna('z')
 
 def searchByKeyword(keyword, n_count=10):
 
     key = str.split(keyword.lower())
-
-
     scores = {}
     for c in key:
         ret = data[(data['Session title'].str.lower().str.find(c) >= 0) |
@@ -54,8 +54,10 @@ def strip_suffixes(s,suffixes):
         if s.endswith(suf):
             return s.rstrip(suf)
     return s
-def findSimilarTopic(index, n_count=20):
+def findSimilarTopic(index, n_count=10):
+
     obj = data[(data['Nr'] == index)].iloc[0]
+
     keyword = obj['Keyword1'] + " " + obj['Keyword2'] + " " + obj['Keyword2'] + " " + obj['Keyword3'] + " " + obj[
         'Title']
     s_title = obj['Session title']
@@ -86,6 +88,7 @@ def findSimilarTopic(index, n_count=20):
                 scores[r['Nr']] = 1
 
     scores = sorted(scores.items(), key=lambda x: x[1], reverse=True)
+    #print(scores)
     scores = [k for k, _ in scores[0:n_count]]
 
     return scores

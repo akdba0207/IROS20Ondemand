@@ -6,8 +6,8 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 import pandas as pd
-import openpyxl
 import os
+import numpy as np
 
 from polls.search import searchByKeyword, findSimilarTopic
 
@@ -65,8 +65,9 @@ Sessions3 = sorted(list(set(Pavilion3['Session title'])))
 Sessions4 = sorted(list(set(Pavilion4['Session title'])))
 Sessions5 = sorted(list(set(Pavilion5['Session title'])))
 
+print(icra_example[(icra_example['Nr'] == 2375)])
 def main(request):
-    print(searchByKeyword('Jean Chagas Vaz'))
+    #print(searchByKeyword('Jean Chagas Vaz'))
     #print(findSimilarTopic(335))
     return render(request, 'practiceICRA.html',
                   {'Pavilion': Cartegories['Pavilion'],
@@ -111,9 +112,32 @@ def tvshow(request):
                                                   'EpisodeCount':range(1, EpisodeCount)})
 
 def episode(request):
+
     selectedTitle = request.GET['id']
-    findVideo = icra_Monday[(icra_Monday['Title']==selectedTitle)]
+    findVideo = icra_example[(icra_example['Title'] == selectedTitle)]
     VideoList = findVideo['VID'].reset_index()
-    print(VideoList)
+    selectedNumber = findVideo['Nr'].reset_index()
+    suggestEpisodeNum = findSimilarTopic(selectedNumber['Nr'].iloc[0])
+
+
     return render(request, 'practiceICRA3.html', {'VideoList': VideoList['VID'],
-                                                  'Title':selectedTitle})
+                                                  'Title':selectedTitle,
+                                                  'SuggestNumber': suggestEpisodeNum})
+
+def suggestion(request):
+    suggestedNum = request.GET['id1']
+    findTitle = icra_example[(icra_example['Nr'] == int(suggestedNum))]
+    titleName = findTitle['Title'].reset_index()
+    VideoList = findTitle['VID'].reset_index()
+    selectedTitle = titleName['Title'].iloc[0]
+    suggestEpisodeNum = findSimilarTopic(int(suggestedNum))
+
+
+    return render(request, 'practiceICRA3.html', {'VideoList': VideoList['VID'],
+                                              'Title': selectedTitle,
+                                              'SuggestNumber': suggestEpisodeNum})
+
+def searchresult(request):
+    return render(request, 'practiceICRA4.html', {'Pavilion': Cartegories['Pavilion'],
+                                                  'Aerial': Sessions1})
+
