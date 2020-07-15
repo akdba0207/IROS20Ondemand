@@ -1,3 +1,4 @@
 
 polls/migrations/__pycache__
 mysite/__pycache__
+*.pyc
