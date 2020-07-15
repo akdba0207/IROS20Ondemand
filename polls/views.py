@@ -67,7 +67,7 @@ Sessions5 = sorted(list(set(Pavilion5['Session title'])))
 
 print(icra_example[(icra_example['Nr'] == 2375)])
 def main(request):
-    #print(searchByKeyword('Jean Chagas Vaz'))
+    print(searchByKeyword('vijay kumar'))
     #print(findSimilarTopic(335))
     return render(request, 'practiceICRA.html',
                   {'Pavilion': Cartegories['Pavilion'],

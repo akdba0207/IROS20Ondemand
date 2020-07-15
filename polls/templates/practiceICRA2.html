@@ -59,7 +59,7 @@
         <div class="carousel-inner">
             {#        <div class="carousel-item active"><img class="d-block w-50" src="{% static 'img'%}/{{Pavilion}}/0.jpg">#}
             <div class="carousel-item active">
-                <div class="bgcolor"> <img class="d-block" src="{% static './resources/logo.png'%}">
+                <div class="bgcolor"> <img src="{% static './resources/logo.png'%}">
 
                     <div class="imgtext">
                         <p style="color: white;">&nbsp;&nbsp;&nbsp;Welcome to Session :</p>
@@ -74,7 +74,7 @@
             {% for AuthorList, AffiliationList, TitleList, PDFList in EpisodeContext %}
                 <div class="carousel-item">
                     <div class="bgcolor">
-                        <a href="episode?id={{TitleList}}&id2={{ Session }}&id3={{ Pavilion }}"><img class="d-block" src="{% static './resources/logo.png'%}">
+                        <a href="episode?id={{TitleList}}&id2={{ Session }}&id3={{ Pavilion }}"><img src="{% static './resources/logo.png'%}">
 
                         </a>
                         <div class="imgtext">

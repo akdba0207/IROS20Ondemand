@@ -107,6 +107,7 @@ h3 {
     bottom: 30%;
     text-align: left;
     text-shadow: none;
+
 }
 .carousel-item img {
     opacity: 1;
@@ -208,7 +209,7 @@ h3 {
     }
     .netflix-slider .swiper-slide {
         transition: 250ms all;
-        padding: 70px 0px;
+        padding:70px 0px;
     }
     .netflix-slider img {
         max-width: 100%;
@@ -216,7 +217,7 @@ h3 {
         transform: translate(0px, -15px) scale(2);
         align-items: flex-start;
 
-        /*vertical-align: text-top;*/
+        vertical-align: text-top;
     }
     .carousel-item {
         padding-left: 6%;
