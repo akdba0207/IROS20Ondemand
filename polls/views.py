@@ -22,6 +22,15 @@ excel_file3 = 'ICRA20Digest4369_1.xlsx'
 path3 = os.path.join(pre, excel_file3)
 icra_example = pd.read_excel(path3,sheet_name=0)
 
+#Total Session's Like Number
+#icra_Thumbsup = icra_example[(icra_example['Like']==float(1))]
+icra_Thumbsup_prev = icra_example['Like'].iloc[1]
+print(icra_Thumbsup_prev)
+icra_Thumbsup_cur = icra_Thumbsup_prev + 3;
+print(icra_Thumbsup_cur)
+icra_example['Like'].iloc[1] = icra_Thumbsup_cur
+print(icra_example['Like'])
+
 #Monday Session
 icra_Monday = icra_example[(icra_example['SchCode'].str[0]=='M')&(icra_example['SchCode'].str[1]=='o')]
 icra_sessiontitle= icra_Monday['Session title']
@@ -65,9 +74,9 @@ Sessions3 = sorted(list(set(Pavilion3['Session title'])))
 Sessions4 = sorted(list(set(Pavilion4['Session title'])))
 Sessions5 = sorted(list(set(Pavilion5['Session title'])))
 
-print(icra_example[(icra_example['Nr'] == 2375)])
+#print(icra_example[(icra_example['Nr'] == 2375)])
 def main(request):
-    print(searchByKeyword('vijay kumar'))
+    #print(searchByKeyword('vijay kumar'))
     #print(findSimilarTopic(335))
     return render(request, 'practiceICRA.html',
                   {'Pavilion': Cartegories['Pavilion'],
@@ -95,21 +104,27 @@ def tvshow(request):
     else:
         selectedSessionList = []
 
+
     EpisodeList = icra_Monday[(icra_Monday['Session title']==selectedSession)]
     AuthorList = EpisodeList['Author1'].reset_index()
     AffiliationList = EpisodeList['Affiliation1'].reset_index()
     TitleList = EpisodeList['Title'].reset_index()
     PDFList = EpisodeList['FN'].reset_index()
+    titleNumber = EpisodeList['Nr'].reset_index()
     EpisodeContext = zip(AuthorList['Author1'],AffiliationList['Affiliation1'],TitleList['Title'],
-                         PDFList['FN'])
+                         PDFList['FN'], titleNumber['Nr'])
     EpisodeCount = EpisodeList.shape[0]+1
+
+
+    print(titleNumber)
 
     return render(request, 'practiceICRA2.html', {'Pavilion': selectedPavilion,
                                                   'PavilionNum': selectedPavilionNum,
                                                   'SessionList':selectedSessionList,
                                                   'Session': selectedSession,
                                                   'EpisodeContext':EpisodeContext,
-                                                  'EpisodeCount':range(1, EpisodeCount)})
+                                                  'EpisodeCount':range(1, EpisodeCount)
+                                                  })
 
 def episode(request):
 
@@ -134,8 +149,8 @@ def suggestion(request):
 
 
     return render(request, 'practiceICRA3.html', {'VideoList': VideoList['VID'],
-                                              'Title': selectedTitle,
-                                              'SuggestNumber': suggestEpisodeNum})
+                                                  'Title': selectedTitle,
+                                                  'SuggestNumber': suggestEpisodeNum})
 
 def searchresult(request):
     return render(request, 'practiceICRA4.html', {'Pavilion': Cartegories['Pavilion'],

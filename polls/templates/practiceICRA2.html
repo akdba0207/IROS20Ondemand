@@ -24,6 +24,18 @@
     />
     <link rel="stylesheet" href="{% static 'css/index_land.css'%}" />
     <link rel="stylesheet" href="{% static 'css/index_header.css'%}" />
+    <style>
+        .thumbsuptext{
+            font-size:100%;
+            width:50px;
+            text-align:left;
+            color:grey;
+            background-color:#323232;
+            border: none;
+            outline:none;
+        }
+    </style>
+
 </head>
 <body>
 <header>
@@ -66,7 +78,7 @@
     </div>
 
 
-    {% for AuthorList, AffiliationList, TitleList, PDFList in EpisodeContext %}
+    {% for AuthorList, AffiliationList, TitleList, PDFList, titleNumber in EpisodeContext %}
         <div class="epilisttable" style="width: 75%; height: auto; text-align: center; margin-left: 12.5%; background-color: grey; margin-bottom:1%">
             <table border="0" cellpadding="0" cellspacing="0" style="background-color: #323232;" >
                 <tr>
@@ -78,6 +90,10 @@
                         <p style="color: white;">Author : {{ AuthorList }}</p>
                         <p style="color: white;">Affiliation : {{ AffiliationList }}</p>
                         <p style="color: white;"><a href="https://ras.papercept.net/proceedings/ICRA20/{{ PDFList }}" target="_blank"> Open PDF files</a></p>
+                        <form>
+                            <i id="thumbs{{titleNumber}}" class="fa fa-thumbs-up" style="color:grey;" onClick="thumbsUp({{ titleNumber }})"></i>
+                            <input type="text" id="{{ titleNumber }}" value="0" class="thumbsuptext" readonly/>
+                        </form>
                     </td>
                 </tr>
             </table>
@@ -108,6 +124,34 @@
     <script src="{% static 'js/index_header.js' %}"></script>
     <script src="{% static 'package/js/swiper.min.js' %}"></script>
     <!-- Initialize Swiper -->
+    <script>
+        function thumbsUp(thumbsid)
+        {
+            var active = document.getElementById("thumbs"+thumbsid.toString()).style.color;
+
+            var value = parseInt(document.getElementById(thumbsid).value, 10);
+            value = isNaN(value) ? 0 : value;
+
+
+            if(active == "grey"){
+                value++;
+                active = "Thumbs Down";
+                document.getElementById("thumbs"+thumbsid.toString()).style.color = "blue";
+                document.getElementById(thumbsid).style.color = "blue";
+
+
+            }else{
+                value--;
+                active = "Thumbs Up";
+                document.getElementById("thumbs"+thumbsid.toString()).style.color = "grey";
+                document.getElementById(thumbsid).style.color = "grey";
+            }
+
+            document.getElementById("thumbs"+thumbsid.toString()).value = active;
+            document.getElementById(thumbsid).value = value;
+        }
+
+    </script>
     <script>
         var swiper = new Swiper('.swiper-container', {
             {#slidesPerView: 7,#}
