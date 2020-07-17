@@ -49,40 +49,54 @@
 <div style="width:95%; margin:0 auto; padding-top: 5%;" align="justify">
     <p>&nbsp;</p>
     <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pavilion : {{Pavilion}} - Session</h3>
-    <br>
+    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" data-interval="false" data-pause="hover">
+        <ol class="carousel-indicators ">
+            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+            {% for i in EpisodeCount %}
+                <li data-target="#carouselExampleIndicators" data-slide-to="{{i}}"></li>
+            {% endfor %}
+        </ol>
+        <div class="carousel-inner">
+            {#        <div class="carousel-item active"><img class="d-block w-50" src="{% static 'img'%}/{{Pavilion}}/0.jpg">#}
+            <div class="carousel-item active">
+                <div class="bgcolor"> <img src="{% static './resources/logo.png'%}">
 
-    <div class = "landingtable" style="width: 90%; height: auto; text-align: center; margin-left: 5%; margin-bottom:2%">
-        <table border="0" cellpadding="0" cellspacing="0" style="background-color: #323232; width: 100%; border-style: solid; border-color:white;border-width: 10px;">
-            <tr>
-                <td style="width: 70%;">
-                    <img src="{% static './resources/logo.png'%}" width="100%">
-                </td>
-                <td style="padding-left: 5%;word-break: keep-all; font-size: 200%">
-                    <p style="color: white;">Welcome to Session :</p>
-                    <p style="color: white;">{{ Session }}</p>
-                </td>
-            </tr>
-        </table>
-    </div>
+                    <div class="imgtext">
+                        <p style="color: white;">&nbsp;&nbsp;&nbsp;Welcome to Session :</p>
+                        <p style="color: white;">&nbsp;&nbsp;&nbsp; {{ Session }}</p>
+                    </div>
+                    <div class="carousel-caption">
+                        <p style="color: white;">Welcome to Session :</p>
+                        <p style="color: white;">{{ Session }}</p>
+                    </div>
+                </div>
+            </div>
+            {% for AuthorList, AffiliationList, TitleList, PDFList in EpisodeContext %}
+                <div class="carousel-item">
+                    <div class="bgcolor">
+                        <a href="episode?id={{TitleList}}&id2={{ Session }}&id3={{ Pavilion }}"><img src="{% static './resources/logo.png'%}">
 
-
-    {% for AuthorList, AffiliationList, TitleList, PDFList in EpisodeContext %}
-        <div class="epilisttable" style="width: 75%; height: auto; text-align: center; margin-left: 12.5%; background-color: grey; margin-bottom:1%">
-            <table border="0" cellpadding="0" cellspacing="0" style="background-color: #323232;" >
-                <tr>
-                    <td style="width: 30%">
-                        <a href="episode?id={{TitleList}}&id2={{ Session }}&id3={{ Pavilion }}"><img src="{% static './resources/logo.png'%}"></a>
-                    </td>
-                    <td valign="top" align="left" style="padding-left: 5%; padding-top: 3%;word-break: keep-all">
-                        <p style="color: white;">&nbsp;&nbsp;&nbsp;Title : {{ TitleList }}</p>
-                        <p style="color: white;">Author : {{ AuthorList }}</p>
-                        <p style="color: white;">Affiliation : {{ AffiliationList }}</p>
-                        <p style="color: white;"><a href="https://ras.papercept.net/proceedings/ICRA20/{{ PDFList }}" target="_blank"> Open PDF files</a></p>
-                    </td>
-                </tr>
-            </table>
+                        </a>
+                        <div class="imgtext">
+                            <p style="color: white;">&nbsp;&nbsp;&nbsp;Session : {{ Session }}</p>
+                            <p style="color: white;">&nbsp;&nbsp;&nbsp;Title : {{ TitleList }}</p>
+                        </div>
+                        <div class="carousel-caption">
+                            <p style="color: white;">Author : {{ AuthorList }}</p>
+                            <p style="color: white;">Affiliation : {{ AffiliationList }}</p>
+                            <p style="color: white;"><a href="https://ras.papercept.net/proceedings/ICRA20/{{ PDFList }}" target="_blank"> Open PDF files</a></p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
         </div>
-    {% endfor %}
+        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span> </a>
+        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span> </a>
+    </div>
     <p>&nbsp;</p>
     <div class="netflix-slider">
         <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{Pavilion}} - Other Sessions</h3>

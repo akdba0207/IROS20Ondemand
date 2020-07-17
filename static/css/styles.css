@@ -157,6 +157,7 @@ h3 {
 }
 
 
+
 @media only screen and (max-width: 400px){
 
     h3 {
@@ -194,6 +195,15 @@ h3 {
     .carousel-caption{
         top: 3%;
         font-size: 30%
+    }
+    .landingtable{
+        font-size: 30%;
+    }
+    .epilisttable{
+        font-size: 60%;
+    }
+    .suggestlisttable{
+        font-size: 30%;
     }
 }
 
@@ -236,6 +246,15 @@ h3 {
         top: 3%;
         font-size: 30%
     }
+    .landingtable{
+        font-size: 30%;
+    }
+    .epilisttable{
+        font-size: 60%;
+    }
+    .suggestlisttable{
+        font-size: 30%;
+    }
 }
 
 @media only screen and (max-width: 900px) and (min-width: 601px) {
@@ -269,5 +288,10 @@ h3 {
         top: 5%;
         font-size: 50%
     }
-
+    .epilisttable{
+        font-size: 90%;
+    }
+    .suggestlisttable{
+        font-size: 50%;
+    }
 }

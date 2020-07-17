@@ -57,23 +57,25 @@
     <p>&nbsp;</p>
     <center><button onclick="goBack()">Go Back</button></center>
 
-    <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Similar to this contribution</h3>4
-
-    {% for j in SuggestNumber %}
-        <div class="suggestlisttable" style="width: 75%; height: auto; text-align: center; margin-left: 12.5%; background-color: grey; margin-bottom:1%">
-            <table border="0" cellpadding="0" cellspacing="0" style="background-color: #323232;" >
-                <tr>
-                    <td style="width: 30%">
-                        <a href="suggestion?id1={{j}}" style="color:white; text-decoration: none;">
-                            <img src="{% static './resources/logo.png'%}"></a>
-                    </td>
-                    <td valign="top" align="left" style="padding-left: 5%; padding-top: 3%;word-break: keep-all; font-size: 200%">
-                        <p style="color: white;">&nbsp;&nbsp;&nbsp;Paper Number : {{ j }}</p>
-                    </td>
-                </tr>
-            </table>
+    <div class="netflix-slider">
+        <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Similar to this contribution</h3>
+        <div class="swiper-container">
+            <div class="swiper-wrapper">
+                {% for j in SuggestNumber %}
+                    <div class="swiper-slide"><a href="suggestion?id1={{j}}" style="color:white; text-decoration: none;">
+                        <img src="{% static './resources/logo.png'%}">
+                        <div class="onimg-caption">{{ j }}
+                        </div>
+                    </a>
+                    </div>
+                {% endfor %}
+            </div>
+            <!-- Add Pagination -->
+            {#      <div class="swiper-pagination"></div>#}
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
         </div>
-    {% endfor %}
+    </div>
 
     <script src="{% static 'js/index_header.js' %}"></script>
     <script src="{% static 'package/js/swiper.min.js' %}"></script>
