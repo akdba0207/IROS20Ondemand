@@ -1,0 +1,28 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+
+  font-family: "Source Sans Pro", sans-serif;
+  /* overflow-x: hidden; */
+}
+
+a {
+  text-decoration: none;
+}
+
+@keyframes hover-li {
+  from {
+    background-color: lightgrey;
+  }
+  to {
+    background-color: lightgrey;
+  }
+}
+
+li:hover {
+  /* animation: hover-li 0.5s linear; */
+  background-color: rgb(110, 109, 109);
+}

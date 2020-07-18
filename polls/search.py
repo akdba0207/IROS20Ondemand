@@ -46,7 +46,7 @@ def searchByKeyword(keyword, n_count=12):
                 scores[r['Nr']] = 1
 
     scores = sorted(scores.items(), key=lambda x: x[1], reverse=True)
-    # scores = [k for k, _ in scores[0:n_count]]
+    scores = [k for k, _ in scores[0:n_count]]
     return scores
 
 def strip_suffixes(s,suffixes):

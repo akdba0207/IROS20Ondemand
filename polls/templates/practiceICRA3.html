@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <!-- Link Swiper's CSS -->
     <link rel="stylesheet" href="{% static 'package/css/swiper.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles0717-2.css' %}">
     <script
             src="https://kit.fontawesome.com/7541329784.js"
             crossorigin="anonymous"
@@ -22,8 +22,8 @@
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
     />
-    <link rel="stylesheet" href="{% static 'css/index_land.css'%}" />
-    <link rel="stylesheet" href="{% static 'css/index_header.css'%}" />
+    <link rel="stylesheet" href="{% static 'css/index_land0717.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/index_header0717.css' %}" />
 </head>
 <body>
 <header>
@@ -42,33 +42,115 @@
     </ul>
 
     <ul class="search_notice_info">
-        <li class="search"><i class="fa fa-search"></i></li>
+        <form>
+            <input type="text" id="search_bar" value="" class="searchBar" onkeydown="if(event.keyCode === 13) {event.preventDefault(); document.getElementById('searchBtn').click()}"/>
+            <d onclick="search()">
+                <a id = "keywordDelivery" href="">
+                    <i id="searchBtn" class="fa fa-search" style="font-size:25px;color:white;"></i>
+                </a>
+            </d>
+        </form>
         <li class="info"><i class="fa fa-user"></i></li>
     </ul>
 </header>
-<div style="width:95%; margin:0 auto; padding-top: 12%;" align="justify">
-    <h3>&nbsp;&nbsp;Title : {{Title}}</h3>
+<div style="width:95%; margin:0 auto; padding-top: 5%;" align="justify">
+    <h3 class="episodeTitle">Title : {{Title}}</h3>
     <p>&nbsp;</p>
 
-    <video style="display:block; margin: 0 auto;" width="90%" height=auto controls>
+    <video style="display:block; margin: 0 auto; width: 40%; height: auto" controls autoplay>
         <source src="https://ras.papercept.net/proceedings/ICRA20/{{ VideoList.0 }}" type="video/mp4">
     </video>
 
     <p>&nbsp;</p>
-    <center><button onclick="goBack()">Go Back</button></center>
 
-    <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Similar to this contribution</h3>4
 
-    {% for j in SuggestNumber %}
-        <div class="suggestlisttable" style="width: 75%; height: auto; text-align: center; margin-left: 12.5%; background-color: grey; margin-bottom:1%">
+    <center>
+        <table border="0" cellpadding="0" cellspacing="0"style="background-color: #1F1F1F; text-align: center;color: white;">
+            <tr>
+                <td class="gobackButton"><button onclick="goBack()">Go Back</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </td>
+                <td><div class="likeButton" style="color: white;">Like?&nbsp;&nbsp;</div></td>
+                <td>
+                    <form>
+                        <i id="thumbs{{SelectedNumber}}" class="fa fa-thumbs-up" style="color:grey; font-size: 30px" onClick="thumbsUp({{ SelectedNumber }})"></i>
+                        <input type="text" id="{{ SelectedNumber }}" value="0" class="thumbsuptext" readonly/>
+                    </form>
+                </td>
+            </tr>
+        </table>
+    </center>
+    <h3 style="padding-bottom: 2%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; More talks like this : </h3>
+
+    {% for AuthorList1, AuthorList2, AuthorList3, AuthorList4,AuthorList5, AuthorList6, AffiliationList1,AffiliationList2,AffiliationList3,AffiliationList4,AffiliationList5,TitleList, PDFList, titleNumber, suggestEpisodeNum in EpisodeContext %}
+        <div class="suggestlisttable" style="width: 80%; height: auto; text-align: center; margin-left: 10%; background-color: grey; margin-bottom:1%">
             <table border="0" cellpadding="0" cellspacing="0" style="background-color: #323232;" >
                 <tr>
                     <td style="width: 30%">
-                        <a href="suggestion?id1={{j}}" style="color:white; text-decoration: none;">
+                        <a href="suggestion?id1={{suggestEpisodeNum}}" style="color:white; text-decoration: none;">
                             <img src="{% static './resources/logo.png'%}"></a>
                     </td>
-                    <td valign="top" align="left" style="padding-left: 5%; padding-top: 3%;word-break: keep-all; font-size: 200%">
-                        <p style="color: white;">&nbsp;&nbsp;&nbsp;Paper Number : {{ j }}</p>
+                    <td valign="top" align="left" style="padding-left: 5%; padding-top: 3%;word-break: keep-all;">
+                        <p class="papertitle" style="color: white;">Title : {{ TitleList }}</p>
+                        {#                        <p style="color: white;">Author : {{ AuthorList1 }} {{ AuthorList2 }} {{ AuthorList3 }} {{ AuthorList4 }} {{ AuthorList5 }}</p>#}
+                        {#                        <p style="color: white;">Affiliation : {{ AffiliationList1 }}, {{ AffiliationList2 }}, {{ AffiliationList3 }}, {{ AffiliationList4 }}, {{ AffiliationList5 }}</p>#}
+                        <table class="paperInfo" border="0" cellpadding="0" cellspacing="0" width="100% "style="background-color: #323232; text-align: left;color: white;">
+                            <tbody>
+
+                            <tr>
+                                <td style="width: 40%;"><u>Author</u></th>
+                                <td><u>Affiliation</u></th>
+                            </tr>
+                            {% if AuthorList1 == 'missing' %}
+                                &nbsp;
+                            {% else %}
+                                <tr>
+                                    <td style="width: 40%">{{ AuthorList1 }}</td>
+                                    <td>{{ AffiliationList1 }}</td>
+                                </tr>
+                            {% endif %}
+                            {% if AuthorList2 == 'missing' %}
+                                &nbsp;
+                            {% else %}
+                                <tr>
+                                    <td style="width: 40%">{{ AuthorList2 }}</td>
+                                    <td>{{ AffiliationList2 }}</td>
+                                </tr>
+                            {% endif %}
+                            {% if AuthorList3 == 'missing' %}
+                                &nbsp;
+                            {% else %}
+                                <tr>
+                                    <td style="width: 40%">{{ AuthorList3 }}</td>
+                                    <td>{{ AffiliationList3 }}</td>
+                                </tr>
+                            {% endif %}
+                            {% if AuthorList4 == 'missing' %}
+                                &nbsp;
+                            {% else %}
+                                <tr>
+
+                                    <td style="width: 40%">{{ AuthorList4|default_if_none:"" }}</td>
+                                    <td>{{ AffiliationList4|default_if_none:"" }}</td>
+                                </tr>
+                            {% endif %}
+                            {% if AuthorList5 == 'missing' %}
+                                &nbsp;
+                            {% else %}
+                                <tr>
+                                    <td style="width: 40%">{{ AuthorList5 }}</td>
+                                    <td>{{ AffiliationList5 }}</td>
+                                </tr>
+                            {% endif %}
+                            {% if AuthorList6 == 'missing' %}
+                                &nbsp;
+                            {% else %}
+                                <tr>
+                                    <td style="width: 40%"><i style="font-size: 100%">Et al</i></td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                            {% endif %}
+                            </tbody>
+                        </table>
                     </td>
                 </tr>
             </table>
@@ -77,6 +159,41 @@
 
     <script src="{% static 'js/index_header.js' %}"></script>
     <script src="{% static 'package/js/swiper.min.js' %}"></script>
+    <script>
+        function thumbsUp(thumbsid)
+        {
+            var active = document.getElementById("thumbs"+thumbsid.toString()).style.color;
+
+            var value = parseInt(document.getElementById(thumbsid).value, 10);
+            value = isNaN(value) ? 0 : value;
+
+
+            if(active == "grey"){
+                value++;
+                active = "Thumbs Down";
+                document.getElementById("thumbs"+thumbsid.toString()).style.color = "blue";
+                document.getElementById(thumbsid).style.color = "blue";
+
+
+            }else{
+                value--;
+                active = "Thumbs Up";
+                document.getElementById("thumbs"+thumbsid.toString()).style.color = "grey";
+                document.getElementById(thumbsid).style.color = "grey";
+            }
+
+            document.getElementById("thumbs"+thumbsid.toString()).value = active;
+            document.getElementById(thumbsid).value = value;
+        }
+
+    </script>
+    <script>
+        function search(){
+            const query = document.getElementById("search_bar").value;
+            document.getElementById("keywordDelivery").href = "searchresult?id="+query;
+        }
+
+    </script>
     <!-- Initialize Swiper -->
     <script>
         var swiper = new Swiper('.swiper-container', {

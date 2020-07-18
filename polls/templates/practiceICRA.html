@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <!-- Link Swiper's CSS -->
     <link rel="stylesheet" href="{% static 'package/css/swiper.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles0717-2.css' %}">
     <script
             src="https://kit.fontawesome.com/7541329784.js"
             crossorigin="anonymous"
@@ -22,8 +22,9 @@
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
     />
-    <link rel="stylesheet" href="{% static 'css/index_land.css'%}" />
-    <link rel="stylesheet" href="{% static 'css/index_header.css'%}" />
+    <link rel="stylesheet" href="{% static 'css/index_land0717.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/index_header0717.css' %}" />
+
 </head>
 <body>
 
@@ -43,18 +44,44 @@
     </ul>
 
     <ul class="search_notice_info">
-        <li class="search"><i class="fa fa-search"></i></li>
+        <form>
+            <input type="text" id="search_bar" value="" class="searchBar" onkeydown="if(event.keyCode === 13) {event.preventDefault(); document.getElementById('searchBtn').click()}"/>
+            <d onclick="search()">
+                <a id = "keywordDelivery" href="">
+                    <i id="searchBtn" class="fa fa-search" style="color:white;"></i>
+                </a>
+            </d>
+        </form>
         <li class="info"><i class="fa fa-user"></i></li>
     </ul>
 </header>
 
 <div style="width:95%; margin:0 auto;" align="justify">
-    <div class="videobox">
-        <video>
-            <source src="{% static 'video/waymo.mp4'%}" type="video/mp4"/>
-        </video>
+
+    <div class = "videopage">
+        <div class="videocover">
+            <div class="onvid-caption">
+                <p style="margin:auto">PLATINUM SPONSOR VIDEO example</p>
+                <p id="platinumSponsor" style="margin:auto"></p>
+                <p style="margin:auto;">Company info goes here</p>
+                <div style="width: 50%; text-align: left; font-size: 150%">
+                    <button style="background-color: transparent;border: none; margin:auto; outline: none;color: red;" class="UnmuteBtn"  onclick="disbleMute()" type="button">
+                        <i class="fas fa-volume-up" style="font-size: 50%"></i>
+                    </button>
+                    <button style="background-color: transparent;border: none;margin:auto;outline: none; color: red;" class="MuteBtn" onclick="enableMute()" type="button">
+                        <i class="fas fa-volume-mute" style="font-size: 50%"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="videobox">
+            <video playsinline muted>
+            </video>
+        </div>
     </div>
-    <div style="transform: translate(0px, -100px)">
+
+    <div style="transform: translate(0px, 0px)">
         <div class="netflix-slider">
             <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{Pavilion.0}}</h3>
             <div class="swiper-container">
@@ -76,7 +103,7 @@
             </div>
         </div>
         <div class="netflix-slider">
-            <h3 style="color: blue">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp{{Pavilion.1}}</h3>
+            <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp{{Pavilion.1}}</h3>
             <div class="swiper-container">
                 <div class="swiper-wrapper">
                     {% for j in Humanoid %}
@@ -97,7 +124,7 @@
         </div>
 
         <div class="netflix-slider">
-            <h3 style="color: green">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp{{Pavilion.2}}</h3>
+            <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp{{Pavilion.2}}</h3>
             <div class="swiper-container">
                 <div class="swiper-wrapper">
                     {% for j in Medical %}
@@ -118,7 +145,7 @@
         </div>
 
         <div class="netflix-slider">
-            <h3 style="color: rosybrown">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp{{Pavilion.3}}</h3>
+            <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp{{Pavilion.3}}</h3>
             <div class="swiper-container">
                 <div class="swiper-wrapper">
                     {% for j in Driverless %}
@@ -139,7 +166,7 @@
         </div>
 
         <div class="netflix-slider">
-            <h3 style="color: orange">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp{{Pavilion.4}}</h3>
+            <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp{{Pavilion.4}}</h3>
             <div class="swiper-container">
                 <div class="swiper-wrapper">
                     {% for j in EndEffector %}
@@ -301,6 +328,18 @@
 <script src="{% static 'package/js/swiper.min.js' %}"></script>
 <!-- Initialize Swiper -->
 <script>
+    unmuteButton.addEventListener('click', function() {
+        video.muted = false;
+    });
+</script>
+<script>
+    function search(){
+        const query = document.getElementById("search_bar").value;
+        document.getElementById("keywordDelivery").href = "searchresult?id="+query;
+    }
+
+</script>
+<script>
     var swiper = new Swiper('.swiper-container', {
         {#slidesPerView: 7,#}
         {#spaceBetween: 10,#}
@@ -336,32 +375,44 @@
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
-{#<script>#}
-{#    $(document).ready(function(){#}
-{#        var nowPlaying = "none";#}
-{##}
-{#        $('div').hover(function(){#}
-{#            nowPlaying = $(this).find('iframe').attr('src');#}
-{#            $(this).find('iframe').attr('src',nowPlaying+'&autoplay=1');#}
-{#        }, function(){#}
-{#            $(this).find('iframe').attr('src',nowPlaying);#}
-{#        });#}
-{#    });#}
-{#</script>#}
+<script>
+
+    function enableMute() {
+
+        video.muted = true;
+    }
+    function disbleMute() {
+
+        video.muted = false;
+    }
+</script>
 <script>
     $(document).ready(function() {
 
         var vid = $("video").get(0);
-
-        $("video").on("mouseenter",function(){
-            vid.play();
-        });
-
-        $("video").on("mouseleave",function(){
-            vid.pause();
-        });
-
+        vid.play();
     });
+</script>
+<script>
+    var videoStorage = [
+            "{% static 'video/1' %}",
+            "{% static 'video/2' %}",
+            "{% static 'video/3' %}",
+        ],
+        video = document.querySelector('video'),
+        activeVideoUrl = videoStorage[Math.round(Math.random() * (videoStorage.length - 1))];
+
+    video.setAttribute('src', activeVideoUrl + '.mp4');
+
+    if (activeVideoUrl=="{% static 'video/1' %}"){
+        document.getElementById("platinumSponsor").innerHTML = "(e.g Waymo)";
+    }
+    else if  (activeVideoUrl=="{% static 'video/2' %}"){
+        document.getElementById("platinumSponsor").innerHTML = "(e.g Google)";
+    }
+    else {
+        document.getElementById("platinumSponsor").innerHTML = "(e.g Amazon)";
+    }
 </script>
 
 </div>
