@@ -5,6 +5,7 @@
 
 from django.http import HttpResponse
 from django.shortcuts import render
+from polls.models import Like
 import pandas as pd
 import os
 import numpy as np
@@ -21,54 +22,60 @@ Cartegories = pd.read_excel(path1, sheet_name=0)
 
 excel_file3 = 'ICRA20Digest4369_1.xlsx'
 path3 = os.path.join(pre, excel_file3)
-icra_example = pd.read_excel(path3,sheet_name=0)
+icra_example = pd.read_excel(path3, sheet_name=0)
 icra_example = icra_example.fillna('missing')
 
-#Monday Session
-icra_Monday = icra_example[(icra_example['SchCode'].str[0]=='M')&(icra_example['SchCode'].str[1]=='o')]
-icra_sessiontitle= icra_Monday['Session title']
+# Monday Session
+icra_Monday = icra_example[(icra_example['SchCode'].str[0] == 'M') & (icra_example['SchCode'].str[1] == 'o')]
+icra_sessiontitle = icra_Monday['Session title']
 
-Pavilion1 = icra_Monday[(icra_Monday['Session title']=='Aerial Systems - Applications I')
-                        |(icra_Monday['Session title']=='Marine Robotics I')
-                        |(icra_Monday['Session title']=='Marine Robotics II')
-                        |(icra_Monday['Session title']=='Marine Robotics III')
-                        |(icra_Monday['Session title']=='Aerial Systems - Applications II')
-                        |(icra_Monday['Session title']=='Aerial Systems - Applications III')
-                        |(icra_Monday['Session title']=='Field and Space Robots')]
-Pavilion2 = icra_Monday[(icra_Monday['Session title']=='Legged Robots I')
-                        |(icra_Monday['Session title']=='Prosthetics and Exoskeletons I')
-                        |(icra_Monday['Session title']=='Legged Robots II')
-                        |(icra_Monday['Session title']=='Legged Robots III')
-                        |(icra_Monday['Session title']=='Prosthetics and Exoskeletons II')
-                        |(icra_Monday['Session title']=='Prosthetics and Exoskeletons III')
-                        |(icra_Monday['Session title']=='Legged Robots IV')]
-Pavilion3 = icra_Monday[(icra_Monday['Session title']=='Surgical Robotics - Laparascopy I')
-                        |(icra_Monday['Session title']=='Surgical Robotics - Laparoscopy II')
-                        |(icra_Monday['Session title']=='Surgical Robotics - Steerable Catheters and Needles')
-                        |(icra_Monday['Session title']=='Biological Cell Manipulation')
-                        |(icra_Monday['Session title']=='Brain-Machine Interfaces')]
-Pavilion4 = icra_Monday[(icra_Monday['Session title']=='Autonomous Driving I')
-                        |(icra_Monday['Session title']=='Autonomous Driving II')
-                        |(icra_Monday['Session title']=='Autonomous Driving III')
-                        |(icra_Monday['Session title']=='Service Robots')
-                        |(icra_Monday['Session title']=='Agricultural Automation')
-                        |(icra_Monday['Session title']=='Autonomous Driving IV')]
-Pavilion5 = icra_Monday[(icra_Monday['Session title']=='Grasping I')
-                        |(icra_Monday['Session title']=='Grasping II')
-                        |(icra_Monday['Session title']=='Grasping III')
-                        |(icra_Monday['Session title']=='Grasping IV')
-                        |(icra_Monday['Session title']=='Force and Tactile Sensing I')
-                        |(icra_Monday['Session title']=='Force and Tactile Sensing II')
-                        |(icra_Monday['Session title']=='Force and Tactile Sensing III')
-                        |(icra_Monday['Session title']=='Force and Tactile Sensing IV')]
+Pavilion1 = icra_Monday[(icra_Monday['Session title'] == 'Aerial Systems - Applications I')
+                        | (icra_Monday['Session title'] == 'Marine Robotics I')
+                        | (icra_Monday['Session title'] == 'Marine Robotics II')
+                        | (icra_Monday['Session title'] == 'Marine Robotics III')
+                        | (icra_Monday['Session title'] == 'Aerial Systems - Applications II')
+                        | (icra_Monday['Session title'] == 'Aerial Systems - Applications III')
+                        | (icra_Monday['Session title'] == 'Field and Space Robots')]
+Pavilion2 = icra_Monday[(icra_Monday['Session title'] == 'Legged Robots I')
+                        | (icra_Monday['Session title'] == 'Prosthetics and Exoskeletons I')
+                        | (icra_Monday['Session title'] == 'Legged Robots II')
+                        | (icra_Monday['Session title'] == 'Legged Robots III')
+                        | (icra_Monday['Session title'] == 'Prosthetics and Exoskeletons II')
+                        | (icra_Monday['Session title'] == 'Prosthetics and Exoskeletons III')
+                        | (icra_Monday['Session title'] == 'Legged Robots IV')]
+Pavilion3 = icra_Monday[(icra_Monday['Session title'] == 'Surgical Robotics - Laparascopy I')
+                        | (icra_Monday['Session title'] == 'Surgical Robotics - Laparoscopy II')
+                        | (icra_Monday['Session title'] == 'Surgical Robotics - Steerable Catheters and Needles')
+                        | (icra_Monday['Session title'] == 'Biological Cell Manipulation')
+                        | (icra_Monday['Session title'] == 'Brain-Machine Interfaces')]
+Pavilion4 = icra_Monday[(icra_Monday['Session title'] == 'Autonomous Driving I')
+                        | (icra_Monday['Session title'] == 'Autonomous Driving II')
+                        | (icra_Monday['Session title'] == 'Autonomous Driving III')
+                        | (icra_Monday['Session title'] == 'Service Robots')
+                        | (icra_Monday['Session title'] == 'Agricultural Automation')
+                        | (icra_Monday['Session title'] == 'Autonomous Driving IV')]
+Pavilion5 = icra_Monday[(icra_Monday['Session title'] == 'Grasping I')
+                        | (icra_Monday['Session title'] == 'Grasping II')
+                        | (icra_Monday['Session title'] == 'Grasping III')
+                        | (icra_Monday['Session title'] == 'Grasping IV')
+                        | (icra_Monday['Session title'] == 'Force and Tactile Sensing I')
+                        | (icra_Monday['Session title'] == 'Force and Tactile Sensing II')
+                        | (icra_Monday['Session title'] == 'Force and Tactile Sensing III')
+                        | (icra_Monday['Session title'] == 'Force and Tactile Sensing IV')]
 Sessions1 = sorted(list(set(Pavilion1['Session title'])))
 Sessions2 = sorted(list(set(Pavilion2['Session title'])))
 Sessions3 = sorted(list(set(Pavilion3['Session title'])))
 Sessions4 = sorted(list(set(Pavilion4['Session title'])))
 Sessions5 = sorted(list(set(Pavilion5['Session title'])))
 
-#print(icra_example[(icra_example['Nr'] == 2375)])
+
+# print(icra_example[(icra_example['Nr'] == 2375)])
 def main(request):
+    # for p in Like.objects.raw('SELECT * FROM polls_like'):
+    #     print(p)
+    # #
+    # like = Like(name="user_id", paper_id="paper_id")
+    # like.save()
 
     return render(request, 'practiceICRA.html',
                   {'Pavilion': Cartegories['Pavilion'],
@@ -79,26 +86,26 @@ def main(request):
                    'EndEffector': Sessions5
                    })
 
+
 def tvshow(request):
     selectedSession = request.GET['id']
     selectedPavilion = request.GET['id2']
     selectedPavilionNum = request.GET['id3']
 
-    if selectedPavilion ==Cartegories['Pavilion'][0]:
+    if selectedPavilion == Cartegories['Pavilion'][0]:
         selectedSessionList = Sessions1
-    elif selectedPavilion ==Cartegories['Pavilion'][1]:
+    elif selectedPavilion == Cartegories['Pavilion'][1]:
         selectedSessionList = Sessions2
-    elif selectedPavilion ==Cartegories['Pavilion'][2]:
+    elif selectedPavilion == Cartegories['Pavilion'][2]:
         selectedSessionList = Sessions3
-    elif selectedPavilion ==Cartegories['Pavilion'][3]:
+    elif selectedPavilion == Cartegories['Pavilion'][3]:
         selectedSessionList = Sessions4
-    elif selectedPavilion ==Cartegories['Pavilion'][4]:
+    elif selectedPavilion == Cartegories['Pavilion'][4]:
         selectedSessionList = Sessions5
     else:
         selectedSessionList = []
 
-
-    EpisodeList = icra_Monday[(icra_Monday['Session title']==selectedSession)]
+    EpisodeList = icra_Monday[(icra_Monday['Session title'] == selectedSession)]
     AuthorList1 = EpisodeList['Author1'].reset_index()
     AuthorList2 = EpisodeList['Author2'].reset_index()
     AuthorList3 = EpisodeList['Author3'].reset_index()
@@ -114,7 +121,7 @@ def tvshow(request):
     TitleList = EpisodeList['Title'].reset_index()
     PDFList = EpisodeList['FN'].reset_index()
     titleNumber = EpisodeList['Nr'].reset_index()
-    EpisodeContext = zip(AuthorList1['Author1'],AuthorList2['Author2'],
+    EpisodeContext = zip(AuthorList1['Author1'], AuthorList2['Author2'],
                          AuthorList3['Author3'],
                          AuthorList4['Author4'],
                          AuthorList5['Author5'],
@@ -126,25 +133,24 @@ def tvshow(request):
                          AffiliationList5['Affiliation5'],
                          TitleList['Title'],
                          PDFList['FN'], titleNumber['Nr'])
-    EpisodeCount = EpisodeList.shape[0]+1
-    #print(titleNumber)
+    EpisodeCount = EpisodeList.shape[0] + 1
+    # print(titleNumber)
 
     return render(request, 'practiceICRA2.html', {'Pavilion': selectedPavilion,
                                                   'PavilionNum': selectedPavilionNum,
-                                                  'SessionList':selectedSessionList,
+                                                  'SessionList': selectedSessionList,
                                                   'Session': selectedSession,
-                                                  'EpisodeContext':EpisodeContext,
-                                                  'EpisodeCount':range(1, EpisodeCount)
+                                                  'EpisodeContext': EpisodeContext,
+                                                  'EpisodeCount': range(1, EpisodeCount)
                                                   })
 
-def episode(request):
 
+def episode(request):
     selectedTitle = request.GET['id']
     findVideo = icra_example[(icra_example['Title'] == selectedTitle)]
     VideoList = findVideo['VID'].reset_index()
     selectedNumber = findVideo['Nr'].reset_index()
     suggestEpisodeNum = findSimilarTopic(selectedNumber['Nr'].iloc[0])
-
 
     similarPaper = icra_example[(icra_example['Nr'] == int(suggestEpisodeNum[0]))]
 
@@ -167,7 +173,7 @@ def episode(request):
     TitleList = similarPaper['Title'].reset_index()
     PDFList = similarPaper['FN'].reset_index()
     titleNumber = similarPaper['Nr'].reset_index()
-    resultList = zip(AuthorList1['Author1'],AuthorList2['Author2'],
+    resultList = zip(AuthorList1['Author1'], AuthorList2['Author2'],
                      AuthorList3['Author3'],
                      AuthorList4['Author4'],
                      AuthorList5['Author5'],
@@ -178,12 +184,13 @@ def episode(request):
                      AffiliationList4['Affiliation4'],
                      AffiliationList5['Affiliation5'],
                      TitleList['Title'],
-                     PDFList['FN'], titleNumber['Nr'],suggestEpisodeNum)
+                     PDFList['FN'], titleNumber['Nr'], suggestEpisodeNum)
 
     return render(request, 'practiceICRA3.html', {'VideoList': VideoList['VID'],
-                                                  'Title':selectedTitle,
+                                                  'Title': selectedTitle,
                                                   'EpisodeContext': resultList,
-                                                  'SelectedNumber':selectedNumber['Nr'].iloc[0]})
+                                                  'SelectedNumber': selectedNumber['Nr'].iloc[0]})
+
 
 def suggestion(request):
     suggestedNum = request.GET['id1']
@@ -228,17 +235,18 @@ def suggestion(request):
                      PDFList['FN'], titleNumber['Nr'], suggestEpisodeNum)
 
     return render(request, 'practiceICRA3.html', {'VideoList': VideoList['VID'],
-                                                  'Title':selectedTitle,
+                                                  'Title': selectedTitle,
                                                   'EpisodeContext': resultList})
+
 
 def searchresult(request):
     inputKeyword = request.GET['id']
-    #print(inputKeyword)
+    # print(inputKeyword)
     resultNumber = searchByKeyword(inputKeyword)
     resultNumberlength = len(resultNumber)
 
     if not resultNumber:
-        return render(request, 'practiceICRA5.html',{'inputKeyword':inputKeyword})
+        return render(request, 'practiceICRA5.html', {'inputKeyword': inputKeyword})
     else:
         searchTitle = icra_example[(icra_example['Nr'] == int(resultNumber[0]))]
 
@@ -263,7 +271,7 @@ def searchresult(request):
         TitleList = searchTitle['Title'].reset_index()
         PDFList = searchTitle['FN'].reset_index()
         titleNumber = searchTitle['Nr'].reset_index()
-        resultList = zip(AuthorList1['Author1'],AuthorList2['Author2'],
+        resultList = zip(AuthorList1['Author1'], AuthorList2['Author2'],
                          AuthorList3['Author3'],
                          AuthorList4['Author4'],
                          AuthorList5['Author5'],
@@ -276,9 +284,3 @@ def searchresult(request):
                          TitleList['Title'],
                          PDFList['FN'], titleNumber['Nr'])
         return render(request, 'practiceICRA4.html', {'EpisodeContext': resultList})
-
-
-
-
-
-
