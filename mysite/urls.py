@@ -26,4 +26,5 @@ from django.urls import include, path
 urlpatterns = [
     path('ondemand/', include('polls.urls')),
     path('admin/', admin.site.urls),
+    path('ondemandbeta/', include('polls.urls_beta')),
 ]
