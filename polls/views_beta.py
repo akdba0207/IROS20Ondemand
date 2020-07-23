@@ -79,7 +79,14 @@ def login(request):
 def main(request):
     # for p in Like.objects.raw('SELECT * FROM polls_like'):
     #     print(p)
-    # #
+    dongbin1 = []
+    for users in ieeeusers.objects.raw('SELECT * FROM polls_ieeeusers'):
+        dongbin = users.ieeeusers_id
+        dongbin1.append(dongbin)
+
+    ieeeusers.objects.filter(ieeeusers_id='iros1').update(ieeeusers_password='gyuhozzang')
+
+    #
     # like = Like(name="user_id", paper_id="paper_id")
     # like.save()
     # ieeeusers1 = ieeeusers(ieeeusers_id="iros1", ieeeusers_password="paper_id")
