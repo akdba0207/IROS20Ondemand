@@ -56,7 +56,76 @@
     </ul>
 </header>
 
+{#TODO :  Video control and pause, auto slide in 10 seconds.#}
 <div style="width:95%; margin:0 auto;" align="justify">
+    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" data-interval="3000" data-pause="hover">
+        <ol class="carousel-indicators ">
+            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+            {#            {% for i in EpisodeCount %}#}
+            {#            <li data-target="#carouselExampleIndicators" data-slide-to="{{i}}"></li>#}
+            {#            {% endfor %}#}
+        </ol>
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <div style="text-align: center">
+                    <video width="60%" autoplay>
+                        <source src="{% static './video/1.mp4'%}" type="video/mp4">
+                    </video>
+                    <div class="carousel-caption">
+                        <p style="margin:auto">PLATINUM SPONSOR VIDEO example</p>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div style="text-align: center">
+                    <video width="60%" autoplay>
+                        <source src="{% static './video/2.mp4'%}" type="video/mp4">
+                    </video>
+                    <div class="carousel-caption">
+                        <p style="margin:auto">PLATINUM SPONSOR VIDEO example</p>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div style="text-align: center">
+                    <video width="60%" autoplay>
+                        <source src="{% static './video/3.mp4'%}" type="video/mp4">
+                    </video>
+                    <div class="carousel-caption">
+                        <p style="margin:auto">PLATINUM SPONSOR VIDEO example</p>
+                    </div>
+                </div>
+            </div>
+
+            {#            {% for AuthorList, AffiliationList, TitleList, PDFList in EpisodeContext %}#}
+            {#                <div class="carousel-item">#}
+            {#                    <div class="bgcolor">#}
+            {#                        <a href="episode?id={{TitleList}}&id2={{ Session }}&id3={{ Pavilion }}"><img src="{% static './resources/logo.png'%}">#}
+            {##}
+            {#                        </a>#}
+            {#                        <div class="imgtext">#}
+            {#                            <p style="color: white;">&nbsp;&nbsp;&nbsp;Session : {{ Session }}</p>#}
+            {#                            <p style="color: white;">&nbsp;&nbsp;&nbsp;Title : {{ TitleList }}</p>#}
+            {#                        </div>#}
+            {#                        <div class="carousel-caption">#}
+            {#                            <p style="color: white;">Author : {{ AuthorList }}</p>#}
+            {#                            <p style="color: white;">Affiliation : {{ AffiliationList }}</p>#}
+            {#                            <p style="color: white;"><a href="https://ras.papercept.net/proceedings/ICRA20/{{ PDFList }}" target="_blank"> Open PDF files</a></p>#}
+            {#                        </div>#}
+            {#                    </div>#}
+            {#                </div>#}
+            {#            {% endfor %}#}
+        </div>
+        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span> </a>
+        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span> </a>
+    </div>
+
 
     <div class = "videopage">
         <div class="videocover">
@@ -386,34 +455,34 @@
         video.muted = false;
     }
 </script>
-<script>
-    $(document).ready(function() {
-
-        var vid = $("video").get(0);
-        vid.play();
-    });
-</script>
-<script>
-    var videoStorage = [
-            "{% static 'video/1' %}",
-            "{% static 'video/2' %}",
-            "{% static 'video/3' %}",
-        ],
-        video = document.querySelector('video'),
-        activeVideoUrl = videoStorage[Math.round(Math.random() * (videoStorage.length - 1))];
-
-    video.setAttribute('src', activeVideoUrl + '.mp4');
-
-    if (activeVideoUrl=="{% static 'video/1' %}"){
-        document.getElementById("platinumSponsor").innerHTML = "(e.g Waymo)";
-    }
-    else if  (activeVideoUrl=="{% static 'video/2' %}"){
-        document.getElementById("platinumSponsor").innerHTML = "(e.g Google)";
-    }
-    else {
-        document.getElementById("platinumSponsor").innerHTML = "(e.g Amazon)";
-    }
-</script>
+{#<script>#}
+{#    $(document).ready(function() {#}
+{##}
+{#        var vid = $("video").get(0);#}
+{#        vid.play();#}
+{#    });#}
+{#</script>#}
+{#<script>#}
+{#    var videoStorage = [#}
+{#            "{% static 'video/1' %}",#}
+{#            "{% static 'video/2' %}",#}
+{#            "{% static 'video/3' %}",#}
+{#        ],#}
+{#        video = document.querySelector('video'),#}
+{#        activeVideoUrl = videoStorage[Math.round(Math.random() * (videoStorage.length - 1))];#}
+{##}
+{#    video.setAttribute('src', activeVideoUrl + '.mp4');#}
+{##}
+{#    if (activeVideoUrl=="{% static 'video/1' %}"){#}
+{#        document.getElementById("platinumSponsor").innerHTML = "(e.g Waymo)";#}
+{#    }#}
+{#    else if  (activeVideoUrl=="{% static 'video/2' %}"){#}
+{#        document.getElementById("platinumSponsor").innerHTML = "(e.g Google)";#}
+{#    }#}
+{#    else {#}
+{#        document.getElementById("platinumSponsor").innerHTML = "(e.g Amazon)";#}
+{#    }#}
+{#</script>#}
 
 </div>
 </body>

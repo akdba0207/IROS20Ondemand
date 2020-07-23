@@ -5,11 +5,10 @@
 
 from django.http import HttpResponse
 from django.shortcuts import render
-from polls.models import Like
+from polls.models import Like, ieeeusers
 import pandas as pd
 import os
 import numpy as np
-from random import seed, randint
 
 from polls.search import searchByKeyword, findSimilarTopic
 
@@ -70,12 +69,23 @@ Sessions5 = sorted(list(set(Pavilion5['Session title'])))
 
 
 # print(icra_example[(icra_example['Nr'] == 2375)])
+
+def login(request):
+    return render(request,'./beta/practiceICRA0_beta.html')
+
+#TODO : receive login ID and Password, pass it to main.
+#TODO : When the passcode is wrong, it displays false alarm, or goes to main pages
+
 def main(request):
     # for p in Like.objects.raw('SELECT * FROM polls_like'):
     #     print(p)
     # #
     # like = Like(name="user_id", paper_id="paper_id")
     # like.save()
+    # ieeeusers1 = ieeeusers(ieeeusers_id="iros1", ieeeusers_password="paper_id")
+    # ieeeusers2 = ieeeusers(ieeeusers_id="iros2", ieeeusers_password="paper_id")
+    # ieeeusers1.save()
+    # ieeeusers2.save()
 
     return render(request, './beta/practiceICRA_beta.html',
                   {'Pavilion': Cartegories['Pavilion'],
@@ -284,3 +294,6 @@ def searchresult(request):
                          TitleList['Title'],
                          PDFList['FN'], titleNumber['Nr'])
         return render(request, './beta/practiceICRA4_beta.html', {'EpisodeContext': resultList})
+
+def mylist(request):
+    return render(request,'./beta/practiceICRA6_beta.html')
