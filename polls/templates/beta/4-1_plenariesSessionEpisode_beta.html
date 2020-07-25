@@ -54,13 +54,16 @@
     </ul>
 </header>
 <div style="width:95%; margin:0 auto; padding-top: 5%;" align="justify">
-    <h3 class="episodeTitle">Title : {{Title}}</h3>
+    <h3 class="episodeTitle">Title : </h3>
     <p>&nbsp;</p>
-
-    <video style="display:block; margin: 0 auto; width: 40%; height: auto" controls autoplay>
-        <source src="https://ras.papercept.net/proceedings/ICRA20/{{ VideoList.0 }}" type="video/mp4">
-    </video>
-
+    {#    <video style="display:block; margin: 0 auto; width: 40%; height: auto" controls autoplay>#}
+    {#        <source src="https://ras.papercept.net/proceedings/ICRA20/{{ VideoList.0 }}" type="video/mp4">#}
+    {#    </video>#}
+    <p align="center">
+    <iframe allow="autoplay; fullscreen" width="800px" height="400px" style="display:block;"
+            src="{{ specialVideo.0}}">
+    </iframe>
+    </p>
     <p>&nbsp;</p>
 
 
@@ -72,86 +75,50 @@
                 <td><div class="likeButton" style="color: white;">Like?&nbsp;&nbsp;</div></td>
                 <td>
                     <form>
-                        <i id="thumbs{{SelectedNumber}}" class="fa fa-thumbs-up" style="color:grey; font-size: 30px" onClick="thumbsUp({{ SelectedNumber }})"></i>
-                        <input type="text" id="{{ SelectedNumber }}" value="0" class="thumbsuptext" readonly/>
+                        <i id="thumbs{{selectedSpeaker}}" class="fa fa-thumbs-up" style="color:grey; font-size: 30px" onClick="thumbsUp({{ selectedSpeaker }})"></i>
+                        <input type="text" id="{{ selectedSpeaker }}" value="0" class="thumbsuptext" readonly/>
                     </form>
                 </td>
             </tr>
         </table>
     </center>
-    <h3 style="padding-bottom: 2%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; More talks like this : </h3>
+    <h3 style="padding-bottom: 2%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; More {{ selectedSpecial }} : </h3>
 
-    {% for AuthorList1, AuthorList2, AuthorList3, AuthorList4,AuthorList5, AuthorList6, AffiliationList1,AffiliationList2,AffiliationList3,AffiliationList4,AffiliationList5,TitleList, PDFList, titleNumber, suggestEpisodeNum in EpisodeContext %}
-        <div class="suggestlisttable" style="width: 80%; height: auto; text-align: center; margin-left: 10%; background-color: grey; margin-bottom:1%">
+    {% for speakerName, speakerBiography, specialEpisodeAbstract in specialEpisodeContext %}
+        <div class="epilisttable" style="width: 80%; height: auto; text-align: center; margin-left: 10%; background-color: grey; margin-bottom:1%">
             <table border="0" cellpadding="0" cellspacing="0" style="background-color: #323232;" >
                 <tr>
                     <td style="width: 30%">
-                        <a href="suggestion?id1={{suggestEpisodeNum}}" style="color:white; text-decoration: none;">
-                            <img src="{% static './resources/playlogo.png'%}"></a>
+                        <a href="specialsepisode?id={{speakerName}}&id2={{selectedSpecial}}&id3={{ selectedGenre }}">
+                            <img src="{% static 'img'%}/{{ selectedGenre }}/{{selectedSpecial}}/{{ speakerName }}.jpg"></a>
                     </td>
-                    <td valign="top" align="left" style="padding-left: 5%; padding-top: 3%;word-break: keep-all;">
+                    <td valign="top" align="left" style="padding-left: 5%; padding-top: 3%;word-break: keep-all">
                         <p class="papertitle" style="color: white;">Title : {{ TitleList }}</p>
-                        {#                        <p style="color: white;">Author : {{ AuthorList1 }} {{ AuthorList2 }} {{ AuthorList3 }} {{ AuthorList4 }} {{ AuthorList5 }}</p>#}
-                        {#                        <p style="color: white;">Affiliation : {{ AffiliationList1 }}, {{ AffiliationList2 }}, {{ AffiliationList3 }}, {{ AffiliationList4 }}, {{ AffiliationList5 }}</p>#}
                         <table class="paperInfo" border="0" cellpadding="0" cellspacing="0" width="100% "style="background-color: #323232; text-align: left;color: white;">
                             <tbody>
-
                             <tr>
-                                <td style="width: 40%;"><u>Author</u></th>
-                                <td><u>Affiliation</u></th>
+                                <td style="width: 10%;"><u>Speaker</u></td>
+                                <td><u>{{ speakerName }}</u></td>
                             </tr>
-                            {% if AuthorList1 == 'missing' %}
-                                &nbsp;
-                            {% else %}
-                                <tr>
-                                    <td style="width: 40%">{{ AuthorList1 }}</td>
-                                    <td>{{ AffiliationList1 }}</td>
-                                </tr>
-                            {% endif %}
-                            {% if AuthorList2 == 'missing' %}
-                                &nbsp;
-                            {% else %}
-                                <tr>
-                                    <td style="width: 40%">{{ AuthorList2 }}</td>
-                                    <td>{{ AffiliationList2 }}</td>
-                                </tr>
-                            {% endif %}
-                            {% if AuthorList3 == 'missing' %}
-                                &nbsp;
-                            {% else %}
-                                <tr>
-                                    <td style="width: 40%">{{ AuthorList3 }}</td>
-                                    <td>{{ AffiliationList3 }}</td>
-                                </tr>
-                            {% endif %}
-                            {% if AuthorList4 == 'missing' %}
-                                &nbsp;
-                            {% else %}
-                                <tr>
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td style="width: 10%">Biography</td>
+                                <td>{{ speakerBiography }}</td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td style="width: 10%">Abstract</td>
+                                <td>{{ specialEpisodeAbstract }}</td>
+                            </tr>
 
-                                    <td style="width: 40%">{{ AuthorList4|default_if_none:"" }}</td>
-                                    <td>{{ AffiliationList4|default_if_none:"" }}</td>
-                                </tr>
-                            {% endif %}
-                            {% if AuthorList5 == 'missing' %}
-                                &nbsp;
-                            {% else %}
-                                <tr>
-                                    <td style="width: 40%">{{ AuthorList5 }}</td>
-                                    <td>{{ AffiliationList5 }}</td>
-                                </tr>
-                            {% endif %}
-                            {% if AuthorList6 == 'missing' %}
-                                &nbsp;
-                            {% else %}
-                                <tr>
-                                    <td style="width: 40%"><i style="font-size: 100%">Et al</i></td>
-                                    <td>&nbsp;</td>
-                                </tr>
-                            {% endif %}
                             </tbody>
                         </table>
-                        <p style="color: white;"><a href="https://ras.papercept.net/proceedings/ICRA20/{{ PDFList }}" target="_blank"> Open PDF files</a></p>
                         <form>
                             <i id="thumbs{{titleNumber}}" class="fa fa-thumbs-up" style="color:grey; font-size: 30px" onClick="thumbsUp({{ titleNumber }})"></i>
                             <input type="text" id="{{ titleNumber }}" value="0" class="thumbsuptext" readonly/>

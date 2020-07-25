@@ -15,16 +15,25 @@ from polls.search import searchByKeyword, findSimilarTopic
 pre = os.path.dirname(os.path.realpath(__file__))
 
 # First Call : Pavilion
-excel_file = 'IROS2020_onDemand.xlsx'
-path1 = os.path.join(pre, excel_file)
+excel_file1 = 'IROS2020_onDemand_beta.xlsx'
+path1 = os.path.join(pre, excel_file1)
 Cartegories = pd.read_excel(path1, sheet_name=0)
 
-excel_file3 = 'ICRA20Digest4369_1.xlsx'
-path3 = os.path.join(pre, excel_file3)
-icra_example = pd.read_excel(path3, sheet_name=0)
+excel_file2 = 'ICRA20Digest4369_1.xlsx'
+path2 = os.path.join(pre, excel_file2)
+icra_example = pd.read_excel(path2, sheet_name=0)
 icra_example = icra_example.fillna('missing')
 
-# Monday Session
+excel_file3 = 'ICRA20KeynotesandPlenaries.xlsx'
+path3 = os.path.join(pre, excel_file3)
+icra_specials = pd.read_excel(path3, sheet_name=0)
+
+excel_file4 = 'ICRA2020Workshops.xlsx'
+path4 = os.path.join(pre,excel_file4)
+icra_workshops = pd.read_excel(path4, sheet_name=0)
+icra_workshops = icra_workshops.fillna('missing')
+
+# Pavilion Monday Session
 icra_Monday = icra_example[(icra_example['SchCode'].str[0] == 'M') & (icra_example['SchCode'].str[1] == 'o')]
 icra_sessiontitle = icra_Monday['Session title']
 
@@ -67,24 +76,43 @@ Sessions3 = sorted(list(set(Pavilion3['Session title'])))
 Sessions4 = sorted(list(set(Pavilion4['Session title'])))
 Sessions5 = sorted(list(set(Pavilion5['Session title'])))
 
+# Specials
+Specials = icra_specials[(icra_specials['Genre']=='Plenaries')
+                         |(icra_specials['Genre']=='Keynotes')]
+SpecialsSession = sorted(list(set(Specials['Genre'])))
 
-# print(icra_example[(icra_example['Nr'] == 2375)])
 
+#Workshops
+Workshops = icra_workshops[(icra_workshops['Workshop Number']==4)|
+                           (icra_workshops['Workshop Number']==8)|
+                           (icra_workshops['Workshop Number']==9)|
+                           (icra_workshops['Workshop Number']==14)]
+
+WorkshopsSession = sorted(list(set(Workshops['Title'])))
+#########################################################################################################
+#########################################################################################################
+#########################################################################################################
+#Login
 def login(request):
-    return render(request,'./beta/practiceICRA0_beta.html')
+    return render(request,'./beta/1_login_beta.html')
 
 #TODO : receive login ID and Password, pass it to main.
 #TODO : When the passcode is wrong, it displays false alarm, or goes to main pages
 
+
+#########################################################################################################
+#########################################################################################################
+#########################################################################################################
+#Main Page
 def main(request):
     # for p in Like.objects.raw('SELECT * FROM polls_like'):
     #     print(p)
-    dongbin1 = []
-    for users in ieeeusers.objects.raw('SELECT * FROM polls_ieeeusers'):
-        dongbin = users.ieeeusers_id
-        dongbin1.append(dongbin)
+    # dongbin1 = []
+    # for users in ieeeusers.objects.raw('SELECT * FROM polls_ieeeusers'):
+    #     dongbin = users.ieeeusers_id
+    #     dongbin1.append(dongbin)
 
-    ieeeusers.objects.filter(ieeeusers_id='iros1').update(ieeeusers_password='gyuhozzang')
+    # ieeeusers.objects.filter(ieeeusers_id='iros1').update(ieeeusers_password='gyuhozzang')
 
     #
     # like = Like(name="user_id", paper_id="paper_id")
@@ -94,8 +122,11 @@ def main(request):
     # ieeeusers1.save()
     # ieeeusers2.save()
 
-    return render(request, './beta/practiceICRA_beta.html',
+    return render(request, './beta/2_main_beta.html',
                   {'Pavilion': Cartegories['Pavilion'],
+                   'Genre': Cartegories['Genre'],
+                   'Specials': SpecialsSession,
+                   'Workshops': WorkshopsSession,
                    'Aerial': Sessions1,
                    'Humanoid': Sessions2,
                    'Medical': Sessions3,
@@ -103,21 +134,24 @@ def main(request):
                    'EndEffector': Sessions5
                    })
 
-
+#########################################################################################################
+#########################################################################################################
+#########################################################################################################
+#Sessions : Pavilion, Specials, Workshops
 def tvshow(request):
     selectedSession = request.GET['id']
     selectedPavilion = request.GET['id2']
     selectedPavilionNum = request.GET['id3']
 
-    if selectedPavilion == Cartegories['Pavilion'][0]:
+    if selectedPavilion == Cartegories['Pavilion'][1]:
         selectedSessionList = Sessions1
-    elif selectedPavilion == Cartegories['Pavilion'][1]:
-        selectedSessionList = Sessions2
     elif selectedPavilion == Cartegories['Pavilion'][2]:
-        selectedSessionList = Sessions3
+        selectedSessionList = Sessions2
     elif selectedPavilion == Cartegories['Pavilion'][3]:
-        selectedSessionList = Sessions4
+        selectedSessionList = Sessions3
     elif selectedPavilion == Cartegories['Pavilion'][4]:
+        selectedSessionList = Sessions4
+    elif selectedPavilion == Cartegories['Pavilion'][5]:
         selectedSessionList = Sessions5
     else:
         selectedSessionList = []
@@ -153,15 +187,64 @@ def tvshow(request):
     EpisodeCount = EpisodeList.shape[0] + 1
     # print(titleNumber)
 
-    return render(request, './beta/practiceICRA2_beta.html', {'Pavilion': selectedPavilion,
-                                                  'PavilionNum': selectedPavilionNum,
-                                                  'SessionList': selectedSessionList,
-                                                  'Session': selectedSession,
-                                                  'EpisodeContext': EpisodeContext,
-                                                  'EpisodeCount': range(1, EpisodeCount)
-                                                  })
+    return render(request, './beta/3_pavilionSession_beta.html', {'Pavilion': selectedPavilion,
+                                                                  'PavilionNum': selectedPavilionNum,
+                                                                  'SessionList': selectedSessionList,
+                                                                  'Session': selectedSession,
+                                                                  'EpisodeContext': EpisodeContext,
+                                                                  'EpisodeCount': range(1, EpisodeCount)
+                                                                  })
+def specials(request):
+    selectedSpecial = request.GET['id']
+    selectedGenre = request.GET['id2']
+    specialEpisodeList = icra_specials[(icra_specials['Genre']==selectedSpecial)]
+    speakerName = specialEpisodeList['Speaker'].reset_index()
+    speakerBiography = specialEpisodeList['Bio'].reset_index()
+    specialEpisodeAbstract = specialEpisodeList['Abstract'].reset_index()
+    specialEpisodeVideo = specialEpisodeList['Video'].reset_index()
+    specialEpisodeContext = zip(speakerName['Speaker'],
+                                speakerBiography['Bio'],
+                                specialEpisodeAbstract['Abstract']
+                                )
+    specialEpisodeCount = specialEpisodeList.shape[0]
+
+    return render(request,'./beta/3-1_plenariesSession_beta.html',{'selectedSpecial':selectedSpecial,
+                                                                   'selectedGenre':selectedGenre,
+                                                                   'specialEpisodeContext':specialEpisodeContext,
+                                                                   'SpecialsSession':SpecialsSession,
+                                                                   })
+
+def workshops(request):
+    selectedWorkshops = request.GET['id']
+    selectedGenre = request.GET['id2']
+    workshopsEpisodeList = icra_workshops[(icra_workshops['Title']==selectedWorkshops)].reset_index()
+
+    Speaker = []
+    for i in range(1,15):
+        Speaker.append(workshopsEpisodeList['Speaker '+str(i)].iloc[0])
+
+    Institution = []
+    for j in range(1,15):
+        Institution.append(workshopsEpisodeList['Institution '+str(j)].iloc[0])
+
+    TalkTitle = []
+    for k in range(1,15):
+        TalkTitle.append(workshopsEpisodeList['Talk Title '+str(k)].iloc[0])
+
+    WorkshopsContext = zip(Speaker, Institution, TalkTitle)
 
 
+    return render(request,'./beta/3-2_workshopsSession_beta.html',{'selectedWorkshops':selectedWorkshops,
+                                                                   'selectedGenre':selectedGenre,
+                                                                   'WorkshopsContext':WorkshopsContext,
+                                                                   'WorkshopsSession':WorkshopsSession})
+
+
+
+#########################################################################################################
+#########################################################################################################
+#########################################################################################################
+#Episodes : Pavilion, Specials, Workshops
 def episode(request):
     selectedTitle = request.GET['id']
     findVideo = icra_example[(icra_example['Title'] == selectedTitle)]
@@ -203,12 +286,73 @@ def episode(request):
                      TitleList['Title'],
                      PDFList['FN'], titleNumber['Nr'], suggestEpisodeNum)
 
-    return render(request, './beta/practiceICRA3_beta.html', {'VideoList': VideoList['VID'],
-                                                  'Title': selectedTitle,
-                                                  'EpisodeContext': resultList,
-                                                  'SelectedNumber': selectedNumber['Nr'].iloc[0]})
+    return render(request, './beta/4_pavilionSessionEpisode_beta.html', {'VideoList': VideoList['VID'],
+                                                                         'Title': selectedTitle,
+                                                                         'EpisodeContext': resultList,
+                                                                         'SelectedNumber': selectedNumber['Nr'].iloc[0]})
+
+def specialsepisode(request):
+    selectedSpeaker=request.GET['id']
+    selectedSpecial=request.GET['id2']
+    selectedGenre=request.GET['id3']
+    findspeaker=icra_specials[(icra_specials['Speaker']==selectedSpeaker)]
+    specialVideo=findspeaker['Video'].reset_index()
+
+    #Other Specials
+    specialEpisodeList = icra_specials[(icra_specials['Genre'] == selectedSpecial)]
+    speakerName = specialEpisodeList['Speaker'].reset_index()
+    speakerBiography = specialEpisodeList['Bio'].reset_index()
+    specialEpisodeAbstract = specialEpisodeList['Abstract'].reset_index()
+    specialEpisodeContext = zip(speakerName['Speaker'],
+                                speakerBiography['Bio'],
+                                specialEpisodeAbstract['Abstract']
+                                )
+    print(specialVideo['Video'])
+    return render(request,'./beta/4-1_plenariesSessionEpisode_beta.html',{'specialVideo':specialVideo['Video'],
+                                                                          'selectedSpeaker':selectedSpeaker,
+                                                                          'selectedSpecial':selectedSpecial,
+                                                                          'selectedGenre':selectedGenre,
+                                                                          'specialEpisodeContext':specialEpisodeContext})
 
 
+def workshopsepisode(request):
+    selectedSpeaker = request.GET['id']
+    selectedWorkshops = request.GET['id2']
+    selectedGenre = request.GET['id3']
+    selectedSpeakerNumber = request.GET['id4']
+    print(selectedSpeakerNumber)
+    findspeaker = icra_workshops[(icra_workshops['Speaker '+str(selectedSpeakerNumber)] == selectedSpeaker)]
+    print(findspeaker)
+    workshopsVideo = findspeaker['Video '+ str(selectedSpeakerNumber)].reset_index()
+    print(workshopsVideo)
+    workshopsTalkTitle = findspeaker['Talk Title ' + str(selectedSpeakerNumber)].reset_index()
+    print(workshopsTalkTitle)
+    #Other Workshops Talk
+    workshopsEpisodeList = icra_workshops[(icra_workshops['Title'] == selectedWorkshops)].reset_index()
+
+    Speaker = []
+    for i in range(1, 15):
+        Speaker.append(workshopsEpisodeList['Speaker ' + str(i)].iloc[0])
+
+    Institution = []
+    for j in range(1, 15):
+        Institution.append(workshopsEpisodeList['Institution ' + str(j)].iloc[0])
+
+    TalkTitle = []
+    for k in range(1, 15):
+        TalkTitle.append(workshopsEpisodeList['Talk Title ' + str(k)].iloc[0])
+
+    WorkshopsContext = zip(Speaker, Institution, TalkTitle)
+    return render(request,'./beta/4-2_workshopsSessionEpisode_beta.html',{'workshopsVideo':workshopsVideo['Video '+str(selectedSpeakerNumber)],
+                                                                                           'workshopsTalkTitle':workshopsTalkTitle['Talk Title ' + str(selectedSpeakerNumber)],
+                                                                                           'selectedSpeaker':selectedSpeaker,
+                                                                                           'selectedWorkshops':selectedWorkshops,
+                                                                                           'selectedGenre':selectedGenre,
+                                                                                           'WorkshopsContext':WorkshopsContext})
+#########################################################################################################
+#########################################################################################################
+#########################################################################################################
+#Suggestions on each Pavilion Episodes
 def suggestion(request):
     suggestedNum = request.GET['id1']
     findTitle = icra_example[(icra_example['Nr'] == int(suggestedNum))]
@@ -251,11 +395,15 @@ def suggestion(request):
                      TitleList['Title'],
                      PDFList['FN'], titleNumber['Nr'], suggestEpisodeNum)
 
-    return render(request, './beta/practiceICRA3_beta.html', {'VideoList': VideoList['VID'],
-                                                  'Title': selectedTitle,
-                                                  'EpisodeContext': resultList})
+    return render(request, './beta/4_pavilionSessionEpisode_beta.html', {'VideoList': VideoList['VID'],
+                                                                         'Title': selectedTitle,
+                                                                         'EpisodeContext': resultList})
 
 
+#########################################################################################################
+#########################################################################################################
+#########################################################################################################
+#Search Results
 def searchresult(request):
     inputKeyword = request.GET['id']
     # print(inputKeyword)
@@ -263,7 +411,7 @@ def searchresult(request):
     resultNumberlength = len(resultNumber)
 
     if not resultNumber:
-        return render(request, './beta/practiceICRA5_beta.html', {'inputKeyword': inputKeyword})
+        return render(request, './beta/6_searchResultError_beta.html', {'inputKeyword': inputKeyword})
     else:
         searchTitle = icra_example[(icra_example['Nr'] == int(resultNumber[0]))]
 
@@ -300,7 +448,11 @@ def searchresult(request):
                          AffiliationList5['Affiliation5'],
                          TitleList['Title'],
                          PDFList['FN'], titleNumber['Nr'])
-        return render(request, './beta/practiceICRA4_beta.html', {'EpisodeContext': resultList})
+        return render(request, './beta/5_searchResult_beta.html', {'EpisodeContext': resultList})
 
+#########################################################################################################
+#########################################################################################################
+#########################################################################################################
+#My List
 def mylist(request):
-    return render(request,'./beta/practiceICRA6_beta.html')
+    return render(request,'./beta/7_myList_beta.html.html')
