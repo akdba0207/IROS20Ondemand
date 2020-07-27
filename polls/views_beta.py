@@ -260,18 +260,31 @@ def specials(request):
     speakerBiography = specialEpisodeList['Bio'].reset_index()
     specialEpisodeAbstract = specialEpisodeList['Abstract'].reset_index()
     specialEpisodeVideo = specialEpisodeList['Video'].reset_index()
+    bioLength = []
+    abstractLength = []
+    for i in speakerBiography['Bio']:
+        bioLength.append(len(i))
+    for j in specialEpisodeAbstract['Abstract']:
+        abstractLength.append(len(j))
+
     specialEpisodeContext = zip(speakerName['Speaker'],
                                 speakerBiography['Bio'],
-                                specialEpisodeAbstract['Abstract']
+                                specialEpisodeAbstract['Abstract'],
+                                bioLength,
+                                abstractLength
                                 )
     specialEpisodeCount = specialEpisodeList.shape[0]
+
+
+
+
     global iros2020_emailinput
 
     return render(request,'./beta/3-1_plenariesSession_beta.html',{'selectedSpecial':selectedSpecial,
                                                                    'selectedGenre':selectedGenre,
                                                                    'specialEpisodeContext':specialEpisodeContext,
                                                                    'SpecialsSession':SpecialsSession,
-                                                                   'account':iros2020_emailinput
+                                                                   'account':iros2020_emailinput,
                                                                    })
 
 def workshops(request):

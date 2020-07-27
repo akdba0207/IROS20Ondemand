@@ -75,8 +75,8 @@
                 <td><div class="likeButton" style="color: white;">Like?&nbsp;&nbsp;</div></td>
                 <td>
                     <form>
-                        <i id="thumbs{{selectedSpeaker}}" class="fa fa-thumbs-up" style="color:grey; font-size: 30px" onClick="thumbsUp({{ selectedSpeaker }})"></i>
-                        <input type="text" id="{{ selectedSpeaker }}" value="0" class="thumbsuptext" readonly/>
+                        <i id="thumbs1" class="fa fa-thumbs-up" style="color:grey; font-size: 30px" onClick="thumbsUp(1)"></i>
+                        <input type="text" id="1" value="0" class="thumbsuptext" readonly/>
                     </form>
                 </td>
             </tr>
@@ -120,8 +120,8 @@
                             </tbody>
                         </table>
                         <form>
-                            <i id="thumbs{{titleNumber}}" class="fa fa-thumbs-up" style="color:grey; font-size: 30px" onClick="thumbsUp({{ titleNumber }})"></i>
-                            <input type="text" id="{{ titleNumber }}" value="0" class="thumbsuptext" readonly/>
+                            <i id="thumbs{{ forloop.counter0 }}" class="fa fa-thumbs-up" style="color:grey; font-size: 30px" onClick="thumbsUp({{ forloop.counter0 }})"></i>
+                            <input type="text" id="{{ forloop.counter0 }}" value="0" class="thumbsuptext" readonly/>
                         </form>
                     </td>
                 </tr>
