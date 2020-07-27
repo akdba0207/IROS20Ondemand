@@ -9,11 +9,13 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <!-- Link Swiper's CSS -->
     <link rel="stylesheet" href="{% static 'package/css/swiper.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/styles0723.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles0727-1.css' %}">
+
     <script
             src="https://kit.fontawesome.com/7541329784.js"
             crossorigin="anonymous"
     ></script>
+
     <link
             href="https://fonts.googleapis.com/css?family=Source+Sans+Pro&display=swap"
             rel="stylesheet"
@@ -56,40 +58,82 @@
     </ul>
 </header>
 
+{#TODO :  Video control and pause, auto slide in 10 seconds.#}
 <div style="width:95%; margin:0 auto;" align="justify">
+    {##}
+    {##}
+    {#TODO: working area Gyuho#}
+    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+        {#        <ol class="carousel-indicators ">#}
+        {##}
+        {#            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active">#}
+        {#            </li>#}
+        {#            <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>#}
+        {#            <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>#}
+        {#        </ol>#}
 
-    <div class = "videopage">
-        <div class="videocover">
-            <div class="onvid-caption">
-                <p style="margin:auto">PLATINUM SPONSOR VIDEO example</p>
-                <p id="platinumSponsor" style="margin:auto"></p>
-                <p style="margin:auto;">Company info goes here</p>
-                <div style="width: 50%; text-align: left; font-size: 150%">
-                    <button style="background-color: transparent;border: none; margin:auto; outline: none;color: red;" class="UnmuteBtn"  onclick="disbleMute()" type="button">
-                        <i class="fas fa-volume-up" style="font-size: 50%"></i>
-                    </button>
-                    <button style="background-color: transparent;border: none;margin:auto;outline: none; color: red;" class="MuteBtn" onclick="enableMute()" type="button">
-                        <i class="fas fa-volume-mute" style="font-size: 50%"></i>
-                    </button>
+        <div class="carousel-inner" >
+            <div class="carousel-item active">
+                <div style="text-align: right">
+                    <div class="carousel-video">
+                        <video id="video0" autoplay loop>
+                            <source src="{% static './video/1.mp4'%}" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="carousel-caption" >
+                        <p>PLATINUM SPONSOR VIDEO example</p>
+                        <p id="platinumSponsor"></p>
+                        <p>Company info goes here</p>
+                    </div>
                 </div>
             </div>
-        </div>
+            <div class="carousel-item">
+                <div style="text-align: right">
+                    <div class="carousel-video">
+                        <video id="video1" loop>
+                            <source src="{% static './video/2.mp4'%}" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="carousel-caption">
+                        <p>PLATINUM SPONSOR VIDEO example</p>
+                        <p id="platinumSponsor"></p>
+                        <p>Company info goes here</p>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div style="text-align: right">
+                    <div class="carousel-video">
+                        <video id="video2" loop>
+                            <source src="{% static './video/3.mp4'%}" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="carousel-caption">
+                        <p>PLATINUM SPONSOR VIDEO example</p>
+                        <p id="platinumSponsor"></p>
+                        <p>Company info goes here</p>
+                    </div>
+                </div>
+            </div>
 
-        <div class="videobox">
-            <video playsinline muted>
-            </video>
+
         </div>
+        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span> </a>
+        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span> </a>
     </div>
 
     <div style="transform: translate(0px, 0px)">
         <div class="netflix-slider">
-            <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{Pavilion.0}}</h3>
+            <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{Genre.0}}</h3>
             <div class="swiper-container">
                 <div class="swiper-wrapper">
-                    {% for j in Aerial %}
-                        <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.0 }}&id3={{ Pavilion.index.0 }}" style="color:white; text-decoration: none;">
-
-                            <img src="{% static 'img'%}/pavilion{{ Pavilion.index.0|add:1 }}/{{ j }}.jpg">
+                    {% for j in Specials %}
+                        <div class="swiper-slide"><a href="specials?id={{j}}&id2={{ Genre.0 }}" style="color:white; text-decoration: none;">
+                            <img src="{% static 'img'%}/Specials/{{ j }}.jpg">
                             <div class="onimg-caption">{{ j }}
                             </div>
                         </a>
@@ -103,11 +147,51 @@
             </div>
         </div>
         <div class="netflix-slider">
+            <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{Genre.1}}</h3>
+            <div class="swiper-container">
+                <div class="swiper-wrapper">
+                    {% for j in Workshops %}
+                        <div class="swiper-slide"><a href="workshops?id={{j}}&id2={{ Genre.1 }}" style="color:white; text-decoration: none;">
+                            <img src="{% static 'img'%}/Workshops/{{ j }}.jpg">
+                            <div class="onimg-caption">{{ j }}
+                            </div>
+                        </a>
+                        </div>
+                    {% endfor %}
+                </div>
+                <!-- Add Pagination -->
+                {#      <div class="swiper-pagination"></div>#}
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+            </div>
+        </div>
+        <div class="netflix-slider">
+            <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp{{Pavilion.0}}</h3>
+            <div class="swiper-container">
+                <div class="swiper-wrapper">
+                    {% for j in Aerial %}
+                        <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.0 }}&id3={{ Pavilion.index.0|add:1 }}" style="color:white; text-decoration: none;">
+
+                            <img src="{% static 'img'%}/pavilion{{ Pavilion.index.0|add:1 }}/{{ j }}.jpg">
+                            <div class="onimg-caption">{{ j }}
+                            </div>
+                        </a>
+                        </div>
+                    {% endfor %}
+                </div>
+                {#                <!-- Add Pagination -->#}
+                {#          <div class="swiper-pagination"></div>#}
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+            </div>
+        </div>
+
+        <div class="netflix-slider">
             <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp{{Pavilion.1}}</h3>
             <div class="swiper-container">
                 <div class="swiper-wrapper">
                     {% for j in Humanoid %}
-                        <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.1 }}&id3={{ Pavilion.index.1 }}" style="color:white; text-decoration: none;">
+                        <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.1 }}&id3={{ Pavilion.index.1|add:1 }}" style="color:white; text-decoration: none;">
 
                             <img src="{% static 'img'%}/pavilion{{ Pavilion.index.1|add:1 }}/{{ j }}.jpg">
                             <div class="onimg-caption">{{ j }}
@@ -128,7 +212,7 @@
             <div class="swiper-container">
                 <div class="swiper-wrapper">
                     {% for j in Medical %}
-                        <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.2 }}&id3={{ Pavilion.index.2 }}" style="color:white; text-decoration: none;">
+                        <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.2 }}&id3={{ Pavilion.index.2|add:1 }}" style="color:white; text-decoration: none;">
 
                             <img src="{% static 'img'%}/pavilion{{ Pavilion.index.2|add:1 }}/{{ j }}.jpg">
                             <div class="onimg-caption">{{ j }}
@@ -149,7 +233,7 @@
             <div class="swiper-container">
                 <div class="swiper-wrapper">
                     {% for j in Driverless %}
-                        <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.3 }}&id3={{ Pavilion.index.3 }}" style="color:white; text-decoration: none;">
+                        <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.3 }}&id3={{ Pavilion.index.3|add:1 }}" style="color:white; text-decoration: none;">
 
                             <img src="{% static 'img'%}/pavilion{{ Pavilion.index.3|add:1 }}/{{ j }}.jpg">
                             <div class="onimg-caption">{{ j }}
@@ -170,9 +254,9 @@
             <div class="swiper-container">
                 <div class="swiper-wrapper">
                     {% for j in EndEffector %}
-                        <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.4 }}&id3={{ Pavilion.index.4 }}" style="color:white; text-decoration: none;">
+                        <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.4 }}&id3={{ Pavilion.index.4|add:1 }}" style="color:white; text-decoration: none;">
 
-                            <img src="{% static 'img'%}/pavilion{{ Pavilion.index.4|add:1 }}/{{ j }}.jpg">
+                            <img src="{% static 'img'%}/pavilion{{ Pavilion.index.4|add:1}}/{{ j }}.jpg">
                             <div class="onimg-caption">{{ j }}
                             </div>
                         </a>
@@ -324,6 +408,21 @@
 </div>
 
 
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+<script>
+    $(document).ready(function() {
+        $('#carouselExampleIndicators').carousel({
+            interval:3000,
+        }).on('slide.bs.carousel', function (args){
+            var videoList = document.getElementsByTagName("video");
+            videoList[args.from].pause();
+            videoList[args.to].play();
+        })
+    });
+</script>
+
 <script src="{% static 'js/index_header.js' %}"></script>
 <script src="{% static 'package/js/swiper.min.js' %}"></script>
 <!-- Initialize Swiper -->
@@ -372,9 +471,7 @@
         }
     });
 </script>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+
 <script>
 
     function enableMute() {
@@ -386,13 +483,7 @@
         video.muted = false;
     }
 </script>
-<script>
-    $(document).ready(function() {
 
-        var vid = $("video").get(0);
-        vid.play();
-    });
-</script>
 <script>
     var videoStorage = [
             "{% static 'video/1' %}",

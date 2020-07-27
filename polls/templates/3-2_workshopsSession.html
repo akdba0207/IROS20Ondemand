@@ -29,7 +29,7 @@
 <body>
 <header>
     <div class="logo">
-        <a href="./main?id={{ account }}">
+        <a href="./">
             <img src="{% static './resources/logo.png'%}"/>
         </a>
         <button class="header-toggleBtn"><i class="fa fa-bars"></i></button>
@@ -37,7 +37,7 @@
 
     <ul class="categories">
 
-        <li class="category category1"><a href="./main?id={{ account }}" style="color:white; text-decoration: none;">Home</a></li>
+        <li class="category category1"><a href="./" style="color:white; text-decoration: none;">Home</a></li>
         <li class="category category2">My Lists</li>
         <li class="category category3">Recently Added</li>
     </ul>
@@ -56,123 +56,74 @@
 </header>
 <div style="width:95%; margin:0 auto; padding-top: 5%;" align="justify">
     <p>&nbsp;</p>
-    <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{Pavilion}}</h3>
     <br>
 
     <div class = "landingtable" style="width: 90%; height: auto; text-align: left; margin-left: 5%; margin-bottom:2%">
         <table border="0" cellpadding="0" cellspacing="0" style="background-color: #323232; width: 100%; border-style: solid; border-color:white;border-width: 10px;">
             <tr>
-                {% if goldSponsorSession == 'missing' %}
-                    &nbsp;
-                {% else %}
-                    <td style="width: 40%;">
-                        <div style="position: relative">
-                            <video id="video0" width="90%" autoplay loop >
-                                <source src="{% static './video'%}/Gold Sponsor/{{ goldSponsorVideo }}.mp4" type="video/mp4">
-                            </video>
-                            <div style="position: absolute; z-index: 1;color: white; bottom: 0; text-align: center;">
-                                <p>Gold Sponsor : {{ goldSponsorName }}</p>
-                            </div>
-                        </div>
-                    </td>
-                {% endif %}
-                <td style="width: 30%;">
-                    <img src="{% static 'img'%}/pavilion{{ PavilionNum}}/{{Session}}.jpg">
+                <td style="width: 60%;">
+                    <img src="{% static 'img'%}/{{ selectedGenre }}/{{selectedWorkshops}}.jpg">
                 </td>
                 <td class="sessionTitle" style="word-break: keep-all;">
-                    <p style="color: white;">Welcome to Session :</p>
-                    <p style="color: white;">{{ Session }}</p>
+                    <p style="color: white; font-size: 30px">Welcome to Workshop</p>
+                    <p style="color: white; font-size: 40px">{{ selectedWorkshops }}</p>
+                    <p style="color: white; font-size: 40px">&nbsp;</p>
+                    <p style="color: white;">Organizers : {{ workshopOrganizers }}</p>
+                    <p><a href="{{ workshopsHomepage }}" style="color: white;"> <u>Click</u> for Workshop Home Page</a></p>
                 </td>
             </tr>
         </table>
     </div>
 
 
-    {% for AuthorList1, AuthorList2, AuthorList3, AuthorList4,AuthorList5,AuthorList6,AffiliationList1,AffiliationList2,AffiliationList3,AffiliationList4,AffiliationList5,TitleList, PDFList, titleNumber in EpisodeContext %}
-        <div class="epilisttable" style="width: 80%; height: auto; text-align: center; margin-left: 10%; background-color: grey; margin-bottom:1%">
-            <table border="0" cellpadding="0" cellspacing="0" style="background-color: #323232;" >
-                <tr>
-                    <td style="width: 30%">
-                        <a href="episode?id={{TitleList}}&id2={{ Session }}&id3={{ Pavilion }}"><img src="{% static './resources/playlogo.png'%}"></a>
-                    </td>
-                    <td valign="top" align="left" style="padding-left: 5%; padding-top: 3%;word-break: keep-all">
-                        <p class="papertitle" style="color: white;">Title : {{ TitleList }}</p>
-                        <table class="paperInfo" border="0" cellpadding="0" cellspacing="0" width="100% "style="background-color: #323232; text-align: left;color: white;">
-                            <tbody>
+    {% for Speaker, Institution, TalkTitle in WorkshopsContext %}
+        {% if Speaker == 'missing' %}
+            &nbsp;
+        {% else %}
+            <div class="epilisttable" style="width: 80%; height: auto; text-align: center; margin-left: 10%; background-color: grey; margin-bottom:1%">
+                <table border="0" cellpadding="0" cellspacing="0" style="background-color: #323232;" >
+                    <tr>
+                        <td style="width: 30%">
+                            <a href="workshopsepisode?id={{Speaker}}&id2={{selectedWorkshops}}&id3={{ selectedGenre }}&id4={{ forloop.counter0|add:1 }}">
+                                <img src="{% static './resources/playlogo.png'%}"></a>
+                        </td>
+                        <td valign="top" align="left" style="padding-left: 5%; padding-top: 3%;word-break: keep-all">
+                            <p class="papertitle" style="color: white;">Title : {{ TalkTitle }}</p>
+                            <table class="paperInfo" border="0" cellpadding="0" cellspacing="0" width="100% "style="background-color: #323232; text-align: left;color: white;">
+                                <tbody>
+                                <tr>
+                                    <td style="width: 20%;">Speaker</td>
+                                    <td>{{ Speaker }}</td>
+                                </tr>
 
-                            <tr>
-                                <td style="width: 40%;"><u>Author</u></td>
-                                <td><u>Affiliation</u></th>
-                            </tr>
-                            {% if AuthorList1 == 'missing' %}
-                                &nbsp;
-                            {% else %}
                                 <tr>
-                                    <td style="width: 40%">{{ AuthorList1 }}</td>
-                                    <td>{{ AffiliationList1 }}</td>
+                                    <td style="width: 20%">Institution</td>
+                                    <td>{{ Institution }}</td>
                                 </tr>
-                            {% endif %}
-                            {% if AuthorList2 == 'missing' %}
-                                &nbsp;
-                            {% else %}
                                 <tr>
-                                    <td style="width: 40%">{{ AuthorList2 }}</td>
-                                    <td>{{ AffiliationList2 }}</td>
-                                </tr>
-                            {% endif %}
-                            {% if AuthorList3 == 'missing' %}
-                                &nbsp;
-                            {% else %}
-                                <tr>
-                                    <td style="width: 40%">{{ AuthorList3 }}</td>
-                                    <td>{{ AffiliationList3 }}</td>
-                                </tr>
-                            {% endif %}
-                            {% if AuthorList4 == 'missing' %}
-                                &nbsp;
-                            {% else %}
-                                <tr>
-
-                                    <td style="width: 40%">{{ AuthorList4|default_if_none:"" }}</td>
-                                    <td>{{ AffiliationList4|default_if_none:"" }}</td>
-                                </tr>
-                            {% endif %}
-                            {% if AuthorList5 == 'missing' %}
-                                &nbsp;
-                            {% else %}
-                                <tr>
-                                    <td style="width: 40%">{{ AuthorList5 }}</td>
-                                    <td>{{ AffiliationList5 }}</td>
-                                </tr>
-                            {% endif %}
-                            {% if AuthorList6 == 'missing' %}
-                                &nbsp;
-                            {% else %}
-                                <tr>
-                                    <td style="width: 40%"><i style="font-size: 100%">Et al</i></td>
+                                    <td>&nbsp;</td>
                                     <td>&nbsp;</td>
                                 </tr>
-                            {% endif %}
-                            </tbody>
-                        </table>
-                        <p style="color: white;"><a href="https://ras.papercept.net/proceedings/ICRA20/{{ PDFList }}" target="_blank"> Open PDF files</a></p>
-                        <form>
-                            <i id="thumbs{{titleNumber}}" class="fa fa-thumbs-up" style="color:grey; font-size: 30px" onClick="thumbsUp({{ titleNumber }})"></i>
-                            <input type="text" id="{{ titleNumber }}" value="0" class="thumbsuptext" readonly/>
-                        </form>
-                    </td>
-                </tr>
-            </table>
-        </div>
+                                </tbody>
+                            </table>
+                            <form>
+                                <i id="thumbs{{titleNumber}}" class="fa fa-thumbs-up" style="color:grey; font-size: 30px" onClick="thumbsUp({{ titleNumber }})"></i>
+                                <input type="text" id="{{ titleNumber }}" value="0" class="thumbsuptext" readonly/>
+                            </form>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        {% endif %}
     {% endfor %}
     <p>&nbsp;</p>
     <div class="netflix-slider">
-        <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{Pavilion}} - Other Sessions</h3>
+        <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Other {{ selectedGenre }}</h3>
         <div class="swiper-container">
             <div class="swiper-wrapper">
-                {% for j in SessionList %}
-                    <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion }}&id3={{PavilionNum}}" style="color:white; text-decoration: none;">
-                        <img src="{% static 'img'%}/pavilion{{ PavilionNum|add:1 }}/{{ j }}.jpg">
+                {% for j in WorkshopsSession %}
+                    <div class="swiper-slide"><a href="specials?id={{j}}&id2={{ selectedGenre }}" style="color:white; text-decoration: none;">
+                        <img src="{% static 'img'%}/{{ selectedGenre }}/{{ j }}.jpg">
                         <div class="onimg-caption">{{ j }}
                         </div>
                     </a>

@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>IROS 2020 On-Demand : Sessions</title>
+    <title>IROS 2020 On-Demand : My Lists</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <!-- Link Swiper's CSS -->
@@ -27,9 +27,10 @@
 
 </head>
 <body>
+
 <header>
     <div class="logo">
-        <a href="./main?id={{ account }}">
+        <a href="./">
             <img src="{% static './resources/logo.png'%}"/>
         </a>
         <button class="header-toggleBtn"><i class="fa fa-bars"></i></button>
@@ -37,7 +38,7 @@
 
     <ul class="categories">
 
-        <li class="category category1"><a href="./main?id={{ account }}" style="color:white; text-decoration: none;">Home</a></li>
+        <li class="category category1"><a href="./" style="color:white; text-decoration: none;">Home</a></li>
         <li class="category category2">My Lists</li>
         <li class="category category3">Recently Added</li>
     </ul>
@@ -53,42 +54,14 @@
         </form>
         <li class="info"><i class="fa fa-user"></i></li>
     </ul>
+
 </header>
-<div style="width:95%; margin:0 auto; padding-top: 5%;" align="justify">
+
+<div style="width:95%; margin:0 auto; padding-top: 12%;" align="justify">
+    <h3>&nbsp;&nbsp;My Lists : </h3>
     <p>&nbsp;</p>
-    <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{Pavilion}}</h3>
-    <br>
 
-    <div class = "landingtable" style="width: 90%; height: auto; text-align: left; margin-left: 5%; margin-bottom:2%">
-        <table border="0" cellpadding="0" cellspacing="0" style="background-color: #323232; width: 100%; border-style: solid; border-color:white;border-width: 10px;">
-            <tr>
-                {% if goldSponsorSession == 'missing' %}
-                    &nbsp;
-                {% else %}
-                    <td style="width: 40%;">
-                        <div style="position: relative">
-                            <video id="video0" width="90%" autoplay loop >
-                                <source src="{% static './video'%}/Gold Sponsor/{{ goldSponsorVideo }}.mp4" type="video/mp4">
-                            </video>
-                            <div style="position: absolute; z-index: 1;color: white; bottom: 0; text-align: center;">
-                                <p>Gold Sponsor : {{ goldSponsorName }}</p>
-                            </div>
-                        </div>
-                    </td>
-                {% endif %}
-                <td style="width: 30%;">
-                    <img src="{% static 'img'%}/pavilion{{ PavilionNum}}/{{Session}}.jpg">
-                </td>
-                <td class="sessionTitle" style="word-break: keep-all;">
-                    <p style="color: white;">Welcome to Session :</p>
-                    <p style="color: white;">{{ Session }}</p>
-                </td>
-            </tr>
-        </table>
-    </div>
-
-
-    {% for AuthorList1, AuthorList2, AuthorList3, AuthorList4,AuthorList5,AuthorList6,AffiliationList1,AffiliationList2,AffiliationList3,AffiliationList4,AffiliationList5,TitleList, PDFList, titleNumber in EpisodeContext %}
+     {% for AuthorList1, AuthorList2, AuthorList3, AuthorList4,AuthorList5,AuthorList6,AffiliationList1,AffiliationList2,AffiliationList3,AffiliationList4,AffiliationList5,TitleList, PDFList, titleNumber in EpisodeContext %}
         <div class="epilisttable" style="width: 80%; height: auto; text-align: center; margin-left: 10%; background-color: grey; margin-bottom:1%">
             <table border="0" cellpadding="0" cellspacing="0" style="background-color: #323232;" >
                 <tr>
@@ -157,7 +130,7 @@
                         </table>
                         <p style="color: white;"><a href="https://ras.papercept.net/proceedings/ICRA20/{{ PDFList }}" target="_blank"> Open PDF files</a></p>
                         <form>
-                            <i id="thumbs{{titleNumber}}" class="fa fa-thumbs-up" style="color:grey; font-size: 30px" onClick="thumbsUp({{ titleNumber }})"></i>
+                            <i id="thumbs{{titleNumber}}" class="fa fa-thumbs-up" style="color:grey;" onClick="thumbsUp({{ titleNumber }})"></i>
                             <input type="text" id="{{ titleNumber }}" value="0" class="thumbsuptext" readonly/>
                         </form>
                     </td>
@@ -165,26 +138,6 @@
             </table>
         </div>
     {% endfor %}
-    <p>&nbsp;</p>
-    <div class="netflix-slider">
-        <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{Pavilion}} - Other Sessions</h3>
-        <div class="swiper-container">
-            <div class="swiper-wrapper">
-                {% for j in SessionList %}
-                    <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion }}&id3={{PavilionNum}}" style="color:white; text-decoration: none;">
-                        <img src="{% static 'img'%}/pavilion{{ PavilionNum|add:1 }}/{{ j }}.jpg">
-                        <div class="onimg-caption">{{ j }}
-                        </div>
-                    </a>
-                    </div>
-                {% endfor %}
-            </div>
-            <!-- Add Pagination -->
-            {#      <div class="swiper-pagination"></div>#}
-            <div class="swiper-button-next"></div>
-            <div class="swiper-button-prev"></div>
-        </div>
-    </div>
 
 
     <script src="{% static 'js/index_header.js' %}"></script>
@@ -196,7 +149,6 @@
         }
 
     </script>
-    <!-- Initialize Swiper -->
     <script>
         function thumbsUp(thumbsid)
         {
@@ -225,42 +177,13 @@
         }
 
     </script>
-    <script>
-        var swiper = new Swiper('.swiper-container', {
-            {#slidesPerView: 7,#}
-            {#spaceBetween: 10,#}
-            slidesPerGroup: 2,
-            pagination: {
-                el: '.swiper-pagination',
-                clickable: true,
-            },
-            navigation: {
-                nextEl: '.swiper-button-next',
-                prevEl: '.swiper-button-prev',
-            },
-            breakpoints: {
-                // when window width is >= 320px
-                200: {
-                    slidesPerView: 4,
-                    slidesPerColumnFill:'row',
-                    spaceBetween: 4
-                },
-                // when window width is >= 480px
-                600: {
-                    slidesPerView: 5,
-                    spaceBetween: 5
-                },
-                // when window width is >= 640px
-                900: {
-                    slidesPerView: 6,
-                    spaceBetween: 6
-                }
-            }
-        });
-    </script>
+    <!-- Initialize Swiper -->
+
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+
+
 </div>
 </body>
 </html>

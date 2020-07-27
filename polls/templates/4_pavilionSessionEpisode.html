@@ -4,12 +4,12 @@
 
 <head>
     <meta charset="utf-8">
-    <title>IROS 2020 On-Demand</title>
+    <title>IROS 2020 On-Demand : Episodes</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <!-- Link Swiper's CSS -->
     <link rel="stylesheet" href="{% static 'package/css/swiper.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/styles0723.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles0727-1.css' %}">
     <script
             src="https://kit.fontawesome.com/7541329784.js"
             crossorigin="anonymous"
@@ -24,10 +24,8 @@
     />
     <link rel="stylesheet" href="{% static 'css/index_land0717.css' %}" />
     <link rel="stylesheet" href="{% static 'css/index_header0717.css' %}" />
-
 </head>
 <body>
-
 <header>
     <div class="logo">
         <a href="./">
@@ -37,8 +35,8 @@
     </div>
 
     <ul class="categories">
-
-        <li class="category category1"><a href="./" style="color:white; text-decoration: none;">Home</a></li>
+        <a href="./" style="color:white; text-decoration:none;">
+            <li class="category category1">Home</li></a>
         <li class="category category2">My Lists</li>
         <li class="category category3">Recently Added</li>
     </ul>
@@ -54,27 +52,52 @@
         </form>
         <li class="info"><i class="fa fa-user"></i></li>
     </ul>
-
 </header>
-
-<div style="width:95%; margin:0 auto; padding-top: 12%;" align="justify">
-    <h3>&nbsp;&nbsp;Search Results : </h3>
+<div style="width:95%; margin:0 auto; padding-top: 5%;" align="justify">
+    <h3 class="episodeTitle">Title : {{Title}}</h3>
     <p>&nbsp;</p>
 
-     {% for AuthorList1, AuthorList2, AuthorList3, AuthorList4,AuthorList5,AuthorList6,AffiliationList1,AffiliationList2,AffiliationList3,AffiliationList4,AffiliationList5,TitleList, PDFList, titleNumber in EpisodeContext %}
-        <div class="epilisttable" style="width: 80%; height: auto; text-align: center; margin-left: 10%; background-color: grey; margin-bottom:1%">
+    <video style="display:block; margin: 0 auto; width: 40%; height: auto" controls autoplay>
+        <source src="https://ras.papercept.net/proceedings/ICRA20/{{ VideoList.0 }}" type="video/mp4">
+    </video>
+
+    <p>&nbsp;</p>
+
+
+    <center>
+        <table border="0" cellpadding="0" cellspacing="0"style="background-color: #1F1F1F; text-align: center;color: white;">
+            <tr>
+                <td class="gobackButton"><button onclick="goBack()">Go Back</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </td>
+                <td><div class="likeButton" style="color: white;">Like?&nbsp;&nbsp;</div></td>
+                <td>
+                    <form>
+                        <i id="thumbs{{SelectedNumber}}" class="fa fa-thumbs-up" style="color:grey; font-size: 30px" onClick="thumbsUp({{ SelectedNumber }})"></i>
+                        <input type="text" id="{{ SelectedNumber }}" value="0" class="thumbsuptext" readonly/>
+                    </form>
+                </td>
+            </tr>
+        </table>
+    </center>
+    <h3 style="padding-bottom: 2%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; More talks like this : </h3>
+
+    {% for AuthorList1, AuthorList2, AuthorList3, AuthorList4,AuthorList5, AuthorList6, AffiliationList1,AffiliationList2,AffiliationList3,AffiliationList4,AffiliationList5,TitleList, PDFList, titleNumber, suggestEpisodeNum in EpisodeContext %}
+        <div class="suggestlisttable" style="width: 80%; height: auto; text-align: center; margin-left: 10%; background-color: grey; margin-bottom:1%">
             <table border="0" cellpadding="0" cellspacing="0" style="background-color: #323232;" >
                 <tr>
                     <td style="width: 30%">
-                        <a href="episode?id={{TitleList}}&id2={{ Session }}&id3={{ Pavilion }}"><img src="{% static './resources/playlogo.png'%}"></a>
+                        <a href="suggestion?id1={{suggestEpisodeNum}}" style="color:white; text-decoration: none;">
+                            <img src="{% static './resources/playlogo.png'%}"></a>
                     </td>
-                    <td valign="top" align="left" style="padding-left: 5%; padding-top: 3%;word-break: keep-all">
+                    <td valign="top" align="left" style="padding-left: 5%; padding-top: 3%;word-break: keep-all;">
                         <p class="papertitle" style="color: white;">Title : {{ TitleList }}</p>
+                        {#                        <p style="color: white;">Author : {{ AuthorList1 }} {{ AuthorList2 }} {{ AuthorList3 }} {{ AuthorList4 }} {{ AuthorList5 }}</p>#}
+                        {#                        <p style="color: white;">Affiliation : {{ AffiliationList1 }}, {{ AffiliationList2 }}, {{ AffiliationList3 }}, {{ AffiliationList4 }}, {{ AffiliationList5 }}</p>#}
                         <table class="paperInfo" border="0" cellpadding="0" cellspacing="0" width="100% "style="background-color: #323232; text-align: left;color: white;">
                             <tbody>
 
                             <tr>
-                                <td style="width: 40%;"><u>Author</u></td>
+                                <td style="width: 40%;"><u>Author</u></th>
                                 <td><u>Affiliation</u></th>
                             </tr>
                             {% if AuthorList1 == 'missing' %}
@@ -130,7 +153,7 @@
                         </table>
                         <p style="color: white;"><a href="https://ras.papercept.net/proceedings/ICRA20/{{ PDFList }}" target="_blank"> Open PDF files</a></p>
                         <form>
-                            <i id="thumbs{{titleNumber}}" class="fa fa-thumbs-up" style="color:grey;" onClick="thumbsUp({{ titleNumber }})"></i>
+                            <i id="thumbs{{titleNumber}}" class="fa fa-thumbs-up" style="color:grey; font-size: 30px" onClick="thumbsUp({{ titleNumber }})"></i>
                             <input type="text" id="{{ titleNumber }}" value="0" class="thumbsuptext" readonly/>
                         </form>
                     </td>
@@ -139,16 +162,8 @@
         </div>
     {% endfor %}
 
-
     <script src="{% static 'js/index_header.js' %}"></script>
     <script src="{% static 'package/js/swiper.min.js' %}"></script>
-    <script>
-        function search(){
-            const query = document.getElementById("search_bar").value;
-            document.getElementById("keywordDelivery").href = "searchresult?id="+query;
-        }
-
-    </script>
     <script>
         function thumbsUp(thumbsid)
         {
@@ -177,13 +192,55 @@
         }
 
     </script>
-    <!-- Initialize Swiper -->
+    <script>
+        function search(){
+            const query = document.getElementById("search_bar").value;
+            document.getElementById("keywordDelivery").href = "searchresult?id="+query;
+        }
 
+    </script>
+    <!-- Initialize Swiper -->
+    <script>
+        var swiper = new Swiper('.swiper-container', {
+            {#slidesPerView: 7,#}
+            {#spaceBetween: 10,#}
+            slidesPerGroup: 2,
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            breakpoints: {
+                // when window width is >= 320px
+                200: {
+                    slidesPerView: 4,
+                    slidesPerColumnFill:'row',
+                    spaceBetween: 4
+                },
+                // when window width is >= 480px
+                600: {
+                    slidesPerView: 5,
+                    spaceBetween: 5
+                },
+                // when window width is >= 640px
+                900: {
+                    slidesPerView: 6,
+                    spaceBetween: 6
+                }
+            }
+        });
+    </script>
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+    </script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
-
-
 </div>
 </body>
 </html>

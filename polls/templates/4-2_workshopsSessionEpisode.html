@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>IROS 2020 On-Demand : Sessions</title>
+    <title>IROS 2020 On-Demand : Episodes</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <!-- Link Swiper's CSS -->
@@ -24,20 +24,19 @@
     />
     <link rel="stylesheet" href="{% static 'css/index_land0717.css' %}" />
     <link rel="stylesheet" href="{% static 'css/index_header0717.css' %}" />
-
 </head>
 <body>
 <header>
     <div class="logo">
-        <a href="./main?id={{ account }}">
+        <a href="./">
             <img src="{% static './resources/logo.png'%}"/>
         </a>
         <button class="header-toggleBtn"><i class="fa fa-bars"></i></button>
     </div>
 
     <ul class="categories">
-
-        <li class="category category1"><a href="./main?id={{ account }}" style="color:white; text-decoration: none;">Home</a></li>
+        <a href="./" style="color:white; text-decoration:none;">
+            <li class="category category1">Home</li></a>
         <li class="category category2">My Lists</li>
         <li class="category category3">Recently Added</li>
     </ul>
@@ -55,26 +54,35 @@
     </ul>
 </header>
 <div style="width:95%; margin:0 auto; padding-top: 5%;" align="justify">
+    <h3 class="episodeTitle">Title : {{ workshopsTalkTitle.0 }}</h3>
     <p>&nbsp;</p>
-    <br>
+    {#    <video style="display:block; margin: 0 auto; width: 40%; height: auto" controls autoplay>#}
+    {#        <source src="https://ras.papercept.net/proceedings/ICRA20/{{ VideoList.0 }}" type="video/mp4">#}
+    {#    </video>#}
+    <p align="center">
+    <iframe allow="autoplay; fullscreen" width="800px" height="400px" style="display:block;"
+            src="{{ workshopsVideo.0}}">
+    </iframe>
+    </p>
+    <p>&nbsp;</p>
 
-    <div class = "landingtable" style="width: 90%; height: auto; text-align: left; margin-left: 5%; margin-bottom:2%">
-        <table border="0" cellpadding="0" cellspacing="0" style="background-color: #323232; width: 100%; border-style: solid; border-color:white;border-width: 10px;">
+
+    <center>
+        <table border="0" cellpadding="0" cellspacing="0"style="background-color: #1F1F1F; text-align: center;color: white;">
             <tr>
-                <td style="width: 60%;">
-                    <img src="{% static 'img'%}/{{ selectedGenre }}/{{selectedWorkshops}}.jpg">
+                <td class="gobackButton"><button onclick="goBack()">Go Back</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 </td>
-                <td class="sessionTitle" style="word-break: keep-all;">
-                    <p style="color: white; font-size: 30px">Welcome to Workshop</p>
-                    <p style="color: white; font-size: 40px">{{ selectedWorkshops }}</p>
-                    <p style="color: white; font-size: 40px">&nbsp;</p>
-                    <p style="color: white;">Organizers : {{ workshopOrganizers }}</p>
-                    <p><a href="{{ workshopsHomepage }}" style="color: white;"> <u>Click</u> for Workshop Home Page</a></p>
+                <td><div class="likeButton" style="color: white;">Like?&nbsp;&nbsp;</div></td>
+                <td>
+                    <form>
+                        <i id="thumbs{{selectedSpeaker}}" class="fa fa-thumbs-up" style="color:grey; font-size: 30px" onClick="thumbsUp({{ selectedSpeaker }})"></i>
+                        <input type="text" id="{{ selectedSpeaker }}" value="0" class="thumbsuptext" readonly/>
+                    </form>
                 </td>
             </tr>
         </table>
-    </div>
-
+    </center>
+    <h3 style="padding-bottom: 2%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; More Talks in this workshops : </h3>
 
     {% for Speaker, Institution, TalkTitle in WorkshopsContext %}
         {% if Speaker == 'missing' %}
@@ -116,38 +124,9 @@
             </div>
         {% endif %}
     {% endfor %}
-    <p>&nbsp;</p>
-    <div class="netflix-slider">
-        <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Other {{ selectedGenre }}</h3>
-        <div class="swiper-container">
-            <div class="swiper-wrapper">
-                {% for j in WorkshopsSession %}
-                    <div class="swiper-slide"><a href="specials?id={{j}}&id2={{ selectedGenre }}" style="color:white; text-decoration: none;">
-                        <img src="{% static 'img'%}/{{ selectedGenre }}/{{ j }}.jpg">
-                        <div class="onimg-caption">{{ j }}
-                        </div>
-                    </a>
-                    </div>
-                {% endfor %}
-            </div>
-            <!-- Add Pagination -->
-            {#      <div class="swiper-pagination"></div>#}
-            <div class="swiper-button-next"></div>
-            <div class="swiper-button-prev"></div>
-        </div>
-    </div>
-
 
     <script src="{% static 'js/index_header.js' %}"></script>
     <script src="{% static 'package/js/swiper.min.js' %}"></script>
-    <script>
-        function search(){
-            const query = document.getElementById("search_bar").value;
-            document.getElementById("keywordDelivery").href = "searchresult?id="+query;
-        }
-
-    </script>
-    <!-- Initialize Swiper -->
     <script>
         function thumbsUp(thumbsid)
         {
@@ -176,6 +155,14 @@
         }
 
     </script>
+    <script>
+        function search(){
+            const query = document.getElementById("search_bar").value;
+            document.getElementById("keywordDelivery").href = "searchresult?id="+query;
+        }
+
+    </script>
+    <!-- Initialize Swiper -->
     <script>
         var swiper = new Swiper('.swiper-container', {
             {#slidesPerView: 7,#}
@@ -208,6 +195,11 @@
                 }
             }
         });
+    </script>
+    <script>
+        function goBack() {
+            window.history.back();
+        }
     </script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>

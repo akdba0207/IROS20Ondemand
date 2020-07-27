@@ -5,16 +5,28 @@
 
 from django.http import HttpResponse
 from django.shortcuts import render
-from polls.models import Like, ieeeusers
+from polls.models import Like, ieeeusers, iros2020registered
 import pandas as pd
 import os
 import numpy as np
 
 from polls.search import searchByKeyword, findSimilarTopic
 
+#IROS2020 Registered List
+iros2020registered_email=[]
+iros2020registered_name=[]
+mydict = dict()
+
+for p in iros2020registered.objects.raw('SELECT * FROM polls_iros2020registered'):
+    iros2020registered_email.append(p.iros2020_email)
+    iros2020registered_name.append(p.iros2020_name)
+    mydict[p.iros2020_email] = p.iros2020_name
+
+iros2020registered_email = sorted(iros2020registered_email)
+
 pre = os.path.dirname(os.path.realpath(__file__))
 
-# First Call : Pavilion
+# Call Genres, Pavilion
 excel_file1 = 'IROS2020_onDemand_beta.xlsx'
 path1 = os.path.join(pre, excel_file1)
 Cartegories = pd.read_excel(path1, sheet_name=0)
@@ -24,14 +36,23 @@ path2 = os.path.join(pre, excel_file2)
 icra_example = pd.read_excel(path2, sheet_name=0)
 icra_example = icra_example.fillna('missing')
 
+# Call Keynotes and Plenaries
 excel_file3 = 'ICRA20KeynotesandPlenaries.xlsx'
 path3 = os.path.join(pre, excel_file3)
 icra_specials = pd.read_excel(path3, sheet_name=0)
 
+# Call Workshops and Tutorials
 excel_file4 = 'ICRA2020Workshops.xlsx'
 path4 = os.path.join(pre,excel_file4)
 icra_workshops = pd.read_excel(path4, sheet_name=0)
 icra_workshops = icra_workshops.fillna('missing')
+
+# Call Sponsors
+excel_file6 = 'ICRA20Sponsors.xlsx'
+path6 = os.path.join(pre,excel_file6)
+icra_sponsors = pd.read_excel(path6, sheet_name=0)
+icra_sponsors = icra_sponsors.fillna('missing')
+
 
 # Pavilion Monday Session
 icra_Monday = icra_example[(icra_example['SchCode'].str[0] == 'M') & (icra_example['SchCode'].str[1] == 'o')]
@@ -94,6 +115,17 @@ WorkshopsSession = sorted(list(set(Workshops['Title'])))
 #########################################################################################################
 #Login
 def login(request):
+
+
+    # for users in ieeeusers.objects.raw('SELECT * FROM polls_ieeeusers'):
+    #     dongbin = users.ieeeusers_id
+    #     dongbin1.append(dongbin)
+
+    # ieeeusers.objects.filter(ieeeusers_id='iros1').update(ieeeusers_password='gyuhozzang')
+    # irosuser1 = iros2020registered(iros2020_name="Dongbin Kim", iros2020_email="dongbin.kim@unlv.edu")
+    # irosuser2 = iros2020registered(iros2020_name="Dr. Paul Oh", iros2020_email="paul.oh@unlv.edu")
+    # irosuser1.save()
+    # irosuser2.save()
     return render(request,'./beta/1_login_beta.html')
 
 #TODO : receive login ID and Password, pass it to main.
@@ -104,35 +136,51 @@ def login(request):
 #########################################################################################################
 #########################################################################################################
 #Main Page
+def binarySearch(arr, l, r, x):
+    # Check base case
+    if r >= l:
+        mid = l + (r - l) // 2
+        # If element is present at the middle itself
+        if arr[mid] == x:
+            return mid
+            # If element is smaller than mid, then it
+        # can only be present in left subarray
+        elif arr[mid] > x:
+            return binarySearch(arr, l, mid - 1, x)
+            # Else the element can only be present
+        # in right subarray
+        else:
+            return binarySearch(arr, mid + 1, r, x)
+    else:
+        # Element is not present in the array
+        return -1
+
 def main(request):
-    # for p in Like.objects.raw('SELECT * FROM polls_like'):
-    #     print(p)
-    # dongbin1 = []
-    # for users in ieeeusers.objects.raw('SELECT * FROM polls_ieeeusers'):
-    #     dongbin = users.ieeeusers_id
-    #     dongbin1.append(dongbin)
+    global iros2020_emailinput
+    iros2020_emailinput = request.GET['id']
 
-    # ieeeusers.objects.filter(ieeeusers_id='iros1').update(ieeeusers_password='gyuhozzang')
+    result= binarySearch(iros2020registered_email, 0, len(iros2020registered_email) - 1, iros2020_emailinput)
 
-    #
-    # like = Like(name="user_id", paper_id="paper_id")
-    # like.save()
-    # ieeeusers1 = ieeeusers(ieeeusers_id="iros1", ieeeusers_password="paper_id")
-    # ieeeusers2 = ieeeusers(ieeeusers_id="iros2", ieeeusers_password="paper_id")
-    # ieeeusers1.save()
-    # ieeeusers2.save()
+    if result != -1:
+        # iros2020registered_name[result]
+        loginName = mydict[iros2020_emailinput]
 
-    return render(request, './beta/2_main_beta.html',
-                  {'Pavilion': Cartegories['Pavilion'],
-                   'Genre': Cartegories['Genre'],
-                   'Specials': SpecialsSession,
-                   'Workshops': WorkshopsSession,
-                   'Aerial': Sessions1,
-                   'Humanoid': Sessions2,
-                   'Medical': Sessions3,
-                   'Driverless': Sessions4,
-                   'EndEffector': Sessions5
-                   })
+        return render(request, './beta/2_main_beta.html',
+                      {'Pavilion': Cartegories['Pavilion'],
+                       'Genre': Cartegories['Genre'],
+                       'Specials': SpecialsSession,
+                       'Workshops': WorkshopsSession,
+                       'Aerial': Sessions1,
+                       'Humanoid': Sessions2,
+                       'Medical': Sessions3,
+                       'Driverless': Sessions4,
+                       'EndEffector': Sessions5,
+                       'account':iros2020_emailinput,
+                       'loginName':loginName
+                       })
+    else:
+        return render(request, './beta/1-1_loginError_beta.html')
+
 
 #########################################################################################################
 #########################################################################################################
@@ -142,6 +190,8 @@ def tvshow(request):
     selectedSession = request.GET['id']
     selectedPavilion = request.GET['id2']
     selectedPavilionNum = request.GET['id3']
+    global iros2020_emailinput
+
 
     if selectedPavilion == Cartegories['Pavilion'][1]:
         selectedSessionList = Sessions1
@@ -187,13 +237,21 @@ def tvshow(request):
     EpisodeCount = EpisodeList.shape[0] + 1
     # print(titleNumber)
 
+    #Gold Sponsor Video
+    goldSponsorSession = icra_sponsors[(icra_sponsors['Location']==selectedSession)]
+    goldSponsorName = goldSponsorSession['Name']
+    goldSponsorVideo = goldSponsorSession['Video']
+
+
     return render(request, './beta/3_pavilionSession_beta.html', {'Pavilion': selectedPavilion,
                                                                   'PavilionNum': selectedPavilionNum,
                                                                   'SessionList': selectedSessionList,
                                                                   'Session': selectedSession,
                                                                   'EpisodeContext': EpisodeContext,
-                                                                  'EpisodeCount': range(1, EpisodeCount)
-                                                                  })
+                                                                  'EpisodeCount': range(1, EpisodeCount),
+                                                                  'account':iros2020_emailinput,
+                                                                  'goldSponsorName':goldSponsorName,
+                                                                  'goldSponsorVideo':goldSponsorVideo})
 def specials(request):
     selectedSpecial = request.GET['id']
     selectedGenre = request.GET['id2']
@@ -207,11 +265,13 @@ def specials(request):
                                 specialEpisodeAbstract['Abstract']
                                 )
     specialEpisodeCount = specialEpisodeList.shape[0]
+    global iros2020_emailinput
 
     return render(request,'./beta/3-1_plenariesSession_beta.html',{'selectedSpecial':selectedSpecial,
                                                                    'selectedGenre':selectedGenre,
                                                                    'specialEpisodeContext':specialEpisodeContext,
                                                                    'SpecialsSession':SpecialsSession,
+                                                                   'account':iros2020_emailinput
                                                                    })
 
 def workshops(request):
@@ -220,6 +280,7 @@ def workshops(request):
     workshopsEpisodeList = icra_workshops[(icra_workshops['Title']==selectedWorkshops)].reset_index()
     workshopsHomepage = workshopsEpisodeList['Workshop Home Page'].iloc[0]
     workshopOrganizers = workshopsEpisodeList['Organizers'].iloc[0]
+    global iros2020_emailinput
 
     Speaker = []
     for i in range(1,15):
@@ -241,7 +302,8 @@ def workshops(request):
                                                                    'WorkshopsContext':WorkshopsContext,
                                                                    'WorkshopsSession':WorkshopsSession,
                                                                    'workshopsHomepage':workshopsHomepage,
-                                                                   'workshopOrganizers':workshopOrganizers})
+                                                                   'workshopOrganizers':workshopOrganizers,
+                                                                   'account':iros2020_emailinput})
 
 
 
@@ -255,7 +317,7 @@ def episode(request):
     VideoList = findVideo['VID'].reset_index()
     selectedNumber = findVideo['Nr'].reset_index()
     suggestEpisodeNum = findSimilarTopic(selectedNumber['Nr'].iloc[0])
-
+    global iros2020_emailinput
     similarPaper = icra_example[(icra_example['Nr'] == int(suggestEpisodeNum[0]))]
 
     for i in range(1, 12):
@@ -293,7 +355,8 @@ def episode(request):
     return render(request, './beta/4_pavilionSessionEpisode_beta.html', {'VideoList': VideoList['VID'],
                                                                          'Title': selectedTitle,
                                                                          'EpisodeContext': resultList,
-                                                                         'SelectedNumber': selectedNumber['Nr'].iloc[0]})
+                                                                         'SelectedNumber': selectedNumber['Nr'].iloc[0],
+                                                                         'account':iros2020_emailinput})
 
 def specialsepisode(request):
     selectedSpeaker=request.GET['id']
@@ -301,6 +364,7 @@ def specialsepisode(request):
     selectedGenre=request.GET['id3']
     findspeaker=icra_specials[(icra_specials['Speaker']==selectedSpeaker)]
     specialVideo=findspeaker['Video'].reset_index()
+    global iros2020_emailinput
 
     #Other Specials
     specialEpisodeList = icra_specials[(icra_specials['Genre'] == selectedSpecial)]
@@ -316,7 +380,8 @@ def specialsepisode(request):
                                                                           'selectedSpeaker':selectedSpeaker,
                                                                           'selectedSpecial':selectedSpecial,
                                                                           'selectedGenre':selectedGenre,
-                                                                          'specialEpisodeContext':specialEpisodeContext})
+                                                                          'specialEpisodeContext':specialEpisodeContext,
+                                                                          'account':iros2020_emailinput})
 
 
 def workshopsepisode(request):
@@ -333,6 +398,7 @@ def workshopsepisode(request):
     print(workshopsTalkTitle)
     #Other Workshops Talk
     workshopsEpisodeList = icra_workshops[(icra_workshops['Title'] == selectedWorkshops)].reset_index()
+    global iros2020_emailinput
 
     Speaker = []
     for i in range(1, 15):
@@ -348,11 +414,12 @@ def workshopsepisode(request):
 
     WorkshopsContext = zip(Speaker, Institution, TalkTitle)
     return render(request,'./beta/4-2_workshopsSessionEpisode_beta.html',{'workshopsVideo':workshopsVideo['Video '+str(selectedSpeakerNumber)],
-                                                                                           'workshopsTalkTitle':workshopsTalkTitle['Talk Title ' + str(selectedSpeakerNumber)],
-                                                                                           'selectedSpeaker':selectedSpeaker,
-                                                                                           'selectedWorkshops':selectedWorkshops,
-                                                                                           'selectedGenre':selectedGenre,
-                                                                                           'WorkshopsContext':WorkshopsContext})
+                                                                          'workshopsTalkTitle':workshopsTalkTitle['Talk Title ' + str(selectedSpeakerNumber)],
+                                                                          'selectedSpeaker':selectedSpeaker,
+                                                                          'selectedWorkshops':selectedWorkshops,
+                                                                          'selectedGenre':selectedGenre,
+                                                                          'WorkshopsContext':WorkshopsContext,
+                                                                          'account':iros2020_emailinput})
 #########################################################################################################
 #########################################################################################################
 #########################################################################################################
@@ -364,6 +431,7 @@ def suggestion(request):
     VideoList = findTitle['VID'].reset_index()
     selectedTitle = titleName['Title'].iloc[0]
     suggestEpisodeNum = findSimilarTopic(int(suggestedNum))
+    global iros2020_emailinput
 
     suggestPaper = icra_example[(icra_example['Nr'] == int(suggestEpisodeNum[0]))]
 
@@ -401,7 +469,8 @@ def suggestion(request):
 
     return render(request, './beta/4_pavilionSessionEpisode_beta.html', {'VideoList': VideoList['VID'],
                                                                          'Title': selectedTitle,
-                                                                         'EpisodeContext': resultList})
+                                                                         'EpisodeContext': resultList,
+                                                                         'account':iros2020_emailinput})
 
 
 #########################################################################################################
@@ -413,6 +482,7 @@ def searchresult(request):
     # print(inputKeyword)
     resultNumber = searchByKeyword(inputKeyword)
     resultNumberlength = len(resultNumber)
+    global iros2020_emailinput
 
     if not resultNumber:
         return render(request, './beta/6_searchResultError_beta.html', {'inputKeyword': inputKeyword})
@@ -452,11 +522,13 @@ def searchresult(request):
                          AffiliationList5['Affiliation5'],
                          TitleList['Title'],
                          PDFList['FN'], titleNumber['Nr'])
-        return render(request, './beta/5_searchResult_beta.html', {'EpisodeContext': resultList})
+        return render(request, './beta/5_searchResult_beta.html', {'EpisodeContext': resultList,
+                                                                   'account':iros2020_emailinput})
 
 #########################################################################################################
 #########################################################################################################
 #########################################################################################################
 #My List
 def mylist(request):
-    return render(request,'./beta/7_myList_beta.html.html')
+    global iros2020_emailinput
+    return render(request,'./beta/7_myList_beta.html.html',{'account':iros2020_emailinput})
