@@ -9,6 +9,28 @@ body {
     margin: 0;
     padding: 0; }
 
+.carousel-caption {
+    position: absolute;
+    text-align: left;
+    display: block;
+    bottom: 0px;
+    width: 100%;
+    background-image: linear-gradient(to right, rgba(31,31,31,1) 35%, rgba(31,31,31,0));
+    height: 100%
+}
+.carousel-caption p{
+    padding-top: 5%;
+    font-size: 30px;
+    color: yellow;
+}
+.carousel-item video {
+    width: 50%;
+    z-index: 0;
+}
+
+.carousel-control-next{
+    z-index: 10;
+}
 .swiper-container {
     width: 100%;
     height: 100%; }
@@ -94,19 +116,6 @@ h3 {
 }
 .netflix-slider .swiper-button-next{
     color: white;
-}
-
-.carousel-item {
-    font-size: 2em;
-    left: 0%;
-    padding-left: 100px;
-    padding-right: 100px;
-    /*padding-bottom: 50px;*/
-    /*margin: auto;*/
-    top: 20px;
-    bottom: 30%;
-    text-align: left;
-    text-shadow: none;
 }
 
 .videopage{
@@ -203,23 +212,6 @@ h3 {
 
         /*vertical-align: text-top;*/
     }
-    .carousel-item {
-        padding-left: 6%;
-        padding-right: 6%;
-        padding-bottom: 8%;
-        margin: auto;
-        top:10%;
-        bottom:0%;
-
-    }
-    /*.carousel-item .imgtext {*/
-    /*    font-size: 30%*/
-    /*}*/
-
-    /*.carousel-caption{*/
-    /*    top: 3%;*/
-    /*    font-size: 30%*/
-    /*}*/
     .landingtable{
         font-size: 30%;
     }
@@ -297,23 +289,8 @@ h3 {
 
         vertical-align: text-top;
     }
-    .carousel-item {
-        padding-left: 6%;
-        padding-right: 6%;
-        padding-bottom: 8%;
-        margin: auto;
-        top:10%;
-        bottom:0%;
 
-    }
-    .carousel-item .imgtext {
-        font-size: 30%
-    }
 
-    .carousel-caption{
-        top: 3%;
-        font-size: 30%
-    }
     .landingtable{
         font-size: 30%;
     }
@@ -379,22 +356,7 @@ h3 {
     .swiper-slide{
         max-height: 100px;
     }
-    .carousel-item {
-        padding-left: 6%;
-        padding-right: 6%;
-        padding-bottom: 8%;
-        margin: auto;
-        top:10%;
-        bottom:0%;
-    }
-    .carousel-item .imgtext {
-        font-size: 50%
-    }
 
-    .carousel-caption{
-        top: 5%;
-        font-size: 50%
-    }
     .epilisttable{
         font-size: 50%;
     }
