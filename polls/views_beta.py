@@ -218,6 +218,8 @@ def workshops(request):
     selectedWorkshops = request.GET['id']
     selectedGenre = request.GET['id2']
     workshopsEpisodeList = icra_workshops[(icra_workshops['Title']==selectedWorkshops)].reset_index()
+    workshopsHomepage = workshopsEpisodeList['Workshop Home Page'].iloc[0]
+    workshopOrganizers = workshopsEpisodeList['Organizers'].iloc[0]
 
     Speaker = []
     for i in range(1,15):
@@ -237,7 +239,9 @@ def workshops(request):
     return render(request,'./beta/3-2_workshopsSession_beta.html',{'selectedWorkshops':selectedWorkshops,
                                                                    'selectedGenre':selectedGenre,
                                                                    'WorkshopsContext':WorkshopsContext,
-                                                                   'WorkshopsSession':WorkshopsSession})
+                                                                   'WorkshopsSession':WorkshopsSession,
+                                                                   'workshopsHomepage':workshopsHomepage,
+                                                                   'workshopOrganizers':workshopOrganizers})
 
 
 

@@ -56,7 +56,6 @@
 </header>
 <div style="width:95%; margin:0 auto; padding-top: 5%;" align="justify">
     <p>&nbsp;</p>
-    <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Workshop : {{selectedWorkshops}}</h3>
     <br>
 
     <div class = "landingtable" style="width: 90%; height: auto; text-align: left; margin-left: 5%; margin-bottom:2%">
@@ -66,8 +65,11 @@
                     <img src="{% static 'img'%}/{{ selectedGenre }}/{{selectedWorkshops}}.jpg">
                 </td>
                 <td class="sessionTitle" style="word-break: keep-all;">
-                    <p style="color: white;">Welcome to Session :</p>
-                    <p style="color: white;">{{ selectedWorkshops }}</p>
+                    <p style="color: white; font-size: 30px">Welcome to Workshop</p>
+                    <p style="color: white; font-size: 40px">{{ selectedWorkshops }}</p>
+                    <p style="color: white; font-size: 40px">&nbsp;</p>
+                    <p style="color: white;">Organizers : {{ workshopOrganizers }}</p>
+                    <p><a href="{{ workshopsHomepage }}" style="color: white;"> <u>Click</u> for Workshop Home Page</a></p>
                 </td>
             </tr>
         </table>
@@ -90,13 +92,10 @@
                             <table class="paperInfo" border="0" cellpadding="0" cellspacing="0" width="100% "style="background-color: #323232; text-align: left;color: white;">
                                 <tbody>
                                 <tr>
-                                    <td style="width: 20%;"><u>Speaker</u></td>
-                                    <td><u>{{ Speaker }}</u></td>
+                                    <td style="width: 20%;">Speaker</td>
+                                    <td>{{ Speaker }}</td>
                                 </tr>
-                                <tr>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                </tr>
+
                                 <tr>
                                     <td style="width: 20%">Institution</td>
                                     <td>{{ Institution }}</td>
