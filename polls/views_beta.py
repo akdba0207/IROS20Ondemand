@@ -116,10 +116,11 @@ WorkshopsSession = sorted(list(set(Workshops['Title'])))
 #Login
 def login(request):
 
-
-    # for users in ieeeusers.objects.raw('SELECT * FROM polls_ieeeusers'):
-    #     dongbin = users.ieeeusers_id
+    # dongbin1= []
+    # for users in ieeeusers.objects.raw('SELECT * FROM polls_like'):
+    #     dongbin = users.paperid
     #     dongbin1.append(dongbin)
+    # print(dongbin1)
 
     # ieeeusers.objects.filter(ieeeusers_id='iros1').update(ieeeusers_password='gyuhozzang')
     # irosuser1 = iros2020registered(iros2020_name="Dongbin Kim", iros2020_email="dongbin.kim@unlv.edu")
@@ -130,9 +131,10 @@ def login(request):
     # irosuser4 = iros2020registered(iros2020_name="Blake Hament", iros2020_email="blakehament@gmail.com")
     # irosuser3.save()
     # irosuser4.save()
-    # for i in range(1554):
+    # for i in range(1553):
     #     icralike = Like(paperid=icra_example['Nr'][i])
     #     icralike.save()
+
 
     return render(request,'./beta/1_login_beta.html')
 
@@ -230,6 +232,13 @@ def tvshow(request):
     TitleList = EpisodeList['Title'].reset_index()
     PDFList = EpisodeList['FN'].reset_index()
     titleNumber = EpisodeList['Nr'].reset_index()
+
+    likeNumber = []
+    for k in titleNumber['Nr']:
+        titleDB = Like.objects.get(paperid=k)
+        likeNumber.append(titleDB.paperlikenumb)
+    print(likeNumber)
+
     EpisodeContext = zip(AuthorList1['Author1'], AuthorList2['Author2'],
                          AuthorList3['Author3'],
                          AuthorList4['Author4'],
@@ -241,9 +250,11 @@ def tvshow(request):
                          AffiliationList4['Affiliation4'],
                          AffiliationList5['Affiliation5'],
                          TitleList['Title'],
-                         PDFList['FN'], titleNumber['Nr'])
+                         PDFList['FN'], titleNumber['Nr'], likeNumber)
     EpisodeCount = EpisodeList.shape[0] + 1
-    # print(titleNumber)
+    #
+    # lol = Like.objects.get(paperid='7')
+    # print(lol.paperid)
 
     #Gold Sponsor Video
     goldSponsorSession = icra_sponsors[(icra_sponsors['Location'] == selectedSession)].reset_index()
