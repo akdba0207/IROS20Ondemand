@@ -4,11 +4,12 @@ from django.db import models
 # Create your models here.
 
 class Like(models.Model):
-    name = models.CharField(max_length=100)
-    paper_id = models.CharField(max_length=100)
+    name = models.CharField(max_length=1553)
+    paperid = models.CharField(max_length=1553)
+    paperlikenumb = models.CharField(max_length=1553)
 
     def __str__(self):
-        return f"name: {self.name}, paper_id: {self.paper_id}"
+        return f"name: {self.name}, paperid: {self.paperid},paperlikenumb: {self.paperlikenumb}"
 
 class ieeeusers(models.Model):
     ieeeusers_id = models.CharField(max_length=100)

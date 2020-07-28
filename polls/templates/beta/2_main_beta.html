@@ -75,13 +75,13 @@
             <div class="carousel-item active">
                 <div style="text-align: right">
                     <div class="carousel-video">
+                        <input type="file" accept="video/*" />
                         <video id="video0" autoplay loop>
-                            <source src="{% static './video/1.mp4'%}" type="video/mp4">
                         </video>
                     </div>
                     <div class="carousel-caption" >
                         <p>PLATINUM SPONSOR VIDEO example</p>
-                        <p id="platinumSponsor"></p>
+                        <p id="platinumSponsor1"></p>
                         <p>Company info goes here</p>
                     </div>
                 </div>
@@ -90,12 +90,11 @@
                 <div style="text-align: right">
                     <div class="carousel-video">
                         <video id="video1" loop>
-                            <source src="{% static './video/2.mp4'%}" type="video/mp4">
                         </video>
                     </div>
                     <div class="carousel-caption">
                         <p>PLATINUM SPONSOR VIDEO example</p>
-                        <p id="platinumSponsor"></p>
+                        <p id="platinumSponsor2"></p>
                         <p>Company info goes here</p>
                     </div>
                 </div>
@@ -104,16 +103,16 @@
                 <div style="text-align: right">
                     <div class="carousel-video">
                         <video id="video2" loop>
-                            <source src="{% static './video/3.mp4'%}" type="video/mp4">
                         </video>
                     </div>
                     <div class="carousel-caption">
                         <p>PLATINUM SPONSOR VIDEO example</p>
-                        <p id="platinumSponsor"></p>
+                        <p id="platinumSponsor3"></p>
                         <p>Company info goes here</p>
                     </div>
                 </div>
             </div>
+
         </div>
         <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -470,37 +469,46 @@
 </script>
 
 <script>
+    videoList = [];
+    videoList.push("{% static 'video/1'%}");
+    videoList.push("{% static 'video/2'%}");
+    videoList.push("{% static 'video/3'%}");
 
-    function enableMute() {
+    console.log(videoList);
 
-        video.muted = true;
+    videoMap = new Map();
+    videoMap.set(videoList[0], "(e.g Waymo)");
+    videoMap.set(videoList[1], "(e.g Google)");
+    videoMap.set(videoList[2], "(e.g Amazon)");
+
+    //for(i = 1; i <= videoList.length; i++)
+    //  indexArr[i-1] = i;
+
+    maxIndex = videoList.length - 1;
+    //playList = [];
+
+    for(i = 0; i < maxIndex; i++){
+        randomIndex = Math.floor(Math.random() * (maxIndex - i + 1)) + i;
+
+        if(randomIndex !== i){
+            temp = videoList[i];
+            videoList[i] = videoList[randomIndex];
+            videoList[randomIndex] = temp;
+        }
     }
-    function disbleMute() {
 
-        video.muted = false;
-    }
-</script>
+    document.getElementById('video0').setAttribute('src', videoList[0]+'.mp4');
+    document.getElementById('video0').load();
+    document.getElementById('video0').play();
+    document.getElementById('platinumSponsor1').innerHTML = videoMap.get(videoList[0]);
 
-<script>
-    var videoStorage = [
-            "{% static 'video/1' %}",
-            "{% static 'video/2' %}",
-            "{% static 'video/3' %}",
-        ],
-        video = document.querySelector('video'),
-        activeVideoUrl = videoStorage[Math.round(Math.random() * (videoStorage.length - 1))];
+    document.getElementById('video1').setAttribute('src', videoList[1]+'.mp4');
+    document.getElementById('video1').load();
+    document.getElementById('platinumSponsor2').innerHTML = videoMap.get(videoList[1]);
 
-    video.setAttribute('src', activeVideoUrl + '.mp4');
-
-    if (activeVideoUrl=="{% static 'video/1' %}"){
-        document.getElementById("platinumSponsor").innerHTML = "(e.g Waymo)";
-    }
-    else if  (activeVideoUrl=="{% static 'video/2' %}"){
-        document.getElementById("platinumSponsor").innerHTML = "(e.g Google)";
-    }
-    else {
-        document.getElementById("platinumSponsor").innerHTML = "(e.g Amazon)";
-    }
+    document.getElementById('video2').setAttribute('src', videoList[2]+'.mp4');
+    document.getElementById('video2').load();
+    document.getElementById('platinumSponsor3').innerHTML = videoMap.get(videoList[2]);
 </script>
 
 </div>

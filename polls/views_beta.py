@@ -126,6 +126,14 @@ def login(request):
     # irosuser2 = iros2020registered(iros2020_name="Dr. Paul Oh", iros2020_email="paul.oh@unlv.edu")
     # irosuser1.save()
     # irosuser2.save()
+    # irosuser3 = iros2020registered(iros2020_name="Gyuho Lee", iros2020_email="leeg3@unlv.nevada.edu")
+    # irosuser4 = iros2020registered(iros2020_name="Blake Hament", iros2020_email="blakehament@gmail.com")
+    # irosuser3.save()
+    # irosuser4.save()
+    # for i in range(1554):
+    #     icralike = Like(paperid=icra_example['Nr'][i])
+    #     icralike.save()
+
     return render(request,'./beta/1_login_beta.html')
 
 #TODO : receive login ID and Password, pass it to main.
@@ -238,10 +246,9 @@ def tvshow(request):
     # print(titleNumber)
 
     #Gold Sponsor Video
-    goldSponsorSession = icra_sponsors[(icra_sponsors['Location']==selectedSession)]
-    goldSponsorName = goldSponsorSession['Name']
-    goldSponsorVideo = goldSponsorSession['Video']
-
+    goldSponsorSession = icra_sponsors[(icra_sponsors['Location'] == selectedSession)].reset_index()
+    goldSponsorName = goldSponsorSession['Name'].reset_index()
+    goldSponsorVideo = goldSponsorSession['Video'].reset_index()
 
     return render(request, './beta/3_pavilionSession_beta.html', {'Pavilion': selectedPavilion,
                                                                   'PavilionNum': selectedPavilionNum,
@@ -250,8 +257,9 @@ def tvshow(request):
                                                                   'EpisodeContext': EpisodeContext,
                                                                   'EpisodeCount': range(1, EpisodeCount),
                                                                   'account':iros2020_emailinput,
-                                                                  'goldSponsorName':goldSponsorName,
-                                                                  'goldSponsorVideo':goldSponsorVideo})
+                                                                  'goldSponsorName':goldSponsorName['Name'],
+                                                                  'goldSponsorVideo':goldSponsorVideo['Video'],
+                                                                  'goldSponsorSession':goldSponsorSession['Location']})
 def specials(request):
     selectedSpecial = request.GET['id']
     selectedGenre = request.GET['id2']
