@@ -24,7 +24,11 @@
     />
     <link rel="stylesheet" href="{% static 'css/index_land0717.css' %}" />
     <link rel="stylesheet" href="{% static 'css/index_header0717.css' %}" />
-
+    <style>
+        .morecontent span {
+            display: none;
+        }
+    </style>
 </head>
 <body>
 <header>
@@ -74,21 +78,21 @@
     </div>
 
 
-    {% for speakerName, speakerBiography, specialEpisodeAbstract in specialEpisodeContext %}
-        <div class="epilisttable" style="width: 80%; height: auto; text-align: center; margin-left: 10%; background-color: grey; margin-bottom:1%">
+    {% for speakerName, speakerBiography, specialEpisodeAbstract, bioLength, abstractLength in specialEpisodeContext %}
+        <div class="epilisttable" style="width: 80%; height: auto; text-align: center; margin-left: 10%; background-color: #323232; margin-bottom:1%">
             <table border="0" cellpadding="0" cellspacing="0" style="background-color: #323232;" >
                 <tr>
                     <td style="width: 30%">
                         <a href="specialsepisode?id={{speakerName}}&id2={{selectedSpecial}}&id3={{ selectedGenre }}">
                             <img src="{% static 'img'%}/{{ selectedGenre }}/{{selectedSpecial}}/{{ speakerName }}.jpg"></a>
                     </td>
-                    <td valign="top" align="left" style="padding-left: 5%; padding-top: 3%;word-break: keep-all">
+                    <td valign="top" align="left" style="padding-left: 5%; padding-top: 3%;word-break: keep-all;width: 70%">
                         <p class="papertitle" style="color: white;">Title : {{ TitleList }}</p>
                         <table class="paperInfo" border="0" cellpadding="0" cellspacing="0" width="100% "style="background-color: #323232; text-align: left;color: white;">
                             <tbody>
                             <tr>
                                 <td style="width: 10%;"><u>Speaker</u></td>
-                                <td><u>{{ speakerName }}</u></td>
+                                <td style="width: 90%"><u>{{ speakerName }}</u></td>
                             </tr>
                             <tr>
                                 <td>&nbsp;</td>
@@ -96,7 +100,7 @@
                             </tr>
                             <tr>
                                 <td style="width: 10%">Biography</td>
-                                <td>{{ speakerBiography }}</td>
+                                <td style="width: 90%"><div class="more">{{ speakerBiography}}</div></td>
                             </tr>
                             <tr>
                                 <td>&nbsp;</td>
@@ -104,7 +108,7 @@
                             </tr>
                             <tr>
                                 <td style="width: 10%">Abstract</td>
-                                <td>{{ specialEpisodeAbstract }}</td>
+                                <td style="width: 90%"><div class="more">{{ specialEpisodeAbstract }}</div></td>
                             </tr>
 
                             </tbody>
@@ -147,36 +151,6 @@
             const query = document.getElementById("search_bar").value;
             document.getElementById("keywordDelivery").href = "searchresult?id="+query;
         }
-
-    </script>
-    <!-- Initialize Swiper -->
-    <script>
-        function thumbsUp(thumbsid)
-        {
-            var active = document.getElementById("thumbs"+thumbsid.toString()).style.color;
-
-            var value = parseInt(document.getElementById(thumbsid).value, 10);
-            value = isNaN(value) ? 0 : value;
-
-
-            if(active == "grey"){
-                value++;
-                active = "Thumbs Down";
-                document.getElementById("thumbs"+thumbsid.toString()).style.color = "blue";
-                document.getElementById(thumbsid).style.color = "blue";
-
-
-            }else{
-                value--;
-                active = "Thumbs Up";
-                document.getElementById("thumbs"+thumbsid.toString()).style.color = "grey";
-                document.getElementById(thumbsid).style.color = "grey";
-            }
-
-            document.getElementById("thumbs"+thumbsid.toString()).value = active;
-            document.getElementById(thumbsid).value = value;
-        }
-
     </script>
     <script>
         var swiper = new Swiper('.swiper-container', {
@@ -215,23 +189,65 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
     <script>
-        $(document).ready(function(){
-            var maxLength = 300;
-            $(".show-read-more").each(function(){
-                var myStr = $(this).text();
-                if($.trim(myStr).length > maxLength){
-                    var newStr = myStr.substring(0, maxLength);
-                    var removedStr = myStr.substring(maxLength, $.trim(myStr).length);
-                    $(this).empty().html(newStr);
-                    $(this).append(' <a href="javascript:void(0);" class="read-more">read more...</a>');
-                    $(this).append('<span class="more-text">' + removedStr + '</span>');
+        $(document).ready(function() {
+            // Configure/customize these variables.
+            var showChar = 200;  // How many characters are shown by default
+            var ellipsestext = "...";
+            var moretext = "Show more";
+            var lesstext = "Show less";
+
+            $('.more').each(function() {
+                var content = $(this).html();
+
+                if(content.length > showChar) {
+                    var c = content.substr(0, showChar);
+                    var h = content.substr(showChar, content.length - showChar);
+                    var html = c + '<span class="moreellipses">' + ellipsestext+ '&nbsp;</span><span class="morecontent"><span>' + h + '</span>&nbsp;&nbsp;<a href="" class="morelink">' + moretext + '</a></span>';
+                    $(this).html(html);
                 }
             });
-            $(".read-more").click(function(){
-                $(this).siblings(".more-text").contents().unwrap();
-                $(this).remove();
+
+            $(".morelink").click(function(){
+                if($(this).hasClass("less")) {
+                    $(this).removeClass("less");
+                    $(this).html(moretext);
+                } else {
+                    $(this).addClass("less");
+                    $(this).html(lesstext);
+                }
+                $(this).parent().prev().toggle();
+                $(this).prev().toggle();
+                return false;
             });
         });
+    </script>
+    <script>
+        function thumbsUp(thumbsid)
+        {
+            var active = document.getElementById("thumbs"+thumbsid.toString()).style.color;
+
+            var value = parseInt(document.getElementById(thumbsid).value, 10);
+            value = isNaN(value) ? 0 : value;
+
+
+            if(active == "grey"){
+                value++;
+                active = "Thumbs Down";
+                document.getElementById("thumbs"+thumbsid.toString()).style.color = "blue";
+                document.getElementById(thumbsid).style.color = "blue";
+
+
+            }else{
+                value--;
+                active = "Thumbs Up";
+                document.getElementById("thumbs"+thumbsid.toString()).style.color = "grey";
+                document.getElementById(thumbsid).style.color = "grey";
+            }
+
+            document.getElementById("thumbs"+thumbsid.toString()).value = active;
+            document.getElementById(thumbsid).value = value;
+        }
+
     </script>
 </div>
 </body>

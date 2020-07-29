@@ -79,8 +79,8 @@
                             <video id="video0" width="90%" autoplay loop >
                                 <source src="{% static './video'%}/Gold Sponsor/{{ goldSponsorVideo.0 }}.mp4" type="video/mp4">
                             </video>
-                            <div style="position: absolute; z-index: 1;color: white; bottom: 0; text-align: center;">
-                                <p>Gold Sponsor : {{ goldSponsorName.0 }}</p>
+                            <div style="position: absolute; z-index: 1;color: yellow; bottom: 0; text-align: center; font-size: 200%; background-color: rgba(0,0,0,0.7); width: 90%">
+                                <p>Sample Gold Partner Video Placement</p>
                             </div>
                         </div>
                     </td>
@@ -99,7 +99,7 @@
     </div>
 
 
-    {% for AuthorList1, AuthorList2, AuthorList3, AuthorList4,AuthorList5,AuthorList6,AffiliationList1,AffiliationList2,AffiliationList3,AffiliationList4,AffiliationList5,TitleList, PDFList, titleNumber, likeNumber in EpisodeContext %}
+    {% for AuthorList1, AuthorList2, AuthorList3, AuthorList4,AuthorList5,AuthorList6,AffiliationList1,AffiliationList2,AffiliationList3,AffiliationList4,AffiliationList5,TitleList, PDFList, titleNumber in EpisodeContext %}
         <div class="epilisttable" style="width: 80%; height: auto; text-align: center; margin-left: 10%; background-color: grey; margin-bottom:1%">
             <table border="0" cellpadding="0" cellspacing="0" style="background-color: #323232;" >
                 <tr>
@@ -183,7 +183,7 @@
             <div class="swiper-wrapper">
                 {% for j in SessionList %}
                     <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion }}&id3={{PavilionNum}}" style="color:white; text-decoration: none;">
-                        <img src="{% static 'img'%}/pavilion{{ PavilionNum|add:1 }}/{{ j }}.jpg">
+                        <img src="{% static 'img'%}/pavilion{{ PavilionNum }}/{{ j }}.jpg">
                         <div class="onimg-caption">{{ j }}
                         </div>
                     </a>

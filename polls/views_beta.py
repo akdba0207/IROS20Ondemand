@@ -203,15 +203,15 @@ def tvshow(request):
     global iros2020_emailinput
 
 
-    if selectedPavilion == Cartegories['Pavilion'][1]:
+    if selectedPavilion == Cartegories['Pavilion'][0]:
         selectedSessionList = Sessions1
-    elif selectedPavilion == Cartegories['Pavilion'][2]:
+    elif selectedPavilion == Cartegories['Pavilion'][1]:
         selectedSessionList = Sessions2
-    elif selectedPavilion == Cartegories['Pavilion'][3]:
+    elif selectedPavilion == Cartegories['Pavilion'][2]:
         selectedSessionList = Sessions3
-    elif selectedPavilion == Cartegories['Pavilion'][4]:
+    elif selectedPavilion == Cartegories['Pavilion'][3]:
         selectedSessionList = Sessions4
-    elif selectedPavilion == Cartegories['Pavilion'][5]:
+    elif selectedPavilion == Cartegories['Pavilion'][4]:
         selectedSessionList = Sessions5
     else:
         selectedSessionList = []
@@ -233,11 +233,11 @@ def tvshow(request):
     PDFList = EpisodeList['FN'].reset_index()
     titleNumber = EpisodeList['Nr'].reset_index()
 
-    likeNumber = []
-    for k in titleNumber['Nr']:
-        titleDB = Like.objects.get(paperid=k)
-        likeNumber.append(titleDB.paperlikenumb)
-    print(likeNumber)
+    # likeNumber = []
+    # for k in titleNumber['Nr']:
+    #     titleDB = Like.objects.get(paperid=k)
+    #     likeNumber.append(titleDB.paperlikenumb)
+    # print(likeNumber)
 
     EpisodeContext = zip(AuthorList1['Author1'], AuthorList2['Author2'],
                          AuthorList3['Author3'],
@@ -250,12 +250,13 @@ def tvshow(request):
                          AffiliationList4['Affiliation4'],
                          AffiliationList5['Affiliation5'],
                          TitleList['Title'],
-                         PDFList['FN'], titleNumber['Nr'], likeNumber)
+                         PDFList['FN'], titleNumber['Nr'])
     EpisodeCount = EpisodeList.shape[0] + 1
     #
     # lol = Like.objects.get(paperid='7')
     # print(lol.paperid)
 
+    print(selectedSessionList)
     #Gold Sponsor Video
     goldSponsorSession = icra_sponsors[(icra_sponsors['Location'] == selectedSession)].reset_index()
     goldSponsorName = goldSponsorSession['Name'].reset_index()
@@ -563,4 +564,4 @@ def searchresult(request):
 #My List
 def mylist(request):
     global iros2020_emailinput
-    return render(request,'./beta/7_myList_beta.html.html',{'account':iros2020_emailinput})
+    return render(request,'./beta/7_myList_beta.html',{'account':iros2020_emailinput})

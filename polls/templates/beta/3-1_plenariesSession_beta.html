@@ -79,20 +79,20 @@
 
 
     {% for speakerName, speakerBiography, specialEpisodeAbstract, bioLength, abstractLength in specialEpisodeContext %}
-        <div class="epilisttable" style="width: 80%; height: auto; text-align: center; margin-left: 10%; background-color: grey; margin-bottom:1%">
+        <div class="epilisttable" style="width: 80%; height: auto; text-align: center; margin-left: 10%; background-color: #323232; margin-bottom:1%">
             <table border="0" cellpadding="0" cellspacing="0" style="background-color: #323232;" >
                 <tr>
                     <td style="width: 30%">
                         <a href="specialsepisode?id={{speakerName}}&id2={{selectedSpecial}}&id3={{ selectedGenre }}">
                             <img src="{% static 'img'%}/{{ selectedGenre }}/{{selectedSpecial}}/{{ speakerName }}.jpg"></a>
                     </td>
-                    <td valign="top" align="left" style="padding-left: 5%; padding-top: 3%;word-break: keep-all">
+                    <td valign="top" align="left" style="padding-left: 5%; padding-top: 3%;word-break: keep-all;width: 70%">
                         <p class="papertitle" style="color: white;">Title : {{ TitleList }}</p>
                         <table class="paperInfo" border="0" cellpadding="0" cellspacing="0" width="100% "style="background-color: #323232; text-align: left;color: white;">
                             <tbody>
                             <tr>
                                 <td style="width: 10%;"><u>Speaker</u></td>
-                                <td><u>{{ speakerName }}</u></td>
+                                <td style="width: 90%"><u>{{ speakerName }}</u></td>
                             </tr>
                             <tr>
                                 <td>&nbsp;</td>
@@ -100,7 +100,7 @@
                             </tr>
                             <tr>
                                 <td style="width: 10%">Biography</td>
-                                <td><div class="more">{{ speakerBiography}}</div></td>
+                                <td style="width: 90%"><div class="more">{{ speakerBiography}}</div></td>
                             </tr>
                             <tr>
                                 <td>&nbsp;</td>
@@ -108,7 +108,7 @@
                             </tr>
                             <tr>
                                 <td style="width: 10%">Abstract</td>
-                                <td>{{ specialEpisodeAbstract }}</td>
+                                <td style="width: 90%"><div class="more">{{ specialEpisodeAbstract }}</div></td>
                             </tr>
 
                             </tbody>
@@ -191,7 +191,7 @@
     <script>
         $(document).ready(function() {
             // Configure/customize these variables.
-            var showChar = 100;  // How many characters are shown by default
+            var showChar = 200;  // How many characters are shown by default
             var ellipsestext = "...";
             var moretext = "Show more";
             var lesstext = "Show less";
