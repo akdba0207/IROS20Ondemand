@@ -153,7 +153,19 @@ h3 {
     width: 640px;
     float: right;
 }
+.commentbox {
+    width: 40%;
+    height: 50px;
+    padding: 10px;
+    background-color: #323232;
+    color:white;
+}
 
+.comment{
+    text-align: left;
+    color:white;
+    width: 40%;
+}
 .epilisttable i{
     font-size: 200%;
 }

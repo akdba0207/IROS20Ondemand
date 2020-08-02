@@ -32,13 +32,14 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'polls',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'polls',
+
 ]
 
 MIDDLEWARE = [
@@ -91,6 +92,9 @@ DATABASES = {
         'PASSWORD': 'dasldrchubo1325',
         'HOST': 'iros2020ondemand.iros2020.org',
         'PORT': '',
+        'TEST': {
+            'NAME': 'iros2020_ondemand',
+        },
     }
 }
 
@@ -140,3 +144,4 @@ STATICFILES_DIRS = (
 )
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
