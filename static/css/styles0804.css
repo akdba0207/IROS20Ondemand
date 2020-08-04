@@ -170,6 +170,17 @@ h3 {
     font-size: 200%;
 }
 
+.likeButton{
+    outline: none;
+    background-color:transparent;
+    border-style: none;
+}
+.likeButton:focus{
+    outline: none;
+    background-color:transparent;
+    border-style: none;
+}
+
 .thumbsuptext{
     font-size:100%;
     width:50px;
@@ -188,9 +199,7 @@ h3 {
 .paperInfo{
     font-size: 100%;
 }
-.likeButton{
-    font-size: 30px;
-}
+
 .gobackButton{
     font-size: 100%;
 }

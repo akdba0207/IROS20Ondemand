@@ -5,7 +5,7 @@
 
 from django.http import HttpResponse
 from django.shortcuts import render
-from polls.models import Like, ieeeusers, iros2020registered
+from polls.models import Users
 import pandas as pd
 import os
 import numpy as np
@@ -17,7 +17,7 @@ iros2020registered_email=[]
 iros2020registered_name=[]
 mydict = dict()
 
-for p in iros2020registered.objects.raw('SELECT * FROM polls_iros2020registered'):
+for p in Users.objects.raw('SELECT * FROM polls_users'):
     iros2020registered_email.append(p.iros2020_email)
     iros2020registered_name.append(p.iros2020_name)
     mydict[p.iros2020_email] = p.iros2020_name
