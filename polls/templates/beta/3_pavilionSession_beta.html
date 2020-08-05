@@ -170,7 +170,7 @@
                         <form action="tvshow?id={{Session}}&id2={{ Pavilion }}&id3={{PavilionNum}}" method="post">
                             {% csrf_token %}
                             {% if paperLikeButtonColor == 1 %}
-                                <button class="likeButton" type="submit" style="margin: auto;background-color: #323232 ;">
+                                <button class="likeButton" type="submit" style="margin: auto;background-color: #323232 ;" onclick="">
                                     <i id="thumbs{{titleNumber}}" class="fa fa-thumbs-up" style="color:blue; font-size: 30px" onClick="thumbsUp({{ titleNumber }})"></i>
                                     <input type="text" id="{{ titleNumber }}" value="{{ paperLikeCount }}" class="thumbsuptext" name="likeCount"/>
                                     <input type="hidden" name="paperNumber" value="{{ titleNumber }}">
@@ -208,7 +208,6 @@
             <div class="swiper-button-prev"></div>
         </div>
     </div>
-
 
     <script src="{% static 'js/index_header.js' %}"></script>
     <script src="{% static 'package/js/swiper.min.js' %}"></script>

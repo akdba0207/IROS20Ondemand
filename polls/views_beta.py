@@ -5,6 +5,7 @@
 
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
+from django.views.decorators.csrf import csrf_exempt
 from polls.models import Users, Papers
 import pandas as pd
 import os
@@ -123,6 +124,13 @@ WorkshopsSession = sorted(list(set(Workshops['Title'])))
 #########################################################################################################
 #########################################################################################################
 #########################################################################################################
+@csrf_exempt
+def posttest(request):
+    if request.is_ajax():
+        print(request.POST['name'])
+
+    return render(request, 'posttest.html')
+
 
 #Login
 def login(request):
