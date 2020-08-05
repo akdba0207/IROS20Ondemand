@@ -98,11 +98,20 @@ Sessions3 = sorted(list(set(Pavilion3['Session title'])))
 Sessions4 = sorted(list(set(Pavilion4['Session title'])))
 Sessions5 = sorted(list(set(Pavilion5['Session title'])))
 
+# totalSessions = zip(Sessions1, Sessions2, Sessions3, Sessions4, Sessions5)
+#
+# pavilionDict1, pavilionDict2, pavilionDict3, pavilionDict4, pavilionDict5 = dict()
+# for a,b,c,d,e in totalSessions:
+#     pavilionDict1[a] = Cartegories['Pavilion'][0]
+#     pavilionDict2[b] = Cartegories['Pavilion'][1]
+#     pavilionDict3[c] = Cartegories['Pavilion'][2]
+#     pavilionDict4[d] = Cartegories['Pavilion'][3]
+#     pavilionDict5[e] = Cartegories['Pavilion'][4]
+
 # Specials
 Specials = icra_specials[(icra_specials['Genre']=='Plenaries')
                          |(icra_specials['Genre']=='Keynotes')]
 SpecialsSession = sorted(list(set(Specials['Genre'])))
-
 
 #Workshops
 Workshops = icra_workshops[(icra_workshops['Workshop Number']==4)|
@@ -228,7 +237,6 @@ def tvshow(request):
     PDFList = EpisodeList['FN'].reset_index()
     titleNumber = EpisodeList['Nr'].reset_index()
 
-    print(selectedSessionList)
     #Gold Sponsor Video
     goldSponsorSession = icra_sponsors[(icra_sponsors['Location'] == selectedSession)].reset_index()
     goldSponsorName = goldSponsorSession['Name'].reset_index()
@@ -244,7 +252,7 @@ def tvshow(request):
                 buttonColor = 0
             paperLikeButtonColor.append(buttonColor)
             paperLikeCount.append(paper.like_users.count())
-        print(paperLikeCount)
+        # print(paperLikeCount)
         EpisodeContext = zip(AuthorList1['Author1'], AuthorList2['Author2'],
                              AuthorList3['Author3'],
                              AuthorList4['Author4'],
@@ -269,8 +277,8 @@ def tvshow(request):
                                                                       })
     elif request.method == "POST":
         clickedPaperNumber = request.POST['paperNumber']
-        print(titleNumber['Nr'])
-        print(clickedPaperNumber)
+        # print(titleNumber['Nr'])
+        # print(clickedPaperNumber)
         paperLikeCount = []
         paperLikeButtonColor = []
         for paperNr in titleNumber['Nr']:
@@ -380,8 +388,6 @@ def workshops(request):
                                                                    'workshopOrganizers':workshopOrganizers,
                                                                    'account':iros2020_emailinput})
 
-
-
 #########################################################################################################
 #########################################################################################################
 #########################################################################################################
@@ -393,6 +399,8 @@ def episode(request):
     selectedTitle = request.GET['id']
     selectedSession = request.GET['id2']
     selectedPavilion = request.GET['id3']
+    selectedPavilionNum = Cartegories[Cartegories['Pavilion'] == selectedPavilion].index.values + 1
+
     findVideo = icra_example[(icra_example['Title'] == selectedTitle)]
     VideoList = findVideo['VID'].reset_index()
     selectedNumber = findVideo['Nr'].reset_index()
@@ -403,7 +411,7 @@ def episode(request):
     for i in range(1, 12):
         main2 = similarPaper.append(icra_example[(icra_example['Nr'] == int(suggestEpisodeNum[i]))])
         similarPaper = main2
-
+    # print(similarPaper)
     AuthorList1 = similarPaper['Author1'].reset_index()
     AuthorList2 = similarPaper['Author2'].reset_index()
     AuthorList3 = similarPaper['Author3'].reset_index()
@@ -415,6 +423,9 @@ def episode(request):
     AffiliationList3 = similarPaper['Affiliation3'].reset_index()
     AffiliationList4 = similarPaper['Affiliation4'].reset_index()
     AffiliationList5 = similarPaper['Affiliation5'].reset_index()
+
+    # SessionTitle = similarPaper['Session title'].reset_index()
+    # print(SessionTitle)
 
     TitleList = similarPaper['Title'].reset_index()
     PDFList = similarPaper['FN'].reset_index()
@@ -457,6 +468,7 @@ def episode(request):
                                                                              'Title': selectedTitle,
                                                                              'Session': selectedSession,
                                                                              'Pavilion': selectedPavilion,
+                                                                             'PavilionNum':selectedPavilionNum,
                                                                              'EpisodeContext': resultList,
                                                                              'SelectedPaperNumber': selectedNumber['Nr'].iloc[0],
                                                                              'account':iros2020_emailinput,
@@ -515,6 +527,7 @@ def episode(request):
                                                                              'Title': selectedTitle,
                                                                              'Session': selectedSession,
                                                                              'Pavilion': selectedPavilion,
+                                                                             'PavilionNum': selectedPavilionNum,
                                                                              'EpisodeContext': resultList,
                                                                              'SelectedPaperNumber':
                                                                                  selectedNumber['Nr'].iloc[0],
@@ -538,7 +551,7 @@ def specialsepisode(request):
                                 speakerBiography['Bio'],
                                 specialEpisodeAbstract['Abstract']
                                 )
-    print(specialVideo['Video'])
+    # print(specialVideo['Video'])
     return render(request,'./beta/4-1_plenariesSessionEpisode_beta.html',{'specialVideo':specialVideo['Video'],
                                                                           'selectedSpeaker':selectedSpeaker,
                                                                           'selectedSpecial':selectedSpecial,
@@ -630,7 +643,7 @@ def suggestion(request):
                      TitleList['Title'],
                      PDFList['FN'], titleNumber['Nr'], suggestEpisodeNum)
 
-    return render(request, './beta/4_pavilionSessionEpisode_beta.html', {'VideoList': VideoList['VID'],
+    return render(request, './beta/4-3_suggestedEpisode_beta.html', {'VideoList': VideoList['VID'],
                                                                          'Title': selectedTitle,
                                                                          'EpisodeContext': resultList,
                                                                          'account':iros2020_emailinput})
