@@ -14,5 +14,6 @@ urlpatterns = [
     path('workshops', views_beta.workshops),
     path('workshopsepisode', views_beta.workshopsepisode),
     path('main', views_beta.main),
-    path('posttest', views_beta.posttest, name='posttest')
+    # path('posttest', views_beta.posttest, name='posttest')
+    path('post_like', views_beta.post_like, name='post_like')
 ]
