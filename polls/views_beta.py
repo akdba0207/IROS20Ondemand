@@ -6,7 +6,7 @@ import json
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
-from polls.models import Users, Papers
+from polls.models import Users, Papers, Comments
 import pandas as pd
 import os
 import numpy as np
@@ -342,6 +342,7 @@ def specials(request):
     speakerBiography = specialEpisodeList['Bio'].reset_index()
     specialEpisodeAbstract = specialEpisodeList['Abstract'].reset_index()
     specialEpisodeVideo = specialEpisodeList['Video'].reset_index()
+    specialEpisodeNumber = specialEpisodeList['Nr'].reset_index()
     bioLength = []
     abstractLength = []
     for i in speakerBiography['Bio']:
@@ -353,7 +354,8 @@ def specials(request):
                                 speakerBiography['Bio'],
                                 specialEpisodeAbstract['Abstract'],
                                 bioLength,
-                                abstractLength
+                                abstractLength,
+                                specialEpisodeNumber['Nr']
                                 )
     specialEpisodeCount = specialEpisodeList.shape[0]
 
@@ -402,36 +404,6 @@ def workshops(request):
 #########################################################################################################
 #########################################################################################################
 # Episodes : Pavilion, Specials, Workshops
-
-@csrf_exempt
-def post_like(request):
-    global iros2020_emailinput
-    current_account = iros2020registered_db.get(iros2020_email=iros2020_emailinput)
-
-    paperLikeCount = []
-    paperLikeButtonColor = []
-
-    if request.is_ajax:
-        clickedPaperNumber = int(request.POST['paperNumber'])
-        paper = get_object_or_404(Papers, paper_id=clickedPaperNumber)
-
-        if current_account in paper.like_users.all():
-            paper.like_users.remove(current_account)
-            buttonColor = "grey"
-        else:
-            paper.like_users.add(current_account)
-            buttonColor = "blue"
-
-        paperLikeButtonColor.append(buttonColor)
-        paperLikeCount.append(paper.like_users.count())
-
-        response = {'likeButtonColor': buttonColor, 'likeCount': paperLikeCount}
-
-        return HttpResponse(
-            json.dumps(response),
-            content_type="application/json"
-        )
-
 def episode(request):
     global iros2020_emailinput
     current_account = iros2020registered_db.get(iros2020_email=iros2020_emailinput)
@@ -470,6 +442,13 @@ def episode(request):
     TitleList = similarPaper['Title'].reset_index()
     PDFList = similarPaper['FN'].reset_index()
     titleNumber = similarPaper['Nr'].reset_index()
+
+    # Comments load area
+    lengthComments = Comments.objects.filter(paper_id=selectedNumber['Nr'].iloc[0]).count()
+
+    arrayComments = []
+    for ac in range(1,lengthComments):
+        arrayComments.append(Comments.objects.filter(paper_id=selectedNumber['Nr'].iloc[0])[ac].comment)
 
     paperLikeCount = []
     paperLikeButtonColor = []
@@ -513,66 +492,10 @@ def episode(request):
                                                                                  selectedNumber['Nr'].iloc[0],
                                                                              'account': iros2020_emailinput,
                                                                              'selectedPaperLikeButtonColor': selectedPaperLikeButtonColor,
-                                                                             'selectedPaperLikeCount': selectedPaperLikeCount})
-    elif request.method == "POST":
-        clickedPaperNumber = int(request.POST['paperNumber'])
-        if clickedPaperNumber == selectedNumber['Nr'].iloc[0]:
-            selectedPaper = get_object_or_404(Papers, paper_id=selectedNumber['Nr'].iloc[0])
-            if current_account in selectedPaper.like_users.all():
-                selectedPaper.like_users.remove(current_account)
-                selectedPaperLikeButtonColor = 0
-            else:
-                selectedPaper.like_users.add(current_account)
-                selectedPaperLikeButtonColor = 1
-            selectedPaperLikeCount = selectedPaper.like_users.count()
-        else:
-            selectedPaper = get_object_or_404(Papers, paper_id=selectedNumber['Nr'].iloc[0])
-            if current_account in selectedPaper.like_users.all():
-                selectedPaperLikeButtonColor = 1
-            else:
-                selectedPaperLikeButtonColor = 0
-            selectedPaperLikeCount = selectedPaper.like_users.count()
+                                                                             'selectedPaperLikeCount': selectedPaperLikeCount,
+                                                                             'arrayComments':arrayComments,
+                                                                             'lengthComments':lengthComments})
 
-        for paperNr in titleNumber['Nr']:
-            paper = get_object_or_404(Papers, paper_id=paperNr)
-            if paperNr == clickedPaperNumber:
-                if current_account in paper.like_users.all():
-                    paper.like_users.remove(current_account)
-                    buttonColor = 0
-                else:
-                    paper.like_users.add(current_account)
-                    buttonColor = 1
-            else:
-                if current_account in paper.like_users.all():
-                    buttonColor = 1
-                else:
-                    buttonColor = 0
-            paperLikeButtonColor.append(buttonColor)
-            paperLikeCount.append(paper.like_users.count())
-
-        resultList = zip(AuthorList1['Author1'], AuthorList2['Author2'],
-                         AuthorList3['Author3'],
-                         AuthorList4['Author4'],
-                         AuthorList5['Author5'],
-                         AuthorList6['Author6'],
-                         AffiliationList1['Affiliation1'],
-                         AffiliationList2['Affiliation2'],
-                         AffiliationList3['Affiliation3'],
-                         AffiliationList4['Affiliation4'],
-                         AffiliationList5['Affiliation5'],
-                         TitleList['Title'],
-                         PDFList['FN'], titleNumber['Nr'], suggestEpisodeNum, paperLikeCount, paperLikeButtonColor)
-        return render(request, './beta/4_pavilionSessionEpisode_beta.html', {'VideoList': VideoList['VID'],
-                                                                             'Title': selectedTitle,
-                                                                             'Session': selectedSession,
-                                                                             'Pavilion': selectedPavilion,
-                                                                             'PavilionNum': selectedPavilionNum,
-                                                                             'EpisodeContext': resultList,
-                                                                             'SelectedPaperNumber':
-                                                                                 selectedNumber['Nr'].iloc[0],
-                                                                             'account': iros2020_emailinput,
-                                                                             'selectedPaperLikeButtonColor': selectedPaperLikeButtonColor,
-                                                                             'selectedPaperLikeCount': selectedPaperLikeCount})
 
 
 def specialsepisode(request):
@@ -753,3 +676,58 @@ def searchresult(request):
 def mylist(request):
     global iros2020_emailinput
     return render(request, './beta/7_myList_beta.html', {'account': iros2020_emailinput})
+
+
+#########################################################################################################
+#########################################################################################################
+#########################################################################################################
+# Like Function
+@csrf_exempt
+def post_like(request):
+    global iros2020_emailinput
+    current_account = iros2020registered_db.get(iros2020_email=iros2020_emailinput)
+
+    paperLikeCount = []
+    paperLikeButtonColor = []
+
+    if request.is_ajax:
+        clickedPaperNumber = int(request.POST['paperNumber'])
+        paper = get_object_or_404(Papers, paper_id=clickedPaperNumber)
+
+        if current_account in paper.like_users.all():
+            paper.like_users.remove(current_account)
+            buttonColor = "grey"
+        else:
+            paper.like_users.add(current_account)
+            buttonColor = "yellow"
+
+        paperLikeButtonColor.append(buttonColor)
+        paperLikeCount.append(paper.like_users.count())
+
+        response = {'likeButtonColor': buttonColor, 'likeCount': paperLikeCount}
+
+        return HttpResponse(
+            json.dumps(response),
+            content_type="application/json"
+        )
+
+@csrf_exempt
+def add_comment(request):
+    global iros2020_emailinput
+    current_account = iros2020registered_db.get(iros2020_email=iros2020_emailinput)
+    # print(current_account)
+    # Comments load area
+    if request.is_ajax:
+        clickedPaperNumber = int(request.POST['paperNumber'])
+        c1 = Comments(paper_id=clickedPaperNumber, comment= request.POST['comment'])
+        c1.save()
+        c1.comment_users.add(current_account)
+
+        lengthComments = Comments.objects.filter(paper_id=clickedPaperNumber).count()
+
+        response = {'commentAdded': str(lengthComments-1) + " : " + request.POST['comment'],'lengthComments':lengthComments}
+
+    return HttpResponse(
+        json.dumps(response),
+        content_type="application/json"
+    )

@@ -154,7 +154,7 @@ h3 {
     float: right;
 }
 .commentbox {
-    width: 40%;
+    width: 80%;
     height: 50px;
     padding: 10px;
     background-color: #323232;
@@ -164,7 +164,7 @@ h3 {
 .comment{
     text-align: left;
     color:white;
-    width: 40%;
+    width: 90%;
 }
 .epilisttable i{
     font-size: 200%;
@@ -211,6 +211,14 @@ h3 {
 .episodeTitle{
     font-size: 24px;
     padding-top: 5%;
+}
+.suggestlisttable{
+    width: 80%;
+    height: auto;
+    text-align: center;
+    margin-left: 10%;
+    background-color: #1F1F1F;
+    margin-bottom:1%
 }
 
 @media only screen and (max-width: 400px){

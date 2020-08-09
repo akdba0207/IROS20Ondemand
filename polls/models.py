@@ -19,14 +19,8 @@ class Papers(models.Model):
     def __str__(self):
         return f"paper_id:{self.paper_id}"
 
+class Comments(models.Model):
+    paper_id = models.PositiveIntegerField(default=0, null=True)
+    comment = models.TextField(max_length=1500)
+    comment_users = models.ManyToManyField(Users, blank=True, related_name='comment_papers')
 
-# class Likes(models.Model):
-#     paper_id = models.PositiveIntegerField()
-#     memberEmail = models.CharField(max_length=140)
-
-
-# class Comments(models.Model):
-#     paper_id = models.PositiveIntegerField()
-#     name = models.CharField(max_length=140)
-#     member = models.CharField(max_length=140)
-#     comment = models.CharField(max_length=140)
