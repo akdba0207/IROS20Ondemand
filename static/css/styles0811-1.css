@@ -230,6 +230,9 @@ h3 {
     background-color: #1F1F1F;
     margin-bottom:1%
 }
+.morecontent span {
+    display: none;
+}
 
 @media only screen and (max-width: 400px){
 

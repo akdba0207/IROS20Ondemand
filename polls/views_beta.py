@@ -9,7 +9,7 @@ from django.views.decorators.csrf import csrf_exempt
 from polls.models import Users, Papers, Comments
 import pandas as pd
 import os
-import numpy as np
+import math
 
 from polls.search import searchByKeyword, findSimilarTopic
 
@@ -651,7 +651,7 @@ def workshopsepisode(request):
         newNumb = int(workshopNumber) * 100 + q
         workshopEpisodeNumber.append(newNumb)
 
-    selectedWorkshopEpisodeNumber = int(workshopNumber) * 100 + int(selectedSpeakerNumber)
+    selectedWorkshopEpisodeNumber = int(workshopNumber) * 100 + int(selectedSpeakerNumber) - 1
 
     # Comments load area
     lengthComments = Comments.objects.filter(paper_id=selectedWorkshopEpisodeNumber).count()
@@ -695,8 +695,7 @@ def workshopsepisode(request):
 
     WorkshopsContext = zip(Speaker, Institution, TalkTitle, workshopEpisodeNumber, workshopLikeButtonColor,
                            workshopLikeCount, workshopSaveButtonStatus)
-    print(selectedWorkshopEpisodeNumber)
-    print(workshopEpisodeNumber)
+
     return render(request, './beta/4-2_workshopsSessionEpisode_beta.html',
                   {'workshopsVideo': workshopsVideo['Video ' + str(selectedSpeakerNumber)],
                    'workshopsTalkTitle': workshopsTalkTitle['Talk Title ' + str(selectedSpeakerNumber)],
@@ -755,16 +754,27 @@ def searchresult(request):
 
         paperLikeCount = []
         paperLikeButtonColor = []
+        paperSaveButtonStatus = []
+
         if request.method == "GET":
 
             for titleNr in titleNumber['Nr']:
                 paper = get_object_or_404(Papers, paper_id=titleNr)
+
                 if current_account in paper.like_users.all():
                     buttonColor = 1
                 else:
                     buttonColor = 0
+
                 paperLikeButtonColor.append(buttonColor)
                 paperLikeCount.append(paper.like_users.count())
+
+                if current_account in paper.save_users.all():
+                    buttonStatus = 1
+                else:
+                    buttonStatus = 0
+
+                paperSaveButtonStatus.append(buttonStatus)
 
             resultList = zip(AuthorList1['Author1'], AuthorList2['Author2'],
                              AuthorList3['Author3'],
@@ -777,7 +787,7 @@ def searchresult(request):
                              AffiliationList4['Affiliation4'],
                              AffiliationList5['Affiliation5'],
                              TitleList['Title'],
-                             PDFList['FN'], titleNumber['Nr'], paperLikeCount, paperLikeButtonColor, SessionList['Session title'])
+                             PDFList['FN'], titleNumber['Nr'], paperLikeCount, paperLikeButtonColor, paperSaveButtonStatus, SessionList['Session title'])
 
         return render(request, './beta/5_searchResult_beta.html', {'EpisodeContext': resultList,
                                                                    'account': iros2020_emailinput})
@@ -786,10 +796,89 @@ def searchresult(request):
 #########################################################################################################
 #########################################################################################################
 #########################################################################################################
+
 # My List
 def mylist(request):
     global iros2020_emailinput
-    return render(request, './beta/7_myList_beta.html', {'account': iros2020_emailinput})
+    user = get_object_or_404(Users, iros2020_email=iros2020_emailinput)
+    mylistQuery = user.save_papers.all()
+    mylistNumber = mylistQuery.count()
+
+    #Arrange Numbers by Genres
+    mylistEpisodeNumber = []
+    mylistSpecialNumber = []
+    mylistWorkshopsNumber = []
+    for i in range(mylistNumber):
+        if mylistQuery[i].paper_id < 10000:
+            mylistEpisodeNumber.append(mylistQuery[i].paper_id)
+        elif mylistQuery[i].paper_id < 20000:
+            mylistSpecialNumber.append(mylistQuery[i].paper_id)
+        else:
+            mylistWorkshopsNumber.append(mylistQuery[i].paper_id)
+
+    # MyList Episodes
+    if len(mylistEpisodeNumber) != 0:
+        mylistEpisodeTitle = []
+        mylistEpisodeSession = []
+        for i in range(len(mylistEpisodeNumber)):
+            mylistEpisode = icra_example[(icra_example['Nr'] == int(mylistEpisodeNumber[i]))].reset_index()
+            mylistEpisodeSession.append(mylistEpisode['Session title'].iloc[0])
+            mylistEpisodeTitle.append(mylistEpisode['Title'].iloc[0])
+
+        mylistEpisodeContext = zip(mylistEpisodeTitle, mylistEpisodeSession)
+    else:
+        mylistEpisodeContext = []
+
+
+    # MyList Specials
+    if len(mylistSpecialNumber) != 0:
+
+        mylistSpecialSpeaker = []
+        mylistSpecialSpecial = []
+        mylistSpecialGenre = []
+        for j in range(len(mylistSpecialNumber)):
+            mylistSpecial = icra_specials[(icra_specials['Nr'] == int(mylistSpecialNumber[j]))].reset_index()
+            mylistSpecialSpeaker.append(mylistSpecial['Speaker'].iloc[0])
+            mylistSpecialSpecial.append(mylistSpecial['Genre'].iloc[0])
+            mylistSpecialGenre.append('Specials')
+
+        mylistSpecialContext = zip(mylistSpecialSpeaker, mylistSpecialSpecial, mylistSpecialGenre)
+    else:
+        mylistSpecialContext = []
+
+    # MyList Workshops
+    if len(mylistWorkshopsNumber) != 0:
+        workshopNumber = []
+        speakerNumber = []
+        for q in mylistWorkshopsNumber:
+            workshopNumber.append(math.trunc(q/100))
+            speakerNumber.append(q - math.trunc(q/100)*100 + 1)
+
+        mylistWorkshopsSpeaker = []
+        mylistWorkshopsWorkshop = []
+        mylistWorkshopsGenre = []
+        mylistWorkshopsSpeakerNumber = speakerNumber
+        mylistWorkshopsTalkTitle = []
+        for w in range(len(mylistWorkshopsNumber)):
+            mylistWorkshops = icra_workshops[(icra_workshops['Workshop Number'] == workshopNumber[w])].reset_index()
+            mylistWorkshopsSpeaker.append(mylistWorkshops['Speaker ' + str(speakerNumber[w])].iloc[0])
+            mylistWorkshopsWorkshop.append(mylistWorkshops['Title'].iloc[0])
+            mylistWorkshopsGenre.append('Workshops')
+            mylistWorkshopsTalkTitle.append(mylistWorkshops['Talk Title ' + str(speakerNumber[w])].iloc[0])
+
+        mylistWorkshopsContext = zip(mylistWorkshopsSpeaker, mylistWorkshopsWorkshop, mylistWorkshopsGenre, mylistWorkshopsSpeakerNumber, mylistWorkshopsTalkTitle)
+    else:
+        mylistWorkshopsContext = []
+
+
+    return render(request, './beta/7_myList_beta.html', {'account': iros2020_emailinput,
+                                                         'mylistEpisodeNumber':len(mylistEpisodeNumber),
+                                                         'mylistEpisodeContext':mylistEpisodeContext,
+                                                         'mylistSpecialNumber':len(mylistSpecialNumber),
+                                                         'mylistSpecialContext':mylistSpecialContext,
+                                                         'mylistWorkshopsNumber':len(mylistWorkshopsNumber),
+                                                         'mylistWorkshopsContext':mylistWorkshopsContext,
+                                                         })
 
 
 #########################################################################################################
