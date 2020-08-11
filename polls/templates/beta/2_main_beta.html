@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <!-- Link Swiper's CSS -->
     <link rel="stylesheet" href="{% static 'package/css/swiper.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/styles0809.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles0811.css' %}">
 
     <script
             src="https://kit.fontawesome.com/7541329784.js"
@@ -62,6 +62,7 @@
     {##}
     {##}
     {#TODO: working area Gyuho#}
+
     <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
         {#        <ol class="carousel-indicators ">#}
         {##}
@@ -71,6 +72,7 @@
         {#            <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>#}
         {#        </ol>#}
         <div style="text-align: center; padding-top: 4%"><p style="color: white; font-size: 150%">Welcome, {{ loginName }} !</p></div>
+
         <div class="carousel-inner" >
             <div class="carousel-item active">
                 <div style="text-align: right">
@@ -83,6 +85,14 @@
                         <p>PLATINUM SPONSOR VIDEO example</p>
                         <p id="platinumSponsor1"></p>
                         <p>Company info goes here</p>
+                        <div style="width: 50%; text-align: left; font-size: 100%;">
+                            <button style="background-color: transparent;border: none; margin:auto; outline: none;color: red;" class="UnmuteBtn"  onclick="disbleMute('video0')" type="button">
+                                <i class="fas fa-volume-up"></i>
+                            </button>
+                            <button style="background-color: transparent;border: none;margin:auto;outline: none; color: red;" class="MuteBtn" onclick="enableMute('video0')" type="button">
+                                <i class="fas fa-volume-mute"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -96,6 +106,14 @@
                         <p>PLATINUM SPONSOR VIDEO example</p>
                         <p id="platinumSponsor2"></p>
                         <p>Company info goes here</p>
+                        <div style="width: 50%; text-align: left; font-size: 100%;">
+                            <button style="background-color: transparent;border: none; margin:auto; outline: none;color: red;" class="UnmuteBtn"  onclick="disbleMute('video1')" type="button">
+                                <i class="fas fa-volume-up"></i>
+                            </button>
+                            <button style="background-color: transparent;border: none;margin:auto;outline: none; color: red;" class="MuteBtn" onclick="enableMute('video1')" type="button">
+                                <i class="fas fa-volume-mute"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -109,6 +127,14 @@
                         <p>PLATINUM SPONSOR VIDEO example</p>
                         <p id="platinumSponsor3"></p>
                         <p>Company info goes here</p>
+                        <div style="width: 50%; text-align: left; font-size: 100%;">
+                            <button style="background-color: transparent;border: none; margin:auto; outline: none;color: red;" class="UnmuteBtn"  onclick="disbleMute('video2')" type="button">
+                                <i class="fas fa-volume-up"></i>
+                            </button>
+                            <button style="background-color: transparent;border: none;margin:auto;outline: none; color: red;" class="MuteBtn" onclick="enableMute('video2')" type="button">
+                                <i class="fas fa-volume-mute"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -422,11 +448,11 @@
 <script src="{% static 'js/index_header.js' %}"></script>
 <script src="{% static 'package/js/swiper.min.js' %}"></script>
 <!-- Initialize Swiper -->
-<script>
-    unmuteButton.addEventListener('click', function() {
-        video.muted = false;
-    });
-</script>
+{#<script>#}
+{#    unmuteButton.addEventListener('click', function() {#}
+{#        video.muted = false;#}
+{#    });#}
+{#</script>#}
 <script>
     function search(){
         const query = document.getElementById("search_bar").value;
@@ -510,7 +536,16 @@
     document.getElementById('video2').load();
     document.getElementById('platinumSponsor3').innerHTML = videoMap.get(videoList[2]);
 </script>
-
+<script>
+    function enableMute(video) {
+        var vid = document.getElementById(video);
+        vid.muted = true;
+    }
+    function disbleMute(video) {
+        var vid = document.getElementById(video);
+        vid.muted = false;
+    }
+</script>
 </div>
 </body>
 </html>

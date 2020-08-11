@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <!-- Link Swiper's CSS -->
     <link rel="stylesheet" href="{% static 'package/css/swiper.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/styles0809.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles0811.css' %}">
     <script
             src="https://kit.fontawesome.com/7541329784.js"
             crossorigin="anonymous"
@@ -78,15 +78,15 @@
     </div>
 
 
-    {% for speakerName, speakerBiography, specialEpisodeAbstract, bioLength, abstractLength,specialEpisodeNumber in specialEpisodeContext %}
+    {% for speakerName, speakerBiography, specialEpisodeAbstract,specialEpisodeNumber, specialLikeCount, specialLikeButtonColor, specialSaveButtonStatus in specialEpisodeContext %}
         <div class="epilisttable" style="width: 80%; height: auto; text-align: center; margin-left: 10%; background-color: #323232; margin-bottom:1%">
-            <table border="0" cellpadding="0" cellspacing="0" style="background-color: #323232;" >
+            <table border="0" cellpadding="0" cellspacing="0" style="background-color: transparent;" >
                 <tr>
                     <td style="width: 30%">
                         <a href="specialsepisode?id={{speakerName}}&id2={{selectedSpecial}}&id3={{ selectedGenre }}">
                             <img src="{% static 'img'%}/{{ selectedGenre }}/{{selectedSpecial}}/{{ speakerName }}.jpg"></a>
                     </td>
-                    <td valign="top" align="left" style="padding-left: 5%; padding-top: 3%;word-break: keep-all;width: 70%">
+                    <td valign="top" align="left" style="padding-left: 5%; padding-top: 3%;word-break: keep-all;">
                         <p class="papertitle" style="color: white;">Title : {{ TitleList }}</p>
                         <table class="paperInfo" border="0" cellpadding="0" cellspacing="0" width="100% "style="background-color: #323232; text-align: left;color: white;">
                             <tbody>
@@ -113,10 +113,35 @@
 
                             </tbody>
                         </table>
-                        <form>
-                            <i id="thumbs{{ forloop.counter0 }}" class="fa fa-thumbs-up" style="color:grey; font-size: 30px" onClick="thumbsUp({{ forloop.counter0 }})"></i>
-                            <input type="text" id="{{ forloop.counter0 }}" value="0" class="thumbsuptext" readonly/>
-                        </form>
+                        {% if specialLikeButtonColor == 1 %}
+                            <button class="likeButton" type="submit" style="margin: auto;background-color: #323232 ;" onclick="updateLike({{ specialEpisodeNumber }})">
+                                <i id="thumbs{{specialEpisodeNumber}}" class="fa fa-thumbs-up" style="color:yellow; font-size: 30px"></i>
+                                <input type="text" id="{{ specialEpisodeNumber }}" value="{{ specialLikeCount }}" class="thumbsuptext" name="likeCount" readonly/>
+                                <input type="hidden" name="paperNumber" value="{{ specialEpisodeNumber }}">
+                            </button>
+                        {% else %}
+                            <button class="likeButton" type="submit" style="padding: 0% ;background-color: #323232;" onclick="updateLike({{ specialEpisodeNumber }})">
+                                <i id="thumbs{{specialEpisodeNumber}}" class="fa fa-thumbs-up" style="color:grey; font-size: 30px"></i>
+                                <input type="text" id="{{ specialEpisodeNumber }}" value="{{ specialLikeCount }}" class="thumbsuptext" name="likeCount" readonly/>
+                                <input type="hidden" name="paperNumber" value="{{ specialEpisodeNumber }}">
+                            </button>
+                        {% endif %}
+                    </td>
+                    <td class="savePapers" style="width: 5%; color: white">
+                        {% csrf_token %}
+                        {% if specialSaveButtonStatus == 1 %}
+                            <button class="saveButton" type="submit" style="margin: auto;background-color: #323232 ;" onclick="updateSave({{ specialEpisodeNumber }})">
+                                <i id="savebutton{{specialEpisodeNumber}}" class="fa fa-check-circle"  aria-hidden="true" style="color:white; font-size: 30px"></i>
+                                <input type="hidden" name="paperNumber" value="{{ specialEpisodeNumber }}">
+                            </button>
+                            <p>My List</p>
+                        {% else %}
+                            <button class="saveButton" type="submit" style="padding: 0% ;background-color: #323232;" onclick="updateSave({{ specialEpisodeNumber }})">
+                                <i id="savebutton{{specialEpisodeNumber}}" class="fa fa-plus"  aria-hidden="true" style="color:white; font-size: 30px"></i>
+                                <input type="hidden" name="paperNumber" value="{{ specialEpisodeNumber }}">
+                            </button>
+                            <p>My List</p>
+                        {% endif %}
                     </td>
                 </tr>
             </table>
@@ -185,9 +210,45 @@
             }
         });
     </script>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+    <script>
+        function updateLike(titleNumber){
+            $.ajax({
+                url:'post_like',
+                type:'POST',
+                data:{'paperNumber':titleNumber},
+                dataType:'json',
+                success: function(json) {
+                    $('#'+titleNumber)[0].value =  json['likeCount'];
+                    $('#thumbs'+titleNumber)[0].style.color =  json['likeButtonColor'];
+                },
+                error: function(err) {
+                    alert("Failed to Retrieve JSON file from Server");
+                }
+            });
+        }
+    </script>
+    <script>
+        function updateSave(titleNumber){
+            var savebuttonClass = document.getElementById("savebutton"+titleNumber).className;
+            $.ajax({
+                url:'post_save',
+                type:'POST',
+                data:{'paperNumber':titleNumber},
+                dataType:'json',
+                success: function(json) {
+                    $('#savebutton'+titleNumber).removeClass(savebuttonClass);
+                    $('#savebutton'+titleNumber).addClass(json['paperSaveButtonStatus']);
+                },
+                error: function(err) {
+                    alert("Failed to Retrieve JSON file from Server");
+                }
+            });
+        }
+    </script>
     <script>
         $(document).ready(function() {
             // Configure/customize these variables.
@@ -219,36 +280,8 @@
                 $(this).prev().toggle();
                 return false;
             });
-        });
-    </script>
-    <script>
-        function thumbsUp(thumbsid)
-        {
-            var active = document.getElementById("thumbs"+thumbsid.toString()).style.color;
+        });    </script>
 
-            var value = parseInt(document.getElementById(thumbsid).value, 10);
-            value = isNaN(value) ? 0 : value;
-
-
-            if(active == "grey"){
-                value++;
-                active = "Thumbs Down";
-                document.getElementById("thumbs"+thumbsid.toString()).style.color = "yellow";
-                document.getElementById(thumbsid).style.color = "yellow";
-
-
-            }else{
-                value--;
-                active = "Thumbs Up";
-                document.getElementById("thumbs"+thumbsid.toString()).style.color = "grey";
-                document.getElementById(thumbsid).style.color = "grey";
-            }
-
-            document.getElementById("thumbs"+thumbsid.toString()).value = active;
-            document.getElementById(thumbsid).value = value;
-        }
-
-    </script>
 </div>
 </body>
 </html>

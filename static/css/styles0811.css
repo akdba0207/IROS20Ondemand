@@ -180,6 +180,16 @@ h3 {
     background-color:transparent;
     border-style: none;
 }
+.saveButton{
+    outline: none;
+    background-color:transparent;
+    border-style: none;
+}
+.saveButton:focus{
+    outline: none;
+    background-color:transparent;
+    border-style: none;
+}
 
 .thumbsuptext{
     font-size:100%;

@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <!-- Link Swiper's CSS -->
     <link rel="stylesheet" href="{% static 'package/css/swiper.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/styles0809.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles0811.css' %}">
     <script
             src="https://kit.fontawesome.com/7541329784.js"
             crossorigin="anonymous"
@@ -76,11 +76,19 @@
                 <tr>
                     <td style="width: 40%;">
                         <div style="position: relative">
-                            <video id="video0" width="90%" autoplay loop >
+                            <video id="videoGoldSponsor" width="90%" autoplay loop >
                                 <source src="{% static './video'%}/Gold Sponsor/{{ goldSponsorVideo.0 }}.mp4" type="video/mp4">
                             </video>
                             <div style="position: absolute; z-index: 1;color: yellow; bottom: 0; text-align: center; font-size: 200%; background-color: rgba(0,0,0,0.7); width: 90%">
                                 <p>Sample Gold Partner Video Placement</p>
+                                <div style="width: 50%; text-align: left; font-size: 100%;">
+                                    <button style="background-color: transparent;border: none; margin:auto; outline: none;color: red;" class="UnmuteBtn"  onclick="disbleMute('videoGoldSponsor')" type="button">
+                                        <i class="fas fa-volume-up"></i>
+                                    </button>
+                                    <button style="background-color: transparent;border: none;margin:auto;outline: none; color: red;" class="MuteBtn" onclick="enableMute('videoGoldSponsor')" type="button">
+                                        <i class="fas fa-volume-mute"></i>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </td>
@@ -99,12 +107,12 @@
     </div>
 
 
-    {% for AuthorList1, AuthorList2, AuthorList3, AuthorList4,AuthorList5,AuthorList6,AffiliationList1,AffiliationList2,AffiliationList3,AffiliationList4,AffiliationList5,TitleList, PDFList, titleNumber, paperLikeCount, paperLikeButtonColor in EpisodeContext %}
+    {% for AuthorList1, AuthorList2, AuthorList3, AuthorList4,AuthorList5,AuthorList6,AffiliationList1,AffiliationList2,AffiliationList3,AffiliationList4,AffiliationList5,TitleList, PDFList, titleNumber, paperLikeCount, paperLikeButtonColor, paperSaveButtonStatus in EpisodeContext %}
         <div class="epilisttable" style="width: 80%; height: auto; text-align: center; margin-left: 10%; background-color: transparent; margin-bottom:1%">
             <table border="0" cellpadding="0" cellspacing="0" style="background-color: #323232;" >
                 <tr>
                     <td style="width: 30%">
-                        <a href="episode?id={{TitleList}}&id2={{ Session }}&id3={{ Pavilion }}"><img src="{% static './resources/playlogo.png'%}"></a>
+                        <a href="episode?id={{TitleList}}&id2={{ Session }}"><img src="{% static './resources/playlogo.png'%}"></a>
                     </td>
                     <td valign="top" align="left" style="padding-left: 5%; padding-top: 3%;word-break: keep-all">
                         <p class="papertitle" style="color: white;">Title : {{ TitleList }}</p>
@@ -183,6 +191,22 @@
                             </button>
                         {% endif %}
                     </td>
+                    <td class="savePapers" style="width: 5%; color: white">
+                        {% csrf_token %}
+                        {% if paperSaveButtonStatus == 1 %}
+                            <button class="saveButton" type="submit" style="margin: auto;background-color: #323232 ;" onclick="updateSave({{ titleNumber }})">
+                                <i id="savebutton{{titleNumber}}" class="fa fa-check-circle"  aria-hidden="true" style="color:white; font-size: 30px"></i>
+                                <input type="hidden" name="paperNumber" value="{{ titleNumber }}">
+                            </button>
+                            <p>My List</p>
+                        {% else %}
+                            <button class="saveButton" type="submit" style="padding: 0% ;background-color: #323232;" onclick="updateSave({{ titleNumber }})">
+                                <i id="savebutton{{titleNumber}}" class="fa fa-plus"  aria-hidden="true" style="color:white; font-size: 30px"></i>
+                                <input type="hidden" name="paperNumber" value="{{ titleNumber }}">
+                            </button>
+                            <p>My List</p>
+                        {% endif %}
+                    </td>
                 </tr>
             </table>
         </div>
@@ -222,6 +246,24 @@
                 success: function(json) {
                     $('#'+titleNumber)[0].value =  json['likeCount'];
                     $('#thumbs'+titleNumber)[0].style.color =  json['likeButtonColor'];
+                },
+                error: function(err) {
+                    alert("Failed to Retrieve JSON file from Server");
+                }
+            });
+        }
+    </script>
+    <script>
+        function updateSave(titleNumber){
+            var savebuttonClass = document.getElementById("savebutton"+titleNumber).className;
+            $.ajax({
+                url:'post_save',
+                type:'POST',
+                data:{'paperNumber':titleNumber},
+                dataType:'json',
+                success: function(json) {
+                    $('#savebutton'+titleNumber).removeClass(savebuttonClass);
+                    $('#savebutton'+titleNumber).addClass(json['paperSaveButtonStatus']);
                 },
                 error: function(err) {
                     alert("Failed to Retrieve JSON file from Server");
@@ -271,7 +313,16 @@
             }
         });
     </script>
-
+    <script>
+        function enableMute(video) {
+            var vid = document.getElementById(video);
+            vid.muted = true;
+        }
+        function disbleMute(video) {
+            var vid = document.getElementById(video);
+            vid.muted = false;
+        }
+    </script>
 </div>
 </body>
 </html>

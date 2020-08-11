@@ -114,10 +114,10 @@ Specials = icra_specials[(icra_specials['Genre'] == 'Plenaries')
 SpecialsSession = sorted(list(set(Specials['Genre'])))
 
 # Workshops
-Workshops = icra_workshops[(icra_workshops['Workshop Number'] == 4) |
-                           (icra_workshops['Workshop Number'] == 8) |
-                           (icra_workshops['Workshop Number'] == 9) |
-                           (icra_workshops['Workshop Number'] == 14)]
+Workshops = icra_workshops[(icra_workshops['Workshop Number'] == 20004) |
+                           (icra_workshops['Workshop Number'] == 20008) |
+                           (icra_workshops['Workshop Number'] == 20009) |
+                           (icra_workshops['Workshop Number'] == 20014)]
 
 WorkshopsSession = sorted(list(set(Workshops['Title'])))
 
@@ -152,6 +152,14 @@ def login(request):
     # for i in range(1553):
     #     db = Papers(paper_id=icra_example['Nr'][i])
     #     db.save()
+    # print(len(icra_specials['Nr']))
+    # for j in range(len(icra_specials['Nr'])):
+    #     db1 = Papers(paper_id=icra_specials['Nr'][j])
+    #     db1.save()
+    # #
+    # for k in range(len(icra_workshops['Workshop Number'])):
+    #     db2 = Papers(paper_id=icra_workshops['Workshop Number'][k])
+    #     db2.save()
 
     return render(request, './beta/1_login_beta.html')
 
@@ -254,60 +262,25 @@ def tvshow(request):
     if request.method == "GET":
         paperLikeCount = []
         paperLikeButtonColor = []
+        paperSaveButtonStatus = []
         for titleNr in titleNumber['Nr']:
             paper = get_object_or_404(Papers, paper_id=titleNr)
+
             if current_account in paper.like_users.all():
                 buttonColor = 1
             else:
                 buttonColor = 0
+
             paperLikeButtonColor.append(buttonColor)
             paperLikeCount.append(paper.like_users.count())
-        # print(paperLikeCount)
-        EpisodeContext = zip(AuthorList1['Author1'], AuthorList2['Author2'],
-                             AuthorList3['Author3'],
-                             AuthorList4['Author4'],
-                             AuthorList5['Author5'],
-                             AuthorList6['Author6'],
-                             AffiliationList1['Affiliation1'],
-                             AffiliationList2['Affiliation2'],
-                             AffiliationList3['Affiliation3'],
-                             AffiliationList4['Affiliation4'],
-                             AffiliationList5['Affiliation5'],
-                             TitleList['Title'],
-                             PDFList['FN'], titleNumber['Nr'], paperLikeCount, paperLikeButtonColor)
-        return render(request, './beta/3_pavilionSession_beta.html', {'Pavilion': selectedPavilion,
-                                                                      'PavilionNum': selectedPavilionNum,
-                                                                      'SessionList': selectedSessionList,
-                                                                      'Session': selectedSession,
-                                                                      'EpisodeContext': EpisodeContext,
-                                                                      'account': iros2020_emailinput,
-                                                                      'goldSponsorName': goldSponsorName['Name'],
-                                                                      'goldSponsorVideo': goldSponsorVideo['Video'],
-                                                                      'goldSponsorSession': goldSponsorSession[
-                                                                          'Location'],
-                                                                      })
-    elif request.method == "POST":
-        clickedPaperNumber = request.POST['paperNumber']
-        # print(titleNumber['Nr'])
-        # print(clickedPaperNumber)
-        paperLikeCount = []
-        paperLikeButtonColor = []
-        for paperNr in titleNumber['Nr']:
-            paper = get_object_or_404(Papers, paper_id=paperNr)
-            if paperNr == int(clickedPaperNumber):
-                if current_account in paper.like_users.all():
-                    paper.like_users.remove(current_account)
-                    buttonColor = 0
-                else:
-                    paper.like_users.add(current_account)
-                    buttonColor = 1
+
+            if current_account in paper.save_users.all():
+                buttonStatus = 1
             else:
-                if current_account in paper.like_users.all():
-                    buttonColor = 1
-                else:
-                    buttonColor = 0
-            paperLikeButtonColor.append(buttonColor)
-            paperLikeCount.append(paper.like_users.count())
+                buttonStatus = 0
+
+            paperSaveButtonStatus.append(buttonStatus)
+
         EpisodeContext = zip(AuthorList1['Author1'], AuthorList2['Author2'],
                              AuthorList3['Author3'],
                              AuthorList4['Author4'],
@@ -319,7 +292,7 @@ def tvshow(request):
                              AffiliationList4['Affiliation4'],
                              AffiliationList5['Affiliation5'],
                              TitleList['Title'],
-                             PDFList['FN'], titleNumber['Nr'], paperLikeCount, paperLikeButtonColor)
+                             PDFList['FN'], titleNumber['Nr'], paperLikeCount, paperLikeButtonColor, paperSaveButtonStatus)
         return render(request, './beta/3_pavilionSession_beta.html', {'Pavilion': selectedPavilion,
                                                                       'PavilionNum': selectedPavilionNum,
                                                                       'SessionList': selectedSessionList,
@@ -330,36 +303,47 @@ def tvshow(request):
                                                                       'goldSponsorVideo': goldSponsorVideo['Video'],
                                                                       'goldSponsorSession': goldSponsorSession[
                                                                           'Location'],
-                                                                      'buttonColor': buttonColor
                                                                       })
+
 
 
 def specials(request):
+    global iros2020_emailinput
+    current_account = iros2020registered_db.get(iros2020_email=iros2020_emailinput)
+
     selectedSpecial = request.GET['id']
     selectedGenre = request.GET['id2']
     specialEpisodeList = icra_specials[(icra_specials['Genre'] == selectedSpecial)]
     speakerName = specialEpisodeList['Speaker'].reset_index()
     speakerBiography = specialEpisodeList['Bio'].reset_index()
     specialEpisodeAbstract = specialEpisodeList['Abstract'].reset_index()
-    specialEpisodeVideo = specialEpisodeList['Video'].reset_index()
     specialEpisodeNumber = specialEpisodeList['Nr'].reset_index()
-    bioLength = []
-    abstractLength = []
-    for i in speakerBiography['Bio']:
-        bioLength.append(len(i))
-    for j in specialEpisodeAbstract['Abstract']:
-        abstractLength.append(len(j))
+
+    specialLikeCount = []
+    specialLikeButtonColor = []
+    specialSaveButtonStatus = []
+
+    for specialNr in specialEpisodeNumber['Nr']:
+        paper = get_object_or_404(Papers, paper_id=specialNr)
+        if current_account in paper.like_users.all():
+            buttonColor = 1
+        else:
+            buttonColor = 0
+        specialLikeButtonColor.append(buttonColor)
+        specialLikeCount.append(paper.like_users.count())
+
+        if current_account in paper.save_users.all():
+            buttonStatus = 1
+        else:
+            buttonStatus = 0
+        specialSaveButtonStatus.append(buttonStatus)
 
     specialEpisodeContext = zip(speakerName['Speaker'],
                                 speakerBiography['Bio'],
                                 specialEpisodeAbstract['Abstract'],
-                                bioLength,
-                                abstractLength,
-                                specialEpisodeNumber['Nr']
+                                specialEpisodeNumber['Nr'],specialLikeCount,specialLikeButtonColor,specialSaveButtonStatus
                                 )
-    specialEpisodeCount = specialEpisodeList.shape[0]
 
-    global iros2020_emailinput
 
     return render(request, './beta/3-1_plenariesSession_beta.html', {'selectedSpecial': selectedSpecial,
                                                                      'selectedGenre': selectedGenre,
@@ -370,26 +354,66 @@ def specials(request):
 
 
 def workshops(request):
+    global iros2020_emailinput
+    current_account = iros2020registered_db.get(iros2020_email=iros2020_emailinput)
+
     selectedWorkshops = request.GET['id']
     selectedGenre = request.GET['id2']
     workshopsEpisodeList = icra_workshops[(icra_workshops['Title'] == selectedWorkshops)].reset_index()
     workshopsHomepage = workshopsEpisodeList['Workshop Home Page'].iloc[0]
     workshopOrganizers = workshopsEpisodeList['Organizers'].iloc[0]
-    global iros2020_emailinput
+    workshopNumber = workshopsEpisodeList['Workshop Number'].iloc[0]
+
 
     Speaker = []
     for i in range(1, 15):
+        if workshopsEpisodeList['Speaker ' + str(i)].iloc[0] == 'missing':
+            break
         Speaker.append(workshopsEpisodeList['Speaker ' + str(i)].iloc[0])
 
     Institution = []
     for j in range(1, 15):
+        if workshopsEpisodeList['Institution ' + str(j)].iloc[0] == 'missing':
+            break
         Institution.append(workshopsEpisodeList['Institution ' + str(j)].iloc[0])
 
     TalkTitle = []
     for k in range(1, 15):
+        if workshopsEpisodeList['Talk Title ' + str(k)].iloc[0] == 'missing':
+            break
         TalkTitle.append(workshopsEpisodeList['Talk Title ' + str(k)].iloc[0])
 
-    WorkshopsContext = zip(Speaker, Institution, TalkTitle)
+    workshopEpisodeNumber = []
+    for q in range(len(Speaker)):
+        newNumb = int(workshopNumber)*100 + q
+        workshopEpisodeNumber.append(newNumb)
+    #
+    # for q in range(len(Speaker)):
+    #     newNumb = int(workshopNumber)*100 + q
+    #     db2 = Papers(paper_id=newNumb)
+    #     db2.save()
+    #     print(newNumb)
+
+    workshopLikeCount = []
+    workshopLikeButtonColor = []
+    workshopSaveButtonStatus = []
+    for workshopNr in workshopEpisodeNumber:
+        paper = get_object_or_404(Papers, paper_id=workshopNr)
+        if current_account in paper.like_users.all():
+            buttonColor = 1
+        else:
+            buttonColor = 0
+        workshopLikeButtonColor.append(buttonColor)
+        workshopLikeCount.append(paper.like_users.count())
+
+        if current_account in paper.save_users.all():
+            buttonStatus = 1
+        else:
+            buttonStatus = 0
+        workshopSaveButtonStatus.append(buttonStatus)
+
+
+    WorkshopsContext = zip(Speaker, Institution, TalkTitle, workshopEpisodeNumber, workshopLikeButtonColor, workshopLikeCount, workshopSaveButtonStatus)
 
     return render(request, './beta/3-2_workshopsSession_beta.html', {'selectedWorkshops': selectedWorkshops,
                                                                      'selectedGenre': selectedGenre,
@@ -410,8 +434,6 @@ def episode(request):
 
     selectedTitle = request.GET['id']
     selectedSession = request.GET['id2']
-    selectedPavilion = request.GET['id3']
-    selectedPavilionNum = Cartegories[Cartegories['Pavilion'] == selectedPavilion].index.values + 1
 
     findVideo = icra_example[(icra_example['Title'] == selectedTitle)]
     VideoList = findVideo['VID'].reset_index()
@@ -435,8 +457,7 @@ def episode(request):
     AffiliationList3 = similarPaper['Affiliation3'].reset_index()
     AffiliationList4 = similarPaper['Affiliation4'].reset_index()
     AffiliationList5 = similarPaper['Affiliation5'].reset_index()
-
-    # SessionTitle = similarPaper['Session title'].reset_index()
+    SessionTitle = similarPaper['Session title'].reset_index()
     # print(SessionTitle)
 
     TitleList = similarPaper['Title'].reset_index()
@@ -447,11 +468,14 @@ def episode(request):
     lengthComments = Comments.objects.filter(paper_id=selectedNumber['Nr'].iloc[0]).count()
 
     arrayComments = []
-    for ac in range(1,lengthComments):
+    for ac in range(lengthComments):
         arrayComments.append(Comments.objects.filter(paper_id=selectedNumber['Nr'].iloc[0])[ac].comment)
 
     paperLikeCount = []
     paperLikeButtonColor = []
+    paperSaveButtonStatus = []
+
+
     if request.method == "GET":
         selectedPaper = get_object_or_404(Papers, paper_id=selectedNumber['Nr'].iloc[0])
 
@@ -461,6 +485,11 @@ def episode(request):
             selectedPaperLikeButtonColor = 0
         selectedPaperLikeCount = selectedPaper.like_users.count()
 
+        if current_account in selectedPaper.save_users.all():
+            selectedPaperbuttonStatus = 1
+        else:
+            selectedPaperbuttonStatus = 0
+
         for titleNr in titleNumber['Nr']:
             paper = get_object_or_404(Papers, paper_id=titleNr)
             if current_account in paper.like_users.all():
@@ -469,6 +498,13 @@ def episode(request):
                 buttonColor = 0
             paperLikeButtonColor.append(buttonColor)
             paperLikeCount.append(paper.like_users.count())
+
+            if current_account in paper.save_users.all():
+                buttonStatus = 1
+            else:
+                buttonStatus = 0
+            paperSaveButtonStatus.append(buttonStatus)
+
 
         resultList = zip(AuthorList1['Author1'], AuthorList2['Author2'],
                          AuthorList3['Author3'],
@@ -481,78 +517,186 @@ def episode(request):
                          AffiliationList4['Affiliation4'],
                          AffiliationList5['Affiliation5'],
                          TitleList['Title'],
-                         PDFList['FN'], titleNumber['Nr'], suggestEpisodeNum, paperLikeCount, paperLikeButtonColor)
+                         PDFList['FN'], titleNumber['Nr'], suggestEpisodeNum, paperLikeCount, paperLikeButtonColor, SessionTitle, paperSaveButtonStatus)
         return render(request, './beta/4_pavilionSessionEpisode_beta.html', {'VideoList': VideoList['VID'],
                                                                              'Title': selectedTitle,
                                                                              'Session': selectedSession,
-                                                                             'Pavilion': selectedPavilion,
-                                                                             'PavilionNum': selectedPavilionNum,
                                                                              'EpisodeContext': resultList,
                                                                              'SelectedPaperNumber':
                                                                                  selectedNumber['Nr'].iloc[0],
                                                                              'account': iros2020_emailinput,
                                                                              'selectedPaperLikeButtonColor': selectedPaperLikeButtonColor,
                                                                              'selectedPaperLikeCount': selectedPaperLikeCount,
+                                                                             'selectedPaperbuttonStatus':selectedPaperbuttonStatus,
                                                                              'arrayComments':arrayComments,
                                                                              'lengthComments':lengthComments})
 
 
 
 def specialsepisode(request):
+    global iros2020_emailinput
+    current_account = iros2020registered_db.get(iros2020_email=iros2020_emailinput)
+
+    # Selected Specials
     selectedSpeaker = request.GET['id']
     selectedSpecial = request.GET['id2']
     selectedGenre = request.GET['id3']
     findspeaker = icra_specials[(icra_specials['Speaker'] == selectedSpeaker)]
     specialVideo = findspeaker['Video'].reset_index()
-    global iros2020_emailinput
+    selectedSpecialNumber = findspeaker['Nr'].reset_index()
 
     # Other Specials
     specialEpisodeList = icra_specials[(icra_specials['Genre'] == selectedSpecial)]
     speakerName = specialEpisodeList['Speaker'].reset_index()
     speakerBiography = specialEpisodeList['Bio'].reset_index()
     specialEpisodeAbstract = specialEpisodeList['Abstract'].reset_index()
+    specialEpisodeNumber = specialEpisodeList['Nr'].reset_index()
+
+    # Comments load area
+    lengthComments = Comments.objects.filter(paper_id=selectedSpecialNumber['Nr'].iloc[0]).count()
+    arrayComments = []
+    for ac in range(lengthComments):
+        arrayComments.append(Comments.objects.filter(paper_id=selectedSpecialNumber['Nr'].iloc[0])[ac].comment)
+
+    selectedSpecialLike = get_object_or_404(Papers, paper_id=selectedSpecialNumber['Nr'].iloc[0])
+
+    # Selected Sepcial Like
+    if current_account in selectedSpecialLike.like_users.all():
+        selectedSpecialLikeButtonColor = 1
+    else:
+        selectedSpecialLikeButtonColor = 0
+    selectedSpecialLikeCount = selectedSpecialLike.like_users.count()
+
+    if current_account in selectedSpecialLike.save_users.all():
+        selectedSpecialSaveButtonStatus = 1
+    else:
+        selectedSpecialSaveButtonStatus = 0
+
+    # Other Sepcial Like
+    specialLikeCount = []
+    specialLikeButtonColor = []
+    specialSaveButtonStatus = []
+
+    for specialNr in specialEpisodeNumber['Nr']:
+        paper = get_object_or_404(Papers, paper_id=specialNr)
+        if current_account in paper.like_users.all():
+            buttonColor = 1
+        else:
+            buttonColor = 0
+        specialLikeButtonColor.append(buttonColor)
+        specialLikeCount.append(paper.like_users.count())
+
+        if current_account in paper.save_users.all():
+            buttonStatus = 1
+        else:
+            buttonStatus = 0
+        specialSaveButtonStatus.append(buttonStatus)
+
     specialEpisodeContext = zip(speakerName['Speaker'],
                                 speakerBiography['Bio'],
-                                specialEpisodeAbstract['Abstract']
+                                specialEpisodeAbstract['Abstract'],
+                                specialEpisodeNumber['Nr'], specialLikeCount, specialLikeButtonColor, specialSaveButtonStatus
                                 )
-    # print(specialVideo['Video'])
+
     return render(request, './beta/4-1_plenariesSessionEpisode_beta.html', {'specialVideo': specialVideo['Video'],
                                                                             'selectedSpeaker': selectedSpeaker,
                                                                             'selectedSpecial': selectedSpecial,
                                                                             'selectedGenre': selectedGenre,
                                                                             'specialEpisodeContext': specialEpisodeContext,
+                                                                            'selectedSpecialLikeCount':selectedSpecialLikeCount,
+                                                                            'selectedSpecialLikeButtonColor':selectedSpecialLikeButtonColor,
+                                                                            'selectedSpecialSaveButtonStatus':selectedSpecialSaveButtonStatus,
+                                                                            'SelectedPaperNumber':
+                                                                                selectedSpecialNumber['Nr'].iloc[0],
+                                                                            'arrayComments': arrayComments,
+                                                                            'lengthComments': lengthComments,
                                                                             'account': iros2020_emailinput})
 
 
 def workshopsepisode(request):
+    global iros2020_emailinput
+    current_account = iros2020registered_db.get(iros2020_email=iros2020_emailinput)
+
     selectedSpeaker = request.GET['id']
     selectedWorkshops = request.GET['id2']
     selectedGenre = request.GET['id3']
     selectedSpeakerNumber = request.GET['id4']
-    # print(selectedSpeakerNumber)
+
     findspeaker = icra_workshops[(icra_workshops['Speaker ' + str(selectedSpeakerNumber)] == selectedSpeaker)]
-    # print(findspeaker)
     workshopsVideo = findspeaker['Video ' + str(selectedSpeakerNumber)].reset_index()
-    # print(workshopsVideo)
     workshopsTalkTitle = findspeaker['Talk Title ' + str(selectedSpeakerNumber)].reset_index()
-    # print(workshopsTalkTitle)
-    # Other Workshops Talk
     workshopsEpisodeList = icra_workshops[(icra_workshops['Title'] == selectedWorkshops)].reset_index()
-    global iros2020_emailinput
+    workshopNumber = workshopsEpisodeList['Workshop Number'].iloc[0]
 
     Speaker = []
     for i in range(1, 15):
+        if workshopsEpisodeList['Speaker ' + str(i)].iloc[0] == 'missing':
+            break
         Speaker.append(workshopsEpisodeList['Speaker ' + str(i)].iloc[0])
 
     Institution = []
     for j in range(1, 15):
+        if workshopsEpisodeList['Institution ' + str(j)].iloc[0] == 'missing':
+            break
         Institution.append(workshopsEpisodeList['Institution ' + str(j)].iloc[0])
 
     TalkTitle = []
     for k in range(1, 15):
+        if workshopsEpisodeList['Talk Title ' + str(k)].iloc[0] == 'missing':
+            break
         TalkTitle.append(workshopsEpisodeList['Talk Title ' + str(k)].iloc[0])
 
-    WorkshopsContext = zip(Speaker, Institution, TalkTitle)
+    workshopEpisodeNumber = []
+    for q in range(len(Speaker)):
+        newNumb = int(workshopNumber) * 100 + q
+        workshopEpisodeNumber.append(newNumb)
+
+    selectedWorkshopEpisodeNumber = int(workshopNumber) * 100 + int(selectedSpeakerNumber)
+
+    # Comments load area
+    lengthComments = Comments.objects.filter(paper_id=selectedWorkshopEpisodeNumber).count()
+    arrayComments = []
+    for ac in range(lengthComments):
+        arrayComments.append(Comments.objects.filter(paper_id=selectedWorkshopEpisodeNumber)[ac].comment)
+
+    # Selected Workshop Like, MyList
+    selectedWorkshopLike = get_object_or_404(Papers, paper_id=selectedWorkshopEpisodeNumber)
+
+    if current_account in selectedWorkshopLike.like_users.all():
+        selectedWorkshopLikeButtonColor = 1
+    else:
+        selectedWorkshopLikeButtonColor = 0
+    selectedWorkshopLikeCount = selectedWorkshopLike.like_users.count()
+
+    if current_account in selectedWorkshopLike.save_users.all():
+        selectedWorkshopSaveButtonStatus = 1
+    else:
+        selectedWorkshopSaveButtonStatus = 0
+
+    # Other Workshops Like
+    workshopLikeCount = []
+    workshopLikeButtonColor = []
+    workshopSaveButtonStatus = []
+
+    for workshopNr in workshopEpisodeNumber:
+        paper = get_object_or_404(Papers, paper_id=workshopNr)
+        if current_account in paper.like_users.all():
+            buttonColor = 1
+        else:
+            buttonColor = 0
+        workshopLikeButtonColor.append(buttonColor)
+        workshopLikeCount.append(paper.like_users.count())
+
+        if current_account in paper.save_users.all():
+            buttonStatus = 1
+        else:
+            buttonStatus = 0
+        workshopSaveButtonStatus.append(buttonStatus)
+
+    WorkshopsContext = zip(Speaker, Institution, TalkTitle, workshopEpisodeNumber, workshopLikeButtonColor,
+                           workshopLikeCount, workshopSaveButtonStatus)
+    print(selectedWorkshopEpisodeNumber)
+    print(workshopEpisodeNumber)
     return render(request, './beta/4-2_workshopsSessionEpisode_beta.html',
                   {'workshopsVideo': workshopsVideo['Video ' + str(selectedSpeakerNumber)],
                    'workshopsTalkTitle': workshopsTalkTitle['Talk Title ' + str(selectedSpeakerNumber)],
@@ -560,60 +704,15 @@ def workshopsepisode(request):
                    'selectedWorkshops': selectedWorkshops,
                    'selectedGenre': selectedGenre,
                    'WorkshopsContext': WorkshopsContext,
-                   'account': iros2020_emailinput})
+                   'account': iros2020_emailinput,
+                   'SelectedPaperNumber':selectedWorkshopEpisodeNumber,
+                   'selectedWorkshopLikeButtonColor':selectedWorkshopLikeButtonColor,
+                   'selectedWorkshopLikeCount':selectedWorkshopLikeCount,
+                   'selectedWorkshopSaveButtonStatus':selectedWorkshopSaveButtonStatus,
+                   'arrayComments': arrayComments,
+                   'lengthComments': lengthComments,
+                   })
 
-
-#########################################################################################################
-#########################################################################################################
-#########################################################################################################
-# Suggestions on each Pavilion Episodes
-def suggestion(request):
-    suggestedNum = request.GET['id1']
-    findTitle = icra_example[(icra_example['Nr'] == int(suggestedNum))]
-    titleName = findTitle['Title'].reset_index()
-    VideoList = findTitle['VID'].reset_index()
-    selectedTitle = titleName['Title'].iloc[0]
-    suggestEpisodeNum = findSimilarTopic(int(suggestedNum))
-    global iros2020_emailinput
-
-    suggestPaper = icra_example[(icra_example['Nr'] == int(suggestEpisodeNum[0]))]
-
-    for i in range(1, 12):
-        main2 = suggestPaper.append(icra_example[(icra_example['Nr'] == int(suggestEpisodeNum[i]))])
-        suggestPaper = main2
-
-    AuthorList1 = suggestPaper['Author1'].reset_index()
-    AuthorList2 = suggestPaper['Author2'].reset_index()
-    AuthorList3 = suggestPaper['Author3'].reset_index()
-    AuthorList4 = suggestPaper['Author4'].reset_index()
-    AuthorList5 = suggestPaper['Author5'].reset_index()
-    AuthorList6 = suggestPaper['Author6'].reset_index()
-    AffiliationList1 = suggestPaper['Affiliation1'].reset_index()
-    AffiliationList2 = suggestPaper['Affiliation2'].reset_index()
-    AffiliationList3 = suggestPaper['Affiliation3'].reset_index()
-    AffiliationList4 = suggestPaper['Affiliation4'].reset_index()
-    AffiliationList5 = suggestPaper['Affiliation5'].reset_index()
-
-    TitleList = suggestPaper['Title'].reset_index()
-    PDFList = suggestPaper['FN'].reset_index()
-    titleNumber = suggestPaper['Nr'].reset_index()
-    resultList = zip(AuthorList1['Author1'], AuthorList2['Author2'],
-                     AuthorList3['Author3'],
-                     AuthorList4['Author4'],
-                     AuthorList5['Author5'],
-                     AuthorList6['Author6'],
-                     AffiliationList1['Affiliation1'],
-                     AffiliationList2['Affiliation2'],
-                     AffiliationList3['Affiliation3'],
-                     AffiliationList4['Affiliation4'],
-                     AffiliationList5['Affiliation5'],
-                     TitleList['Title'],
-                     PDFList['FN'], titleNumber['Nr'], suggestEpisodeNum)
-
-    return render(request, './beta/4-3_suggestedEpisode_beta.html', {'VideoList': VideoList['VID'],
-                                                                     'Title': selectedTitle,
-                                                                     'EpisodeContext': resultList,
-                                                                     'account': iros2020_emailinput})
 
 
 #########################################################################################################
@@ -622,10 +721,11 @@ def suggestion(request):
 # Search Results
 def searchresult(request):
     inputKeyword = request.GET['id']
-    # print(inputKeyword)
     resultNumber = searchByKeyword(inputKeyword)
     resultNumberlength = len(resultNumber)
+
     global iros2020_emailinput
+    current_account = iros2020registered_db.get(iros2020_email=iros2020_emailinput)
 
     if not resultNumber:
         return render(request, './beta/6_searchResultError_beta.html', {'inputKeyword': inputKeyword})
@@ -634,11 +734,10 @@ def searchresult(request):
 
         for i in range(1, resultNumberlength):
             main2 = searchTitle.append(icra_example[(icra_example['Nr'] == int(resultNumber[i]))])
-            # print(main2)
             searchTitle = main2
 
         # print(searchTitle)
-
+        SessionList = searchTitle['Session title'].reset_index()
         AuthorList1 = searchTitle['Author1'].reset_index()
         AuthorList2 = searchTitle['Author2'].reset_index()
         AuthorList3 = searchTitle['Author3'].reset_index()
@@ -653,18 +752,33 @@ def searchresult(request):
         TitleList = searchTitle['Title'].reset_index()
         PDFList = searchTitle['FN'].reset_index()
         titleNumber = searchTitle['Nr'].reset_index()
-        resultList = zip(AuthorList1['Author1'], AuthorList2['Author2'],
-                         AuthorList3['Author3'],
-                         AuthorList4['Author4'],
-                         AuthorList5['Author5'],
-                         AuthorList6['Author6'],
-                         AffiliationList1['Affiliation1'],
-                         AffiliationList2['Affiliation2'],
-                         AffiliationList3['Affiliation3'],
-                         AffiliationList4['Affiliation4'],
-                         AffiliationList5['Affiliation5'],
-                         TitleList['Title'],
-                         PDFList['FN'], titleNumber['Nr'])
+
+        paperLikeCount = []
+        paperLikeButtonColor = []
+        if request.method == "GET":
+
+            for titleNr in titleNumber['Nr']:
+                paper = get_object_or_404(Papers, paper_id=titleNr)
+                if current_account in paper.like_users.all():
+                    buttonColor = 1
+                else:
+                    buttonColor = 0
+                paperLikeButtonColor.append(buttonColor)
+                paperLikeCount.append(paper.like_users.count())
+
+            resultList = zip(AuthorList1['Author1'], AuthorList2['Author2'],
+                             AuthorList3['Author3'],
+                             AuthorList4['Author4'],
+                             AuthorList5['Author5'],
+                             AuthorList6['Author6'],
+                             AffiliationList1['Affiliation1'],
+                             AffiliationList2['Affiliation2'],
+                             AffiliationList3['Affiliation3'],
+                             AffiliationList4['Affiliation4'],
+                             AffiliationList5['Affiliation5'],
+                             TitleList['Title'],
+                             PDFList['FN'], titleNumber['Nr'], paperLikeCount, paperLikeButtonColor, SessionList['Session title'])
+
         return render(request, './beta/5_searchResult_beta.html', {'EpisodeContext': resultList,
                                                                    'account': iros2020_emailinput})
 
@@ -688,7 +802,6 @@ def post_like(request):
     current_account = iros2020registered_db.get(iros2020_email=iros2020_emailinput)
 
     paperLikeCount = []
-    paperLikeButtonColor = []
 
     if request.is_ajax:
         clickedPaperNumber = int(request.POST['paperNumber'])
@@ -701,9 +814,7 @@ def post_like(request):
             paper.like_users.add(current_account)
             buttonColor = "yellow"
 
-        paperLikeButtonColor.append(buttonColor)
         paperLikeCount.append(paper.like_users.count())
-
         response = {'likeButtonColor': buttonColor, 'likeCount': paperLikeCount}
 
         return HttpResponse(
@@ -725,9 +836,32 @@ def add_comment(request):
 
         lengthComments = Comments.objects.filter(paper_id=clickedPaperNumber).count()
 
-        response = {'commentAdded': str(lengthComments-1) + " : " + request.POST['comment'],'lengthComments':lengthComments}
+        response = {'commentAdded': str(lengthComments) + " : " + request.POST['comment'],'lengthComments':lengthComments}
 
     return HttpResponse(
         json.dumps(response),
         content_type="application/json"
     )
+
+@csrf_exempt
+def post_save(request):
+    global iros2020_emailinput
+    current_account = iros2020registered_db.get(iros2020_email=iros2020_emailinput)
+
+    if request.is_ajax:
+        clickedPaperNumber = int(request.POST['paperNumber'])
+        paper = get_object_or_404(Papers, paper_id=clickedPaperNumber)
+
+        if current_account in paper.save_users.all():
+            paper.save_users.remove(current_account)
+            buttonStatus = 'fa fa-plus'
+        else:
+            paper.save_users.add(current_account)
+            buttonStatus = 'fa fa-check-circle'
+
+        response = {'paperSaveButtonStatus': buttonStatus}
+
+        return HttpResponse(
+            json.dumps(response),
+            content_type="application/json"
+        )
