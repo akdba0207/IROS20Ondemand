@@ -37,8 +37,8 @@
 
     <ul class="categories">
         <li class="category category1"><a href="./main?id={{ account }}" style="color:white; text-decoration: none;">Home</a></li>
-        <li class="category category2"><a href="mylist" style="color:white; text-decoration: none;">My Lists</a></li>
-        <li class="category category2"><a href="./" style="color:white; text-decoration: none;">Logout</a></li>
+        <li class="category category2"><a href="mylist?" onClick="this.href=this.href.split('?')[0]+'?'+new Date().getTime()" style="color:white; text-decoration: none;">My Lists</a></li>
+        <li class="category category3"><a href="./" style="color:white; text-decoration: none;">Logout</a></li>
     </ul>
 
     <ul class="search_notice_info">

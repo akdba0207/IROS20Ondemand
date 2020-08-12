@@ -6,6 +6,7 @@
     <meta charset="utf-8">
     <title>IROS 2020 On-Demand : My Lists</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <!-- Link Swiper's CSS -->
     <link rel="stylesheet" href="{% static 'package/css/swiper.min.css' %}">
@@ -38,8 +39,8 @@
 
     <ul class="categories">
         <li class="category category1"><a href="./main?id={{ account }}" style="color:white; text-decoration: none;">Home</a></li>
-        <li class="category category2"><a href="mylist" style="color:white; text-decoration: none;">My Lists</a></li>
-        <li class="category category2"><a href="./" style="color:white; text-decoration: none;">Logout</a></li>
+        <li class="category category2"><a href="mylist?" onClick="this.href=this.href.split('?')[0]+'?'+new Date().getTime()" style="color:white; text-decoration: none;">My Lists</a></li>
+        <li class="category category3"><a href="./" style="color:white; text-decoration: none;">Logout</a></li>
     </ul>
 
     <ul class="search_notice_info">
@@ -153,5 +154,6 @@
         }
     });
 </script>
+
 </body>
 </html>
