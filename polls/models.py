@@ -14,6 +14,9 @@ class Papers(models.Model):
     #IROS Registered Paper ID
     paper_id = models.PositiveIntegerField(default=0, null=True)
 
+    #Each Paper HitCount
+    paper_hitcount = models.PositiveIntegerField(default=0,null=True)
+
     #Users that clicked likes
     like_users = models.ManyToManyField(Users, blank=True, related_name='like_papers')
 

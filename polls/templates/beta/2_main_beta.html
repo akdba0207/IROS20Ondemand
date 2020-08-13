@@ -40,7 +40,8 @@
 
     <ul class="categories">
         <li class="category category1"><a href="./main?id={{ account }}" style="color:white; text-decoration: none;">Home</a></li>
-        <li class="category category2"><a href="mylist?" onClick="this.href=this.href.split('?')[0]+'?'+new Date().getTime()" style="color:white; text-decoration: none;">My Lists</a></li>
+{#        <li class="category category2"><a href="mylist?" onClick="this.href=this.href.split('?')[0]+'?'+new Date().getTime()" style="color:white; text-decoration: none;">My Lists</a></li>#}
+        <li class="category category2"><a href="mylist?" onClick="this.href=this.href+new Date().getTime()" style="color:white; text-decoration: none;">My Lists</a></li>
         <li class="category category3"><a href="./" style="color:white; text-decoration: none;">Logout</a></li>
     </ul>
 
@@ -153,7 +154,7 @@
             <div class="swiper-container">
                 <div class="swiper-wrapper">
                     {% for j in Specials %}
-                        <div class="swiper-slide"><a href="specials?id={{j}}&id2={{ Genre.0 }}" style="color:white; text-decoration: none;">
+                        <div class="swiper-slide"><a href="specials?id={{j}}&id2={{ Genre.0 }}" onClick="this.href=this.href+'&'+new Date().getTime()" style="color:white; text-decoration: none;">
                             <img src="{% static 'img'%}/Specials/{{ j }}.jpg">
                             <div class="onimg-caption">{{ j }}
                             </div>
@@ -172,7 +173,7 @@
             <div class="swiper-container">
                 <div class="swiper-wrapper">
                     {% for j in Workshops %}
-                        <div class="swiper-slide"><a href="workshops?id={{j}}&id2={{ Genre.1 }}" style="color:white; text-decoration: none;">
+                        <div class="swiper-slide"><a href="workshops?id={{j}}&id2={{ Genre.1 }}" onClick="this.href=this.href+'&'+new Date().getTime()" style="color:white; text-decoration: none;">
                             <img src="{% static 'img'%}/Workshops/{{ j }}.jpg">
                             <div class="onimg-caption">{{ j }}
                             </div>
@@ -191,7 +192,7 @@
             <div class="swiper-container">
                 <div class="swiper-wrapper">
                     {% for j in Aerial %}
-                        <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.0 }}&id3={{ Pavilion.index.0|add:1 }}" style="color:white; text-decoration: none;">
+                        <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.0 }}&id3={{ Pavilion.index.0|add:1 }}" onClick="this.href=this.href+'&'+new Date().getTime()" style="color:white; text-decoration: none;">
 
                             <img src="{% static 'img'%}/pavilion{{ Pavilion.index.0|add:1 }}/{{ j }}.jpg">
                             <div class="onimg-caption">{{ j }}
@@ -212,7 +213,7 @@
             <div class="swiper-container">
                 <div class="swiper-wrapper">
                     {% for j in Humanoid %}
-                        <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.1 }}&id3={{ Pavilion.index.1|add:1 }}" style="color:white; text-decoration: none;">
+                        <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.1 }}&id3={{ Pavilion.index.1|add:1 }}" onClick="this.href=this.href+'&'+new Date().getTime()" style="color:white; text-decoration: none;">
 
                             <img src="{% static 'img'%}/pavilion{{ Pavilion.index.1|add:1 }}/{{ j }}.jpg">
                             <div class="onimg-caption">{{ j }}
@@ -233,7 +234,7 @@
             <div class="swiper-container">
                 <div class="swiper-wrapper">
                     {% for j in Medical %}
-                        <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.2 }}&id3={{ Pavilion.index.2|add:1 }}" style="color:white; text-decoration: none;">
+                        <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.2 }}&id3={{ Pavilion.index.2|add:1 }}" onClick="this.href=this.href+'&'+new Date().getTime()" style="color:white; text-decoration: none;">
 
                             <img src="{% static 'img'%}/pavilion{{ Pavilion.index.2|add:1 }}/{{ j }}.jpg">
                             <div class="onimg-caption">{{ j }}
@@ -254,7 +255,7 @@
             <div class="swiper-container">
                 <div class="swiper-wrapper">
                     {% for j in Driverless %}
-                        <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.3 }}&id3={{ Pavilion.index.3|add:1 }}" style="color:white; text-decoration: none;">
+                        <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.3 }}&id3={{ Pavilion.index.3|add:1 }}" onClick="this.href=this.href+'&'+new Date().getTime()" style="color:white; text-decoration: none;">
 
                             <img src="{% static 'img'%}/pavilion{{ Pavilion.index.3|add:1 }}/{{ j }}.jpg">
                             <div class="onimg-caption">{{ j }}
@@ -275,7 +276,7 @@
             <div class="swiper-container">
                 <div class="swiper-wrapper">
                     {% for j in EndEffector %}
-                        <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.4 }}&id3={{ Pavilion.index.4|add:1 }}" style="color:white; text-decoration: none;">
+                        <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.4 }}&id3={{ Pavilion.index.4|add:1 }}" onClick="this.href=this.href+'&'+new Date().getTime()" style="color:white; text-decoration: none;">
 
                             <img src="{% static 'img'%}/pavilion{{ Pavilion.index.4|add:1}}/{{ j }}.jpg">
                             <div class="onimg-caption">{{ j }}

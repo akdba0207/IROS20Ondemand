@@ -58,12 +58,12 @@
     <h3>&nbsp;&nbsp;Search Results : </h3>
     <p>&nbsp;</p>
 
-    {% for AuthorList1, AuthorList2, AuthorList3, AuthorList4,AuthorList5,AuthorList6,AffiliationList1,AffiliationList2,AffiliationList3,AffiliationList4,AffiliationList5,TitleList, PDFList, titleNumber, paperLikeCount, paperLikeButtonColor, paperSaveButtonStatus, SessionList in EpisodeContext %}
+    {% for AuthorList1, AuthorList2, AuthorList3, AuthorList4,AuthorList5,AuthorList6,AffiliationList1,AffiliationList2,AffiliationList3,AffiliationList4,AffiliationList5,TitleList, PDFList, titleNumber, paperLikeCount, paperLikeButtonColor, paperSaveButtonStatus, SessionList, paperHitCount in EpisodeContext %}
         <div class="epilisttable" style="width: 80%; height: auto; text-align: center; margin-left: 10%; background-color: transparent; margin-bottom:1%">
             <table border="0" cellpadding="0" cellspacing="0" style="background-color: #323232;" >
                 <tr>
                     <td style="width: 30%">
-                        <a href="episode?id={{TitleList}}&id2={{ SessionList }}"><img src="{% static './resources/playlogo.png'%}"></a>
+                        <a href="episode?id={{TitleList}}&id2={{ SessionList }}" onClick="this.href=this.href+'&'+new Date().getTime()"><img src="{% static './resources/playlogo.png'%}"></a>
                     </td>
                     <td valign="top" align="left" style="padding-left: 5%; padding-top: 3%;word-break: keep-all">
                         <p class="papertitle" style="color: white;">Title : {{ TitleList }}</p>
@@ -139,6 +139,7 @@
                                 <input type="text" id="{{ titleNumber }}" value="{{ paperLikeCount }}" class="thumbsuptext" name="likeCount" readonly/>
                                 <input type="hidden" name="paperNumber" value="{{ titleNumber }}">
                             </button>
+                            <span class="listHitCount" style="color: white">{{ paperHitCount }} views</span>
                         {% endif %}
                     </td>
                     <td class="savePapers" style="width: 5%; color: white">

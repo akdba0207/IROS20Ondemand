@@ -73,12 +73,12 @@
     </div>
 
 
-    {% for speakerName, speakerBiography, specialEpisodeAbstract,specialEpisodeNumber, specialLikeCount, specialLikeButtonColor, specialSaveButtonStatus in specialEpisodeContext %}
+    {% for speakerName, speakerBiography, specialEpisodeAbstract,specialEpisodeNumber, specialLikeCount, specialLikeButtonColor, specialSaveButtonStatus, specialHitCount in specialEpisodeContext %}
         <div class="epilisttable" style="width: 80%; height: auto; text-align: center; margin-left: 10%; background-color: #323232; margin-bottom:1%">
             <table border="0" cellpadding="0" cellspacing="0" style="background-color: transparent;" >
                 <tr>
                     <td style="width: 30%">
-                        <a href="specialsepisode?id={{speakerName}}&id2={{selectedSpecial}}&id3={{ selectedGenre }}">
+                        <a href="specialsepisode?id={{speakerName}}&id2={{selectedSpecial}}&id3={{ selectedGenre }}" onClick="this.href=this.href+'&'+new Date().getTime()">
                             <img src="{% static 'img'%}/{{ selectedGenre }}/{{selectedSpecial}}/{{ speakerName }}.jpg"></a>
                     </td>
                     <td valign="top" align="left" style="padding-left: 5%; padding-top: 3%;word-break: keep-all;">
@@ -121,6 +121,7 @@
                                 <input type="hidden" name="paperNumber" value="{{ specialEpisodeNumber }}">
                             </button>
                         {% endif %}
+                        <span class="listHitCount" style="color: white">{{ specialHitCount }} views</span>
                     </td>
                     <td class="savePapers" style="width: 5%; color: white">
                         {% csrf_token %}

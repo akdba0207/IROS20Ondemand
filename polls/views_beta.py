@@ -7,6 +7,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from polls.models import Users, Papers, Comments
+# from ipware import get_client_ip
 import pandas as pd
 import os
 import math
@@ -162,6 +163,9 @@ def login(request):
     # for k in range(len(icra_workshops['Workshop Number'])):
     #     db2 = Papers(paper_id=icra_workshops['Workshop Number'][k])
     #     db2.save()
+    # ip, is_routable = get_client_ip(request)
+    # print(ip)
+    # print(is_routable)
 
     return render(request, './beta/1_login_beta.html')
 
@@ -267,10 +271,13 @@ def tvshow(request):
         goldSponsorSession = icra_sponsors[(icra_sponsors['Location'] == selectedSession)].reset_index()
         goldSponsorName = goldSponsorSession['Name'].reset_index()
         goldSponsorVideo = goldSponsorSession['Video'].reset_index()
+        goldSponsorWebpage = goldSponsorSession['Link'].reset_index()
+
         if request.method == "GET":
             paperLikeCount = []
             paperLikeButtonColor = []
             paperSaveButtonStatus = []
+            paperHitCount = []
             for titleNr in titleNumber['Nr']:
                 paper = get_object_or_404(Papers, paper_id=titleNr)
 
@@ -289,6 +296,8 @@ def tvshow(request):
 
                 paperSaveButtonStatus.append(buttonStatus)
 
+                paperHitCount.append(paper.paper_hitcount)
+
             EpisodeContext = zip(AuthorList1['Author1'], AuthorList2['Author2'],
                                  AuthorList3['Author3'],
                                  AuthorList4['Author4'],
@@ -300,7 +309,7 @@ def tvshow(request):
                                  AffiliationList4['Affiliation4'],
                                  AffiliationList5['Affiliation5'],
                                  TitleList['Title'],
-                                 PDFList['FN'], titleNumber['Nr'], paperLikeCount, paperLikeButtonColor, paperSaveButtonStatus)
+                                 PDFList['FN'], titleNumber['Nr'], paperLikeCount, paperLikeButtonColor, paperSaveButtonStatus, paperHitCount)
             return render(request, './beta/3_pavilionSession_beta.html', {'Pavilion': selectedPavilion,
                                                                           'PavilionNum': selectedPavilionNum,
                                                                           'SessionList': selectedSessionList,
@@ -311,6 +320,7 @@ def tvshow(request):
                                                                           'goldSponsorVideo': goldSponsorVideo['Video'],
                                                                           'goldSponsorSession': goldSponsorSession[
                                                                               'Location'],
+                                                                          'goldSponsorWebpage':goldSponsorWebpage['Link']
                                                                           })
 
 
@@ -333,6 +343,7 @@ def specials(request):
         specialLikeCount = []
         specialLikeButtonColor = []
         specialSaveButtonStatus = []
+        specialHitCount = []
 
         for specialNr in specialEpisodeNumber['Nr']:
             paper = get_object_or_404(Papers, paper_id=specialNr)
@@ -349,10 +360,12 @@ def specials(request):
                 buttonStatus = 0
             specialSaveButtonStatus.append(buttonStatus)
 
+            specialHitCount.append(paper.paper_hitcount)
+
         specialEpisodeContext = zip(speakerName['Speaker'],
                                     speakerBiography['Bio'],
                                     specialEpisodeAbstract['Abstract'],
-                                    specialEpisodeNumber['Nr'],specialLikeCount,specialLikeButtonColor,specialSaveButtonStatus
+                                    specialEpisodeNumber['Nr'],specialLikeCount,specialLikeButtonColor,specialSaveButtonStatus, specialHitCount
                                     )
 
 
@@ -411,6 +424,7 @@ def workshops(request):
         workshopLikeCount = []
         workshopLikeButtonColor = []
         workshopSaveButtonStatus = []
+        workshopHitCount = []
         for workshopNr in workshopEpisodeNumber:
             paper = get_object_or_404(Papers, paper_id=workshopNr)
             if current_account in paper.like_users.all():
@@ -425,9 +439,11 @@ def workshops(request):
             else:
                 buttonStatus = 0
             workshopSaveButtonStatus.append(buttonStatus)
+            workshopHitCount.append(paper.paper_hitcount)
 
 
-        WorkshopsContext = zip(Speaker, Institution, TalkTitle, workshopEpisodeNumber, workshopLikeButtonColor, workshopLikeCount, workshopSaveButtonStatus)
+        WorkshopsContext = zip(Speaker, Institution, TalkTitle, workshopEpisodeNumber, workshopLikeButtonColor,
+                               workshopLikeCount, workshopSaveButtonStatus, workshopHitCount)
 
         return render(request, './beta/3-2_workshopsSession_beta.html', {'selectedWorkshops': selectedWorkshops,
                                                                          'selectedGenre': selectedGenre,
@@ -491,7 +507,7 @@ def episode(request):
         paperLikeCount = []
         paperLikeButtonColor = []
         paperSaveButtonStatus = []
-
+        paperHitCount = []
 
         if request.method == "GET":
             selectedPaper = get_object_or_404(Papers, paper_id=selectedNumber['Nr'].iloc[0])
@@ -522,6 +538,7 @@ def episode(request):
                     buttonStatus = 0
                 paperSaveButtonStatus.append(buttonStatus)
 
+                paperHitCount.append(paper.paper_hitcount)
 
             resultList = zip(AuthorList1['Author1'], AuthorList2['Author2'],
                              AuthorList3['Author3'],
@@ -534,7 +551,7 @@ def episode(request):
                              AffiliationList4['Affiliation4'],
                              AffiliationList5['Affiliation5'],
                              TitleList['Title'],
-                             PDFList['FN'], titleNumber['Nr'], suggestEpisodeNum, paperLikeCount, paperLikeButtonColor, SessionTitle, paperSaveButtonStatus)
+                             PDFList['FN'], titleNumber['Nr'], suggestEpisodeNum, paperLikeCount, paperLikeButtonColor, SessionTitle, paperSaveButtonStatus, paperHitCount)
             return render(request, './beta/4_pavilionSessionEpisode_beta.html', {'VideoList': VideoList['VID'],
                                                                                  'Title': selectedTitle,
                                                                                  'Session': selectedSession,
@@ -596,6 +613,7 @@ def specialsepisode(request):
         specialLikeCount = []
         specialLikeButtonColor = []
         specialSaveButtonStatus = []
+        specialHitCount = []
 
         for specialNr in specialEpisodeNumber['Nr']:
             paper = get_object_or_404(Papers, paper_id=specialNr)
@@ -612,10 +630,12 @@ def specialsepisode(request):
                 buttonStatus = 0
             specialSaveButtonStatus.append(buttonStatus)
 
+            specialHitCount.append(paper.paper_hitcount)
+
         specialEpisodeContext = zip(speakerName['Speaker'],
                                     speakerBiography['Bio'],
                                     specialEpisodeAbstract['Abstract'],
-                                    specialEpisodeNumber['Nr'], specialLikeCount, specialLikeButtonColor, specialSaveButtonStatus
+                                    specialEpisodeNumber['Nr'], specialLikeCount, specialLikeButtonColor, specialSaveButtonStatus,specialHitCount
                                     )
 
         return render(request, './beta/4-1_plenariesSessionEpisode_beta.html', {'specialVideo': specialVideo['Video'],
@@ -700,6 +720,7 @@ def workshopsepisode(request):
         workshopLikeCount = []
         workshopLikeButtonColor = []
         workshopSaveButtonStatus = []
+        workshopHitCount = []
 
         for workshopNr in workshopEpisodeNumber:
             paper = get_object_or_404(Papers, paper_id=workshopNr)
@@ -716,8 +737,10 @@ def workshopsepisode(request):
                 buttonStatus = 0
             workshopSaveButtonStatus.append(buttonStatus)
 
+            workshopHitCount.append(paper.paper_hitcount)
+
         WorkshopsContext = zip(Speaker, Institution, TalkTitle, workshopEpisodeNumber, workshopLikeButtonColor,
-                               workshopLikeCount, workshopSaveButtonStatus)
+                               workshopLikeCount, workshopSaveButtonStatus, workshopHitCount)
 
         return render(request, './beta/4-2_workshopsSessionEpisode_beta.html',
                       {'workshopsVideo': workshopsVideo['Video ' + str(selectedSpeakerNumber)],
@@ -781,6 +804,7 @@ def searchresult(request):
             paperLikeCount = []
             paperLikeButtonColor = []
             paperSaveButtonStatus = []
+            paperHitCount = []
 
             if request.method == "GET":
 
@@ -802,6 +826,8 @@ def searchresult(request):
 
                     paperSaveButtonStatus.append(buttonStatus)
 
+                    paperHitCount.append(paper.paper_hitcount)
+
                 resultList = zip(AuthorList1['Author1'], AuthorList2['Author2'],
                                  AuthorList3['Author3'],
                                  AuthorList4['Author4'],
@@ -813,7 +839,7 @@ def searchresult(request):
                                  AffiliationList4['Affiliation4'],
                                  AffiliationList5['Affiliation5'],
                                  TitleList['Title'],
-                                 PDFList['FN'], titleNumber['Nr'], paperLikeCount, paperLikeButtonColor, paperSaveButtonStatus, SessionList['Session title'])
+                                 PDFList['FN'], titleNumber['Nr'], paperLikeCount, paperLikeButtonColor, paperSaveButtonStatus, SessionList['Session title'], paperHitCount)
 
             return render(request, './beta/5_searchResult_beta.html', {'EpisodeContext': resultList,
                                                                        'account': iros2020_emailinput})
@@ -914,7 +940,7 @@ def mylist(request):
 #########################################################################################################
 #########################################################################################################
 #########################################################################################################
-# Like Function
+# Like, Comment, MylistSave, hitcount Function
 @csrf_exempt
 def post_like(request):
     global iros2020_emailinput
@@ -988,6 +1014,31 @@ def post_save(request):
                 buttonStatus = 'fa fa-check-circle'
 
             response = {'paperSaveButtonStatus': buttonStatus}
+
+            return HttpResponse(
+                json.dumps(response),
+                content_type="application/json"
+            )
+
+
+@csrf_exempt
+def post_hitcount(request):
+    global iros2020_emailinput
+    if iros2020_emailinput == '':
+        return render(request, './beta/1-1_loginError_beta.html')
+    else:
+        if request.is_ajax:
+            clickedPaperNumber = int(request.POST['paperNumber'])
+            paper = get_object_or_404(Papers, paper_id=clickedPaperNumber)
+
+            # For Page edit
+            # paperHitCount = 0
+
+            # For active page
+            paperHitCount = paper.paper_hitcount + 1
+
+            Papers.objects.filter(paper_id=clickedPaperNumber).update(paper_hitcount=paperHitCount)
+            response = {'hitCount': paperHitCount}
 
             return HttpResponse(
                 json.dumps(response),

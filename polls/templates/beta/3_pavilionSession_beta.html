@@ -79,6 +79,7 @@
                             </video>
                             <div style="position: absolute; z-index: 1;color: yellow; bottom: 0; text-align: center; font-size: 200%; background-color: rgba(0,0,0,0.7); width: 90%">
                                 <p>Sample Gold Partner Video Placement</p>
+                                <p><a href="{{ goldSponsorWebpage.0 }}" target="_blank"  style="color:white; text-decoration: none;">Click {{ goldSponsorWebpage.0 }}</a> </p>
                                 <div style="width: 50%; text-align: left; font-size: 100%;">
                                     <button style="background-color: transparent;border: none; margin:auto; outline: none;color: red;" class="UnmuteBtn"  onclick="disbleMute('videoGoldSponsor')" type="button">
                                         <i class="fas fa-volume-up"></i>
@@ -105,12 +106,12 @@
     </div>
 
 
-    {% for AuthorList1, AuthorList2, AuthorList3, AuthorList4,AuthorList5,AuthorList6,AffiliationList1,AffiliationList2,AffiliationList3,AffiliationList4,AffiliationList5,TitleList, PDFList, titleNumber, paperLikeCount, paperLikeButtonColor, paperSaveButtonStatus in EpisodeContext %}
+    {% for AuthorList1, AuthorList2, AuthorList3, AuthorList4,AuthorList5,AuthorList6,AffiliationList1,AffiliationList2,AffiliationList3,AffiliationList4,AffiliationList5,TitleList, PDFList, titleNumber, paperLikeCount, paperLikeButtonColor, paperSaveButtonStatus, paperHitCount in EpisodeContext %}
         <div class="epilisttable" style="width: 80%; height: auto; text-align: center; margin-left: 10%; background-color: transparent; margin-bottom:1%">
             <table border="0" cellpadding="0" cellspacing="0" style="background-color: #323232;" >
                 <tr>
                     <td style="width: 30%">
-                        <a href="episode?id={{TitleList}}&id2={{ Session }}"><img src="{% static './resources/playlogo.png'%}"></a>
+                        <a href="episode?id={{TitleList}}&id2={{ Session }}" onClick="this.href=this.href+'&'+new Date().getTime()"><img src="{% static './resources/playlogo.png'%}"></a>
                     </td>
                     <td valign="top" align="left" style="padding-left: 5%; padding-top: 3%;word-break: keep-all">
                         <p class="papertitle" style="color: white;">Title : {{ TitleList }}</p>
@@ -188,6 +189,7 @@
                                 <input type="hidden" name="paperNumber" value="{{ titleNumber }}">
                             </button>
                         {% endif %}
+                        <span class="listHitCount" style="color: white">{{ paperHitCount }} views</span>
                     </td>
                     <td class="savePapers" style="width: 5%; color: white">
                         {% csrf_token %}

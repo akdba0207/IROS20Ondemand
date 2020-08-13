@@ -24,8 +24,26 @@
     />
     <link rel="stylesheet" href="{% static 'css/index_land0717.css' %}" />
     <link rel="stylesheet" href="{% static 'css/index_header0717.css' %}" />
+    <script>
+        function hitCounter(titleNumber){
+            var mainHitcount = document.getElementById("mainHitCount");
+            $.ajax({
+                url:'post_hitcount',
+                type:'POST',
+                data:{'paperNumber':titleNumber},
+                dataType:'json',
+                success: function(json) {
+                    {#alert("Title Hit Success")#}
+                    mainHitcount.innerHTML = json['hitCount'] + ' views';
+                },
+                error: function(err) {
+                    alert("Failed to Retrieve JSON file from Server");
+                }
+            });
+        }
+    </script>
 </head>
-<body>
+<body onload="hitCounter({{ SelectedPaperNumber }})">
 <header>
     <div class="logo">
         <a href="./main?id={{ account }}">
@@ -53,7 +71,7 @@
 </header>
 <div style="width:95%; margin:0 auto; padding-top: 5%;" align="justify">
     <h3 class="episodeTitle">Title : {{Title}}</h3>
-    <p>&nbsp;</p>
+    <span id="mainHitCount" style="color: white"></span>
     <table style="width: 100%;">
         <tr>
             <td style="width: 60%;">
@@ -115,12 +133,12 @@
     </center>
     <h3 style="padding-bottom: 2%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; More talks like this : </h3>
 
-    {% for AuthorList1, AuthorList2, AuthorList3, AuthorList4,AuthorList5, AuthorList6, AffiliationList1,AffiliationList2,AffiliationList3,AffiliationList4,AffiliationList5,TitleList, PDFList, titleNumber, suggestEpisodeNum,paperLikeCount,paperLikeButtonColor, SessionTitle, paperSaveButtonStatus in EpisodeContext %}
+    {% for AuthorList1, AuthorList2, AuthorList3, AuthorList4,AuthorList5, AuthorList6, AffiliationList1,AffiliationList2,AffiliationList3,AffiliationList4,AffiliationList5,TitleList, PDFList, titleNumber, suggestEpisodeNum,paperLikeCount,paperLikeButtonColor, SessionTitle, paperSaveButtonStatus, paperHitCount in EpisodeContext %}
         <div class="suggestlisttable">
             <table border="0" cellpadding="0" cellspacing="0" style="background-color: #323232;" >
                 <tr>
                     <td style="width: 30%">
-                        <a href="episode?id={{TitleList}}&id2={{ SessionTitle }}" style="color:white; text-decoration: none;">
+                        <a href="episode?id={{TitleList}}&id2={{ SessionTitle }}" onClick="this.href=this.href+'&'+new Date().getTime()" style="color:white; text-decoration: none;">
                             <img src="{% static './resources/playlogo.png'%}"></a>
                     </td>
                     <td valign="top" align="left" style="padding-left: 5%; padding-top: 3%;word-break: keep-all;">
@@ -184,7 +202,6 @@
                             </tbody>
                         </table>
                         <p style="color: white;"><a href="https://ras.papercept.net/proceedings/ICRA20/{{ PDFList }}" target="_blank"> Open PDF files</a></p>
-
                         {% csrf_token %}
                         {% if paperLikeButtonColor == 1 %}
                             <button class="likeButton" type="submit" style="margin: auto;background-color: #323232 ;" onclick="updateLike({{ titleNumber }})">
@@ -199,6 +216,7 @@
                                 <input type="hidden" name="paperNumber" value="{{ titleNumber }}">
                             </button>
                         {% endif %}
+                        <span class="listHitCount" style="color: white">{{ paperHitCount }} views</span>
                     </td>
                     <td class="savePapers" style="width: 5%; color: white">
                         {% csrf_token %}

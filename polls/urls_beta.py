@@ -15,5 +15,6 @@ urlpatterns = [
     path('mylist',views_beta.mylist),
     path('post_like', views_beta.post_like, name='post_like'),
     path('add_comment', views_beta.add_comment, name='add_comment'),
-    path('post_save', views_beta.post_save, name='post_save')
+    path('post_save', views_beta.post_save, name='post_save'),
+    path('post_hitcount', views_beta.post_hitcount, name='post_hitcount')
 ]

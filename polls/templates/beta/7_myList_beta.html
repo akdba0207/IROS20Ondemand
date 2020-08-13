@@ -67,7 +67,7 @@
         <div style="width: 100%; padding-bottom: 2%; display: inline-flex; flex-wrap: wrap">
             {% for mylistSpecialSpeaker, mylistSpecialSpecial, mylistSpecialGenre in mylistSpecialContext %}
                 <div style="position: relative; border-style: solid; border-color: white;margin: 1%;width: 22%; display:inline-block;">
-                    <a href="specialsepisode?id={{mylistSpecialSpeaker}}&id2={{ mylistSpecialSpecial }}&id3={{ mylistSpecialGenre }}">
+                    <a href="specialsepisode?id={{mylistSpecialSpeaker}}&id2={{ mylistSpecialSpecial }}&id3={{ mylistSpecialGenre }}" onClick="this.href=this.href+'&'+new Date().getTime()">
                         <img src="{% static './resources/playlogo.png'%}" width="100%"></a>
                     <div style="position: absolute; z-index: 1;color: white; bottom: 0; text-align: center; font-size: 100%; background-color: rgba(0,0,0,0.7); width: 100%">
                         <p>{{ mylistSpecialSpecial}} : {{ mylistSpecialSpeaker }}</p>
@@ -83,7 +83,7 @@
         <div style="width: 100%; padding-bottom: 2%; display: inline-flex; flex-wrap: wrap">
             {% for mylistWorkshopsSpeaker, mylistWorkshopsWorkshop, mylistWorkshopsGenre, mylistWorkshopsSpeakerNumber, mylistWorkshopsTalkTitle in mylistWorkshopsContext %}
                 <div style="position: relative; border-style: solid; border-color: white; margin: 1%;width: 22%;; display:inline-flex;">
-                    <a href="workshopsepisode?id={{mylistWorkshopsSpeaker}}&id2={{ mylistWorkshopsWorkshop }}&id3={{ mylistWorkshopsGenre }}&id4={{ mylistWorkshopsSpeakerNumber }}">
+                    <a href="workshopsepisode?id={{mylistWorkshopsSpeaker}}&id2={{ mylistWorkshopsWorkshop }}&id3={{ mylistWorkshopsGenre }}&id4={{ mylistWorkshopsSpeakerNumber }}" onClick="this.href=this.href+'&'+new Date().getTime()">
                         <img src="{% static './resources/playlogo.png'%}" width="100%"></a>
                     <div style="position: absolute; z-index: 1;color: white; bottom: 0; text-align: center; font-size: 100%; background-color: rgba(0,0,0,0.7); width: 100%">
                         <p>{{ mylistWorkshopsTalkTitle }}</p>
@@ -99,7 +99,7 @@
         <div style="width: 100%; padding-bottom: 2%; display: inline-flex; flex-wrap: wrap">
             {% for mylistEpisodeTitle, mylistEpisodeSession in mylistEpisodeContext %}
                 <div style="position: relative; border-style: solid; border-color: white;margin: 1%;width: 22%; display:inline-flex;">
-                    <a href="episode?id={{mylistEpisodeTitle}}&id2={{ mylistEpisodeSession }}">
+                    <a href="episode?id={{mylistEpisodeTitle}}&id2={{ mylistEpisodeSession }}" onClick="this.href=this.href+'&'+new Date().getTime()">
                         <img src="{% static './resources/playlogo.png'%}" width="100%"></a>
                     <div style="position: absolute; z-index: 1;color: white; bottom: 0; text-align: center; font-size: 100%; background-color: rgba(0,0,0,0.7); width: 100%">
                         <p>{{ mylistEpisodeTitle }}</p>

@@ -24,9 +24,26 @@
     />
     <link rel="stylesheet" href="{% static 'css/index_land0717.css' %}" />
     <link rel="stylesheet" href="{% static 'css/index_header0717.css' %}" />
-    
+    <script>
+        function hitCounter(titleNumber){
+            var mainHitcount = document.getElementById("mainHitCount");
+            $.ajax({
+                url:'post_hitcount',
+                type:'POST',
+                data:{'paperNumber':titleNumber},
+                dataType:'json',
+                success: function(json) {
+                    {#alert("Title Hit Success")#}
+                    mainHitcount.innerHTML = json['hitCount'] + ' views';
+                },
+                error: function(err) {
+                    alert("Failed to Retrieve JSON file from Server");
+                }
+            });
+        }
+    </script>
 </head>
-<body>
+<body onload="hitCounter({{ SelectedPaperNumber }})">
 <header>
     <div class="logo">
         <a href="./main?id={{ account }}">
@@ -54,6 +71,7 @@
 </header>
 <div style="width:95%; margin:0 auto; padding-top: 5%;" align="justify">
     <h3 class="episodeTitle">Title : </h3>
+    <span id="mainHitCount" style="color: white"></span>
     <p>&nbsp;</p>
     {#    <video style="display:block; margin: 0 auto; width: 40%; height: auto" controls autoplay>#}
     {#        <source src="https://ras.papercept.net/proceedings/ICRA20/{{ VideoList.0 }}" type="video/mp4">#}
@@ -122,7 +140,7 @@
     </center>
     <h3 style="padding-bottom: 2%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; More {{ selectedSpecial }} : </h3>
 
-    {% for speakerName, speakerBiography, specialEpisodeAbstract, specialEpisodeNumber, specialLikeCount, specialLikeButtonColor, specialSaveButtonStatus in specialEpisodeContext %}
+    {% for speakerName, speakerBiography, specialEpisodeAbstract, specialEpisodeNumber, specialLikeCount, specialLikeButtonColor, specialSaveButtonStatus, specialHitCount in specialEpisodeContext %}
         {% if specialEpisodeNumber == SelectedPaperNumber %}
             &nbsp;
         {% else %}
@@ -130,7 +148,7 @@
                 <table border="0" cellpadding="0" cellspacing="0" style="background-color: #323232;" >
                     <tr>
                         <td style="width: 30%">
-                            <a href="specialsepisode?id={{speakerName}}&id2={{selectedSpecial}}&id3={{ selectedGenre }}">
+                            <a href="specialsepisode?id={{speakerName}}&id2={{selectedSpecial}}&id3={{ selectedGenre }}" onClick="this.href=this.href+'&'+new Date().getTime()">
                                 <img src="{% static 'img'%}/{{ selectedGenre }}/{{selectedSpecial}}/{{ speakerName }}.jpg"></a>
                         </td>
                         <td valign="top" align="left" style="padding-left: 5%; padding-top: 3%;word-break: keep-all">
@@ -173,6 +191,7 @@
                                     <input type="hidden" name="paperNumber" value="{{ specialEpisodeNumber }}">
                                 </button>
                             {% endif %}
+                            <span class="listHitCount" style="color: white">{{ specialHitCount }} views</span>
                         </td>
                         <td class="savePapers" style="width: 5%; color: white">
                             {% csrf_token %}
