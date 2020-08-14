@@ -223,14 +223,15 @@
             const query = document.getElementById("search_bar").value;
             document.getElementById("keywordDelivery").href = "searchresult?id="+query;
         }
-
+ asb&123
     </script>
     <!-- Initialize Swiper -->
     <script>
         function goBack() {
             {#window.history.back();#}
             var oldURL = document.referrer;
-            location.href=oldURL+'&'+new Date().getTime()
+            var newURL = oldURL.substr(0, oldURL.length-new Date().getTime().toString().length);
+            location.href=newURL+new Date().getTime();
         }
     </script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
