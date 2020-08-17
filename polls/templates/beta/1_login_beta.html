@@ -69,13 +69,13 @@
 
 <div class="login-page">
     <div class="form">
-        <form>
+        <form id="login_action" onsubmit="login()" method="post">
             {#            <input type="text" placeholder="username"/>#}
-            <input id="login_bar" value="" class="loginBar" type="text" placeholder="Enter your E-mail address" onkeydown="if(event.keyCode === 13) {event.preventDefault(); document.getElementById('loginButton').click()}"/>
-            <a id = "emailDelivery" href="./2_main_beta.html" onclick="login()">
-                <button id="loginButton" type="button">login
-                </button>
-            </a>
+            <input id="login_bar" name="password" value="a" class="loginBar" type="hidden"/>
+            <input id="login_bar" name="username" value="" class="loginBar" type="text" placeholder="Enter your E-mail address" onkeydown="if(event.keyCode === 13) {event.preventDefault(); document.getElementById('loginButton').click()}"/>
+            {#            <a id = "emailDelivery" href="./2_main_beta.html" onclick="login()">#}
+            <button id="loginButton" type="submit">login            </button>
+            {#            </a>#}
             <p class="message">IROS2020 On-Demand is only for <br>The conference participants</p>
         </form>
     </div>
@@ -84,7 +84,7 @@
 <script>
     function login(){
         const query = document.getElementById("login_bar").value;
-        document.getElementById("emailDelivery").href = "main?id="+query;
+        document.getElementById("login_action").action = "";
     }
 
 </script>

@@ -46,16 +46,16 @@
 <body onload="hitCounter({{ SelectedPaperNumber }})">
 <header>
     <div class="logo">
-        <a href="./main?id={{ account }}">
+        <a href="./main">
             <img src="{% static './resources/logo.png'%}"/>
         </a>
         <button class="header-toggleBtn"><i class="fa fa-bars"></i></button>
     </div>
 
     <ul class="categories">
-        <li class="category category1"><a href="./main?id={{ account }}" style="color:white; text-decoration: none;">Home</a></li>
+        <li class="category category1"><a href="./main" style="color:white; text-decoration: none;">Home</a></li>
         <li class="category category2"><a href="mylist?" onClick="this.href=this.href.split('?')[0]+'?'+new Date().getTime()" style="color:white; text-decoration: none;">My Lists</a></li>
-        <li class="category category3"><a href="./" style="color:white; text-decoration: none;">Logout</a></li>
+        <li class="category category3"><a href="logout" style="color:white; text-decoration: none;">Logout</a></li>
     </ul>
 
     <ul class="search_notice_info">
@@ -283,9 +283,9 @@
     </script>
     <script>
         function goBack() {
-            {#window.history.back();#}
             var oldURL = document.referrer;
-            location.href=oldURL+'&'+new Date().getTime()
+            var newURL = oldURL.substr(0, oldURL.length-new Date().getTime().toString().length);
+            location.href=newURL+new Date().getTime();
         }
     </script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>

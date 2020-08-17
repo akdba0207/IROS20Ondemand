@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 
 # Create your models here.
 #
@@ -18,10 +18,10 @@ class Papers(models.Model):
     paper_hitcount = models.PositiveIntegerField(default=0,null=True)
 
     #Users that clicked likes
-    like_users = models.ManyToManyField(Users, blank=True, related_name='like_papers')
+    like_users = models.ManyToManyField(User, blank=True, related_name='like_papers')
 
     #Users that clicked save
-    save_users = models.ManyToManyField(Users, blank=True, related_name='save_papers')
+    save_users = models.ManyToManyField(User, blank=True, related_name='save_papers')
 
     def __str__(self):
         return f"paper_id:{self.paper_id}"
@@ -29,13 +29,5 @@ class Papers(models.Model):
 class Comments(models.Model):
     paper_id = models.PositiveIntegerField(default=0, null=True)
     comment = models.TextField(max_length=1500)
-    comment_users = models.ManyToManyField(Users, blank=True, related_name='comment_papers')
+    comment_users = models.ManyToManyField(User, blank=True, related_name='comment_papers')
 
-# class SavePapers(models.Model):
-#     #IROS Registered Paper ID
-#     paper_id = models.PositiveIntegerField(default=0, null=True)
-#     #Users that clicked likes
-#     save_users = models.ManyToManyField(Users, blank=True, related_name='save_papers')
-#
-#     def __str__(self):
-#         return f"paper_id:{self.paper_id}"
