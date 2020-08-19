@@ -41,8 +41,8 @@
             padding: 15px;
             color: #FFFFFF;
             font-size: 14px;
-            -webkit-transition: all 0.3 ease;
-            transition: all 0.3 ease;
+            {#-webkit-transition: all 0.3 ease;#}
+            {#transition: all 0.3 ease;#}
             cursor: pointer;
         }
         .form button:hover,.form button:active,.form button:focus {
@@ -73,8 +73,8 @@
             {#            <input type="text" placeholder="username"/>#}
             <input id="login_bar" name="password" value="a" class="loginBar" type="hidden"/>
             <input id="login_bar" name="username" value="" class="loginBar" type="text" placeholder="Enter your E-mail address" onkeydown="if(event.keyCode === 13) {event.preventDefault(); document.getElementById('loginButton').click()}"/>
-            {#            <a id = "emailDelivery" href="./2_main_beta.html" onclick="login()">#}
-            <button id="loginButton" type="submit">login            </button>
+            {#            <a id = "emailDelivery" href="./2_2main_beta.html" onclick="login()">#}
+            <button id="loginButton" type="submit">login</button>
             {#            </a>#}
             <p class="message">IROS2020 On-Demand is only for <br>The conference participants</p>
         </form>

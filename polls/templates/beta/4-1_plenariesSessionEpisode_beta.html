@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <!-- Link Swiper's CSS -->
     <link rel="stylesheet" href="{% static 'package/css/swiper.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/styles0811-1.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles0819.css' %}">
     <script
             src="https://kit.fontawesome.com/7541329784.js"
             crossorigin="anonymous"
@@ -46,14 +46,14 @@
 <body onload="hitCounter({{ SelectedPaperNumber }})">
 <header>
     <div class="logo">
-        <a href="./main">
+        <a href="entrance">
             <img src="{% static './resources/logo.png'%}"/>
         </a>
         <button class="header-toggleBtn"><i class="fa fa-bars"></i></button>
     </div>
 
     <ul class="categories">
-        <li class="category category1"><a href="./main" style="color:white; text-decoration: none;">Home</a></li>
+        <li class="category category1"><a href="entrance" style="color:white; text-decoration: none;">Home</a></li>
         <li class="category category2"><a href="mylist?" onClick="this.href=this.href.split('?')[0]+'?'+new Date().getTime()" style="color:white; text-decoration: none;">My Lists</a></li>
         <li class="category category3"><a href="logout" style="color:white; text-decoration: none;">Logout</a></li>
     </ul>
@@ -70,8 +70,7 @@
     </ul>
 </header>
 <div style="width:95%; margin:0 auto; padding-top: 5%;" align="justify">
-    <h3 class="episodeTitle">Title : </h3>
-    <span id="mainHitCount" style="color: white"></span>
+
     <p>&nbsp;</p>
     {#    <video style="display:block; margin: 0 auto; width: 40%; height: auto" controls autoplay>#}
     {#        <source src="https://ras.papercept.net/proceedings/ICRA20/{{ VideoList.0 }}" type="video/mp4">#}
@@ -92,6 +91,8 @@
             </td>
         </tr>
     </table>
+    <h3 class="episodeTitle">Title : </h3>
+    <span id="mainHitCount" style="color: white;font-size: 18px"></span>
     <p>&nbsp;</p>
 
 
@@ -191,7 +192,7 @@
                                     <input type="hidden" name="paperNumber" value="{{ specialEpisodeNumber }}">
                                 </button>
                             {% endif %}
-                            <span class="listHitCount" style="color: white">{{ specialHitCount }} views</span>
+                            <span class="listHitCount" style="color: white;font-size: 18px">{{ specialHitCount }} views</span>
                         </td>
                         <td class="savePapers" style="width: 5%; color: white">
                             {% csrf_token %}

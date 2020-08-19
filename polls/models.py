@@ -3,6 +3,11 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 #
+
+class accessWSTR(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    accessibility = models.BooleanField(default=False)
+
 class Users(models.Model):
     iros2020_name = models.CharField(max_length=100)
     iros2020_email = models.CharField(max_length=100)

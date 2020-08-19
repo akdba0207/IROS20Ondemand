@@ -5,7 +5,10 @@ from . import views_beta
 urlpatterns = [
     path('', views_beta.login, name='login'),
     path('logout',views_beta.logout,name='logout'),
+    path('entrance',views_beta.entrance,name='entrance'),
     path('main', views_beta.main, name='main'),
+    # path('mainWSTR', views_beta.mainWSTR, name='mainWSTR'),
+    # path('mainRBCompetition', views_beta.mainRBCompetition, name='mainRBCompetition'),
     path('tvshow', views_beta.tvshow),
     path('specials', views_beta.specials),
     path('workshops', views_beta.workshops),

@@ -123,14 +123,19 @@ WorkshopsSession = sorted(list(set(Workshops['Title'])))
 # Login !
 @csrf_exempt
 def login(request):
-    if request.user.is_authenticated:
-        return redirect('main')
 
+    if request.user.is_authenticated:
+        return redirect('entrance')
+    print("not_authenticated")
     if request.method == 'POST':
         login_form = AuthenticationForm(request, request.POST)
+        print(login_form)
         if login_form.is_valid():
             auth_login(request, login_form.get_user())
-            return redirect('main')
+            return redirect('entrance')
+        else:
+            print("not_valid")
+
 
     return render(request, './beta/1_login_beta.html')
 
@@ -148,6 +153,14 @@ def user_verification(request):
 #########################################################################################################
 #########################################################################################################
 #########################################################################################################
+@csrf_exempt
+def entrance(request):
+    if request.user.is_authenticated == False:
+        return render(request,'./beta/1-1_loginError_beta.html')
+    else:
+        user_verification(request)
+
+    return render(request,'./beta/2_1entrance_beta.html')
 
 
 @csrf_exempt
@@ -159,7 +172,28 @@ def main(request):
 
     UserName = request.user.first_name + ' ' + request.user.last_name
 
-    return render(request, './beta/2_main_beta.html',
+    current_user = request.user.username
+    current_account = get_object_or_404(User, username=current_user)
+
+    global clickToggleName
+
+    if request.method == 'GET' and 'id' in request.GET:
+        clickToggleName = request.GET['id']
+    print(request.GET)
+
+    if clickToggleName == 'technicalpaper':
+        showcontents = 1
+    elif clickToggleName == 'wstr':
+        showcontents = 2
+    else:
+        showcontents = 3
+
+    if current_account.accesswstr.accessibility == True:
+        allowWSContents = 1
+    else:
+        allowWSContents = 0
+
+    return render(request, './beta/2_2main_beta.html',
                   {'Pavilion': Cartegories['Pavilion'],
                    'Genre': Cartegories['Genre'],
                    'Specials': SpecialsSession,
@@ -169,7 +203,9 @@ def main(request):
                    'Medical': Sessions3,
                    'Driverless': Sessions4,
                    'EndEffector': Sessions5,
-                   'UserName': UserName
+                   'UserName': UserName,
+                   'allowWSContents':allowWSContents,
+                   'showcontents':showcontents,
                    })
 
 
@@ -184,6 +220,7 @@ def tvshow(request):
     else:
         user_verification(request)
     current_user = request.user.username
+    print(1)
     current_account = get_object_or_404(User, username=current_user)
 
     selectedSession = request.GET['id']
@@ -233,7 +270,7 @@ def tvshow(request):
         paperHitCount = []
         for titleNr in titleNumber['Nr']:
             paper = get_object_or_404(Papers, paper_id=titleNr)
-
+            print(2)
             if current_account in paper.like_users.all():
                 buttonColor = 1
             else:
