@@ -5,6 +5,16 @@
     <meta charset="utf-8">
     <title>IROS 2020 On-Demand : Log-In</title>
     <style>
+        .GDPR{
+            font-family: sans-serif;
+            position: relative;
+            z-index: 1;
+            background: #FFFFFF;
+            max-width: 360px;
+            padding: 45px 45px 0 45px;
+            font-size: 14px;
+            box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+        }
         .login-page {
             width: 360px;
             padding: 12% 0 0;
@@ -16,9 +26,9 @@
             background: #FFFFFF;
             max-width: 360px;
             margin: 0 auto 100px;
-            padding: 45px;
+            padding: 30px 45px 0px 45px;
             text-align: center;
-            box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+            box-shadow: 0 0 0px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
         }
         .form input {
             font-family: sans-serif;
@@ -35,27 +45,23 @@
             font-family: sans-serif;
             text-transform: uppercase;
             outline: 0;
-            background: #5C0000;
+            background: grey;
             width: 100%;
             border: 0;
             padding: 15px;
             color: #FFFFFF;
             font-size: 14px;
-            {#-webkit-transition: all 0.3 ease;#}
-            {#transition: all 0.3 ease;#}
+        {#-webkit-transition: all 0.3 ease;#}
+        {#transition: all 0.3 ease;#}
             cursor: pointer;
         }
-        .form button:hover,.form button:active,.form button:focus {
-            background: #2B0000;
-        }
+        {#.form button:hover,.form button:active,.form button:focus {#}
+        {#    background: #2B0000;#}
+        {# }#}
         .form .message {
             margin: 15px 0 0;
             color: #b3b3b3;
             font-size: 12px;
-        }
-        .form .message a {
-            color: #4CAF50;
-            text-decoration: none;
         }
 
         body {
@@ -68,19 +74,49 @@
 <img src="{% static './resources/logo.png'%}" width="10%">
 
 <div class="login-page">
+    <div class="GDPR">
+        <div>
+            IEEE Privacy Policy : At IEEE, we respect your privacy. We want to ensure that you get the information, content, and experiences that matter most to you.
+            IEEE is committed to protecting the privacy of its members, customers, volunteers, and other contacts.
+        </div>
+        <br>
+        <label for="test" style="float: left">I accept the policy above</label>
+        <span style="display: block;">
+            <input name="test" id="test" type="checkbox" onchange="agreed(this)"/>
+        </span>
+    </div>
     <div class="form">
         <form id="login_action" onsubmit="login()" method="post">
             {#            <input type="text" placeholder="username"/>#}
             <input id="login_bar" name="password" value="a" class="loginBar" type="hidden"/>
             <input id="login_bar" name="username" value="" class="loginBar" type="text" placeholder="Enter your E-mail address" onkeydown="if(event.keyCode === 13) {event.preventDefault(); document.getElementById('loginButton').click()}"/>
             {#            <a id = "emailDelivery" href="./2_2main_beta.html" onclick="login()">#}
-            <button id="loginButton" type="submit">login</button>
+            <button id="loginButton" type="submit">Please accept the policy</button>
             {#            </a>#}
             <p class="message">IROS2020 On-Demand is only for <br>The conference participants</p>
         </form>
     </div>
 </div>
 
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script>
+    function agreed(e) {
+        if (e.checked){
+            btn = document.getElementById("loginButton").disabled = false;
+            document.getElementById("loginButton").innerHTML = "Login";
+            $("button").css("background-color","#5C0000");
+            $("button").hover(function () {
+                $(this).css("background-color","#2B0000");
+            },function () {
+                $(this).css("background-color","#5C0000");
+            });
+        } else {
+            btn = document.getElementById("loginButton").disabled = true;
+            $("button").css("background-color","grey");
+            document.getElementById("loginButton").innerHTML = "Please accept the policy";
+        }
+    }
+</script>
 <script>
     function login(){
         const query = document.getElementById("login_bar").value;

@@ -85,16 +85,19 @@
         </tr>
     </table>
     <h3 class="episodeTitle">Title : {{Title}}</h3>
-    <span id="mainHitCount" style="color: white; font-size: 18px"></span>
+{#    <span id="mainHitCount" style="color: yellow; font-size: 18px"></span>#}
     <p>&nbsp;</p>
 
     <center>
         <table border="0" cellpadding="0" cellspacing="0"style="background-color: #1F1F1F; text-align: center;color: white;">
             <tr>
+                <td>
+                    <scan id="mainHitCount" style="color: yellow; font-size: 18px"></scan>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </td>
                 <td class="gobackButton">
                     <button onclick="goBack()">Go Back</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 </td>
-                <td><div class="likeButton" style="color: white;">Like?&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div></td>
+{#                <td><div class="likeButton" style="color: white;">Like?&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div></td>#}
                 <td>
                     {% csrf_token %}
                     {% if selectedPaperLikeButtonColor == 1 %}
@@ -201,7 +204,7 @@
                             {% endif %}
                             </tbody>
                         </table>
-                        <p style="color: white;"><a href="https://ras.papercept.net/proceedings/ICRA20/{{ PDFList }}" target="_blank"> Open PDF files</a></p>
+                        <p style="font-size: 18px"><a href="https://ras.papercept.net/proceedings/ICRA20/{{ PDFList }}" target="_blank"  style="color: lawngreen;"> Open PDF files</a></p>
                         {% csrf_token %}
                         {% if paperLikeButtonColor == 1 %}
                             <button class="likeButton" type="submit" style="margin: auto;background-color: #323232 ;" onclick="updateLike({{ titleNumber }})">

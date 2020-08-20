@@ -101,7 +101,9 @@
             <tr>
                 <td class="gobackButton"><button onclick="goBack()">Go Back</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 </td>
-                <td><div class="likeButton" style="color: white;">Like?&nbsp;&nbsp;</div></td>
+                <td>
+                    <scan id="mainHitCount" style="color: yellow; font-size: 18px"></scan>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </td>
                 <td>
                     {% csrf_token %}
                     {% if selectedWorkshopLikeButtonColor == 1 %}
