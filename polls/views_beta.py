@@ -1086,4 +1086,9 @@ def post_hitcount(request):
 #     db2.save()
 # ip, is_routable = get_client_ip(request)
 # print(ip)
+
+# VideoTimers Initialization
+# for i in range(1553):
+#     db = VideoTimers(paper_id=icra_example['Nr'][i])
+#     db.save()
 # print(is_routable)

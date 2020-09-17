@@ -36,3 +36,6 @@ class Comments(models.Model):
     comment = models.TextField(max_length=1500)
     comment_users = models.ManyToManyField(User, blank=True, related_name='comment_papers')
 
+class VideoTimers(models.Model):
+    paper_id = models.PositiveIntegerField()
+    seconds = models.PositiveIntegerField(default=0)
