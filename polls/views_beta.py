@@ -3,21 +3,32 @@
 # # Create your views here.
 import json
 
+from django.contrib import messages
+from django.forms import forms
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from polls.models import Papers, Comments, Users
-from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth import login as auth_login
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth import login as auth_login, authenticate
 from django.contrib.auth import logout as auth_logout
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.contrib.sites.shortcuts import get_current_site
+from django.shortcuts import render, redirect
+from django.utils.encoding import force_bytes, force_text
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.template.loader import render_to_string
+from polls.forms_beta import SignUpForm
+from polls.tokens_beta import account_activation_token
 
 # from ipware import get_client_ip
 import pandas as pd
 import os
 import math
+
+from polls.forms_beta import SignUpForm
 
 from polls.search import searchByKeyword, findSimilarTopic
 
@@ -123,7 +134,6 @@ WorkshopsSession = sorted(list(set(Workshops['Title'])))
 # Login !
 @csrf_exempt
 def login(request):
-
     if request.user.is_authenticated:
         return redirect('entrance')
     print("not_authenticated")
@@ -136,13 +146,14 @@ def login(request):
         else:
             print("not_valid")
 
-
     return render(request, './beta/1_login_beta.html')
+
 
 # Logout
 def logout(request):
     auth_logout(request)
     return redirect('login')
+
 
 # Login Authentication
 @login_required()
@@ -156,17 +167,17 @@ def user_verification(request):
 @csrf_exempt
 def entrance(request):
     if request.user.is_authenticated == False:
-        return render(request,'./beta/1-1_loginError_beta.html')
+        return render(request, './beta/1-1_loginError_beta.html')
     else:
         user_verification(request)
 
-    return render(request,'./beta/2_1entrance_beta.html')
+    return render(request, './beta/2_1entrance_beta.html')
 
 
 @csrf_exempt
 def main(request):
     if request.user.is_authenticated == False:
-        return render(request,'./beta/1-1_loginError_beta.html')
+        return render(request, './beta/1-1_loginError_beta.html')
     else:
         user_verification(request)
 
@@ -188,10 +199,11 @@ def main(request):
     else:
         showcontents = 3
 
-    if current_account.accesswstr.accessibility == True:
-        allowWSContents = 1
-    else:
-        allowWSContents = 0
+    allowWSContents = 1
+    # if current_account.accesswstr.accessibility == True:
+    #     allowWSContents = 1
+    # else:
+    #     allowWSContents = 0
 
     return render(request, './beta/2_2main_beta.html',
                   {'Pavilion': Cartegories['Pavilion'],
@@ -204,8 +216,8 @@ def main(request):
                    'Driverless': Sessions4,
                    'EndEffector': Sessions5,
                    'UserName': UserName,
-                   'allowWSContents':allowWSContents,
-                   'showcontents':showcontents,
+                   'allowWSContents': allowWSContents,
+                   'showcontents': showcontents,
                    })
 
 
@@ -216,7 +228,7 @@ def main(request):
 # @login_required
 def tvshow(request):
     if request.user.is_authenticated == False:
-        return render(request,'./beta/1-1_loginError_beta.html')
+        return render(request, './beta/1-1_loginError_beta.html')
     else:
         user_verification(request)
     current_user = request.user.username
@@ -299,7 +311,8 @@ def tvshow(request):
                              AffiliationList4['Affiliation4'],
                              AffiliationList5['Affiliation5'],
                              TitleList['Title'],
-                             PDFList['FN'], titleNumber['Nr'], paperLikeCount, paperLikeButtonColor, paperSaveButtonStatus, paperHitCount)
+                             PDFList['FN'], titleNumber['Nr'], paperLikeCount, paperLikeButtonColor,
+                             paperSaveButtonStatus, paperHitCount)
         return render(request, './beta/3_pavilionSession_beta.html', {'Pavilion': selectedPavilion,
                                                                       'PavilionNum': selectedPavilionNum,
                                                                       'SessionList': selectedSessionList,
@@ -309,9 +322,8 @@ def tvshow(request):
                                                                       'goldSponsorVideo': goldSponsorVideo['Video'],
                                                                       'goldSponsorSession': goldSponsorSession[
                                                                           'Location'],
-                                                                      'goldSponsorWebpage':goldSponsorWebpage['Link']
+                                                                      'goldSponsorWebpage': goldSponsorWebpage['Link']
                                                                       })
-
 
 
 def specials(request):
@@ -355,9 +367,9 @@ def specials(request):
     specialEpisodeContext = zip(speakerName['Speaker'],
                                 speakerBiography['Bio'],
                                 specialEpisodeAbstract['Abstract'],
-                                specialEpisodeNumber['Nr'],specialLikeCount,specialLikeButtonColor,specialSaveButtonStatus, specialHitCount
+                                specialEpisodeNumber['Nr'], specialLikeCount, specialLikeButtonColor,
+                                specialSaveButtonStatus, specialHitCount
                                 )
-
 
     return render(request, './beta/3-1_plenariesSession_beta.html', {'selectedSpecial': selectedSpecial,
                                                                      'selectedGenre': selectedGenre,
@@ -381,7 +393,6 @@ def workshops(request):
     workshopOrganizers = workshopsEpisodeList['Organizers'].iloc[0]
     workshopNumber = workshopsEpisodeList['Workshop Number'].iloc[0]
 
-
     Speaker = []
     for i in range(1, 15):
         if workshopsEpisodeList['Speaker ' + str(i)].iloc[0] == 'missing':
@@ -402,7 +413,7 @@ def workshops(request):
 
     workshopEpisodeNumber = []
     for q in range(len(Speaker)):
-        newNumb = int(workshopNumber)*100 + q
+        newNumb = int(workshopNumber) * 100 + q
         workshopEpisodeNumber.append(newNumb)
     #
     # for q in range(len(Speaker)):
@@ -430,7 +441,6 @@ def workshops(request):
             buttonStatus = 0
         workshopSaveButtonStatus.append(buttonStatus)
         workshopHitCount.append(paper.paper_hitcount)
-
 
     WorkshopsContext = zip(Speaker, Institution, TalkTitle, workshopEpisodeNumber, workshopLikeButtonColor,
                            workshopLikeCount, workshopSaveButtonStatus, workshopHitCount)
@@ -542,7 +552,8 @@ def episode(request):
                          AffiliationList4['Affiliation4'],
                          AffiliationList5['Affiliation5'],
                          TitleList['Title'],
-                         PDFList['FN'], titleNumber['Nr'], suggestEpisodeNum, paperLikeCount, paperLikeButtonColor, SessionTitle, paperSaveButtonStatus, paperHitCount)
+                         PDFList['FN'], titleNumber['Nr'], suggestEpisodeNum, paperLikeCount, paperLikeButtonColor,
+                         SessionTitle, paperSaveButtonStatus, paperHitCount)
         return render(request, './beta/4_pavilionSessionEpisode_beta.html', {'VideoList': VideoList['VID'],
                                                                              'Title': selectedTitle,
                                                                              'Session': selectedSession,
@@ -551,10 +562,9 @@ def episode(request):
                                                                                  selectedNumber['Nr'].iloc[0],
                                                                              'selectedPaperLikeButtonColor': selectedPaperLikeButtonColor,
                                                                              'selectedPaperLikeCount': selectedPaperLikeCount,
-                                                                             'selectedPaperbuttonStatus':selectedPaperbuttonStatus,
-                                                                             'arrayComments':arrayComments,
-                                                                             'lengthComments':lengthComments})
-
+                                                                             'selectedPaperbuttonStatus': selectedPaperbuttonStatus,
+                                                                             'arrayComments': arrayComments,
+                                                                             'lengthComments': lengthComments})
 
 
 def specialsepisode(request):
@@ -626,7 +636,8 @@ def specialsepisode(request):
     specialEpisodeContext = zip(speakerName['Speaker'],
                                 speakerBiography['Bio'],
                                 specialEpisodeAbstract['Abstract'],
-                                specialEpisodeNumber['Nr'], specialLikeCount, specialLikeButtonColor, specialSaveButtonStatus,specialHitCount
+                                specialEpisodeNumber['Nr'], specialLikeCount, specialLikeButtonColor,
+                                specialSaveButtonStatus, specialHitCount
                                 )
 
     return render(request, './beta/4-1_plenariesSessionEpisode_beta.html', {'specialVideo': specialVideo['Video'],
@@ -634,9 +645,9 @@ def specialsepisode(request):
                                                                             'selectedSpecial': selectedSpecial,
                                                                             'selectedGenre': selectedGenre,
                                                                             'specialEpisodeContext': specialEpisodeContext,
-                                                                            'selectedSpecialLikeCount':selectedSpecialLikeCount,
-                                                                            'selectedSpecialLikeButtonColor':selectedSpecialLikeButtonColor,
-                                                                            'selectedSpecialSaveButtonStatus':selectedSpecialSaveButtonStatus,
+                                                                            'selectedSpecialLikeCount': selectedSpecialLikeCount,
+                                                                            'selectedSpecialLikeButtonColor': selectedSpecialLikeButtonColor,
+                                                                            'selectedSpecialSaveButtonStatus': selectedSpecialSaveButtonStatus,
                                                                             'SelectedPaperNumber':
                                                                                 selectedSpecialNumber['Nr'].iloc[0],
                                                                             'arrayComments': arrayComments,
@@ -741,14 +752,13 @@ def workshopsepisode(request):
                    'selectedWorkshops': selectedWorkshops,
                    'selectedGenre': selectedGenre,
                    'WorkshopsContext': WorkshopsContext,
-                   'SelectedPaperNumber':selectedWorkshopEpisodeNumber,
-                   'selectedWorkshopLikeButtonColor':selectedWorkshopLikeButtonColor,
-                   'selectedWorkshopLikeCount':selectedWorkshopLikeCount,
-                   'selectedWorkshopSaveButtonStatus':selectedWorkshopSaveButtonStatus,
+                   'SelectedPaperNumber': selectedWorkshopEpisodeNumber,
+                   'selectedWorkshopLikeButtonColor': selectedWorkshopLikeButtonColor,
+                   'selectedWorkshopLikeCount': selectedWorkshopLikeCount,
+                   'selectedWorkshopSaveButtonStatus': selectedWorkshopSaveButtonStatus,
                    'arrayComments': arrayComments,
                    'lengthComments': lengthComments,
                    })
-
 
 
 #########################################################################################################
@@ -766,7 +776,6 @@ def searchresult(request):
     inputKeyword = request.GET['id']
     resultNumber = searchByKeyword(inputKeyword)
     resultNumberlength = len(resultNumber)
-
 
     if not resultNumber:
         return render(request, './beta/6_searchResultError_beta.html', {'inputKeyword': inputKeyword})
@@ -832,7 +841,8 @@ def searchresult(request):
                              AffiliationList4['Affiliation4'],
                              AffiliationList5['Affiliation5'],
                              TitleList['Title'],
-                             PDFList['FN'], titleNumber['Nr'], paperLikeCount, paperLikeButtonColor, paperSaveButtonStatus, SessionList['Session title'], paperHitCount)
+                             PDFList['FN'], titleNumber['Nr'], paperLikeCount, paperLikeButtonColor,
+                             paperSaveButtonStatus, SessionList['Session title'], paperHitCount)
 
         return render(request, './beta/5_searchResult_beta.html', {'EpisodeContext': resultList,
                                                                    })
@@ -854,7 +864,7 @@ def mylist(request):
     mylistQuery = user.save_papers.all()
     mylistNumber = mylistQuery.count()
 
-    #Arrange Numbers by Genres
+    # Arrange Numbers by Genres
     mylistEpisodeNumber = []
     mylistSpecialNumber = []
     mylistWorkshopsNumber = []
@@ -879,7 +889,6 @@ def mylist(request):
     else:
         mylistEpisodeContext = []
 
-
     # MyList Specials
     if len(mylistSpecialNumber) != 0:
 
@@ -901,8 +910,8 @@ def mylist(request):
         workshopNumber = []
         speakerNumber = []
         for q in mylistWorkshopsNumber:
-            workshopNumber.append(math.trunc(q/100))
-            speakerNumber.append(q - math.trunc(q/100)*100 + 1)
+            workshopNumber.append(math.trunc(q / 100))
+            speakerNumber.append(q - math.trunc(q / 100) * 100 + 1)
 
         mylistWorkshopsSpeaker = []
         mylistWorkshopsWorkshop = []
@@ -916,18 +925,18 @@ def mylist(request):
             mylistWorkshopsGenre.append('Workshops')
             mylistWorkshopsTalkTitle.append(mylistWorkshops['Talk Title ' + str(speakerNumber[w])].iloc[0])
 
-        mylistWorkshopsContext = zip(mylistWorkshopsSpeaker, mylistWorkshopsWorkshop, mylistWorkshopsGenre, mylistWorkshopsSpeakerNumber, mylistWorkshopsTalkTitle)
+        mylistWorkshopsContext = zip(mylistWorkshopsSpeaker, mylistWorkshopsWorkshop, mylistWorkshopsGenre,
+                                     mylistWorkshopsSpeakerNumber, mylistWorkshopsTalkTitle)
     else:
         mylistWorkshopsContext = []
 
-
     return render(request, './beta/7_myList_beta.html', {
-        'mylistEpisodeNumber':len(mylistEpisodeNumber),
-        'mylistEpisodeContext':mylistEpisodeContext,
-        'mylistSpecialNumber':len(mylistSpecialNumber),
-        'mylistSpecialContext':mylistSpecialContext,
-        'mylistWorkshopsNumber':len(mylistWorkshopsNumber),
-        'mylistWorkshopsContext':mylistWorkshopsContext,
+        'mylistEpisodeNumber': len(mylistEpisodeNumber),
+        'mylistEpisodeContext': mylistEpisodeContext,
+        'mylistSpecialNumber': len(mylistSpecialNumber),
+        'mylistSpecialContext': mylistSpecialContext,
+        'mylistWorkshopsNumber': len(mylistWorkshopsNumber),
+        'mylistWorkshopsContext': mylistWorkshopsContext,
     })
 
 
@@ -965,6 +974,7 @@ def post_like(request):
             content_type="application/json"
         )
 
+
 @csrf_exempt
 def add_comment(request):
     if request.user.is_authenticated == False:
@@ -978,18 +988,20 @@ def add_comment(request):
     # Comments load area
     if request.is_ajax:
         clickedPaperNumber = int(request.POST['paperNumber'])
-        c1 = Comments(paper_id=clickedPaperNumber, comment= request.POST['comment'])
+        c1 = Comments(paper_id=clickedPaperNumber, comment=request.POST['comment'])
         c1.save()
         c1.comment_users.add(current_account)
 
         lengthComments = Comments.objects.filter(paper_id=clickedPaperNumber).count()
 
-        response = {'commentAdded': str(lengthComments) + " : " + request.POST['comment'],'lengthComments':lengthComments}
+        response = {'commentAdded': str(lengthComments) + " : " + request.POST['comment'],
+                    'lengthComments': lengthComments}
 
     return HttpResponse(
         json.dumps(response),
         content_type="application/json"
     )
+
 
 @csrf_exempt
 def post_save(request):
@@ -1045,7 +1057,6 @@ def post_hitcount(request):
         )
 
 
-
 ############################################################################
 ############################################################################
 ############################################################################
@@ -1092,3 +1103,69 @@ def post_hitcount(request):
 #     db = VideoTimers(paper_id=icra_example['Nr'][i])
 #     db.save()
 # print(is_routable)
+def signup(request):
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            if User.objects.filter(username=form.cleaned_data.get('email')).exists():
+                messages.info(request, 'This email is already registered')
+                return redirect('signup')
+
+            user = form.save()
+
+            user.refresh_from_db()
+            user.profile.occupation = form.cleaned_data.get('occupation')
+            user.profile.affiliation = form.cleaned_data.get('affiliation')
+            user.profile.previous_attendance = form.cleaned_data.get('previous_attendance')
+            user.profile.primary = form.cleaned_data.get('primary')
+            user.profile.member = form.cleaned_data.get('member')
+
+            user.is_active = False
+            user.save()
+            # user = authenticate(username=user.username, password='a')
+            # auth_login(request, user)
+
+            current_site = get_current_site(request)
+            subject = 'Activate Your IROS2020 Account'
+            message = render_to_string('./beta/0_4_account_activation_email.html', {
+                'user': user,
+                'domain': current_site.domain,
+                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                'token': account_activation_token.make_token(user),
+            })
+            user.email_user(subject, message)
+
+            return redirect('account_activation_sent')
+    else:
+        form = SignUpForm()
+    return render(request, './beta/0_1_signup_beta.html', {'form': form})
+
+
+def account_activation_sent(request):
+    return render(request, './beta/0_2_account_activation_sent.html')
+
+
+def activate(request, uidb64, token):
+    try:
+        uid = force_text(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+
+    if user is not None and account_activation_token.check_token(user, token):
+        user.is_active = True
+        user.profile.email_confirmed = True
+        user.save()
+        auth_login(request, user)
+
+        current_site = get_current_site(request)
+        subject = 'Congratulations! Your IROS2020 Account Has Been Activated'
+        message = render_to_string('./beta/0_5_account_activation_success.html', {
+            'user': user,
+            'domain': current_site.domain,
+        })
+        user.email_user(subject, message)
+
+        return redirect('login')
+    else:
+        return render(request, './beta/0_3_account_activate_invalid.html')
