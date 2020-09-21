@@ -74,7 +74,7 @@
     <table style="width: 100%;">
         <tr>
             <td style="width: 60%;">
-                <video style="display:block; margin: 0 auto; width: 100%;" controls autoplay>
+                <video id="vid" style="display:block; margin: 0 auto; width: 100%;" controls autoplay>
                     <source src="https://ras.papercept.net/proceedings/ICRA20/{{ VideoList.0 }}" type="video/mp4">
                 </video>
             </td>
@@ -85,7 +85,7 @@
         </tr>
     </table>
     <h3 class="episodeTitle">Title : {{Title}}</h3>
-{#    <span id="mainHitCount" style="color: yellow; font-size: 18px"></span>#}
+    {#    <span id="mainHitCount" style="color: yellow; font-size: 18px"></span>#}
     <p>&nbsp;</p>
 
     <center>
@@ -97,7 +97,7 @@
                 <td class="gobackButton">
                     <button onclick="goBack()">Go Back</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 </td>
-{#                <td><div class="likeButton" style="color: white;">Like?&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div></td>#}
+                {#                <td><div class="likeButton" style="color: white;">Like?&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div></td>#}
                 <td>
                     {% csrf_token %}
                     {% if selectedPaperLikeButtonColor == 1 %}
@@ -349,6 +349,56 @@
         }
     </script>
 
+    <script>
+        var vid = document.getElementById("vid");
+
+        var loadStart = 0, loadFinish = 0, loadTime = 0;
+        var timeStarted = -1;
+        var timeStopped = 0;
+        var timePlayed = 0;
+        var loadDone = false;
+
+        function videoStartedPlaying(event){
+            console.log("Started Playing");
+            timeStarted = new Date().getTime();
+        }
+
+        function videoStoppedPlaying(event){
+            console.log("Stopped Playing");
+            if(timeStarted < 0)
+                return;
+            timeStopped = new Date().getTime();
+            newTime = timeStopped - timeStarted;
+            timePlayed += newTime;
+            console.log("added time: " + newTime + "ms");
+            console.log("total time: " + timePlayed + "ms");
+            timeStarted = -1;
+        }
+
+        function fLoadStart(){
+            console.log("Load Start");
+            loadStart = new Date().getTime();
+        }
+
+        function fLoadFinish(){
+            if(loadDone === true)
+                return;
+            console.log("Load Finish");
+            loadFinish = new Date().getTime();
+            loadTime = loadFinish - loadStart;
+            console.log("loadTime: " + loadTime + "ms");
+            loadDone = true;
+        }
+
+        vid.addEventListener('loadstart', fLoadStart);
+        vid.addEventListener('canplaythrough', fLoadFinish);
+
+        vid.addEventListener('play', videoStartedPlaying);
+        {#vid.addEventListener('playing', videoStartedPlaying);#}
+
+        vid.addEventListener('ended', videoStoppedPlaying);
+        vid.addEventListener('pause', videoStoppedPlaying);
+    </script>
 </div>
 </body>
 </html>
