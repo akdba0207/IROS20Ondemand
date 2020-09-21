@@ -1,12 +1,26 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>IROS 2020 On-Demand : Sign-Up</title>
+    <style>
+        body {
+            background:#1F1F1F;
+            font-family: "Source Sans Pro", sans-serif;
+        }
+    </style>
 </head>
 <body>
+<img src="{% static './resources/logo.png'%}" width="10%">
+
+<div style="text-align: center;padding-top: 5%; color: white">
 {% block content %}
-    <p>Please confirm your email address to complete the registration. </p>
+    <h1>Please confirm your email address to complete the registration. </h1>
+    <h1>If you don't find the confirmation E-mail in your Inbox, </h1>
+    <h1>Please check your spam or junk mail folder</h1>
+
 {% endblock %}
+</div>
 </body>
 </html>

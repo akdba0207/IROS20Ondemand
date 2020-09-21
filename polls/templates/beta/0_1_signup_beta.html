@@ -1,28 +1,46 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>IROS 2020 On-Demand : Sign-Up</title>
+    <style>
+        body {
+            background:#1F1F1F;
+            font-family: "Source Sans Pro", sans-serif;
+        }
+    </style>
 </head>
 <body>
-{% block content %}
-  <h2>Sign up</h2>
-  <form method="post">
-    {% csrf_token %}
-    {% for field in form %}
-      <p>
-        {{ field.label_tag }}<br>
-        {{ field }}
-        {% if field.help_text %}
-          <small style="color: grey">{{ field.help_text }}</small>
+<img src="{% static './resources/logo.png'%}" width="10%">
+<div style="padding-left: 35%">
+    <div style="padding-top: 5%; color: white; width: 100%">
+        {% block content %}
+            <h2>Create your account</h2>
+            <form method="post">
+                {% csrf_token %}
+                {% for field in form %}
+                    <p>
+                        {{ field.label_tag }}<br>
+                        {{ field }}
+                        {% if field.help_text %}
+                            <small style="color: grey">{{ field.help_text }}</small>
+                        {% endif %}
+                        {% for error in field.errors %}
+                            <p style="color: red">{{ error }}</p>
+                        {% endfor %}
+                    </p>
+                {% endfor %}
+                <button type="submit">Sign up</button>
+            </form>
+        {% endblock %}
+    <p>&nbsp;</p>
+        {% if messages %}
+            {% for message in messages %}
+                <p style="color: yellow">{{ message.message }}</p>
+            {% endfor %}
         {% endif %}
-        {% for error in field.errors %}
-          <p style="color: red">{{ error }}</p>
-        {% endfor %}
-      </p>
-    {% endfor %}
-    <button type="submit">Sign up</button>
-  </form>
-{% endblock %}
+    </div>
+</div>
 </body>
 </html>

@@ -1,12 +1,22 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>IROS 2020 On-Demand : Sign-Up</title>
+    <style>
+        body {
+            background:#1F1F1F;
+            font-family: "Source Sans Pro", sans-serif;
+        }
+    </style>
 </head>
 <body>
+<img src="{% static './resources/logo.png'%}" width="10%">
+<div style="text-align: center;padding-top: 5%; color: white">
 {% block content %}
-    <p>The confirmation link was invalid, possibly because it has already been used.</p>
+    <h1>The confirmation link was invalid, <br>possibly because it has already been used.</h1>
 {% endblock %}
+</div>
 </body>
 </html>

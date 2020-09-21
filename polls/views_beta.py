@@ -23,6 +23,8 @@ from django.template.loader import render_to_string
 from polls.forms_beta import SignUpForm
 from polls.tokens_beta import account_activation_token
 
+from django.core.mail import send_mail
+
 # from ipware import get_client_ip
 import pandas as pd
 import os
@@ -126,7 +128,6 @@ Workshops = icra_workshops[(icra_workshops['Workshop Number'] == 20004) |
                            (icra_workshops['Workshop Number'] == 20014)]
 
 WorkshopsSession = sorted(list(set(Workshops['Title'])))
-
 
 #########################################################################################################
 #########################################################################################################
@@ -1107,8 +1108,8 @@ def signup(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
-            if User.objects.filter(username=form.cleaned_data.get('email')).exists():
-                messages.info(request, 'This email is already registered')
+            if User.objects.filter(username=form.cleaned_data.get('email').lower()).exists():
+                messages.info(request, 'This email is already registered, please try with different email address')
                 return redirect('signup')
 
             user = form.save()
@@ -1126,14 +1127,14 @@ def signup(request):
             # auth_login(request, user)
 
             current_site = get_current_site(request)
-            subject = 'Activate Your IROS2020 Account'
+            subject = 'Activate Your IROS2020 On-Demand Account'
             message = render_to_string('./beta/0_4_account_activation_email.html', {
                 'user': user,
                 'domain': current_site.domain,
                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                 'token': account_activation_token.make_token(user),
             })
-            user.email_user(subject, message)
+            user.email_user(subject, message,'ondemandinfo@iros2020.org')
 
             return redirect('account_activation_sent')
     else:
@@ -1159,12 +1160,12 @@ def activate(request, uidb64, token):
         auth_login(request, user)
 
         current_site = get_current_site(request)
-        subject = 'Congratulations! Your IROS2020 Account Has Been Activated'
+        subject = 'Congratulations! Your IROS2020 On-Demand Account Has Been Activated'
         message = render_to_string('./beta/0_5_account_activation_success.html', {
             'user': user,
             'domain': current_site.domain,
         })
-        user.email_user(subject, message)
+        user.email_user(subject, message,'ondemandinfo@iros2020.org')
 
         return redirect('login')
     else:
