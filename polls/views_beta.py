@@ -20,10 +20,8 @@ from django.shortcuts import render, redirect
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.template.loader import render_to_string
-from polls.forms_beta import SignUpForm
 from polls.tokens_beta import account_activation_token
 
-from django.core.mail import send_mail
 
 # from ipware import get_client_ip
 import pandas as pd
@@ -1087,6 +1085,8 @@ def post_hitcount(request):
 # irosuser4 = User(iros2020_name="Blake Hament", iros2020_email="blakehament@gmail.com")
 # irosuser3.save()
 # irosuser4.save()
+
+##Paper Database
 # for i in range(1553):
 #     db = Papers(paper_id=icra_example['Nr'][i])
 #     db.save()
@@ -1098,6 +1098,7 @@ def post_hitcount(request):
 # for k in range(len(icra_workshops['Workshop Number'])):
 #     db2 = Papers(paper_id=icra_workshops['Workshop Number'][k])
 #     db2.save()
+
 # ip, is_routable = get_client_ip(request)
 # print(ip)
 
@@ -1106,6 +1107,7 @@ def post_hitcount(request):
 #     db = VideoTimers(paper_id=icra_example['Nr'][i])
 #     db.save()
 # print(is_routable)
+@csrf_exempt
 def signup(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
@@ -1122,6 +1124,7 @@ def signup(request):
             user.profile.previous_attendance = form.cleaned_data.get('previous_attendance')
             user.profile.primary = form.cleaned_data.get('primary')
             user.profile.member = form.cleaned_data.get('member')
+            user.profile.demographic_region = form.cleaned_data.get('demographic_region')
 
             user.is_active = False
             user.save()
@@ -1143,25 +1146,29 @@ def signup(request):
         form = SignUpForm()
     return render(request, './beta/0_1_signup_beta.html', {'form': form})
 
-
+@csrf_exempt
 def account_activation_sent(request):
     return render(request, './beta/0_2_account_activation_sent.html')
 
-
+@csrf_exempt
 def activate(request, uidb64, token):
     try:
         uid = force_text(urlsafe_base64_decode(uidb64))
         user = User.objects.get(pk=uid)
     except (TypeError, ValueError, OverflowError, User.DoesNotExist):
         user = None
-
+    user.refresh_from_db()
     if user is not None and account_activation_token.check_token(user, token):
+        if user.profile.email_confirmed is True:
+            return render(request, './beta/0_3_account_activate_invalid.html')
         user.is_active = True
         user.profile.email_confirmed = True
         user.save()
-        auth_login(request, user)
 
-        current_site = get_current_site(request)
+        print(1)
+        # auth_login(request, user)
+
+        # current_site = get_current_site(request)
         # subject = 'Congratulations! Your IROS2020 On-Demand Account Has Been Activated'
         # message = render_to_string('./beta/0_5_account_activation_success.html', {
         #     'user': user,

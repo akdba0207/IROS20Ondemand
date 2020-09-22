@@ -13,6 +13,7 @@ class Profile(models.Model):
     primary = models.CharField(max_length=50)
     affiliation = models.CharField(max_length=50)
     previous_attendance = models.CharField(max_length=50)
+    demographic_region = models.CharField(max_length=50)
     member = models.CharField(max_length=50)
     email_confirmed = models.BooleanField(default=False)
 

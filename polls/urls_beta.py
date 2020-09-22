@@ -1,5 +1,5 @@
 from django.conf.urls import url
-from django.urls import path
+from django.urls import path, re_path
 from polls import views_beta
 
 from . import views_beta
@@ -25,7 +25,8 @@ urlpatterns = [
     path('post_hitcount', views_beta.post_hitcount, name='post_hitcount'),
     path('signup', views_beta.signup, name='signup'),
 
-    path(r'^account_activation_sent/$', views_beta.account_activation_sent, name='account_activation_sent'),
-    path(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
+    re_path(r'^account_activation_sent/$', views_beta.account_activation_sent, name='account_activation_sent'),
+    re_path(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
         views_beta.activate, name='activate'),
+    # path('activate/<str:uid64>/<str:token>/',views_beta.activate, name='activate'),
 ]
