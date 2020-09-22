@@ -1,7 +1,9 @@
 {% autoescape off %}
-Hi {{ user.first_name }},
+    Hello, {{ user.email }}
 
-Please click on the link below to confirm your IROS 2020 On-Demand registration:
+    Thank you for signing up for IROS On-Demand.
+    Please use this E-mail address in the future as your username whenever you visit IROS On-Demand.
+    Please click on the link below to confirm your IROS 2020 On-Demand registration:
 
-http://{{ domain }}{% url 'activate' uidb64=uid token=token %}
+    http://{{ domain }}{% url 'activate' uidb64=uid token=token %}
 {% endautoescape %}

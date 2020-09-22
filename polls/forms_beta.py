@@ -7,7 +7,9 @@ Occupations = [('', '---------'),
                ('Undergraduate/College Student', 'Undergraduate/College Student'),
                ('Graduate Student', 'Graduate Student'),
                ('Post-Graduate Student', 'Post-Graduate Student'),
-               ('Not a Student', 'Not a Student')]
+               ('Not a Student', 'Not a Student'),
+               ('Professor','Professor'),
+               ('Researcher', 'Researcher')]
 
 TF = [('Yes', 'Yes'), ('No', 'No')]
 
@@ -18,10 +20,10 @@ TimesVisited = [('', '---------'), ('None', 'None'), ('1 to 3 times', '1 to 3 ti
 
 
 class SignUpForm(UserCreationForm):
-    first_name = forms.CharField(max_length=30, required=False, help_text='Optional.')
-    last_name = forms.CharField(max_length=30, required=False, help_text='Optional.')
-    email = forms.EmailField(max_length=254, help_text='Required. Inform a valid email address.')
-    occupation = forms.ChoiceField(label='Select your occupation', choices=Occupations, required=True)
+    # first_name = forms.CharField(max_length=30, required=False, help_text='Optional.')
+    # last_name = forms.CharField(max_length=30, required=False, help_text='Optional.')
+    email = forms.EmailField(max_length=254, help_text='This will be your username to enter IROS 2020 On-Demand. Enter a valid email address; an email will be sent there to confirm your sign-up.')
+    occupation = forms.ChoiceField(label='Select your primary role', choices=Occupations, required=True)
     affiliation = forms.ChoiceField(label='Select your affiliation', choices=Affiliation, required=True)
     previous_attendance = forms.ChoiceField(label='How many times have you attended IROS and/or ICRA before?',
                                             choices=TimesVisited, required=True)
@@ -34,12 +36,14 @@ class SignUpForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ('email', 'first_name', 'last_name')
+        # fields = ('email', 'first_name', 'last_name')
+        fields = ('email',)
+
 
     def save(self, commit=True):
         user = super(UserCreationForm, self).save(commit=False)
         user.set_password('a')
-        user.email = self.cleaned_data['email']
+        user.email = self.cleaned_data['email'].lower();
         user.username = user.email
         if commit:
             user.save()

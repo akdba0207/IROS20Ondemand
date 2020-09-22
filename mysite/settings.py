@@ -77,26 +77,26 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
-
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'iros2020_ondemand',
-#         'USER': 'iros2020dbk',
-#         'PASSWORD': 'dasldrchubo1325',
-#         'HOST': 'iros2020ondemand.iros2020.org',
-#         'PORT': '',
-#         'TEST': {
-#             'NAME': 'iros2020_ondemand',
-#         },
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 #     }
 # }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'iros2020_ondemand',
+        'USER': 'iros2020dbk',
+        'PASSWORD': 'dasldrchubo1325',
+        'HOST': 'iros2020ondemand.iros2020.org',
+        'PORT': '',
+        'TEST': {
+            'NAME': 'iros2020_ondemand',
+        },
+    }
+}
 
 
 # Password validation
@@ -151,4 +151,3 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'ondemandinfo@iros2020.org'
 EMAIL_HOST_PASSWORD = 'dasldrchubo1325'
 EMAIL_USE_TLS = True
-# EMAIL_USE_SSL = True

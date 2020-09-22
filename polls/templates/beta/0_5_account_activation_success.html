@@ -1,10 +1,27 @@
-{% autoescape off %}
-    Hi {{ user.first_name }},
-
-    Thank you!
-    You are now signed-up for IROS 2020 On-Demand.
-    Please log into http://www.iros2020.org/ondemand using the email address: {{ user.email }}
-
-    IROS 2020 On-Demand
-
-{% endautoescape %}
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>IROS 2020 On-Demand : Sign-Up</title>
+    <style>
+        body {
+            background:#1F1F1F;
+            font-family: "Source Sans Pro", sans-serif;
+        }
+    </style>
+</head>
+<body>
+<div style="text-align: center">
+    <a href="./"><img src="{% static './resources/logo.png'%}" width="30%"></a>
+</div>
+<div style="text-align: center;padding-top: 5%; color: white">
+    {% block content %}
+        <h1>Hi {{ user.email }},<br>
+            Congratulations! Your IROS On-Demand Account Has Been Activated<br>
+            Please visit IROS On-Demand when it opens on October 25th, 2020.
+        </h1>
+    {% endblock %}
+</div>
+</body>
+</html>

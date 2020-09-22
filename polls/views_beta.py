@@ -137,15 +137,17 @@ WorkshopsSession = sorted(list(set(Workshops['Title'])))
 def login(request):
     if request.user.is_authenticated:
         return redirect('entrance')
-    print("not_authenticated")
+    # print("not_authenticated")
     if request.method == 'POST':
         login_form = AuthenticationForm(request, request.POST)
-        print(login_form)
+        # print(login_form)
         if login_form.is_valid():
             auth_login(request, login_form.get_user())
             return redirect('entrance')
         else:
-            print("not_valid")
+            # print("not_valid")
+            messages.info(request, 'Please enter a correct username. Note that both fields may be case-sensitive.')
+            return redirect('login')
 
     return render(request, './beta/1_login_beta.html')
 
@@ -191,7 +193,7 @@ def main(request):
 
     if request.method == 'GET' and 'id' in request.GET:
         clickToggleName = request.GET['id']
-    print(request.GET)
+    # print(request.GET)
 
     if clickToggleName == 'technicalpaper':
         showcontents = 1
@@ -233,7 +235,7 @@ def tvshow(request):
     else:
         user_verification(request)
     current_user = request.user.username
-    print(1)
+    # print(1)
     current_account = get_object_or_404(User, username=current_user)
 
     selectedSession = request.GET['id']
@@ -283,7 +285,7 @@ def tvshow(request):
         paperHitCount = []
         for titleNr in titleNumber['Nr']:
             paper = get_object_or_404(Papers, paper_id=titleNr)
-            print(2)
+            # print(2)
             if current_account in paper.like_users.all():
                 buttonColor = 1
             else:
@@ -1108,8 +1110,8 @@ def signup(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
-            if User.objects.filter(username=form.cleaned_data.get('email').lower()).exists():
-                messages.info(request, 'This email is already registered, please try with different email address')
+            if User.objects.filter(username__iexact=form.cleaned_data.get('email')).exists():
+                messages.info(request, 'This email is already registered, please try with different email address if this is a new registration')
                 return redirect('signup')
 
             user = form.save()
@@ -1160,13 +1162,13 @@ def activate(request, uidb64, token):
         auth_login(request, user)
 
         current_site = get_current_site(request)
-        subject = 'Congratulations! Your IROS2020 On-Demand Account Has Been Activated'
-        message = render_to_string('./beta/0_5_account_activation_success.html', {
-            'user': user,
-            'domain': current_site.domain,
-        })
-        user.email_user(subject, message,'ondemandinfo@iros2020.org')
+        # subject = 'Congratulations! Your IROS2020 On-Demand Account Has Been Activated'
+        # message = render_to_string('./beta/0_5_account_activation_success.html', {
+        #     'user': user,
+        #     'domain': current_site.domain,
+        # })
+        # user.email_user(subject, message,'ondemandinfo@iros2020.org')
 
-        return redirect('login')
+        return render(request,'./beta/0_5_account_activation_success.html',{'user':user})
     else:
         return render(request, './beta/0_3_account_activate_invalid.html')
