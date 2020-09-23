@@ -1,0 +1,12 @@
+<div class="commentBlock" style="padding: 0% 10% 0% 10%;">
+    <div class="commentList" style="overflow-y:scroll; overflow-wrap: break-word; height: 400px" >
+        {% for comments in arrayComments %}
+            <p class="comment" id="comment{{ forloop.counter0 }}">{{ forloop.counter0|add:1 }} : {{ comments }}</p>
+        {% endfor %}
+    </div>
+    <span>
+        <input id="comment_input" type="text"
+               name="text" size="20" class="commentbox" onkeydown="if(event.keyCode === 13) {event.preventDefault(); document.getElementById('comment_submit_btn').click()}"/>
+        <input id="comment_submit_btn" type="submit" value="Comment" onclick="addComment({{ SelectedPaperNumber }}, document.getElementById('comment_input').value)">
+    </span>
+</div>

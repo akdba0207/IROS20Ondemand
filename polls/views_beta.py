@@ -416,7 +416,8 @@ def workshops(request):
     for q in range(len(Speaker)):
         newNumb = int(workshopNumber) * 100 + q
         workshopEpisodeNumber.append(newNumb)
-    #
+
+    # Workshop database update
     # for q in range(len(Speaker)):
     #     newNumb = int(workshopNumber)*100 + q
     #     db2 = Papers(paper_id=newNumb)

@@ -1,9 +1,9 @@
-<!doctype html>
+<!DOCTYPE html>
 {% load static %}
-<html>
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <title>IROS 2020 On-Demand : Failed to Log-in</title>
+    <meta charset="UTF-8">
+    <title>IROS 2020 On-Demand : Sign-Up</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
 
     <script src="https://s3-us-west-2.amazonaws.com/ieeeshutpages/gdpr/settings.js"></script>
@@ -32,22 +32,17 @@
         }
     </style>
 </head>
-
 <body>
 <div style="text-align: center">
     <a href="/ondemand"><img src="{% static './resources/logo.png'%}" width="30%"></a>
 </div>
-<div style="text-align: center;padding-top: 10%; color: white">
-    <h1> You are not logged-in <br> Please log-in again</h1>
-    <p>&nbsp;</p>
-    <a href="./ondemand"style="color:white;"><h1>Go Back to Login Page</h1></a>
-{#    <button onclick="goBack()">Go Back</button>#}
+<div style="text-align: center;padding-top: 5%; color: white">
+    {% block content %}
+        <h1>Hi {{ user.email }},<br>
+            Congratulations! Your IROS On-Demand Account Has Been Activated<br>
+            Please visit IROS On-Demand when it opens on October 25th, 2020.
+        </h1>
+    {% endblock %}
 </div>
-
-<script>
-    function goBack() {
-        window.history.back();
-    }
-</script>
 </body>
 </html>

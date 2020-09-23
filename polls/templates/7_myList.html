@@ -6,6 +6,17 @@
     <meta charset="utf-8">
     <title>IROS 2020 On-Demand : My Lists</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+
+    <script src="https://s3-us-west-2.amazonaws.com/ieeeshutpages/gdpr/settings.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js"></script>
+    <script>
+        window.addEventListener("load", function() {
+            window.cookieconsent.initialise(json)
+        });
+    </script>
+
+
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <!-- Link Swiper's CSS -->
     <link rel="stylesheet" href="{% static 'package/css/swiper.min.css' %}">
@@ -30,17 +41,16 @@
 
 <header>
     <div class="logo">
-        <a href="./">
+        <a href="entrance">
             <img src="{% static './resources/logo.png'%}"/>
         </a>
         <button class="header-toggleBtn"><i class="fa fa-bars"></i></button>
     </div>
 
     <ul class="categories">
-
-        <li class="category category1"><a href="./" style="color:white; text-decoration: none;">Home</a></li>
-        <li class="category category2">My Lists</li>
-        <li class="category category3">Recently Added</li>
+        <li class="category category1"><a href="entrance" style="color:white; text-decoration: none;">Home</a></li>
+        <li class="category category2"><a href="mylist?" onClick="this.href=this.href.split('?')[0]+'?'+new Date().getTime()" style="color:white; text-decoration: none;">My Lists</a></li>
+        <li class="category category3"><a href="logout" style="color:white; text-decoration: none;">Logout</a></li>
     </ul>
 
     <ul class="search_notice_info">
@@ -48,142 +58,112 @@
             <input type="text" id="search_bar" value="" class="searchBar" onkeydown="if(event.keyCode === 13) {event.preventDefault(); document.getElementById('searchBtn').click()}"/>
             <d onclick="search()">
                 <a id = "keywordDelivery" href="">
-                    <i id="searchBtn" class="fa fa-search" style="font-size:25px;color:white;"></i>
+                    <i id="searchBtn" class="fa fa-search" style="color:white;"></i>
                 </a>
             </d>
         </form>
-        <li class="info"><i class="fa fa-user"></i></li>
     </ul>
-
 </header>
 
-<div style="width:95%; margin:0 auto; padding-top: 12%;" align="justify">
-    <h3>&nbsp;&nbsp;My Lists : </h3>
-    <p>&nbsp;</p>
+<div style="width:95%; margin:0 auto; padding-top: 8%;" align="justify">
 
-     {% for AuthorList1, AuthorList2, AuthorList3, AuthorList4,AuthorList5,AuthorList6,AffiliationList1,AffiliationList2,AffiliationList3,AffiliationList4,AffiliationList5,TitleList, PDFList, titleNumber in EpisodeContext %}
-        <div class="epilisttable" style="width: 80%; height: auto; text-align: center; margin-left: 10%; background-color: grey; margin-bottom:1%">
-            <table border="0" cellpadding="0" cellspacing="0" style="background-color: #323232;" >
-                <tr>
-                    <td style="width: 30%">
-                        <a href="episode?id={{TitleList}}&id2={{ Session }}&id3={{ Pavilion }}"><img src="{% static './resources/playlogo.png'%}"></a>
-                    </td>
-                    <td valign="top" align="left" style="padding-left: 5%; padding-top: 3%;word-break: keep-all">
-                        <p class="papertitle" style="color: white;">Title : {{ TitleList }}</p>
-                        <table class="paperInfo" border="0" cellpadding="0" cellspacing="0" width="100% "style="background-color: #323232; text-align: left;color: white;">
-                            <tbody>
+    {% if mylistSpecialNumber == 0 and  mylistWorkshopsNumber == 0 and mylistEpisodeNumber == 0 %}
+        <h3>&nbsp;&nbsp;My Lists is empty</h3>
+    {% endif %}
 
-                            <tr>
-                                <td style="width: 40%;"><u>Author</u></td>
-                                <td><u>Affiliation</u></th>
-                            </tr>
-                            {% if AuthorList1 == 'missing' %}
-                                &nbsp;
-                            {% else %}
-                                <tr>
-                                    <td style="width: 40%">{{ AuthorList1 }}</td>
-                                    <td>{{ AffiliationList1 }}</td>
-                                </tr>
-                            {% endif %}
-                            {% if AuthorList2 == 'missing' %}
-                                &nbsp;
-                            {% else %}
-                                <tr>
-                                    <td style="width: 40%">{{ AuthorList2 }}</td>
-                                    <td>{{ AffiliationList2 }}</td>
-                                </tr>
-                            {% endif %}
-                            {% if AuthorList3 == 'missing' %}
-                                &nbsp;
-                            {% else %}
-                                <tr>
-                                    <td style="width: 40%">{{ AuthorList3 }}</td>
-                                    <td>{{ AffiliationList3 }}</td>
-                                </tr>
-                            {% endif %}
-                            {% if AuthorList4 == 'missing' %}
-                                &nbsp;
-                            {% else %}
-                                <tr>
-
-                                    <td style="width: 40%">{{ AuthorList4|default_if_none:"" }}</td>
-                                    <td>{{ AffiliationList4|default_if_none:"" }}</td>
-                                </tr>
-                            {% endif %}
-                            {% if AuthorList5 == 'missing' %}
-                                &nbsp;
-                            {% else %}
-                                <tr>
-                                    <td style="width: 40%">{{ AuthorList5 }}</td>
-                                    <td>{{ AffiliationList5 }}</td>
-                                </tr>
-                            {% endif %}
-                            {% if AuthorList6 == 'missing' %}
-                                &nbsp;
-                            {% else %}
-                                <tr>
-                                    <td style="width: 40%"><i style="font-size: 100%">Et al</i></td>
-                                    <td>&nbsp;</td>
-                                </tr>
-                            {% endif %}
-                            </tbody>
-                        </table>
-                        <p style="color: white;"><a href="https://ras.papercept.net/proceedings/ICRA20/{{ PDFList }}" target="_blank"> Open PDF files</a></p>
-                        <form>
-                            <i id="thumbs{{titleNumber}}" class="fa fa-thumbs-up" style="color:grey;" onClick="thumbsUp({{ titleNumber }})"></i>
-                            <input type="text" id="{{ titleNumber }}" value="0" class="thumbsuptext" readonly/>
-                        </form>
-                    </td>
-                </tr>
-            </table>
+    {% if mylistSpecialNumber == 0 %}
+    {% else %}
+        <h3>&nbsp;&nbsp;My Lists : Specials</h3>
+        <div style="width: 100%; padding-bottom: 2%; display: inline-flex; flex-wrap: wrap">
+            {% for mylistSpecialSpeaker, mylistSpecialSpecial, mylistSpecialGenre in mylistSpecialContext %}
+                <div style="position: relative; border-style: solid; border-color: white;margin: 1%;width: 22%; display:inline-block;">
+                    <a href="specialsepisode?id={{mylistSpecialSpeaker}}&id2={{ mylistSpecialSpecial }}&id3={{ mylistSpecialGenre }}" onClick="this.href=this.href+'&'+new Date().getTime()">
+                        <img src="{% static './resources/playlogo.png'%}" width="100%"></a>
+                    <div style="position: absolute; z-index: 1;color: white; bottom: 0; text-align: center; font-size: 100%; background-color: rgba(0,0,0,0.7); width: 100%">
+                        <p>{{ mylistSpecialSpecial}} : {{ mylistSpecialSpeaker }}</p>
+                    </div>
+                </div>
+            {% endfor %}
         </div>
-    {% endfor %}
+    {% endif %}
 
+    {% if mylistWorkshopsNumber == 0 %}
+    {% else %}
+        <h3>&nbsp;&nbsp;My Lists : Workshops</h3>
+        <div style="width: 100%; padding-bottom: 2%; display: inline-flex; flex-wrap: wrap">
+            {% for mylistWorkshopsSpeaker, mylistWorkshopsWorkshop, mylistWorkshopsGenre, mylistWorkshopsSpeakerNumber, mylistWorkshopsTalkTitle in mylistWorkshopsContext %}
+                <div style="position: relative; border-style: solid; border-color: white; margin: 1%;width: 22%;; display:inline-flex;">
+                    <a href="workshopsepisode?id={{mylistWorkshopsSpeaker}}&id2={{ mylistWorkshopsWorkshop }}&id3={{ mylistWorkshopsGenre }}&id4={{ mylistWorkshopsSpeakerNumber }}" onClick="this.href=this.href+'&'+new Date().getTime()">
+                        <img src="{% static './resources/playlogo.png'%}" width="100%"></a>
+                    <div style="position: absolute; z-index: 1;color: white; bottom: 0; text-align: center; font-size: 100%; background-color: rgba(0,0,0,0.7); width: 100%">
+                        <p>{{ mylistWorkshopsTalkTitle }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
 
-    <script src="{% static 'js/index_header.js' %}"></script>
-    <script src="{% static 'package/js/swiper.min.js' %}"></script>
-    <script>
-        function search(){
-            const query = document.getElementById("search_bar").value;
-            document.getElementById("keywordDelivery").href = "searchresult?id="+query;
-        }
-
-    </script>
-    <script>
-        function thumbsUp(thumbsid)
-        {
-            var active = document.getElementById("thumbs"+thumbsid.toString()).style.color;
-
-            var value = parseInt(document.getElementById(thumbsid).value, 10);
-            value = isNaN(value) ? 0 : value;
-
-
-            if(active == "grey"){
-                value++;
-                active = "Thumbs Down";
-                document.getElementById("thumbs"+thumbsid.toString()).style.color = "blue";
-                document.getElementById(thumbsid).style.color = "blue";
-
-
-            }else{
-                value--;
-                active = "Thumbs Up";
-                document.getElementById("thumbs"+thumbsid.toString()).style.color = "grey";
-                document.getElementById(thumbsid).style.color = "grey";
-            }
-
-            document.getElementById("thumbs"+thumbsid.toString()).value = active;
-            document.getElementById(thumbsid).value = value;
-        }
-
-    </script>
-    <!-- Initialize Swiper -->
-
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
-
+    {% if mylistEpisodeNumber == 0 %}
+    {% else %}
+        <h3>&nbsp;&nbsp;My Lists : Episodes</h3>
+        <div style="width: 100%; padding-bottom: 2%; display: inline-flex; flex-wrap: wrap">
+            {% for mylistEpisodeTitle, mylistEpisodeSession in mylistEpisodeContext %}
+                <div style="position: relative; border-style: solid; border-color: white;margin: 1%;width: 22%; display:inline-flex;">
+                    <a href="episode?id={{mylistEpisodeTitle}}&id2={{ mylistEpisodeSession }}" onClick="this.href=this.href+'&'+new Date().getTime()">
+                        <img src="{% static './resources/playlogo.png'%}" width="100%"></a>
+                    <div style="position: absolute; z-index: 1;color: white; bottom: 0; text-align: center; font-size: 100%; background-color: rgba(0,0,0,0.7); width: 100%">
+                        <p>{{ mylistEpisodeTitle }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
 
 </div>
+
+<script src="{% static 'js/index_header.js' %}"></script>
+<script src="{% static 'package/js/swiper.min.js' %}"></script>
+
+<script>
+    function search(){
+        const query = document.getElementById("search_bar").value;
+        document.getElementById("keywordDelivery").href = "searchresult?id="+query;
+    }
+
+</script>
+<script>
+    var swiper = new Swiper('.swiper-container', {
+        {#slidesPerView: 7,#}
+        {#spaceBetween: 10,#}
+        slidesPerGroup: 2,
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+        },
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+        breakpoints: {
+            // when window width is >= 320px
+            200: {
+                slidesPerView: 4,
+                slidesPerColumnFill:'row',
+                spaceBetween: 4
+            },
+            // when window width is >= 480px
+            600: {
+                slidesPerView: 5,
+                spaceBetween: 5
+            },
+            // when window width is >= 640px
+            900: {
+                slidesPerView: 6,
+                spaceBetween: 6
+            }
+        }
+    });
+</script>
+
 </body>
 </html>

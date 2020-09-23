@@ -6,6 +6,16 @@
     <meta charset="utf-8">
     <title>IROS 2020 On-Demand : Search Failed</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+
+    <script src="https://s3-us-west-2.amazonaws.com/ieeeshutpages/gdpr/settings.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js"></script>
+    <script>
+        window.addEventListener("load", function() {
+            window.cookieconsent.initialise(json)
+        });
+    </script>
+
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <!-- Link Swiper's CSS -->
     <link rel="stylesheet" href="{% static 'package/css/swiper.min.css' %}">
@@ -30,17 +40,16 @@
 
 <header>
     <div class="logo">
-        <a href="./">
+        <a href="entrance">
             <img src="{% static './resources/logo.png'%}"/>
         </a>
         <button class="header-toggleBtn"><i class="fa fa-bars"></i></button>
     </div>
 
     <ul class="categories">
-
-        <li class="category category1"><a href="./" style="color:white; text-decoration: none;">Home</a></li>
-        <li class="category category2">My Lists</li>
-        <li class="category category3">Recently Added</li>
+        <li class="category category1"><a href="entrance" style="color:white; text-decoration: none;">Home</a></li>
+        <li class="category category2"><a href="mylist?" onClick="this.href=this.href.split('?')[0]+'?'+new Date().getTime()" style="color:white; text-decoration: none;">My Lists</a></li>
+        <li class="category category3"><a href="logout" style="color:white; text-decoration: none;">Logout</a></li>
     </ul>
 
     <ul class="search_notice_info">
@@ -48,13 +57,11 @@
             <input type="text" id="search_bar" value="" class="searchBar" onkeydown="if(event.keyCode === 13) {event.preventDefault(); document.getElementById('searchBtn').click()}"/>
             <d onclick="search()">
                 <a id = "keywordDelivery" href="">
-                    <i id="searchBtn" class="fa fa-search" style="font-size:25px;color:white;"></i>
+                    <i id="searchBtn" class="fa fa-search" style="color:white;"></i>
                 </a>
             </d>
         </form>
-        <li class="info"><i class="fa fa-user"></i></li>
     </ul>
-
 </header>
 
 <div style="width:95%; margin:0 auto; padding-top: 12%;" align="justify">
