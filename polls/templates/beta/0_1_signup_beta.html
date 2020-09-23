@@ -14,7 +14,7 @@
             position: relative;
             z-index: 1;
             background: #323232;
-            max-width: 360px;
+            max-width: 100%;
             padding: 10px 0px 0 10px;
             font-size: 14px;
             box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
@@ -72,18 +72,23 @@
                 {% endfor %}
                 <div class="GDPR">
                     <div>
-                        IROS On-Demand Privacy Policy : <br>
-                        We respect your privacy. We want to ensure that you get the information, content, and experiences that matter most to you.
-                        IROS On-Demand will only use your email to communicate conference related news and updates.  Your email address will not be shared. It will be deleted after IROS 2020 concludes.
+                        Acceptance of IEEE policies are required to register for IROS On-Demand <br><br>
+
+                        By submitting your registration details, you acknowledge that:<br><br>
                     </div>
-                    <br>
-                    <label for="test" style="float: left">I accept the policy above</label>
+                    <p style="color: yellowgreen">*You have read and are in agreement with <a target="_blank" style="color: cornflowerblue" href="https://www.ieee.org/security-privacy.html">IEEE's privacy policy</a></p>
+                    <label for="test" style="float: left">I accept the IEEE Privacy Policy</label>
                     <span style="display: block;">
-            <input name="test" id="test" type="checkbox" onchange="agreed(this)"/>
+            <input name="test" id="checkbox1" type="checkbox" onchange="agreed(this)"/>
+        </span>
+                    <p style="color: yellowgreen">*You have read and are in agreement with <a target="_blank" style="color: cornflowerblue" href="https://www.ieee.org/conferences/event-terms-and-conditions.html">IEEE's Event Terms and Conditions</a></p>
+                    <label for="test" style="float: left">I accept the IEEE Event Terms and Conditions</label>
+                    <span style="display: block;">
+            <input name="test" id="checkbox2" type="checkbox" onchange="agreed(this)"/>
         </span>
                 </div>
                 <br>
-                <button type="submit" id="signupbutton">Please check the policy box above</button>
+                <button type="submit" id="signupbutton">Click here to submit</button>
             </form>
         {% endblock %}
 
@@ -98,10 +103,14 @@
 </div>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script>
+
     function agreed(e) {
-        if (e.checked){
+        checkbox1 = document.getElementById("checkbox1")
+        checkbox2 = document.getElementById("checkbox2")
+
+        if (checkbox2.checked && checkbox1.checked){
             btn = document.getElementById("signupbutton").disabled = false;
-            document.getElementById("signupbutton").innerHTML = "Sign-Up";
+            document.getElementById("signupbutton").innerHTML = "Click here to submit";
             $("button").css("background-color","#5C0000");
             $("button").hover(function () {
                 $(this).css("background-color","#2B0000");
@@ -111,7 +120,7 @@
         } else {
             btn = document.getElementById("signupbutton").disabled = true;
             $("button").css("background-color","grey");
-            document.getElementById("signupbutton").innerHTML = "Please check the policy box above";
+            document.getElementById("signupbutton").innerHTML = "Click here to submit";
         }
     }
 </script>

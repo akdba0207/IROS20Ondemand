@@ -1113,8 +1113,16 @@ def signup(request):
         form = SignUpForm(request.POST)
         if form.is_valid():
             if User.objects.filter(username__iexact=form.cleaned_data.get('email')).exists():
-                messages.info(request, 'This email is already registered, please try with different email address if this is a new registration')
-                return redirect('signup')
+                existed_user = User.objects.filter(username__iexact=form.cleaned_data.get('email'))
+                if existed_user[0].is_active is True:
+                    messages.info(request,
+                                  'This email is already registered, please try with different email address if this is a new registration')
+                    return redirect('signup')
+                else:
+                    messages.info(request,
+                                  'This email is already registered, but not activated. Do you want the activation email to be sent again?')
+                    return redirect('signup')
+
 
             user = form.save()
 

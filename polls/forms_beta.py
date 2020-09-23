@@ -35,7 +35,7 @@ class SignUpForm(UserCreationForm):
     demographic_region = forms.ChoiceField(label='Your Region', choices=DemographicRegion, required=True)
     primary = forms.ChoiceField(label='Is your primary field of study, work or interest in robotics?', choices=TF,
                                 widget=forms.RadioSelect, required=True)
-    member = forms.ChoiceField(label='Are you an IEEE and/or RAS Member?', choices=TF, widget=forms.RadioSelect,
+    member = forms.ChoiceField(label='Are you an IEEE and/or RAS and/or RSJ Member?', choices=TF, widget=forms.RadioSelect,
                                required=True)
     password1 = None
     password2 = None
