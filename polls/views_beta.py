@@ -144,7 +144,7 @@ def login(request):
             return redirect('entrance')
         else:
             # print("not_valid")
-            messages.info(request, 'Please enter a correct username. Note that both fields may be case-sensitive.')
+            messages.info(request, 'Please enter a correct username.')
             return redirect('login')
 
     return render(request, './beta/1_login_beta.html')
@@ -1119,10 +1119,11 @@ def signup(request):
                                   'This email is already registered, please try with different email address if this is a new registration')
                     return redirect('signup')
                 else:
-                    messages.info(request,
-                                  'This email is already registered, but not activated. Do you want the activation email to be sent again?')
-                    return redirect('signup')
+                    messages.warning(request,'This email is already registered, but not activated. Do you want the activation email to be sent again?')
+                    messages.warning(request,'<button class="resendButton" type="submit" '
+                                             'onclick="activationResend('+str(existed_user[0].pk)+')">Resend</button>')
 
+                    return redirect('signup')
 
             user = form.save()
 
@@ -1157,6 +1158,30 @@ def signup(request):
 @csrf_exempt
 def account_activation_sent(request):
     return render(request, './beta/0_2_account_activation_sent.html')
+
+@csrf_exempt
+def resendactivation(request):
+    if request.is_ajax:
+        # print(request.POST['resendEmailAdress'])
+        user_raw = User.objects.filter(pk=int(request.POST['resendEmailAdress']))
+        user= user_raw[0]
+        current_site = get_current_site(request)
+        subject = 'Activate Your IROS2020 On-Demand Account'
+        message = render_to_string('./beta/0_4_account_activation_email.html', {
+            'user': user,
+            'domain': current_site.domain,
+            'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+            'token': account_activation_token.make_token(user),
+        })
+        user.email_user(subject, message, 'ondemandinfo@iros2020.org')
+
+        resentMessage = 'Verfication email is just re-sent, please check your inbox'
+        response = {'resentMessage': resentMessage}
+        print('sent')
+        return HttpResponse(
+            json.dumps(response),
+            content_type="application/json"
+        )
 
 @csrf_exempt
 def activate(request, uidb64, token):

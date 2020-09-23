@@ -24,6 +24,7 @@ urlpatterns = [
     path('post_save', views_beta.post_save, name='post_save'),
     path('post_hitcount', views_beta.post_hitcount, name='post_hitcount'),
     path('signup', views_beta.signup, name='signup'),
+    path('resendactivation', views_beta.resendactivation, name='resendactivation'),
 
     re_path(r'^account_activation_sent/$', views_beta.account_activation_sent, name='account_activation_sent'),
     re_path(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',

@@ -20,7 +20,7 @@
             box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
             color: white;
         }
-        button {
+        .signupSubmit {
             font-family: sans-serif;
             text-transform: uppercase;
             outline: 0;
@@ -30,6 +30,18 @@
             padding: 15px;
             color: #FFFFFF;
             font-size: 14px;
+        {#-webkit-transition: all 0.3 ease;#}
+        {#transition: all 0.3 ease;#}
+        }
+        .resendButton{
+            font-family: sans-serif;
+            outline: 0;
+            background: #5C0000;
+            width: 30%;
+            border: 0;
+            color: #FFFFFF;
+            font-size: 14px;
+            padding: 15px;
         {#-webkit-transition: all 0.3 ease;#}
         {#transition: all 0.3 ease;#}
             cursor: pointer;
@@ -88,7 +100,7 @@
         </span>
                 </div>
                 <br>
-                <button type="submit" id="signupbutton">Click here to submit</button>
+                <button class="signupSubmit" type="submit" id="signupbutton">Click here to submit</button>
             </form>
         {% endblock %}
 
@@ -96,7 +108,11 @@
         <p>&nbsp;</p>
         {% if messages %}
             {% for message in messages %}
-                <p style="color: yellow">{{ message.message }}</p>
+                {% if message.level == 20 %}
+                    <p style="color: yellow">{{ message.message }}</p>
+                {% elif message.level == 30 %}
+                    <p style="color: yellow">{{ message.message|safe }}</p>
+                {% endif %}
             {% endfor %}
         {% endif %}
     </div>
@@ -109,18 +125,18 @@
         checkbox2 = document.getElementById("checkbox2")
 
         if (checkbox2.checked && checkbox1.checked){
-            btn = document.getElementById("signupbutton").disabled = false;
-            document.getElementById("signupbutton").innerHTML = "Click here to submit";
-            $("button").css("background-color","#5C0000");
-            $("button").hover(function () {
+            $(".signupSubmit").prop("disabled",false);
+            $(".signupSubmit").css("background-color","#5C0000");
+            $(".signupSubmit").css("cursor","pointer");
+            $(".signupSubmit").hover(function () {
                 $(this).css("background-color","#2B0000");
             },function () {
                 $(this).css("background-color","#5C0000");
             });
         } else {
-            btn = document.getElementById("signupbutton").disabled = true;
-            $("button").css("background-color","grey");
-            document.getElementById("signupbutton").innerHTML = "Click here to submit";
+            $(".signupSubmit").prop("disabled",true);
+            $(".signupSubmit").css("background-color","grey");
+            $(".signupSubmit").css("cursor","default");
         }
     }
 </script>
@@ -151,6 +167,28 @@
         }, 1000);
     }
     CountDownTimer('2020/10/24 23:59:59');
+</script>
+<script>
+    function activationResend(resendEmailAddress){
+        $.ajax({
+            url:'resendactivation',
+            type:'POST',
+            data:{'resendEmailAdress':resendEmailAddress},
+            dataType:'json',
+            success: function(json) {
+                $('.resendButton').prop("disabled",true)
+                $('.resendButton').css("background-color","#1F1F1F");
+                $('.resendButton').css("color","yellow");
+                $('.resendButton').css("font-size","14px");
+                $('.resendButton').css("width","100%");
+                $('.resendButton').css("cursor","default");
+                $('.resendButton').html(json['resentMessage'])
+            },
+            error: function(err) {
+                alert("Failed to resend activation email");
+            }
+        });
+    }
 </script>
 </body>
 </html>
