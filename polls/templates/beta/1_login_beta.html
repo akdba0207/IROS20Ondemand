@@ -5,65 +5,14 @@
     <meta charset="utf-8">
     <title>IROS 2020 On-Demand : Log-In</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
-    <style>
+    <link rel="stylesheet" href="{% static '/css/login0922.css' %}">
 
-        .login-page {
-            width: 360px;
-            padding: 12% 0 0;
-            margin: auto;
-        }
-        .form {
-            position: relative;
-            z-index: 1;
-            background: #FFFFFF;
-            max-width: 360px;
-            margin: 0 auto 100px;
-            padding: 30px 45px 0px 45px;
-            text-align: center;
-            box-shadow: 0 0 0px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
-        }
-        .form input {
-            font-family: sans-serif;
-            outline: 0;
-            background: #f2f2f2;
-            width: 100%;
-            border: 0;
-            margin: 0 0 15px;
-            padding: 15px;
-            box-sizing: border-box;
-            font-size: 14px;
-        }
-        .form button {
-            font-family: sans-serif;
-            text-transform: uppercase;
-            outline: 0;
-            background: #5C0000;
-            width: 100%;
-            border: 0;
-            padding: 15px;
-            color: #FFFFFF;
-            font-size: 14px;
-        {#-webkit-transition: all 0.3 ease;#}
-        {#transition: all 0.3 ease;#}
-            cursor: pointer;
-        }
-        .form button:hover,.form button:active,.form button:focus {
-            background: #2B0000;
-        }
-        .form .message {
-            margin: 15px 0 0;
-            color: #b3b3b3;
-            font-size: 12px;
-        }
-
-        body {
-            font-family: "Source Sans Pro", sans-serif;
-        }
-    </style>
 </head>
 
 <body bgcolor="#1F1F1F">
-<img src="{% static './resources/logo.png'%}" width="10%">
+<div class="entranceLogo">
+    <img src="{% static './resources/logo.png'%}">
+</div>
 
 <div class="login-page">
 
@@ -81,7 +30,7 @@
 
             <button id="loginButton" type="submit">Login</button>
             {#            </a>#}
-            <p style="color: #1F1F1F;font-size: 14px">Not registered? <a href="signup" style="color: red; text-decoration: none;">Create your account</a></p>
+            <p class="messageSignup">Not registered? <a href="signup" style="color: red; text-decoration: none;">Create your account</a></p>
             <p class="message">IROS2020 On-Demand is only for <br>The conference participants</p>
         </form>
     </div>

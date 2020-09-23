@@ -1,0 +1,180 @@
+.entranceLogo{
+    padding-left: 0%;
+    text-align: center;
+}
+.entranceLogo img{
+    width:20%;
+}
+.login-page {
+    width: 360px;
+    padding: 12% 0 0;
+    margin: auto;
+}
+.form {
+    position: relative;
+    z-index: 1;
+    background: #FFFFFF;
+    max-width: 360px;
+    margin: 0 auto 100px;
+    padding: 30px 45px 0px 45px;
+    text-align: center;
+    box-shadow: 0 0 0px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+.form input {
+    font-family: sans-serif;
+    outline: 0;
+    background: #f2f2f2;
+    width: 100%;
+    border: 0;
+    margin: 0 0 15px;
+    padding: 15px;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+.form button {
+    font-family: sans-serif;
+    text-transform: uppercase;
+    outline: 0;
+    background: #5C0000;
+    width: 100%;
+    border: 0;
+    padding: 15px;
+    color: #FFFFFF;
+    font-size: 14px;
+    cursor: pointer;
+}
+.form button:hover,.form button:active,.form button:focus {
+    background: #2B0000;
+}
+.form .messageSignup{
+    color: #1F1F1F;font-size: 14px
+}
+.form .message {
+    margin: 15px 0 0;
+    color: #b3b3b3;
+    font-size: 12px;
+}
+
+body {
+    font-family: "Source Sans Pro", sans-serif;
+}
+@media only screen and (max-width: 400px){
+    .entranceLogo{
+        padding-left: 0%;
+    }
+    .entranceLogo img{
+        width:70%;
+    }
+    .login-page {
+        width: 90%;
+        padding: 12% 0 0;
+        margin: auto;
+    }
+    .form {
+        position: relative;
+        z-index: 1;
+        background: #FFFFFF;
+        max-width: 90%;
+        text-align: center;
+        box-shadow: 0 0 0px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+    }
+    .form input {
+        padding: 15px;
+        font-size: 12px;
+    }
+    .form button {
+        padding: 13px;
+        font-size: 12px;
+    }
+    .form button:hover,.form button:active,.form button:focus {
+        background: #2B0000;
+    }
+    .form .messageSignup {
+        font-size: 12px;
+    }
+    .form .message {
+        margin: 15px 0 0;
+        color: #b3b3b3;
+        font-size: 12px;
+    }
+}
+@media only screen and (max-width: 600px) and (min-width: 401px){
+    .entranceLogo{
+        padding-left: 0%;
+    }
+    .entranceLogo img{
+        width:70%;
+    }
+    .login-page {
+        width: 90%;
+        padding: 12% 0 0;
+        margin: auto;
+    }
+    .form {
+        position: relative;
+        z-index: 1;
+        background: #FFFFFF;
+        max-width: 90%;
+        text-align: center;
+        box-shadow: 0 0 0px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+    }
+    .form input {
+        padding: 15px;
+        font-size: 12px;
+    }
+    .form button {
+        padding: 13px;
+        font-size: 12px;
+    }
+    .form button:hover,.form button:active,.form button:focus {
+        background: #2B0000;
+    }
+    .form .messageSignup {
+        font-size: 12px;
+    }
+    .form .message {
+        margin: 15px 0 0;
+        color: #b3b3b3;
+        font-size: 12px;
+    }
+}
+@media only screen and (max-width: 1200px) and (min-width: 601px) {
+    .entranceLogo{
+        padding-left: 0%;
+    }
+    .entranceLogo img{
+        width:50%;
+    }
+    .login-page {
+        width: 70%;
+        padding: 12% 0 0;
+        margin: auto;
+    }
+    .form {
+        position: relative;
+        z-index: 1;
+        background: #FFFFFF;
+        max-width: 60%;
+        text-align: center;
+        box-shadow: 0 0 0px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+    }
+    .form input {
+        padding: 15px;
+        font-size: 15px;
+    }
+    .form button {
+        padding: 15px;
+        font-size: 14px;
+    }
+    .form button:hover,.form button:active,.form button:focus {
+        background: #2B0000;
+    }
+    .form .messageSignup {
+        font-size: 14px;
+    }
+    .form .message {
+        margin: 15px 0 0;
+        color: #b3b3b3;
+        font-size: 14px;
+    }
+}

@@ -176,9 +176,10 @@ body {
         cursor: pointer;
     }
 }
-@media only screen and (max-width: 1200px) and (min-width: 601px) {.entranceLogo{
-    padding-left: 0%;
-}
+@media only screen and (max-width: 1200px) and (min-width: 601px) {
+    .entranceLogo{
+        padding-left: 0%;
+    }
     .entranceLogo img{
         width:50%;
     }
