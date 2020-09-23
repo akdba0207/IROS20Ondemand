@@ -4,56 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <title>IROS 2020 On-Demand : Sign-Up</title>
-    <style>
-        body {
-            background:#1F1F1F;
-            font-family: "Source Sans Pro", sans-serif;
-        }
-        .GDPR{
-            font-family: sans-serif;
-            position: relative;
-            z-index: 1;
-            background: #323232;
-            max-width: 100%;
-            padding: 10px 0px 0 10px;
-            font-size: 14px;
-            box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
-            color: white;
-        }
-        .signupSubmit {
-            font-family: sans-serif;
-            text-transform: uppercase;
-            outline: 0;
-            background: grey;
-            width: 75%;
-            border: 0;
-            padding: 15px;
-            color: #FFFFFF;
-            font-size: 14px;
-        {#-webkit-transition: all 0.3 ease;#}
-        {#transition: all 0.3 ease;#}
-        }
-        .resendButton{
-            font-family: sans-serif;
-            outline: 0;
-            background: #5C0000;
-            width: 30%;
-            border: 0;
-            color: #FFFFFF;
-            font-size: 14px;
-            padding: 15px;
-        {#-webkit-transition: all 0.3 ease;#}
-        {#transition: all 0.3 ease;#}
-            cursor: pointer;
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="{% static '/css/signup0922.css' %}">
 </head>
 <body>
-<div style="padding-left: 35%">
-    <a href="/ondemandbeta"><img src="{% static './resources/logo.png'%}" width="30%"></a>
+<div class="entranceLogo">
+    <a href="/ondemandbeta"><img src="{% static './resources/logo.png'%}"></a>
 </div>
 
-<div class="ddaycounter" style="color: yellowgreen;padding-left: 35%">
+<div class="ddaycounter">
     <h2> Countdown to IROS 2020 (10/25/2020)</h2>
     <div id="countDay">
         <span class="day"></span> Days
@@ -64,8 +23,8 @@
 </div>
 
 <br>
-<div class="createAccount" style="padding-left: 35%">
-    <div style="padding-top: 0%; color: white; width: 40%">
+<div class="createAccount" >
+    <div class="creatAccountContents" >
         {% block content %}
             <h2>Create your account</h2>
             <form method="post">

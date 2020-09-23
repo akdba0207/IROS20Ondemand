@@ -1177,7 +1177,7 @@ def resendactivation(request):
 
         resentMessage = 'Verfication email is just re-sent, please check your inbox'
         response = {'resentMessage': resentMessage}
-        print('sent')
+        # print('sent')
         return HttpResponse(
             json.dumps(response),
             content_type="application/json"
