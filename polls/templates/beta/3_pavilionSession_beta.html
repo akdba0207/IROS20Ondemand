@@ -73,7 +73,8 @@
             {% if goldSponsorSession|length == 0 %}
                 <tr>
                     <td style="width: 70%;">
-                        <img src="{% static 'img'%}/pavilion{{ PavilionNum}}/{{Session}}.jpg">
+                        {#                        <img src="{% static 'img'%}/pavilion{{ PavilionNum}}/{{Session}}.jpg">#}
+                        <img src="{% static './resources/playlogo.png'%}">
                     </td>
                     <td class="sessionTitle" style="word-break: keep-all;">
                         <p style="color: white;">Welcome to Session :</p>
@@ -102,7 +103,8 @@
                         </div>
                     </td>
                     <td style="width: 30%;">
-                        <img src="{% static 'img'%}/pavilion{{ PavilionNum}}/{{Session}}.jpg">
+                        {#                        <img src="{% static 'img'%}/pavilion{{ PavilionNum}}/{{Session}}.jpg">#}
+                        <img src="{% static './resources/playlogo.png'%}">
                     </td>
                     <td class="sessionTitle" style="word-break: keep-all;">
                         <p style="color: white;">Welcome to Session :</p>
@@ -183,20 +185,19 @@
                             {% endif %}
                             </tbody>
                         </table>
-                        <p style="font-size: 18px"><a href="https://ras.papercept.net/proceedings/ICRA20/{{ PDFList }}" target="_blank" style="color: lawngreen;"> Open PDF files</a></p>
+                        <p style="font-size: 18px"><a href="https://ras.papercept.net/proceedings/IROS20/{{ PDFList }}" target="_blank" style="color: lawngreen;"> Open PDF files</a></p>
 
-                        {% csrf_token %}
                         {% if paperLikeButtonColor == 1 %}
-                            <button class="likeButton" type="submit" style="margin: auto;background-color: #323232 ;" onclick="updateLike({{ titleNumber }})">
-                                <i id="thumbs{{titleNumber}}" class="fa fa-thumbs-up" style="color:yellow; font-size: 30px"></i>
-                                <input type="text" id="{{ titleNumber }}" value="{{ paperLikeCount }}" class="thumbsuptext" name="likeCount" readonly/>
-                                <input type="hidden" name="paperNumber" value="{{ titleNumber }}">
+                            <button class="likeButton" type="submit" style="margin: auto;background-color: #323232 ;" onclick="updateLike({{ titleNumber|floatformat:"0" }})">
+                                <i id="thumbs{{titleNumber|floatformat:"0"}}" class="fa fa-thumbs-up" style="color:yellow; font-size: 30px"></i>
+                                <input type="text" id="{{ titleNumber|floatformat:"0" }}" value="{{ paperLikeCount }}" class="thumbsuptext" name="likeCount" readonly/>
+                                <input type="hidden" name="paperNumber" value="{{ titleNumber|floatformat:"0" }}">
                             </button>
                         {% else %}
-                            <button class="likeButton" type="submit" style="padding: 0% ;background-color: #323232;" onclick="updateLike({{ titleNumber }})">
-                                <i id="thumbs{{titleNumber}}" class="fa fa-thumbs-up" style="color:grey; font-size: 30px"></i>
-                                <input type="text" id="{{ titleNumber }}" value="{{ paperLikeCount }}" class="thumbsuptext" name="likeCount" readonly/>
-                                <input type="hidden" name="paperNumber" value="{{ titleNumber }}">
+                            <button class="likeButton" type="submit" style="padding: 0% ;background-color: #323232;" onclick="updateLike({{ titleNumber|floatformat:"0" }})">
+                                <i id="thumbs{{titleNumber|floatformat:"0"}}" class="fa fa-thumbs-up" style="color:grey; font-size: 30px"></i>
+                                <input type="text" id="{{ titleNumber|floatformat:"0" }}" value="{{ paperLikeCount }}" class="thumbsuptext" name="likeCount" readonly/>
+                                <input type="hidden" name="paperNumber" value="{{ titleNumber|floatformat:"0" }}">
                             </button>
                         {% endif %}
                         <span class="listHitCount" style="color: white;font-size: 18px">{{ paperHitCount }} views</span>
@@ -204,15 +205,15 @@
                     <td class="savePapers" style="width: 5%; color: white">
                         {% csrf_token %}
                         {% if paperSaveButtonStatus == 1 %}
-                            <button class="saveButton" type="submit" style="margin: auto;background-color: #323232 ;" onclick="updateSave({{ titleNumber }})">
-                                <i id="savebutton{{titleNumber}}" class="fa fa-check-circle"  aria-hidden="true" style="color:white; font-size: 30px"></i>
-                                <input type="hidden" name="paperNumber" value="{{ titleNumber }}">
+                            <button class="saveButton" type="submit" style="margin: auto;background-color: #323232 ;" onclick="updateSave({{ titleNumber|floatformat:"0" }})">
+                                <i id="savebutton{{titleNumber|floatformat:"0"}}" class="fa fa-check-circle"  aria-hidden="true" style="color:white; font-size: 30px"></i>
+                                <input type="hidden" name="paperNumber" value="{{ titleNumber|floatformat:"0" }}">
                             </button>
                             <p>My List</p>
                         {% else %}
-                            <button class="saveButton" type="submit" style="padding: 0% ;background-color: #323232;" onclick="updateSave({{ titleNumber }})">
-                                <i id="savebutton{{titleNumber}}" class="fa fa-plus"  aria-hidden="true" style="color:white; font-size: 30px"></i>
-                                <input type="hidden" name="paperNumber" value="{{ titleNumber }}">
+                            <button class="saveButton" type="submit" style="padding: 0% ;background-color: #323232;" onclick="updateSave({{ titleNumber|floatformat:"0" }})">
+                                <i id="savebutton{{titleNumber|floatformat:"0"}}" class="fa fa-plus"  aria-hidden="true" style="color:white; font-size: 30px"></i>
+                                <input type="hidden" name="paperNumber" value="{{ titleNumber|floatformat:"0" }}">
                             </button>
                             <p>My List</p>
                         {% endif %}
@@ -228,7 +229,8 @@
             <div class="swiper-wrapper">
                 {% for j in SessionList %}
                     <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion }}&id3={{PavilionNum}}" style="color:white; text-decoration: none;">
-                        <img src="{% static 'img'%}/pavilion{{ PavilionNum }}/{{ j }}.jpg">
+                        {#                        <img src="{% static 'img'%}/pavilion{{ PavilionNum }}/{{ j }}.jpg">#}
+                        <img src="{% static './resources/playlogo.png'%}">
                         <div class="onimg-caption">{{ j }}
                         </div>
                     </a>

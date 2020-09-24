@@ -111,6 +111,18 @@ Sessions9 = sorted(list(set(Pavilion9['Session title'])))
 Sessions10 = sorted(list(set(Pavilion10['Session title'])))
 Sessions11 = sorted(list(set(Pavilion11['Session title'])))
 Sessions12 = sorted(list(set(Pavilion12['Session title'])))
+# print(organizedGenre[0] + ' = '+str(len(Sessions1)))
+# print(organizedGenre[1] + ' = '+str(len(Sessions2)))
+# print(organizedGenre[2] + ' = '+str(len(Sessions3)))
+# print(organizedGenre[3] + ' = '+str(len(Sessions4)))
+# print(organizedGenre[4] + ' = '+str(len(Sessions5)))
+# print(organizedGenre[5] + ' = '+str(len(Sessions6)))
+# print(organizedGenre[6] + ' = '+str(len(Sessions7)))
+# print(organizedGenre[7] + ' = '+str(len(Sessions8)))
+# print(organizedGenre[8] + ' = '+str(len(Sessions9)))
+# print(organizedGenre[9] + ' = '+str(len(Sessions10)))
+# print(organizedGenre[10] + ' = '+str(len(Sessions11)))
+# print(organizedGenre[11] + ' = '+str(len(Sessions12)))
 
 # totalSessions = zip(Sessions1, Sessions2, Sessions3, Sessions4, Sessions5)
 #
@@ -154,8 +166,12 @@ def login(request):
             ip, is_routable = get_client_ip(request)
             Profile.objects.filter(user_id=login_user_id).update(ip=ip)
 
-            auth_login(request, login_form.get_user())
-            return redirect('entrance')
+            if login_user[0].is_superuser is True:
+                auth_login(request, login_form.get_user())
+                return redirect('entrance')
+            else:
+                messages.info(request, 'Sorry, you do not have access to the beta page')
+                return redirect('login')
         else:
             # print("not_valid")
             messages.info(request, 'Please enter a correct username.')
@@ -261,20 +277,34 @@ def tvshow(request):
     selectedPavilion = request.GET['id2']
     selectedPavilionNum = request.GET['id3']
 
-    if selectedPavilion == Cartegories['Pavilion'][0]:
+    if selectedPavilion == organizedGenre[0]:
         selectedSessionList = Sessions1
-    elif selectedPavilion == Cartegories['Pavilion'][1]:
+    elif selectedPavilion == organizedGenre[1]:
         selectedSessionList = Sessions2
-    elif selectedPavilion == Cartegories['Pavilion'][2]:
+    elif selectedPavilion == organizedGenre[2]:
         selectedSessionList = Sessions3
-    elif selectedPavilion == Cartegories['Pavilion'][3]:
+    elif selectedPavilion == organizedGenre[3]:
         selectedSessionList = Sessions4
-    elif selectedPavilion == Cartegories['Pavilion'][4]:
+    elif selectedPavilion == organizedGenre[4]:
         selectedSessionList = Sessions5
+    elif selectedPavilion == organizedGenre[5]:
+        selectedSessionList = Sessions6
+    elif selectedPavilion == organizedGenre[6]:
+        selectedSessionList = Sessions7
+    elif selectedPavilion == organizedGenre[7]:
+        selectedSessionList = Sessions8
+    elif selectedPavilion == organizedGenre[8]:
+        selectedSessionList = Sessions9
+    elif selectedPavilion == organizedGenre[9]:
+        selectedSessionList = Sessions10
+    elif selectedPavilion == organizedGenre[10]:
+        selectedSessionList = Sessions11
+    elif selectedPavilion == organizedGenre[11]:
+        selectedSessionList = Sessions12
     else:
         selectedSessionList = []
 
-    EpisodeList = icra_Monday[(icra_Monday['Session title'] == selectedSession)]
+    EpisodeList = iros2020_raw[(iros2020_raw['Session title'] == selectedSession)]
     AuthorList1 = EpisodeList['Author1'].reset_index()
     AuthorList2 = EpisodeList['Author2'].reset_index()
     AuthorList3 = EpisodeList['Author3'].reset_index()
@@ -492,15 +522,15 @@ def episode(request):
     selectedTitle = request.GET['id']
     selectedSession = request.GET['id2']
 
-    findVideo = icra_example[(icra_example['Title'] == selectedTitle)]
+    findVideo = iros2020_raw[(iros2020_raw['Title'] == selectedTitle)]
     VideoList = findVideo['VID'].reset_index()
     selectedNumber = findVideo['Nr'].reset_index()
     suggestEpisodeNum = findSimilarTopic(selectedNumber['Nr'].iloc[0])
 
-    similarPaper = icra_example[(icra_example['Nr'] == int(suggestEpisodeNum[0]))]
+    similarPaper = iros2020_raw[(iros2020_raw['Nr'] == int(suggestEpisodeNum[0]))]
 
     for i in range(1, 12):
-        main2 = similarPaper.append(icra_example[(icra_example['Nr'] == int(suggestEpisodeNum[i]))])
+        main2 = similarPaper.append(iros2020_raw[(iros2020_raw['Nr'] == int(suggestEpisodeNum[i]))])
         similarPaper = main2
     # print(similarPaper)
     AuthorList1 = similarPaper['Author1'].reset_index()
@@ -803,10 +833,10 @@ def searchresult(request):
     if not resultNumber:
         return render(request, './beta/6_searchResultError_beta.html', {'inputKeyword': inputKeyword})
     else:
-        searchTitle = icra_example[(icra_example['Nr'] == int(resultNumber[0]))]
+        searchTitle = iros2020_raw[(iros2020_raw['Nr'] == int(resultNumber[0]))]
 
         for i in range(1, resultNumberlength):
-            main2 = searchTitle.append(icra_example[(icra_example['Nr'] == int(resultNumber[i]))])
+            main2 = searchTitle.append(iros2020_raw[(iros2020_raw['Nr'] == int(resultNumber[i]))])
             searchTitle = main2
 
         # print(searchTitle)
@@ -904,7 +934,7 @@ def mylist(request):
         mylistEpisodeTitle = []
         mylistEpisodeSession = []
         for i in range(len(mylistEpisodeNumber)):
-            mylistEpisode = icra_example[(icra_example['Nr'] == int(mylistEpisodeNumber[i]))].reset_index()
+            mylistEpisode = iros2020_raw[(iros2020_raw['Nr'] == int(mylistEpisodeNumber[i]))].reset_index()
             mylistEpisodeSession.append(mylistEpisode['Session title'].iloc[0])
             mylistEpisodeTitle.append(mylistEpisode['Title'].iloc[0])
 
@@ -980,6 +1010,7 @@ def post_like(request):
 
     if request.is_ajax:
         clickedPaperNumber = int(request.POST['paperNumber'])
+        # print(clickedPaperNumber)
         paper = get_object_or_404(Papers, paper_id=clickedPaperNumber)
 
         if current_account in paper.like_users.all():
@@ -988,7 +1019,7 @@ def post_like(request):
         else:
             paper.like_users.add(current_account)
             buttonColor = "yellow"
-
+        # print(buttonColor)
         paperLikeCount.append(paper.like_users.count())
         response = {'likeButtonColor': buttonColor, 'likeCount': paperLikeCount}
 
@@ -1038,7 +1069,7 @@ def post_save(request):
     if request.is_ajax:
         clickedPaperNumber = int(request.POST['paperNumber'])
         paper = get_object_or_404(Papers, paper_id=clickedPaperNumber)
-
+        # print(clickedPaperNumber)
         if current_account in paper.save_users.all():
             paper.save_users.remove(current_account)
             buttonStatus = 'fa fa-plus'
@@ -1108,9 +1139,9 @@ def post_hitcount(request):
 # irosuser3.save()
 # irosuser4.save()
 
-##Paper Database
-# for i in range(1553):
-#     db = Papers(paper_id=icra_example['Nr'][i])
+#Paper Database ICRA 1553, IROS 1465
+# for i in range(1465):
+#     db = Papers(paper_id=iros2020_raw['Nr'][i])
 #     db.save()
 # print(len(icra_specials['Nr']))
 # for j in range(len(icra_specials['Nr'])):

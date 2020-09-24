@@ -12,7 +12,7 @@ nltk.download('averaged_perceptron_tagger')
 
 pre = os.path.dirname(os.path.realpath(__file__))
 
-path3 = os.path.join(pre, 'ICRA20Digest4369_1.xlsx')
+path3 = os.path.join(pre, 'IROS20_OnDemand__09_24_main.xlsx')
 data = pd.read_excel(path3, sheet_name=0)
 # data1 = pd.read_excel(path3, sheet_name=0)
 # data = data1[(data1['SchCode'].str[0]=='M')&(data1['SchCode'].str[1]=='o')]
