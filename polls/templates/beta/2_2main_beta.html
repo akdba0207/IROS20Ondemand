@@ -229,7 +229,8 @@
                             {% for j in Aerial %}
                                 <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.0 }}&id3={{ Pavilion.index.0|add:1 }}" onClick="this.href=this.href+'&'+new Date().getTime()" style="color:white; text-decoration: none;">
 
-                                    <img src="{% static 'img'%}/pavilion{{ Pavilion.index.0|add:1 }}/{{ j }}.jpg">
+{#                                    <img src="{% static 'img'%}/pavilion{{ Pavilion.index.0|add:1 }}/{{ j }}.jpg">#}
+                                    <img src="{% static './resources/logo2.png'%}"/>
                                     <div class="onimg-caption">{{ j }}
                                     </div>
                                 </a>
@@ -254,10 +255,11 @@
                     </div>
                     <div class="swiper-container" style="display: inline-block; width: 70%;">
                         <div class="swiper-wrapper">
-                            {% for j in Humanoid %}
+                            {% for j in Driverless %}
                                 <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.1 }}&id3={{ Pavilion.index.1|add:1 }}" onClick="this.href=this.href+'&'+new Date().getTime()" style="color:white; text-decoration: none;">
 
-                                    <img src="{% static 'img'%}/pavilion{{ Pavilion.index.1|add:1 }}/{{ j }}.jpg">
+{#                                    <img src="{% static 'img'%}/pavilion{{ Pavilion.index.0|add:1 }}/{{ j }}.jpg">#}
+                                    <img src="{% static './resources/logo2.png'%}"/>
                                     <div class="onimg-caption">{{ j }}
                                     </div>
                                 </a>
@@ -285,7 +287,8 @@
                             {% for j in Medical %}
                                 <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.2 }}&id3={{ Pavilion.index.2|add:1 }}" onClick="this.href=this.href+'&'+new Date().getTime()" style="color:white; text-decoration: none;">
 
-                                    <img src="{% static 'img'%}/pavilion{{ Pavilion.index.2|add:1 }}/{{ j }}.jpg">
+{#                                    <img src="{% static 'img'%}/pavilion{{ Pavilion.index.2|add:1 }}/{{ j }}.jpg">#}
+                                    <img src="{% static './resources/logo2.png'%}"/>
                                     <div class="onimg-caption">{{ j }}
                                     </div>
                                 </a>
@@ -310,10 +313,11 @@
                     </div>
                     <div class="swiper-container" style="display: inline-block; width: 70%;">
                         <div class="swiper-wrapper">
-                            {% for j in Driverless %}
+                            {% for j in Humanoids %}
                                 <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.3 }}&id3={{ Pavilion.index.3|add:1 }}" onClick="this.href=this.href+'&'+new Date().getTime()" style="color:white; text-decoration: none;">
 
-                                    <img src="{% static 'img'%}/pavilion{{ Pavilion.index.3|add:1 }}/{{ j }}.jpg">
+{#                                    <img src="{% static 'img'%}/pavilion{{ Pavilion.index.3|add:1 }}/{{ j }}.jpg">#}
+                                    <img src="{% static './resources/logo2.png'%}"/>
                                     <div class="onimg-caption">{{ j }}
                                     </div>
                                 </a>
@@ -338,10 +342,207 @@
                     </div>
                     <div class="swiper-container" style="display: inline-block; width: 70%;">
                         <div class="swiper-wrapper">
-                            {% for j in EndEffector %}
+                            {% for j in Localization %}
                                 <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.4 }}&id3={{ Pavilion.index.4|add:1 }}" onClick="this.href=this.href+'&'+new Date().getTime()" style="color:white; text-decoration: none;">
 
-                                    <img src="{% static 'img'%}/pavilion{{ Pavilion.index.4|add:1}}/{{ j }}.jpg">
+{#                                    <img src="{% static 'img'%}/pavilion{{ Pavilion.index.4|add:1}}/{{ j }}.jpg">#}
+                                    <img src="{% static './resources/logo2.png'%}"/>
+                                    <div class="onimg-caption">{{ j }}
+                                    </div>
+                                </a>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        {#                <!-- Add Pagination -->#}
+                        {#          <div class="swiper-pagination"></div>#}
+                        <div class="swiper-button-next"></div>
+                        <div class="swiper-button-prev"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="netflix-slider">
+                <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp{{Pavilion.5}}</h3>
+                <div style="width: 100%; padding-bottom: 2%; display: inline-flex; flex-wrap: wrap">
+                    <div class="swiper-slide" style="width: 16%; display: inline-block; color: white; margin-top: 1%;" >
+                        <img src="{% static './resources/logo2.png'%}"/>
+                        <div class="onimg-caption">Keynotes
+                        </div>
+                    </div>
+                    <div class="swiper-container" style="display: inline-block; width: 70%;">
+                        <div class="swiper-wrapper">
+                            {% for j in Dynamics %}
+                                <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.5 }}&id3={{ Pavilion.index.5|add:1 }}" onClick="this.href=this.href+'&'+new Date().getTime()" style="color:white; text-decoration: none;">
+
+{#                                    <img src="{% static 'img'%}/pavilion{{ Pavilion.index.5|add:1}}/{{ j }}.jpg">#}
+                                    <img src="{% static './resources/logo2.png'%}"/>
+                                    <div class="onimg-caption">{{ j }}
+                                    </div>
+                                </a>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        {#                <!-- Add Pagination -->#}
+                        {#          <div class="swiper-pagination"></div>#}
+                        <div class="swiper-button-next"></div>
+                        <div class="swiper-button-prev"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="netflix-slider">
+                <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp{{Pavilion.6}}</h3>
+                <div style="width: 100%; padding-bottom: 2%; display: inline-flex; flex-wrap: wrap">
+                    <div class="swiper-slide" style="width: 16%; display: inline-block; color: white; margin-top: 1%;" >
+                        <img src="{% static './resources/logo2.png'%}"/>
+                        <div class="onimg-caption">Keynotes
+                        </div>
+                    </div>
+                    <div class="swiper-container" style="display: inline-block; width: 70%;">
+                        <div class="swiper-wrapper">
+                            {% for j in Design %}
+                                <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.6 }}&id3={{ Pavilion.index.6|add:1 }}" onClick="this.href=this.href+'&'+new Date().getTime()" style="color:white; text-decoration: none;">
+
+{#                                    <img src="{% static 'img'%}/pavilion{{ Pavilion.index.6|add:1}}/{{ j }}.jpg">#}
+                                    <img src="{% static './resources/logo2.png'%}"/>
+                                    <div class="onimg-caption">{{ j }}
+                                    </div>
+                                </a>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        {#                <!-- Add Pagination -->#}
+                        {#          <div class="swiper-pagination"></div>#}
+                        <div class="swiper-button-next"></div>
+                        <div class="swiper-button-prev"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="netflix-slider">
+                <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp{{Pavilion.7}}</h3>
+                <div style="width: 100%; padding-bottom: 2%; display: inline-flex; flex-wrap: wrap">
+                    <div class="swiper-slide" style="width: 16%; display: inline-block; color: white; margin-top: 1%;" >
+                        <img src="{% static './resources/logo2.png'%}"/>
+                        <div class="onimg-caption">Keynotes
+                        </div>
+                    </div>
+                    <div class="swiper-container" style="display: inline-block; width: 70%;">
+                        <div class="swiper-wrapper">
+                            {% for j in Perception %}
+                                <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.7 }}&id3={{ Pavilion.index.7|add:1 }}" onClick="this.href=this.href+'&'+new Date().getTime()" style="color:white; text-decoration: none;">
+
+{#                                    <img src="{% static 'img'%}/pavilion{{ Pavilion.index.7|add:1}}/{{ j }}.jpg">#}
+                                    <img src="{% static './resources/logo2.png'%}"/>
+                                    <div class="onimg-caption">{{ j }}
+                                    </div>
+                                </a>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        {#                <!-- Add Pagination -->#}
+                        {#          <div class="swiper-pagination"></div>#}
+                        <div class="swiper-button-next"></div>
+                        <div class="swiper-button-prev"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="netflix-slider">
+                <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp{{Pavilion.8}}</h3>
+                <div style="width: 100%; padding-bottom: 2%; display: inline-flex; flex-wrap: wrap">
+                    <div class="swiper-slide" style="width: 16%; display: inline-block; color: white; margin-top: 1%;" >
+                        <img src="{% static './resources/logo2.png'%}"/>
+                        <div class="onimg-caption">Keynotes
+                        </div>
+                    </div>
+                    <div class="swiper-container" style="display: inline-block; width: 70%;">
+                        <div class="swiper-wrapper">
+                            {% for j in Grasping %}
+                                <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.8 }}&id3={{ Pavilion.index.8|add:1 }}" onClick="this.href=this.href+'&'+new Date().getTime()" style="color:white; text-decoration: none;">
+
+{#                                    <img src="{% static 'img'%}/pavilion{{ Pavilion.index.8|add:1}}/{{ j }}.jpg">#}
+                                    <img src="{% static './resources/logo2.png'%}"/>
+                                    <div class="onimg-caption">{{ j }}
+                                    </div>
+                                </a>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        {#                <!-- Add Pagination -->#}
+                        {#          <div class="swiper-pagination"></div>#}
+                        <div class="swiper-button-next"></div>
+                        <div class="swiper-button-prev"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="netflix-slider">
+                <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp{{Pavilion.9}}</h3>
+                <div style="width: 100%; padding-bottom: 2%; display: inline-flex; flex-wrap: wrap">
+                    <div class="swiper-slide" style="width: 16%; display: inline-block; color: white; margin-top: 1%;" >
+                        <img src="{% static './resources/logo2.png'%}"/>
+                        <div class="onimg-caption">Keynotes
+                        </div>
+                    </div>
+                    <div class="swiper-container" style="display: inline-block; width: 70%;">
+                        <div class="swiper-wrapper">
+                            {% for j in HRI %}
+                                <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.9 }}&id3={{ Pavilion.index.9|add:1 }}" onClick="this.href=this.href+'&'+new Date().getTime()" style="color:white; text-decoration: none;">
+
+{#                                    <img src="{% static 'img'%}/pavilion{{ Pavilion.index.9|add:1}}/{{ j }}.jpg">#}
+                                    <img src="{% static './resources/logo2.png'%}"/>
+                                    <div class="onimg-caption">{{ j }}
+                                    </div>
+                                </a>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        {#                <!-- Add Pagination -->#}
+                        {#          <div class="swiper-pagination"></div>#}
+                        <div class="swiper-button-next"></div>
+                        <div class="swiper-button-prev"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="netflix-slider">
+                <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp{{Pavilion.10}}</h3>
+                <div style="width: 100%; padding-bottom: 2%; display: inline-flex; flex-wrap: wrap">
+                    <div class="swiper-slide" style="width: 16%; display: inline-block; color: white; margin-top: 1%;" >
+                        <img src="{% static './resources/logo2.png'%}"/>
+                        <div class="onimg-caption">Keynotes
+                        </div>
+                    </div>
+                    <div class="swiper-container" style="display: inline-block; width: 70%;">
+                        <div class="swiper-wrapper">
+                            {% for j in Swarms %}
+                                <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.10 }}&id3={{ Pavilion.index.10|add:1 }}" onClick="this.href=this.href+'&'+new Date().getTime()" style="color:white; text-decoration: none;">
+
+{#                                    <img src="{% static 'img'%}/pavilion{{ Pavilion.index.10|add:1}}/{{ j }}.jpg">#}
+                                    <img src="{% static './resources/logo2.png'%}"/>
+                                    <div class="onimg-caption">{{ j }}
+                                    </div>
+                                </a>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        {#                <!-- Add Pagination -->#}
+                        {#          <div class="swiper-pagination"></div>#}
+                        <div class="swiper-button-next"></div>
+                        <div class="swiper-button-prev"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="netflix-slider">
+                <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp{{Pavilion.11}}</h3>
+                <div style="width: 100%; padding-bottom: 2%; display: inline-flex; flex-wrap: wrap">
+                    <div class="swiper-slide" style="width: 16%; display: inline-block; color: white; margin-top: 1%;" >
+                        <img src="{% static './resources/logo2.png'%}"/>
+                        <div class="onimg-caption">Keynotes
+                        </div>
+                    </div>
+                    <div class="swiper-container" style="display: inline-block; width: 70%;">
+                        <div class="swiper-wrapper">
+                            {% for j in Industry4 %}
+                                <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.11 }}&id3={{ Pavilion.index.11|add:1 }}" onClick="this.href=this.href+'&'+new Date().getTime()" style="color:white; text-decoration: none;">
+
+{#                                    <img src="{% static 'img'%}/pavilion{{ Pavilion.index.11|add:1}}/{{ j }}.jpg">#}
+                                    <img src="{% static './resources/logo2.png'%}"/>
                                     <div class="onimg-caption">{{ j }}
                                     </div>
                                 </a>
@@ -357,139 +558,7 @@
             </div>
         {% endif %}
         <p>&nbsp;</p>
-        {#    <div class="netflix-slider">#}
-        {#        <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp{{Pavilion.5}}</h3>#}
-        {#        <div class="swiper-container">#}
-        {#        <div class="swiper-wrapper">#}
-        {#            {% for j in Aerial %}#}
-        {#        <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.5 }}">{{ j }}<img src="{% static 'img'%}/pavilion6/{{ forloop.counter0 }}.jpg">#}
-        {#                <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.0 }}">{{ j }}<img src="{% static './resources/logo.png'%}">#}
-        {##}
-        {#                </a></img>#}
-        {#                </div>#}
-        {#            {% endfor %}#}
-        {#        </div>#}
-        {#        <!-- Add Pagination -->#}
-        {#      <div class="swiper-pagination"></div>#}
-        {#            <div class="swiper-button-next"></div>#}
-        {#            <div class="swiper-button-prev"></div>#}
-        {#        </div>#}
-        {#    </div>#}
-        {#    <p>&nbsp;</p>#}
-        {#    <div class="netflix-slider">#}
-        {#        <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp{{Pavilion.6}}</h3>#}
-        {#        <div class="swiper-container">#}
-        {#        <div class="swiper-wrapper">#}
-        {#            {% for j in Aerial %}#}
-        {#        <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.6 }}">{{ j }}<img src="{% static 'img'%}/pavilion7/{{ forloop.counter0 }}.jpg">#}
-        {#                <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.0 }}">{{ j }}<img src="{% static './resources/logo.png'%}">#}
-        {##}
-        {#                </a></img>#}
-        {#                </div>#}
-        {#            {% endfor %}#}
-        {#        </div>#}
-        {#        <!-- Add Pagination -->#}
-        {#      <div class="swiper-pagination"></div>#}
-        {#            <div class="swiper-button-next"></div>#}
-        {#            <div class="swiper-button-prev"></div>#}
-        {#        </div>#}
-        {#    </div>#}
-        {#    <p>&nbsp;</p>#}
-        {#    <div class="netflix-slider">#}
-        {#        <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp{{Pavilion.7}}</h3>#}
-        {#        <div class="swiper-container">#}
-        {#        <div class="swiper-wrapper">#}
-        {#            {% for j in Aerial %}#}
-        {#        <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.7 }}">{{ j }}<img src="{% static 'img'%}/pavilion8/{{ forloop.counter0 }}.jpg">#}
-        {#                <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.0 }}">{{ j }}<img src="{% static './resources/logo.png'%}">#}
-        {##}
-        {#                </a></img>#}
-        {#                </div>#}
-        {#            {% endfor %}#}
-        {#        </div>#}
-        {#        <!-- Add Pagination -->#}
-        {#      <div class="swiper-pagination"></div>#}
-        {#            <div class="swiper-button-next"></div>#}
-        {#            <div class="swiper-button-prev"></div>#}
-        {#        </div>#}
-        {#    </div>#}
-        {#    <p>&nbsp;</p>#}
-        {#    <div class="netflix-slider">#}
-        {#        <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp{{Pavilion.8}}</h3>#}
-        {#        <div class="swiper-container">#}
-        {#        <div class="swiper-wrapper">#}
-        {#            {% for j in Aerial %}#}
-        {#        <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.8 }}">{{ j }}<img src="{% static 'img'%}/pavilion9/{{ forloop.counter0 }}.jpg">#}
-        {#                <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.0 }}">{{ j }}<img src="{% static './resources/logo.png'%}">#}
-        {##}
-        {#                </a></img>#}
-        {#                </div>#}
-        {#            {% endfor %}#}
-        {#        </div>#}
-        {#        <!-- Add Pagination -->#}
-        {#      <div class="swiper-pagination"></div>#}
-        {#            <div class="swiper-button-next"></div>#}
-        {#            <div class="swiper-button-prev"></div>#}
-        {#        </div>#}
-        {#    </div>#}
-        {#    <p>&nbsp;</p>#}
-        {#    <div class="netflix-slider">#}
-        {#        <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp{{Pavilion.9}}</h3>#}
-        {#        <div class="swiper-container">#}
-        {#        <div class="swiper-wrapper">#}
-        {#            {% for j in Aerial %}#}
-        {#        <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.9 }}">{{ j }}<img src="{% static 'img'%}/pavilion10/{{ forloop.counter0 }}.jpg">#}
-        {#                <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.0 }}">{{ j }}<img src="{% static './resources/logo.png'%}">#}
-        {##}
-        {#                </a></img>#}
-        {#                </div>#}
-        {#            {% endfor %}#}
-        {#        </div>#}
-        {#        <!-- Add Pagination -->#}
-        {#      <div class="swiper-pagination"></div>#}
-        {#            <div class="swiper-button-next"></div>#}
-        {#            <div class="swiper-button-prev"></div>#}
-        {#        </div>#}
-        {#    </div>#}
-        {##}
-        {#    <p>&nbsp;</p>#}
-        {#    <div class="netflix-slider">#}
-        {#        <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp{{Pavilion.10}}</h3>#}
-        {#        <div class="swiper-container">#}
-        {#        <div class="swiper-wrapper">#}
-        {#            {% for j in Aerial %}#}
-        {#        <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.10 }}">{{ j }}<img src="{% static 'img'%}/pavilion11/{{ forloop.counter0 }}.jpg">#}
-        {#                <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.0 }}">{{ j }}<img src="{% static './resources/logo.png'%}">#}
-        {##}
-        {#                </a></img>#}
-        {#                </div>#}
-        {#            {% endfor %}#}
-        {#        </div>#}
-        {#        <!-- Add Pagination -->#}
-        {#      <div class="swiper-pagination"></div>#}
-        {#            <div class="swiper-button-next"></div>#}
-        {#            <div class="swiper-button-prev"></div>#}
-        {#        </div>#}
-        {#    </div>#}
-        {#    <p>&nbsp;</p>#}
-        {##}
-        {#    <div class="netflix-slider">#}
-        {#        <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp{{Pavilion.11}}</h3>#}
-        {#        <div class="swiper-container">#}
-        {#        <div class="swiper-wrapper">#}
-        {#            {% for j in Aerial %}#}
-        {#        <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.11 }}">{{ j }}<img src="{% static 'img'%}/pavilion12/{{ forloop.counter0 }}.jpg">#}
-        {#                <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.0 }}">{{ j }}<img src="{% static './resources/logo.png'%}">#}
-        {##}
-        {#                </a></img>#}
-        {#                </div>#}
-        {#            {% endfor %}#}
-        {#        </div>#}
-        {#        <!-- Add Pagination -->#}
-        {#      <div class="swiper-pagination"></div>#}
-        {#            <div class="swiper-button-next"></div>#}
-        {#            <div class="swiper-button-prev"></div>#}
-        {#        </div>#}
+
     </div>
 </div>
 </div>

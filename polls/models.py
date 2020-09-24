@@ -16,6 +16,7 @@ class Profile(models.Model):
     demographic_region = models.CharField(max_length=50)
     member = models.CharField(max_length=50)
     email_confirmed = models.BooleanField(default=False)
+    ip = models.CharField(max_length=50, null=True)
 
     @receiver(post_save, sender=User)
     def update_user_profile(sender, instance, created, **kwargs):

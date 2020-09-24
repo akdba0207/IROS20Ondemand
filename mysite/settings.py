@@ -146,9 +146,9 @@ STATICFILES_DIRS = (
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-EMAIL_HOST = 'smtp.dreamhost.com'
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'ondemandinfo@iros2020.org'
-EMAIL_HOST_PASSWORD = 'dasldrchubo1325'
-EMAIL_USE_TLS = True
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# EMAIL_HOST = 'smtp.dreamhost.com'
+# EMAIL_PORT = 587
+# EMAIL_HOST_USER = 'ondemandinfo@iros2020.org'
+# EMAIL_HOST_PASSWORD = 'dasldrchubo1325'
+# EMAIL_USE_TLS = True

@@ -8,7 +8,7 @@ from django.forms import forms
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
-from polls.models import Papers, Comments, Users
+from polls.models import Papers, Comments, Users, Profile
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth import login as auth_login, authenticate
 from django.contrib.auth import logout as auth_logout
@@ -23,7 +23,8 @@ from django.template.loader import render_to_string
 from polls.tokens_beta import account_activation_token
 
 
-# from ipware import get_client_ip
+from ipware import get_client_ip
+
 import pandas as pd
 import os
 import math
@@ -141,8 +142,15 @@ def login(request):
         login_form = AuthenticationForm(request, request.POST)
         # print(login_form)
         if login_form.is_valid():
+            login_account = login_form.cleaned_data.get('username')
+            login_user = User.objects.filter(username__iexact=login_account)
+            login_user_id = login_user[0].id
+            ip, is_routable = get_client_ip(request)
+            Profile.objects.filter(user_id=login_user_id).update(ip=ip)
+
             # auth_login(request, login_form.get_user())
             # return redirect('entrance_main')
+
             messages.info(request, 'Please visit again IROS On-Demand when it opens on October 25th, 2020.')
             return redirect('login_main')
         else:
@@ -1118,20 +1126,27 @@ def signup(request):
         if form.is_valid():
             if User.objects.filter(username__iexact=form.cleaned_data.get('email')).exists():
                 existed_user = User.objects.filter(username__iexact=form.cleaned_data.get('email'))
+                #IP store
+                existed_user_id = existed_user[0].id
+                ip, is_routable = get_client_ip(request)
+                Profile.objects.filter(user_id=existed_user_id).update(ip=ip)
+
                 if existed_user[0].is_active is True:
                     messages.info(request,
-                                  'This email is already registered, please try with different email address if this is a new registration')
+                                  'This email is already registered and activated, please try with different email address if this is a new registration')
                     return redirect('signup_main')
                 else:
                     messages.warning(request,'This email is already registered, but not activated. Do you want the activation email to be sent again?')
                     messages.warning(request,'<button class="resendButton" type="submit" '
                                              'onclick="activationResend('+str(existed_user[0].pk)+')">Resend</button>')
-
                     return redirect('signup_main')
 
             user = form.save()
-
             user.refresh_from_db()
+
+            ip, is_routable = get_client_ip(request)            # print(str(ip))
+
+            user.profile.ip = ip
             user.profile.occupation = form.cleaned_data.get('occupation')
             user.profile.affiliation = form.cleaned_data.get('affiliation')
             user.profile.previous_attendance = form.cleaned_data.get('previous_attendance')

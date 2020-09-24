@@ -8,7 +8,7 @@ from django.forms import forms
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
-from polls.models import Papers, Comments, Users
+from polls.models import Papers, Comments, Users, Profile
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth import login as auth_login, authenticate
 from django.contrib.auth import logout as auth_logout
@@ -23,7 +23,7 @@ from django.template.loader import render_to_string
 from polls.tokens_beta import account_activation_token
 
 
-# from ipware import get_client_ip
+from ipware import get_client_ip
 import pandas as pd
 import os
 import math
@@ -33,6 +33,12 @@ from polls.forms_beta import SignUpForm
 from polls.search import searchByKeyword, findSimilarTopic
 
 pre = os.path.dirname(os.path.realpath(__file__))
+
+# IROS2020 Excel file
+excel_file0 = 'IROS20_OnDemand__09_24_main.xlsx'
+path0 = os.path.join(pre, excel_file0)
+iros2020_raw = pd.read_excel(path0, sheet_name=0)
+iros2020_raw = iros2020_raw.fillna('missing')
 
 # Call Genres, Pavilion
 excel_file1 = 'IROS2020_onDemand_beta.xlsx'
@@ -65,44 +71,46 @@ icra_sponsors = icra_sponsors.fillna('missing')
 icra_Monday = icra_example[(icra_example['SchCode'].str[0] == 'M') & (icra_example['SchCode'].str[1] == 'o')]
 icra_sessiontitle = icra_Monday['Session title']
 
-Pavilion1 = icra_Monday[(icra_Monday['Session title'] == 'Aerial Systems - Applications I')
-                        | (icra_Monday['Session title'] == 'Marine Robotics I')
-                        | (icra_Monday['Session title'] == 'Marine Robotics II')
-                        | (icra_Monday['Session title'] == 'Marine Robotics III')
-                        | (icra_Monday['Session title'] == 'Aerial Systems - Applications II')
-                        | (icra_Monday['Session title'] == 'Aerial Systems - Applications III')
-                        | (icra_Monday['Session title'] == 'Field and Space Robots')]
-Pavilion2 = icra_Monday[(icra_Monday['Session title'] == 'Legged Robots I')
-                        | (icra_Monday['Session title'] == 'Prosthetics and Exoskeletons I')
-                        | (icra_Monday['Session title'] == 'Legged Robots II')
-                        | (icra_Monday['Session title'] == 'Legged Robots III')
-                        | (icra_Monday['Session title'] == 'Prosthetics and Exoskeletons II')
-                        | (icra_Monday['Session title'] == 'Prosthetics and Exoskeletons III')
-                        | (icra_Monday['Session title'] == 'Legged Robots IV')]
-Pavilion3 = icra_Monday[(icra_Monday['Session title'] == 'Surgical Robotics - Laparascopy I')
-                        | (icra_Monday['Session title'] == 'Surgical Robotics - Laparoscopy II')
-                        | (icra_Monday['Session title'] == 'Surgical Robotics - Steerable Catheters and Needles')
-                        | (icra_Monday['Session title'] == 'Biological Cell Manipulation')
-                        | (icra_Monday['Session title'] == 'Brain-Machine Interfaces')]
-Pavilion4 = icra_Monday[(icra_Monday['Session title'] == 'Autonomous Driving I')
-                        | (icra_Monday['Session title'] == 'Autonomous Driving II')
-                        | (icra_Monday['Session title'] == 'Autonomous Driving III')
-                        | (icra_Monday['Session title'] == 'Service Robots')
-                        | (icra_Monday['Session title'] == 'Agricultural Automation')
-                        | (icra_Monday['Session title'] == 'Autonomous Driving IV')]
-Pavilion5 = icra_Monday[(icra_Monday['Session title'] == 'Grasping I')
-                        | (icra_Monday['Session title'] == 'Grasping II')
-                        | (icra_Monday['Session title'] == 'Grasping III')
-                        | (icra_Monday['Session title'] == 'Grasping IV')
-                        | (icra_Monday['Session title'] == 'Force and Tactile Sensing I')
-                        | (icra_Monday['Session title'] == 'Force and Tactile Sensing II')
-                        | (icra_Monday['Session title'] == 'Force and Tactile Sensing III')
-                        | (icra_Monday['Session title'] == 'Force and Tactile Sensing IV')]
+iros_sessiontitle = iros2020_raw['Theme']
+totalGenre = sorted(list(set(iros2020_raw['Theme'])))
+organizedGenre = [totalGenre[0],
+                  totalGenre[3],
+                  totalGenre[10],
+                  totalGenre[7],
+                  totalGenre[9],
+                  totalGenre[4],
+                  totalGenre[2],
+                  totalGenre[11],
+                  totalGenre[5],
+                  totalGenre[6],
+                  totalGenre[12],
+                  totalGenre[8]]
+
+Pavilion1 = iros2020_raw[iros2020_raw['Theme']==organizedGenre[0]]
+Pavilion2 = iros2020_raw[iros2020_raw['Theme']==organizedGenre[1]]
+Pavilion3 = iros2020_raw[iros2020_raw['Theme']==organizedGenre[2]]
+Pavilion4 = iros2020_raw[iros2020_raw['Theme']==organizedGenre[3]]
+Pavilion5 = iros2020_raw[iros2020_raw['Theme']==organizedGenre[4]]
+Pavilion6 = iros2020_raw[iros2020_raw['Theme']==organizedGenre[5]]
+Pavilion7 = iros2020_raw[iros2020_raw['Theme']==organizedGenre[6]]
+Pavilion8 = iros2020_raw[iros2020_raw['Theme']==organizedGenre[7]]
+Pavilion9 = iros2020_raw[iros2020_raw['Theme']==organizedGenre[8]]
+Pavilion10 = iros2020_raw[iros2020_raw['Theme']==organizedGenre[9]]
+Pavilion11 = iros2020_raw[iros2020_raw['Theme']==organizedGenre[10]]
+Pavilion12 = iros2020_raw[iros2020_raw['Theme']==organizedGenre[11]]
+
 Sessions1 = sorted(list(set(Pavilion1['Session title'])))
 Sessions2 = sorted(list(set(Pavilion2['Session title'])))
 Sessions3 = sorted(list(set(Pavilion3['Session title'])))
 Sessions4 = sorted(list(set(Pavilion4['Session title'])))
 Sessions5 = sorted(list(set(Pavilion5['Session title'])))
+Sessions6 = sorted(list(set(Pavilion6['Session title'])))
+Sessions7 = sorted(list(set(Pavilion7['Session title'])))
+Sessions8 = sorted(list(set(Pavilion8['Session title'])))
+Sessions9 = sorted(list(set(Pavilion9['Session title'])))
+Sessions10 = sorted(list(set(Pavilion10['Session title'])))
+Sessions11 = sorted(list(set(Pavilion11['Session title'])))
+Sessions12 = sorted(list(set(Pavilion12['Session title'])))
 
 # totalSessions = zip(Sessions1, Sessions2, Sessions3, Sessions4, Sessions5)
 #
@@ -140,6 +148,12 @@ def login(request):
         login_form = AuthenticationForm(request, request.POST)
         # print(login_form)
         if login_form.is_valid():
+            login_account = login_form.cleaned_data.get('username')
+            login_user = User.objects.filter(username__iexact=login_account)
+            login_user_id = login_user[0].id
+            ip, is_routable = get_client_ip(request)
+            Profile.objects.filter(user_id=login_user_id).update(ip=ip)
+
             auth_login(request, login_form.get_user())
             return redirect('entrance')
         else:
@@ -207,15 +221,22 @@ def main(request):
     #     allowWSContents = 0
 
     return render(request, './beta/2_2main_beta.html',
-                  {'Pavilion': Cartegories['Pavilion'],
+                  {'Pavilion': organizedGenre,
                    'Genre': Cartegories['Genre'],
                    'Specials': SpecialsSession,
                    'Workshops': WorkshopsSession,
                    'Aerial': Sessions1,
-                   'Humanoid': Sessions2,
+                   'Driverless': Sessions2,
                    'Medical': Sessions3,
-                   'Driverless': Sessions4,
-                   'EndEffector': Sessions5,
+                   'Humanoids': Sessions4,
+                   'Localization': Sessions5,
+                   'Dynamics': Sessions6,
+                   'Design': Sessions7,
+                   'Perception': Sessions8,
+                   'Grasping': Sessions9,
+                   'HRI': Sessions10,
+                   'Swarms': Sessions11,
+                   'Industry4': Sessions12,
                    'UserName': UserName,
                    'allowWSContents': allowWSContents,
                    'showcontents': showcontents,
@@ -1115,6 +1136,11 @@ def signup(request):
         if form.is_valid():
             if User.objects.filter(username__iexact=form.cleaned_data.get('email')).exists():
                 existed_user = User.objects.filter(username__iexact=form.cleaned_data.get('email'))
+                # IP store
+                existed_user_id = existed_user[0].id
+                ip, is_routable = get_client_ip(request)
+                Profile.objects.filter(user_id=existed_user_id).update(ip=ip)
+
                 if existed_user[0].is_active is True:
                     messages.info(request,
                                   'This email is already registered, please try with different email address if this is a new registration')
@@ -1128,7 +1154,12 @@ def signup(request):
 
             user = form.save()
 
+
             user.refresh_from_db()
+
+            ip, is_routable = get_client_ip(request)
+
+            user.profile.ip = ip
             user.profile.occupation = form.cleaned_data.get('occupation')
             user.profile.affiliation = form.cleaned_data.get('affiliation')
             user.profile.previous_attendance = form.cleaned_data.get('previous_attendance')
