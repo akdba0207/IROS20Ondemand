@@ -111,6 +111,7 @@ Sessions9 = sorted(list(set(Pavilion9['Session title'])))
 Sessions10 = sorted(list(set(Pavilion10['Session title'])))
 Sessions11 = sorted(list(set(Pavilion11['Session title'])))
 Sessions12 = sorted(list(set(Pavilion12['Session title'])))
+
 # print(organizedGenre[0] + ' = '+str(len(Sessions1)))
 # print(organizedGenre[1] + ' = '+str(len(Sessions2)))
 # print(organizedGenre[2] + ' = '+str(len(Sessions3)))
@@ -123,6 +124,31 @@ Sessions12 = sorted(list(set(Pavilion12['Session title'])))
 # print(organizedGenre[9] + ' = '+str(len(Sessions10)))
 # print(organizedGenre[10] + ' = '+str(len(Sessions11)))
 # print(organizedGenre[11] + ' = '+str(len(Sessions12)))
+# print(organizedGenre[0])
+# print(Sessions1)
+# print(organizedGenre[1])
+# print(Sessions2)
+# print(organizedGenre[2])
+# print(Sessions3)
+# print(organizedGenre[3])
+# print(Sessions4)
+# print(organizedGenre[4])
+# print(Sessions5)
+# print(organizedGenre[5])
+# print(Sessions6)
+# print(organizedGenre[6])
+# print(Sessions7)
+# print(organizedGenre[7])
+# print(Sessions8)
+# print(organizedGenre[8])
+# print(Sessions9)
+# print(organizedGenre[9])
+# print(Sessions10)
+# print(organizedGenre[10])
+# print(Sessions11)
+# print(organizedGenre[11])
+# print(Sessions12)
+
 
 # totalSessions = zip(Sessions1, Sessions2, Sessions3, Sessions4, Sessions5)
 #
@@ -135,6 +161,7 @@ Sessions12 = sorted(list(set(Pavilion12['Session title'])))
 #     pavilionDict5[e] = Cartegories['Pavilion'][4]
 
 # Specials
+
 Specials = icra_specials[(icra_specials['Genre'] == 'Plenaries')
                          | (icra_specials['Genre'] == 'Keynotes')]
 SpecialsSession = sorted(list(set(Specials['Genre'])))
@@ -235,24 +262,14 @@ def main(request):
     #     allowWSContents = 1
     # else:
     #     allowWSContents = 0
-
+    Sessions = [Sessions1,Sessions2,Sessions3,Sessions4,Sessions5,Sessions6,Sessions7,
+                   Sessions8,Sessions9,Sessions10,Sessions11,Sessions12]
+    PavSessions = zip(organizedGenre, Sessions)
     return render(request, './beta/2_2main_beta.html',
-                  {'Pavilion': organizedGenre,
+                  {'PavSessions':PavSessions,
                    'Genre': Cartegories['Genre'],
                    'Specials': SpecialsSession,
                    'Workshops': WorkshopsSession,
-                   'Aerial': Sessions1,
-                   'Driverless': Sessions2,
-                   'Medical': Sessions3,
-                   'Humanoids': Sessions4,
-                   'Localization': Sessions5,
-                   'Dynamics': Sessions6,
-                   'Design': Sessions7,
-                   'Perception': Sessions8,
-                   'Grasping': Sessions9,
-                   'HRI': Sessions10,
-                   'Swarms': Sessions11,
-                   'Industry4': Sessions12,
                    'UserName': UserName,
                    'allowWSContents': allowWSContents,
                    'showcontents': showcontents,
@@ -828,6 +845,13 @@ def searchresult(request):
 
     inputKeyword = request.GET['id']
     resultNumber = searchByKeyword(inputKeyword)
+
+    #Filter workshop, tutorials, and finalists
+    filterOnlySession = []
+    for rawNumber in resultNumber:
+        if rawNumber < 3140:
+            filterOnlySession.append(rawNumber)
+    resultNumber = filterOnlySession
     resultNumberlength = len(resultNumber)
 
     if not resultNumber:
@@ -864,7 +888,7 @@ def searchresult(request):
         if request.method == "GET":
 
             for titleNr in titleNumber['Nr']:
-                paper = get_object_or_404(Papers, paper_id=titleNr)
+                paper = get_object_or_404(Papers, paper_id=int(titleNr))
 
                 if current_account in paper.like_users.all():
                     buttonColor = 1
@@ -1250,6 +1274,10 @@ def resendactivation(request):
 def activate(request, uidb64, token):
     try:
         uid = force_text(urlsafe_base64_decode(uidb64))
+        a = User.objects.filter(pk=uid)
+        if len(a) == 0:
+            return render(request, './beta/0_3_account_activate_invalid.html', status=500)
+
         user = User.objects.get(pk=uid)
     except (TypeError, ValueError, OverflowError, User.DoesNotExist):
         user = None

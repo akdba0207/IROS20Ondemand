@@ -71,8 +71,8 @@
     <ul class="search_notice_info">
         <form>
             <input type="text" id="search_bar" value="" class="searchBar" onkeydown="if(event.keyCode === 13) {event.preventDefault(); document.getElementById('searchBtn').click()}"/>
-            <d onclick="search()">
-                <a id = "keywordDelivery" href="">
+            <d onclick="if(search_bar.value.length > 0)search()">
+                <a id = "keywordDelivery" href="javascript: void(0)">
                     <i id="searchBtn" class="fa fa-search" style="color:white;"></i>
                 </a>
             </d>

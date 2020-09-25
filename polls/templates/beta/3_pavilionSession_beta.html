@@ -54,8 +54,8 @@
     <ul class="search_notice_info">
         <form>
             <input type="text" id="search_bar" value="" class="searchBar" onkeydown="if(event.keyCode === 13) {event.preventDefault(); document.getElementById('searchBtn').click()}"/>
-            <d onclick="search()">
-                <a id = "keywordDelivery" href="">
+            <d onclick="if(search_bar.value.length > 0)search()">
+                <a id = "keywordDelivery" href="javascript: void(0)">
                     <i id="searchBtn" class="fa fa-search" style="color:white;"></i>
                 </a>
             </d>
@@ -73,8 +73,7 @@
             {% if goldSponsorSession|length == 0 %}
                 <tr>
                     <td style="width: 70%;">
-                        {#                        <img src="{% static 'img'%}/pavilion{{ PavilionNum}}/{{Session}}.jpg">#}
-                        <img src="{% static './resources/playlogo.png'%}">
+                        <img onError="this.onerror=null;this.src='{% static './resources/logo2.png' %}';" src="{% static 'img'%}/pavilion{{ PavilionNum}}/{{Session}}.jpg">
                     </td>
                     <td class="sessionTitle" style="word-break: keep-all;">
                         <p style="color: white;">Welcome to Session :</p>
@@ -103,8 +102,7 @@
                         </div>
                     </td>
                     <td style="width: 30%;">
-                        {#                        <img src="{% static 'img'%}/pavilion{{ PavilionNum}}/{{Session}}.jpg">#}
-                        <img src="{% static './resources/playlogo.png'%}">
+                        <img onError="this.onerror=null;this.src='{% static './resources/logo2.png' %}';" src="{% static 'img'%}/pavilion{{ PavilionNum}}/{{Session}}.jpg">
                     </td>
                     <td class="sessionTitle" style="word-break: keep-all;">
                         <p style="color: white;">Welcome to Session :</p>
@@ -229,8 +227,7 @@
             <div class="swiper-wrapper">
                 {% for j in SessionList %}
                     <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion }}&id3={{PavilionNum}}" style="color:white; text-decoration: none;">
-                        {#                        <img src="{% static 'img'%}/pavilion{{ PavilionNum }}/{{ j }}.jpg">#}
-                        <img src="{% static './resources/playlogo.png'%}">
+                        <img onError="this.onerror=null;this.src='{% static './resources/logo2.png' %}';" src="{% static 'img'%}/pavilion{{ PavilionNum }}/{{ j }}.jpg">
                         <div class="onimg-caption">{{ j }}
                         </div>
                     </a>

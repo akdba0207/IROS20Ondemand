@@ -1207,6 +1207,10 @@ def resendactivation(request):
 def activate(request, uidb64, token):
     try:
         uid = force_text(urlsafe_base64_decode(uidb64))
+        a = User.objects.filter(pk=uid)
+        if len(a) is 0:
+            return render(request, './beta/0_3_account_activate_invalid.html',status=500)
+
         user = User.objects.get(pk=uid)
     except (TypeError, ValueError, OverflowError, User.DoesNotExist):
         user = None
@@ -1219,7 +1223,7 @@ def activate(request, uidb64, token):
         user.profile.email_confirmed = True
         user.save()
 
-        print(1)
+        # print(1)
         # auth_login(request, user)
 
         # current_site = get_current_site(request)
