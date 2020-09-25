@@ -1254,6 +1254,7 @@ def activate(request, uidb64, token):
     except (TypeError, ValueError, OverflowError, User.DoesNotExist):
         user = None
     user.refresh_from_db()
+    user.profile.refresh_from_db()
     if user is not None and account_activation_token.check_token(user, token):
         if user.profile.email_confirmed is True:
             return render(request, './beta/0_3_account_activate_invalid.html')
