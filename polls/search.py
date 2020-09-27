@@ -17,6 +17,7 @@ data = pd.read_excel(path3, sheet_name=0)
 # data1 = pd.read_excel(path3, sheet_name=0)
 # data = data1[(data1['SchCode'].str[0]=='M')&(data1['SchCode'].str[1]=='o')]
 data = data.fillna('z')
+data = data.iloc[0:1445,:]
 
 def searchByKeyword(keyword, n_count=12):
 

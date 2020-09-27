@@ -183,8 +183,11 @@
                             {% endif %}
                             </tbody>
                         </table>
-                        <p style="font-size: 18px"><a href="https://ras.papercept.net/proceedings/ICRA20/{{ PDFList }}" target="_blank" style="color: lawngreen;"> Open PDF files</a></p>
-
+                        {% if PDFList == 'missing' %}
+                            <p style="font-size: 18px;color: lawngreen;">No PDF files</p>
+                        {% else %}
+                            <p style="font-size: 18px"><a href="https://ras.papercept.net/proceedings/ICRA20/{{ PDFList }}" target="_blank" style="color: lawngreen;"> Open PDF files</a></p>
+                        {% endif %}
                         {% csrf_token %}
                         {% if paperLikeButtonColor == 1 %}
                             <button class="likeButton" type="submit" style="margin: auto;background-color: #323232 ;" onclick="updateLike({{ titleNumber }})">

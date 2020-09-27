@@ -37,9 +37,10 @@ pre = os.path.dirname(os.path.realpath(__file__))
 # IROS2020 Excel file
 excel_file0 = 'IROS20_OnDemand__09_24_main.xlsx'
 path0 = os.path.join(pre, excel_file0)
-iros2020_raw = pd.read_excel(path0, sheet_name=0)
-iros2020_raw = iros2020_raw.fillna('missing')
-
+iros2020_raw_orgin = pd.read_excel(path0, sheet_name=0)
+iros2020_raw_orgin_empty_filter = iros2020_raw_orgin.fillna('missing')
+iros2020_raw = iros2020_raw_orgin_empty_filter.iloc[0:1445,:] #Technical paper is from 0~1445
+# print(iros2020_raw)
 # Call Genres, Pavilion
 excel_file1 = 'IROS2020_onDemand_beta.xlsx'
 path1 = os.path.join(pre, excel_file1)
@@ -73,18 +74,19 @@ icra_sessiontitle = icra_Monday['Session title']
 
 iros_sessiontitle = iros2020_raw['Theme']
 totalGenre = sorted(list(set(iros2020_raw['Theme'])))
+# print(totalGenre)
 organizedGenre = [totalGenre[0],
-                  totalGenre[3],
-                  totalGenre[10],
-                  totalGenre[7],
-                  totalGenre[9],
-                  totalGenre[4],
                   totalGenre[2],
-                  totalGenre[11],
-                  totalGenre[5],
+                  totalGenre[9],
                   totalGenre[6],
-                  totalGenre[12],
-                  totalGenre[8]]
+                  totalGenre[8],
+                  totalGenre[3],
+                  totalGenre[1],
+                  totalGenre[10],
+                  totalGenre[4],
+                  totalGenre[5],
+                  totalGenre[11],
+                  totalGenre[7]]
 
 Pavilion1 = iros2020_raw[iros2020_raw['Theme']==organizedGenre[0]]
 Pavilion2 = iros2020_raw[iros2020_raw['Theme']==organizedGenre[1]]
@@ -562,7 +564,8 @@ def episode(request):
     AffiliationList4 = similarPaper['Affiliation4'].reset_index()
     AffiliationList5 = similarPaper['Affiliation5'].reset_index()
     SessionTitle = similarPaper['Session title'].reset_index()
-    # print(SessionTitle)
+    print(SessionTitle)
+    print(similarPaper)
 
     TitleList = similarPaper['Title'].reset_index()
     PDFList = similarPaper['FN'].reset_index()
@@ -847,11 +850,11 @@ def searchresult(request):
     resultNumber = searchByKeyword(inputKeyword)
 
     #Filter workshop, tutorials, and finalists
-    filterOnlySession = []
-    for rawNumber in resultNumber:
-        if rawNumber < 3140:
-            filterOnlySession.append(rawNumber)
-    resultNumber = filterOnlySession
+    # filterOnlySession = []
+    # for rawNumber in resultNumber:
+    #     if rawNumber < 3140:
+    #         filterOnlySession.append(rawNumber)
+    # resultNumber = filterOnlySession
     resultNumberlength = len(resultNumber)
 
     if not resultNumber:

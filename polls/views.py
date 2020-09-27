@@ -505,7 +505,6 @@ def episode(request):
     AffiliationList4 = similarPaper['Affiliation4'].reset_index()
     AffiliationList5 = similarPaper['Affiliation5'].reset_index()
     SessionTitle = similarPaper['Session title'].reset_index()
-    # print(SessionTitle)
 
     TitleList = similarPaper['Title'].reset_index()
     PDFList = similarPaper['FN'].reset_index()
@@ -1208,7 +1207,7 @@ def activate(request, uidb64, token):
     try:
         uid = force_text(urlsafe_base64_decode(uidb64))
         a = User.objects.filter(pk=uid)
-        if len(a) is 0:
+        if len(a) == 0:
             return render(request, './beta/0_3_account_activate_invalid.html',status=500)
 
         user = User.objects.get(pk=uid)
