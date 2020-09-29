@@ -147,12 +147,20 @@
     <h3 style="padding-bottom: 2%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; More talks like this : </h3>
 
     {% for AuthorList1, AuthorList2, AuthorList3, AuthorList4,AuthorList5, AuthorList6, AffiliationList1,AffiliationList2,AffiliationList3,AffiliationList4,AffiliationList5,TitleList, PDFList, titleNumber, suggestEpisodeNum,paperLikeCount,paperLikeButtonColor, SessionTitle, paperSaveButtonStatus, paperHitCount in EpisodeContext %}
+
         <div class="suggestlisttable">
             <table border="0" cellpadding="0" cellspacing="0" style="background-color: #323232;" >
                 <tr>
                     <td style="width: 30%">
                         <a href="episode?id={{TitleList}}&id2={{ SessionTitle }}" onClick="this.href=this.href+'&'+new Date().getTime()" style="color:white; text-decoration: none;">
-                            <img src="{% static './resources/playlogo.png'%}"></a>
+                            {% if titleNumber < 100 %}
+                                <img onError="this.onerror=null;this.src='{% static './resources/playlogo.png' %}';" src="{% static './img/IROS20_Digest' %}/00{{ titleNumber|floatformat:"0" }}_PPT.JPG">
+                            {% elif titleNumber >= 100 and titleNumber < 1000 %}
+                                <img onError="this.onerror=null;this.src='{% static './resources/playlogo.png' %}';" src="{% static './img/IROS20_Digest' %}/0{{ titleNumber|floatformat:"0" }}_PPT.JPG">
+                            {% elif titleNumber >= 1000 %}
+                                <img onError="this.onerror=null;this.src='{% static './resources/playlogo.png' %}';" src="{% static './img/IROS20_Digest' %}/{{ titleNumber|floatformat:"0" }}_PPT.JPG">
+                            {% endif %}
+                        </a>
                     </td>
                     <td valign="top" align="left" style="padding-left: 5%; padding-top: 3%;word-break: keep-all;">
                         <p class="papertitle" style="color: white;">Title : {{ TitleList }}</p>
@@ -217,7 +225,7 @@
                         {% if PDFList == 'missing' %}
                             <p style="font-size: 18px;color: lawngreen;">No PDF files</p>
                         {% else %}
-                            <p style="font-size: 18px"><a href="https://ras.papercept.net/proceedings/ICRA20/{{ PDFList }}" target="_blank" style="color: lawngreen;"> Open PDF files</a></p>
+                            <p style="font-size: 18px"><a href="https://ras.papercept.net/proceedings/IROS20/{{ PDFList }}" target="_blank" style="color: lawngreen;"> Open PDF files</a></p>
                         {% endif %}
                         {% csrf_token %}
                         {% if paperLikeButtonColor == 1 %}

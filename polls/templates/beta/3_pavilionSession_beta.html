@@ -72,12 +72,17 @@
 
             {% if goldSponsorSession|length == 0 %}
                 <tr>
-                    <td style="width: 70%;">
+                    <td style="width: 50%;">
                         <img onError="this.onerror=null;this.src='{% static './resources/logo2.png' %}';" src="{% static 'img'%}/pavilion{{ PavilionNum}}/{{Session}}.jpg">
                     </td>
                     <td class="sessionTitle" style="word-break: keep-all;">
                         <p style="color: white;">Welcome to Session :</p>
                         <p style="color: white;">{{ Session }}</p>
+                        <p style="color: white;">Chair: Jaeheung Park (Seoul National University, South Korea)</p>
+                        <p style="color: white;">Co-Chair: Tom Verstraten (Vrije Universiteit Brussel, Belgium)</p>
+                        <p style="color: white;">Overview: This session covers recent advances in actuator technologies.
+                            Specific topics include scaling laws for parallel motor-gearbox arrangements,
+                            clutched actuators, continuously variable transmissions and twisted string actuators.</p>
                     </td>
                 </tr>
             {% else %}
@@ -121,7 +126,15 @@
             <table border="0" cellpadding="0" cellspacing="0" style="background-color: #323232;" >
                 <tr>
                     <td style="width: 30%">
-                        <a href="episode?id={{TitleList}}&id2={{ Session }}" onClick="this.href=this.href+'&'+new Date().getTime()"><img src="{% static './resources/playlogo.png'%}"></a>
+                        <a href="episode?id={{TitleList}}&id2={{ Session }}" onClick="this.href=this.href+'&'+new Date().getTime()">
+                            {% if titleNumber < 100 %}
+                                <img onError="this.onerror=null;this.src='{% static './resources/playlogo.png' %}';" src="{% static './img/IROS20_Digest' %}/00{{ titleNumber|floatformat:"0" }}_PPT.JPG">
+                            {% elif titleNumber >= 100 and titleNumber < 1000 %}
+                                <img onError="this.onerror=null;this.src='{% static './resources/playlogo.png' %}';" src="{% static './img/IROS20_Digest' %}/0{{ titleNumber|floatformat:"0" }}_PPT.JPG">
+                            {% elif titleNumber >= 1000 %}
+                                <img onError="this.onerror=null;this.src='{% static './resources/playlogo.png' %}';" src="{% static './img/IROS20_Digest' %}/{{ titleNumber|floatformat:"0" }}_PPT.JPG">
+                            {% endif %}
+                        </a>
                     </td>
                     <td valign="top" align="left" style="padding-left: 5%; padding-top: 3%;word-break: keep-all">
                         <p class="papertitle" style="color: white;">Title : {{ TitleList }}</p>
@@ -186,7 +199,7 @@
                         {% if PDFList == 'missing' %}
                             <p style="font-size: 18px;color: lawngreen;">No PDF files</p>
                         {% else %}
-                            <p style="font-size: 18px"><a href="https://ras.papercept.net/proceedings/ICRA20/{{ PDFList }}" target="_blank" style="color: lawngreen;"> Open PDF files</a></p>
+                            <p style="font-size: 18px"><a href="https://ras.papercept.net/proceedings/IROS20/{{ PDFList }}" target="_blank" style="color: lawngreen;"> Open PDF files</a></p>
                         {% endif %}
                         {% if paperLikeButtonColor == 1 %}
                             <button class="likeButton" type="submit" style="margin: auto;background-color: #323232 ;" onclick="updateLike({{ titleNumber|floatformat:"0" }})">

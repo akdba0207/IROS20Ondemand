@@ -40,6 +40,7 @@ path0 = os.path.join(pre, excel_file0)
 iros2020_raw_orgin = pd.read_excel(path0, sheet_name=0)
 iros2020_raw_orgin_empty_filter = iros2020_raw_orgin.fillna('missing')
 iros2020_raw = iros2020_raw_orgin_empty_filter.iloc[0:1445,:] #Technical paper is from 0~1445
+
 # print(iros2020_raw)
 # Call Genres, Pavilion
 excel_file1 = 'IROS2020_onDemand_beta.xlsx'
@@ -564,8 +565,6 @@ def episode(request):
     AffiliationList4 = similarPaper['Affiliation4'].reset_index()
     AffiliationList5 = similarPaper['Affiliation5'].reset_index()
     SessionTitle = similarPaper['Session title'].reset_index()
-    print(SessionTitle)
-    print(similarPaper)
 
     TitleList = similarPaper['Title'].reset_index()
     PDFList = similarPaper['FN'].reset_index()
@@ -626,7 +625,8 @@ def episode(request):
                          AffiliationList5['Affiliation5'],
                          TitleList['Title'],
                          PDFList['FN'], titleNumber['Nr'], suggestEpisodeNum, paperLikeCount, paperLikeButtonColor,
-                         SessionTitle, paperSaveButtonStatus, paperHitCount)
+                         SessionTitle['Session title'], paperSaveButtonStatus, paperHitCount)
+
         return render(request, './beta/4_pavilionSessionEpisode_beta.html', {'VideoList': VideoList['VID'],
                                                                              'Title': selectedTitle,
                                                                              'Session': selectedSession,
@@ -637,7 +637,8 @@ def episode(request):
                                                                              'selectedPaperLikeCount': selectedPaperLikeCount,
                                                                              'selectedPaperbuttonStatus': selectedPaperbuttonStatus,
                                                                              'arrayComments': arrayComments,
-                                                                             'lengthComments': lengthComments})
+                                                                             'lengthComments': lengthComments
+                                                                             })
 
 
 def specialsepisode(request):
