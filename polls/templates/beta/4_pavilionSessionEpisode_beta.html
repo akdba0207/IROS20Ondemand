@@ -154,11 +154,11 @@
                     <td style="width: 30%">
                         <a href="episode?id={{TitleList}}&id2={{ SessionTitle }}" onClick="this.href=this.href+'&'+new Date().getTime()" style="color:white; text-decoration: none;">
                             {% if titleNumber < 100 %}
-                                <img onError="this.onerror=null;this.src='{% static './resources/playlogo.png' %}';" src="{% static './img/IROS20_Digest' %}/00{{ titleNumber|floatformat:"0" }}_PPT.JPG">
+                                <img class="paperimg" onError="this.onerror=null;this.src='{% static './resources/playlogo.png' %}';" src="{% static './img/IROS20_Digest' %}/00{{ titleNumber|floatformat:"0" }}_PPT.JPG">
                             {% elif titleNumber >= 100 and titleNumber < 1000 %}
-                                <img onError="this.onerror=null;this.src='{% static './resources/playlogo.png' %}';" src="{% static './img/IROS20_Digest' %}/0{{ titleNumber|floatformat:"0" }}_PPT.JPG">
+                                <img class="paperimg" onError="this.onerror=null;this.src='{% static './resources/playlogo.png' %}';" src="{% static './img/IROS20_Digest' %}/0{{ titleNumber|floatformat:"0" }}_PPT.JPG">
                             {% elif titleNumber >= 1000 %}
-                                <img onError="this.onerror=null;this.src='{% static './resources/playlogo.png' %}';" src="{% static './img/IROS20_Digest' %}/{{ titleNumber|floatformat:"0" }}_PPT.JPG">
+                                <img class="paperimg" onError="this.onerror=null;this.src='{% static './resources/playlogo.png' %}';" src="{% static './img/IROS20_Digest' %}/{{ titleNumber|floatformat:"0" }}_PPT.JPG">
                             {% endif %}
                         </a>
                     </td>

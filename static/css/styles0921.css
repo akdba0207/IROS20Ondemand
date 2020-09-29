@@ -39,7 +39,7 @@ body {
 .swiper-slide {
     text-align: center;
     font-size: 18px;
-    background: #000000;
+    background: transparent;
     /* Center slide text vertically */
     display: -webkit-box;
     display: -ms-flexbox;
@@ -58,7 +58,7 @@ body {
 .swiper-slide{
     overflow: hidden;
     max-height: 190px;
-    box-shadow: 1px 1px 1px #000000;
+    box-shadow: 0px 4px 3px #000000;
 }
 
 .onimg-caption{
@@ -71,13 +71,8 @@ body {
     bottom: 0%;
 }
 
-
-img {
-    max-width: 100%;
-    height: auto;}
-
-.netflix-slider img {
-    max-width: 100%;
+.keynoteimg {
+    max-width: 120%;
     height: auto;
     transform: scale(1.0)}
 
@@ -95,7 +90,9 @@ h3 {
 
 :root {
     --swiper-theme-color: #000000; }
-
+.netflix-slider-img{
+    width: 100%;
+}
 .netflix-slider .swiper-wrapper {
     padding: 20px 0; }
 .netflix-slider .swiper-slide {
@@ -118,7 +115,10 @@ h3 {
 .netflix-slider .swiper-button-next{
     color: white;
 }
-
+.paperimg{
+    max-width: 100%;
+    height: auto;
+}
 .videopage{
     position:relative;
     height:360px;

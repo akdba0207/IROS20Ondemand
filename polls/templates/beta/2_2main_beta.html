@@ -212,7 +212,7 @@
                     <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp{{Pavilion}}</h3>
                     <div style="width: 100%; padding-bottom: 2%; display: inline-flex; flex-wrap: wrap">
                         <div class="swiper-slide" style="width: 16%; display: inline-block; color: white; margin-top: 1%;" >
-                            <img src="{% static './resources/logo2.png'%}"/>
+                            <img class="keynoteimg" src="{% static './resources/logo2.png'%}"/>
                             <div class="onimg-caption">Keynotes
                             </div>
                         </div>
@@ -220,7 +220,7 @@
                             <div class="swiper-wrapper">
                                 {% for j in Sessions %}
                                     <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion }}&id3={{ forloop.parentloop.counter }}" onClick="this.href=this.href+'&'+new Date().getTime()" style="color:white; text-decoration: none;">
-                                        <img onError="this.onerror=null;this.src='{% static './resources/logo2.png' %}';" src="{% static 'img'%}/pavilion{{ forloop.parentloop.counter }}/{{ j }}.jpg">
+                                        <img class="netflix-slider-img" onError="this.onerror=null;this.src='{% static './resources/logo2.png' %}';" src="{% static 'img'%}/pavilion{{ forloop.parentloop.counter }}/{{ j }}.jpg">
                                         <div class="onimg-caption">{{ j }}
                                         </div>
                                     </a>

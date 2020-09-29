@@ -128,11 +128,11 @@
                     <td style="width: 30%">
                         <a href="episode?id={{TitleList}}&id2={{ Session }}" onClick="this.href=this.href+'&'+new Date().getTime()">
                             {% if titleNumber < 100 %}
-                                <img onError="this.onerror=null;this.src='{% static './resources/playlogo.png' %}';" src="{% static './img/IROS20_Digest' %}/00{{ titleNumber|floatformat:"0" }}_PPT.JPG">
+                                <img class="paperimg" onError="this.onerror=null;this.src='{% static './resources/playlogo.png' %}';" src="{% static './img/IROS20_Digest' %}/00{{ titleNumber|floatformat:"0" }}_PPT.JPG">
                             {% elif titleNumber >= 100 and titleNumber < 1000 %}
-                                <img onError="this.onerror=null;this.src='{% static './resources/playlogo.png' %}';" src="{% static './img/IROS20_Digest' %}/0{{ titleNumber|floatformat:"0" }}_PPT.JPG">
+                                <img class="paperimg" onError="this.onerror=null;this.src='{% static './resources/playlogo.png' %}';" src="{% static './img/IROS20_Digest' %}/0{{ titleNumber|floatformat:"0" }}_PPT.JPG">
                             {% elif titleNumber >= 1000 %}
-                                <img onError="this.onerror=null;this.src='{% static './resources/playlogo.png' %}';" src="{% static './img/IROS20_Digest' %}/{{ titleNumber|floatformat:"0" }}_PPT.JPG">
+                                <img class="paperimg" onError="this.onerror=null;this.src='{% static './resources/playlogo.png' %}';" src="{% static './img/IROS20_Digest' %}/{{ titleNumber|floatformat:"0" }}_PPT.JPG">
                             {% endif %}
                         </a>
                     </td>
@@ -243,7 +243,7 @@
             <div class="swiper-wrapper">
                 {% for j in SessionList %}
                     <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion }}&id3={{PavilionNum}}" style="color:white; text-decoration: none;">
-                        <img onError="this.onerror=null;this.src='{% static './resources/logo2.png' %}';" src="{% static 'img'%}/pavilion{{ PavilionNum }}/{{ j }}.jpg">
+                        <img class="netflix-slider-img" onError="this.onerror=null;this.src='{% static './resources/logo2.png' %}';" src="{% static 'img'%}/pavilion{{ PavilionNum }}/{{ j }}.jpg">
                         <div class="onimg-caption">{{ j }}
                         </div>
                     </a>
@@ -261,6 +261,7 @@
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+
     <script>
         function updateLike(titleNumber){
             $.ajax({
