@@ -1101,11 +1101,14 @@ def post_save(request):
         if current_account in paper.save_users.all():
             paper.save_users.remove(current_account)
             buttonStatus = 'fa fa-plus'
+            buttonMessage = 'Add to my list'
         else:
             paper.save_users.add(current_account)
             buttonStatus = 'fa fa-check-circle'
+            buttonMessage = 'Added to my list'
+        print(buttonMessage)
 
-        response = {'paperSaveButtonStatus': buttonStatus}
+        response = {'paperSaveButtonStatus': buttonStatus,'buttonMessage':buttonMessage}
 
         return HttpResponse(
             json.dumps(response),

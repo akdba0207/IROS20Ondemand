@@ -92,6 +92,7 @@ h3 {
     --swiper-theme-color: #000000; }
 .netflix-slider-img{
     width: 100%;
+    border-radius: 5px;
 }
 .netflix-slider .swiper-wrapper {
     padding: 20px 0; }
@@ -115,10 +116,7 @@ h3 {
 .netflix-slider .swiper-button-next{
     color: white;
 }
-.paperimg{
-    max-width: 100%;
-    height: auto;
-}
+
 .videopage{
     position:relative;
     height:360px;

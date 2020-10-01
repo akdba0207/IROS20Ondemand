@@ -20,6 +20,8 @@
     <!-- Link Swiper's CSS -->
     <link rel="stylesheet" href="{% static 'package/css/swiper.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/styles0921.css' %}">
+    <link rel="stylesheet" href="{% static 'css/paperimg0930.css' %}">
+
     <script
             src="https://kit.fontawesome.com/7541329784.js"
             crossorigin="anonymous"
@@ -68,20 +70,27 @@
     <h3>&nbsp;&nbsp;Search Results : </h3>
     <p>&nbsp;</p>
 
+    <div id="highlightModal" class="modal">
+        {#        <span class="closeModal">&times;</span>#}
+        <img class="modal-content" id="highlightModalImage">
+        <div id="caption"></div>
+    </div>
+
     {% for AuthorList1, AuthorList2, AuthorList3, AuthorList4,AuthorList5,AuthorList6,AffiliationList1,AffiliationList2,AffiliationList3,AffiliationList4,AffiliationList5,TitleList, PDFList, titleNumber, paperLikeCount, paperLikeButtonColor, paperSaveButtonStatus, SessionList, paperHitCount in EpisodeContext %}
         <div class="epilisttable" style="width: 80%; height: auto; text-align: center; margin-left: 10%; background-color: transparent; margin-bottom:1%">
             <table border="0" cellpadding="0" cellspacing="0" style="background-color: #323232;" >
                 <tr>
-                    <td style="width: 30%">
-                        <a href="episode?id={{TitleList}}&id2={{ SessionList }}" onClick="this.href=this.href+'&'+new Date().getTime()">
-                            {% if titleNumber < 100 %}
-                                <img class="paperimg" onError="this.onerror=null;this.src='{% static './resources/playlogo.png' %}';" src="{% static './img/IROS20_Digest' %}/00{{ titleNumber|floatformat:"0" }}_PPT.JPG">
-                            {% elif titleNumber >= 100 and titleNumber < 1000 %}
-                                <img class="paperimg" onError="this.onerror=null;this.src='{% static './resources/playlogo.png' %}';"  src="{% static './img/IROS20_Digest' %}/0{{ titleNumber|floatformat:"0" }}_PPT.JPG">
-                            {% elif titleNumber >= 1000 %}
-                                <img class="paperimg" onError="this.onerror=null;this.src='{% static './resources/playlogo.png' %}';" src="{% static './img/IROS20_Digest' %}/{{ titleNumber|floatformat:"0" }}_PPT.JPG">
-                            {% endif %}
-                        </a>
+                    <td style="width: 30%;color:white">
+                        {#                        <a href="episode?id={{TitleList}}&id2={{ SessionList }}" onClick="this.href=this.href+'&'+new Date().getTime()">#}
+                        {% if titleNumber < 100 %}
+                            <img id="paperHighlight" onError="this.onerror=null;this.src='{% static './resources/playlogo.png' %}';" src="{% static './img/IROS20_Digest' %}/00{{ titleNumber|floatformat:"0" }}_PPT.JPG" onclick="highlightClicked(this.src)">
+                        {% elif titleNumber >= 100 and titleNumber < 1000 %}
+                            <img id="paperHighlight" onError="this.onerror=null;this.src='{% static './resources/playlogo.png' %}';"  src="{% static './img/IROS20_Digest' %}/0{{ titleNumber|floatformat:"0" }}_PPT.JPG" onclick="highlightClicked(this.src)">
+                        {% elif titleNumber >= 1000 %}
+                            <img id="paperHighlight" onError="this.onerror=null;this.src='{% static './resources/playlogo.png' %}';" src="{% static './img/IROS20_Digest' %}/{{ titleNumber|floatformat:"0" }}_PPT.JPG" onclick="highlightClicked(this.src)">
+                        {% endif %}
+                        {#                        </a>#}
+                        Click image to zoom-in &nbsp;&nbsp;&nbsp;<i class="fa fa-search-plus"></i>
                     </td>
                     <td valign="top" align="left" style="padding-left: 5%; padding-top: 3%;word-break: keep-all">
                         <p class="papertitle" style="color: white;">Title : {{ TitleList }}</p>
@@ -143,42 +152,59 @@
                             {% endif %}
                             </tbody>
                         </table>
-                        {% if PDFList == 'missing' %}
-                            <p style="font-size: 18px;color: lawngreen;">No PDF files</p>
-                        {% else %}
-                            <p style="font-size: 18px"><a href="https://ras.papercept.net/proceedings/IROS20/{{ PDFList }}" target="_blank" style="color: lawngreen;"> Open PDF files</a></p>
-                        {% endif %}
-                        {% csrf_token %}
-                        {% if paperLikeButtonColor == 1 %}
-                            <button class="likeButton" type="submit" style="margin: auto;background-color: #323232 ;" onclick="updateLike({{ titleNumber|floatformat:"0" }})">
-                                <i id="thumbs{{titleNumber|floatformat:"0"}}" class="fa fa-thumbs-up" style="color:yellow; font-size: 30px"></i>
-                                <input type="text" id="{{ titleNumber|floatformat:"0" }}" value="{{ paperLikeCount }}" class="thumbsuptext" name="likeCount" readonly/>
-                                <input type="hidden" name="paperNumber" value="{{ titleNumber|floatformat:"0" }}">
-                            </button>
-                        {% else %}
-                            <button class="likeButton" type="submit" style="padding: 0% ;background-color: #323232;" onclick="updateLike({{ titleNumber|floatformat:"0" }})">
-                                <i id="thumbs{{titleNumber|floatformat:"0"}}" class="fa fa-thumbs-up" style="color:grey; font-size: 30px"></i>
-                                <input type="text" id="{{ titleNumber|floatformat:"0" }}" value="{{ paperLikeCount }}" class="thumbsuptext" name="likeCount" readonly/>
-                                <input type="hidden" name="paperNumber" value="{{ titleNumber|floatformat:"0" }}">
-                            </button>
+                        <br>
+                        <div style="color: white;">
+                            {% csrf_token %}
+                            {% if paperSaveButtonStatus == 1 %}
+                                <button class="saveButton" type="submit" style="margin: auto;background-color: #323232; color: white" onclick="updateSave({{ titleNumber|floatformat:"0" }})">
+                                    <i id="savebutton{{titleNumber|floatformat:"0"}}" class="fa fa-check-circle"  aria-hidden="true" style="color:white; font-size: 30px;vertical-align: top"></i>
+                                    <font id="buttonMessage{{titleNumber|floatformat:"0"}}" style="color: white;font-size: 18px;">&nbsp;&nbsp;&nbsp;Added to my list</font>
+                                    <input type="hidden" name="paperNumber" value="{{ titleNumber|floatformat:"0" }}">
+                                </button>
+                            {% else %}
+                                <button class="saveButton" type="submit" style="padding: 0% ;background-color: #323232;" onclick="updateSave({{ titleNumber|floatformat:"0" }})">
+                                    <i id="savebutton{{titleNumber|floatformat:"0"}}" class="fa fa-plus"  aria-hidden="true" style="color:white; font-size: 30px;vertical-align: top"></i>
+                                    <font id="buttonMessage{{titleNumber|floatformat:"0"}}" style="color: white;font-size: 18px;">&nbsp;&nbsp;&nbsp;Add to my List</font>
+                                    <input type="hidden" name="paperNumber" value="{{ titleNumber|floatformat:"0" }}">
+                                </button>
+                            {% endif %}
+                        </div>
+                        <br>
+                        <div>
+                            <a style="text-decoration: none" href="episode?id={{TitleList}}&id2={{ Session }}" onClick="this.href=this.href+'&'+new Date().getTime()">
+                                <div class="videoPlayButton">
+                                    <div class="videoPlayButtonIcon">
+                                        <i class="fa fa-play-circle" style="vertical-align: middle;"></i>
+                                    </div>
+                                    <div class="videoPlayButtonText">Watch Now
+                                    </div>
+                                </div>
+                            </a>
+                            <div style="display: inline-block;margin-left: 3%">
+                                {% if PDFList == 'missing' %}
+                                    <p style="font-size: 18px;color: lawngreen;">No PDF files</p>
+                                {% else %}
+                                    <p style="font-size: 18px"><a href="https://ras.papercept.net/proceedings/IROS20/{{ PDFList }}" target="_blank" style="color: lawngreen;"> Open PDF files</a></p>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <br>
+                        <div class="paperlikeviewcountdiv">
+                            {% if paperLikeButtonColor == 1 %}
+                                <button class="likeButton" type="submit" style="margin: auto;background-color: #323232 ;" onclick="updateLike({{ titleNumber|floatformat:"0" }})">
+                                    <i id="thumbs{{titleNumber|floatformat:"0"}}" class="fa fa-thumbs-up" style="color:yellow; font-size: 30px"></i>
+                                    <input type="text" id="{{ titleNumber|floatformat:"0" }}" value="{{ paperLikeCount }}" class="thumbsuptext" name="likeCount" readonly/>
+                                    <input type="hidden" name="paperNumber" value="{{ titleNumber|floatformat:"0" }}">
+                                </button>
+                            {% else %}
+                                <button class="likeButton" type="submit" style="padding: 0% ;background-color: #323232;" onclick="updateLike({{ titleNumber|floatformat:"0" }})">
+                                    <i id="thumbs{{titleNumber|floatformat:"0"}}" class="fa fa-thumbs-up" style="color:grey; font-size: 30px"></i>
+                                    <input type="text" id="{{ titleNumber|floatformat:"0" }}" value="{{ paperLikeCount }}" class="thumbsuptext" name="likeCount" readonly/>
+                                    <input type="hidden" name="paperNumber" value="{{ titleNumber|floatformat:"0" }}">
+                                </button>
+                            {% endif %}
                             <span class="listHitCount" style="color: white;font-size: 18px">{{ paperHitCount }} views</span>
-                        {% endif %}
-                    </td>
-                    <td class="savePapers" style="width: 5%; color: white">
-                        {% csrf_token %}
-                        {% if paperSaveButtonStatus == 1 %}
-                            <button class="saveButton" type="submit" style="margin: auto;background-color: #323232 ;" onclick="updateSave({{ titleNumber|floatformat:"0" }})">
-                                <i id="savebutton{{titleNumber|floatformat:"0"}}" class="fa fa-check-circle"  aria-hidden="true" style="color:white; font-size: 30px"></i>
-                                <input type="hidden" name="paperNumber" value="{{ titleNumber|floatformat:"0" }}">
-                            </button>
-                            <p>My List</p>
-                        {% else %}
-                            <button class="saveButton" type="submit" style="padding: 0% ;background-color: #323232;" onclick="updateSave({{ titleNumber|floatformat:"0" }})">
-                                <i id="savebutton{{titleNumber|floatformat:"0"}}" class="fa fa-plus"  aria-hidden="true" style="color:white; font-size: 30px"></i>
-                                <input type="hidden" name="paperNumber" value="{{ titleNumber|floatformat:"0" }}">
-                            </button>
-                            <p>My List</p>
-                        {% endif %}
+                        </div>
                     </td>
                 </tr>
             </table>
@@ -226,6 +252,7 @@
                 success: function(json) {
                     $('#savebutton'+titleNumber).removeClass(savebuttonClass);
                     $('#savebutton'+titleNumber).addClass(json['paperSaveButtonStatus']);
+                    $('#buttonMessage'+titleNumber).html('&nbsp;&nbsp;&nbsp;'+json['buttonMessage'])
                 },
                 error: function(err) {
                     alert("Failed to Retrieve JSON file from Server");
@@ -233,7 +260,27 @@
             });
         }
     </script>
+    <script>
+        // Get the modal
+        var modal = document.getElementById("highlightModal");
+        var modalImg = document.getElementById("highlightModalImage");
+        var captionText = document.getElementById("caption");
 
+        {#var span = document.getElementsByClassName("closeModal")[0];#}
+
+        // When the user clicks on <span> (x), close the modal
+        modalImg.onclick = function() {
+            modal.style.display = "none";
+        }
+
+    </script>
+    <script>
+        function highlightClicked(src){
+            modal.style.display = "block";
+            modalImg.src = src;
+            captionText.innerHTML = "Tap on the image to close";
+        }
+    </script>
 </div>
 </body>
 </html>

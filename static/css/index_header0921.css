@@ -78,7 +78,7 @@ header {
   font-size: 150%;
 }
 .searchBar{
-  font-size:20px;
+  font-size:15px;
   width:150px;
   margin-left: 0%;
   text-align:left;
@@ -88,10 +88,12 @@ header {
   border-color: white;
   border-width: 1px;
   outline:none;
-  transform: translate(-15%,0%);
+  transform: translate(-25%,0%);
+  border-radius: 5px;
 }
 .fa-search{
   transform: translate(-100%,0%);
+  font-size: 20px;
 }
 
 i {

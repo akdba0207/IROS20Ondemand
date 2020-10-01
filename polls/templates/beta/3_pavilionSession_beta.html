@@ -6,94 +6,7 @@
     <meta charset="utf-8">
     <title>IROS 2020 On-Demand : Sessions</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
-    <style>
-        #paperHighlight {
-            border-radius: 5px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
 
-        #paperHighlight:hover {opacity: 0.7;}
-
-        /* The Modal (background) */
-        .modal {
-            display: none; /* Hidden by default */
-            position: fixed; /* Stay in place */
-            z-index: 1; /* Sit on top */
-            padding-top: 100px; /* Location of the box */
-            left: 0;
-            top: 0;
-            width: 100%; /* Full width */
-            height: 100%; /* Full height */
-            overflow: auto; /* Enable scroll if needed */
-            background-color: rgb(0,0,0); /* Fallback color */
-            background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
-        }
-
-        /* Modal Content (image) */
-        .modal-content {
-            margin: auto;
-            display: block;
-            width: 80%;
-            max-width: 700px;
-        }
-
-        /* Caption of Modal Image */
-        #caption {
-            margin: auto;
-            display: block;
-            width: 80%;
-            max-width: 700px;
-            text-align: center;
-            color: #ccc;
-            padding: 10px 0;
-            height: 150px;
-            font-size: 25px;
-        }
-
-        /* Add Animation */
-        .modal-content, #caption {
-            -webkit-animation-name: zoom;
-            -webkit-animation-duration: 0.6s;
-            animation-name: zoom;
-            animation-duration: 0.6s;
-        }
-
-        @-webkit-keyframes zoom {
-            from {-webkit-transform:scale(0)}
-            to {-webkit-transform:scale(1)}
-        }
-
-        @keyframes zoom {
-            from {transform:scale(0)}
-            to {transform:scale(1)}
-        }
-
-        /* The Close Button */
-        .closeModal {
-            position: absolute;
-            top: 15px;
-            right: 35px;
-            color: #f1f1f1;
-            font-size: 50px;
-            font-weight: bold;
-            transition: 0.3s;
-        }
-
-        .closeModal:hover,
-        .closeModal:focus {
-            color: #bbb;
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        /* 100% Image Width on Smaller Screens */
-        @media only screen and (max-width: 700px){
-            .modal-content {
-                width: 100%;
-            }
-        }
-    </style>
     <script src="https://s3-us-west-2.amazonaws.com/ieeeshutpages/gdpr/settings.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js"></script>
@@ -107,6 +20,7 @@
     <!-- Link Swiper's CSS -->
     <link rel="stylesheet" href="{% static 'package/css/swiper.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/styles0921.css' %}">
+    <link rel="stylesheet" href="{% static 'css/paperimg0930.css' %}">
     <script
             src="https://kit.fontawesome.com/7541329784.js"
             crossorigin="anonymous"
@@ -154,32 +68,27 @@
     <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{Pavilion}}</h3>
     <br>
 
-    <div class = "landingtable" style="width: 90%; height: auto; text-align: left; margin-left: 5%; margin-bottom:2%">
-        <table border="0" cellpadding="0" cellspacing="0" style="background-color: #323232; width: 100%; border-style: solid; border-color:white;border-width: 10px;">
-
+    <div class = "landingtable" style="width: 90%; height: auto; text-align: left; margin-left: 5%; margin-bottom:2%;">
+        <table border="0" cellpadding="0" cellspacing="0" style="background-color: #323232; width: 100%;border-radius: 20px;overflow: hidden;">
             {% if goldSponsorSession|length == 0 %}
                 <tr>
                     <td style="width: 50%;">
                         <img onError="this.onerror=null;this.src='{% static './resources/logo2.png' %}';" src="{% static 'img'%}/pavilion{{ PavilionNum}}/{{Session}}.jpg">
+                        <div style="transform: translateY(-200px); position: absolute;background-image: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1)); width: 85.5%;height: 200px;"></div>
                     </td>
                     <td class="sessionTitle" style="word-break: keep-all;">
                         <p style="color: white;">Welcome to Session :</p>
                         <p style="color: white;">{{ Session }}</p>
-                        <p style="color: white;">Chair: Jaeheung Park (Seoul National University, South Korea)</p>
-                        <p style="color: white;">Co-Chair: Tom Verstraten (Vrije Universiteit Brussel, Belgium)</p>
-                        <p style="color: white;">Overview: This session covers recent advances in actuator technologies.
-                            Specific topics include scaling laws for parallel motor-gearbox arrangements,
-                            clutched actuators, continuously variable transmissions and twisted string actuators.</p>
                     </td>
                 </tr>
             {% else %}
                 <tr>
-                    <td style="width: 40%;">
-                        <div style="position: relative">
-                            <video id="videoGoldSponsor" width="90%" autoplay loop >
+                    <td style="width: 38%;">
+                        <div style="position: relative;overflow: hidden">
+                            <video id="videoGoldSponsor" width="117%" autoplay loop >
                                 <source src="{% static './video'%}/Gold Sponsor/{{ goldSponsorVideo.0 }}.mp4" type="video/mp4">
                             </video>
-                            <div style="position: absolute; z-index: 1;color: yellow; bottom: 0; text-align: center; font-size: 200%; background-color: rgba(0,0,0,0.7); width: 90%">
+                            <div style="position: absolute; z-index: 1;color: yellow; bottom: 0; text-align: center; font-size: 200%; background-color: rgba(0,0,0,0.7); width: 100%">
                                 <p>Sample Gold Partner Video Placement</p>
                                 <p><a href="{{ goldSponsorWebpage.0 }}" target="_blank"  style="color:white; text-decoration: none;">Click {{ goldSponsorWebpage.0 }}</a> </p>
                                 <div style="width: 50%; text-align: left; font-size: 100%;">
@@ -192,18 +101,41 @@
                                 </div>
                             </div>
                         </div>
+                        <div style="transform: translateY(-200px); position: absolute;background-image: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1)); width: 85.5%;height: 200px;"></div>
                     </td>
-                    <td style="width: 30%;">
-                        <img onError="this.onerror=null;this.src='{% static './resources/logo2.png' %}';" src="{% static 'img'%}/pavilion{{ PavilionNum}}/{{Session}}.jpg">
+                    <td style="width: 38%;">
+                        <img onError="this.onerror=null;this.src='{% static './resources/logo2.png' %}';" src="{% static 'img'%}/pavilion{{ PavilionNum}}/{{Session}}.jpg" width="100%">
                     </td>
-                    <td class="sessionTitle" style="word-break: keep-all;">
+                    <td class="sessionTitle" style="word-break: keep-all;width: 30%;">
                         <p style="color: white;">Welcome to Session :</p>
                         <p style="color: white;">{{ Session }}</p>
                     </td>
                 </tr>
             {% endif %}
 
-
+            <tr>
+                {% if goldSponsorSession|length == 0 %}
+                    <td colspan="2" >
+                        <div style="font-size: 25px; background-color: black;width: 100%; padding-bottom: .5%;padding-left: 1%">
+                            <p style="color: white;">Chair: Jaeheung Park (Seoul National University, South Korea)</p>
+                            <p style="color: white;">Co-Chair: Tom Verstraten (Vrije Universiteit Brussel, Belgium)</p>
+                            <p style="color: white;">Overview: This session covers recent advances in actuator technologies.
+                                Specific topics include scaling laws for parallel motor-gearbox arrangements,
+                                clutched actuators, continuously variable transmissions and twisted string actuators.</p>
+                        </div>
+                    </td>
+                {% else %}
+                    <td colspan="3" >
+                        <div style="font-size: 25px; background-color: black;width: 100%; padding-bottom: .5%;padding-left: 1%">
+                            <p style="color: white;">Chair: Jaeheung Park (Seoul National University, South Korea)</p>
+                            <p style="color: white;">Co-Chair: Tom Verstraten (Vrije Universiteit Brussel, Belgium)</p>
+                            <p style="color: white;">Overview: This session covers recent advances in actuator technologies.
+                                Specific topics include scaling laws for parallel motor-gearbox arrangements,
+                                clutched actuators, continuously variable transmissions and twisted string actuators.</p>
+                        </div>
+                    </td>
+                {% endif %}
+            </tr>
         </table>
     </div>
 
@@ -215,9 +147,9 @@
 
     {% for AuthorList1, AuthorList2, AuthorList3, AuthorList4,AuthorList5,AuthorList6,AffiliationList1,AffiliationList2,AffiliationList3,AffiliationList4,AffiliationList5,TitleList, PDFList, titleNumber, paperLikeCount, paperLikeButtonColor, paperSaveButtonStatus, paperHitCount in EpisodeContext %}
         <div class="epilisttable" style="width: 80%; height: auto; text-align: center; margin-left: 10%; background-color: transparent; margin-bottom:1%">
-            <table border="0" cellpadding="0" cellspacing="0" style="background-color: #323232;" >
+            <table border="0" cellpadding="0" cellspacing="0" style="background-color: #323232;border-radius: 10px" >
                 <tr>
-                    <td style="width: 30%">
+                    <td style="width: 30%; color:white">
                         {#                        <a href="episode?id={{TitleList}}&id2={{ Session }}" onClick="this.href=this.href+'&'+new Date().getTime()">#}
                         {% if titleNumber < 100 %}
                             <img id="paperHighlight" onError="this.onerror=null;this.src='{% static './resources/playlogo.png' %}';" src="{% static './img/IROS20_Digest' %}/00{{ titleNumber|floatformat:"0" }}_PPT.JPG" onclick="highlightClicked(this.src)">
@@ -227,6 +159,7 @@
                             <img id="paperHighlight" onError="this.onerror=null;this.src='{% static './resources/playlogo.png' %}';" src="{% static './img/IROS20_Digest' %}/{{ titleNumber|floatformat:"0" }}_PPT.JPG" onclick="highlightClicked(this.src)">
                         {% endif %}
                         {#                        </a>#}
+                        Click image to zoom-in &nbsp;&nbsp;&nbsp;<i class="fa fa-search-plus" style="vertical-align: middle"></i>
                     </td>
                     <td valign="top" align="left" style="padding-left: 5%; padding-top: 3%;word-break: keep-all">
                         <p class="papertitle" style="color: white;">Title : {{ TitleList }}</p>
@@ -288,41 +221,59 @@
                             {% endif %}
                             </tbody>
                         </table>
-                        {% if PDFList == 'missing' %}
-                            <p style="font-size: 18px;color: lawngreen;">No PDF files</p>
-                        {% else %}
-                            <p style="font-size: 18px"><a href="https://ras.papercept.net/proceedings/IROS20/{{ PDFList }}" target="_blank" style="color: lawngreen;"> Open PDF files</a></p>
-                        {% endif %}
-                        {% if paperLikeButtonColor == 1 %}
-                            <button class="likeButton" type="submit" style="margin: auto;background-color: #323232 ;" onclick="updateLike({{ titleNumber|floatformat:"0" }})">
-                                <i id="thumbs{{titleNumber|floatformat:"0"}}" class="fa fa-thumbs-up" style="color:yellow; font-size: 30px"></i>
-                                <input type="text" id="{{ titleNumber|floatformat:"0" }}" value="{{ paperLikeCount }}" class="thumbsuptext" name="likeCount" readonly/>
-                                <input type="hidden" name="paperNumber" value="{{ titleNumber|floatformat:"0" }}">
-                            </button>
-                        {% else %}
-                            <button class="likeButton" type="submit" style="padding: 0% ;background-color: #323232;" onclick="updateLike({{ titleNumber|floatformat:"0" }})">
-                                <i id="thumbs{{titleNumber|floatformat:"0"}}" class="fa fa-thumbs-up" style="color:grey; font-size: 30px"></i>
-                                <input type="text" id="{{ titleNumber|floatformat:"0" }}" value="{{ paperLikeCount }}" class="thumbsuptext" name="likeCount" readonly/>
-                                <input type="hidden" name="paperNumber" value="{{ titleNumber|floatformat:"0" }}">
-                            </button>
-                        {% endif %}
-                        <span class="listHitCount" style="color: white;font-size: 18px">{{ paperHitCount }} views</span>
-                    </td>
-                    <td class="savePapers" style="width: 5%; color: white">
-                        {% csrf_token %}
-                        {% if paperSaveButtonStatus == 1 %}
-                            <button class="saveButton" type="submit" style="margin: auto;background-color: #323232 ;" onclick="updateSave({{ titleNumber|floatformat:"0" }})">
-                                <i id="savebutton{{titleNumber|floatformat:"0"}}" class="fa fa-check-circle"  aria-hidden="true" style="color:white; font-size: 30px"></i>
-                                <input type="hidden" name="paperNumber" value="{{ titleNumber|floatformat:"0" }}">
-                            </button>
-                            <p>My List</p>
-                        {% else %}
-                            <button class="saveButton" type="submit" style="padding: 0% ;background-color: #323232;" onclick="updateSave({{ titleNumber|floatformat:"0" }})">
-                                <i id="savebutton{{titleNumber|floatformat:"0"}}" class="fa fa-plus"  aria-hidden="true" style="color:white; font-size: 30px"></i>
-                                <input type="hidden" name="paperNumber" value="{{ titleNumber|floatformat:"0" }}">
-                            </button>
-                            <p>My List</p>
-                        {% endif %}
+                        <br>
+                        <div style="color: white;">
+                            {% csrf_token %}
+                            {% if paperSaveButtonStatus == 1 %}
+                                <button class="saveButton" type="submit" style="margin: auto;background-color: #323232; color: white" onclick="updateSave({{ titleNumber|floatformat:"0" }})">
+                                    <i id="savebutton{{titleNumber|floatformat:"0"}}" class="fa fa-check-circle"  aria-hidden="true" style="color:white; font-size: 30px;vertical-align: top"></i>
+                                    <font id="buttonMessage{{titleNumber|floatformat:"0"}}" style="color: white;font-size: 18px;">&nbsp;&nbsp;&nbsp;Added to my list</font>
+                                    <input type="hidden" name="paperNumber" value="{{ titleNumber|floatformat:"0" }}">
+                                </button>
+                            {% else %}
+                                <button class="saveButton" type="submit" style="padding: 0% ;background-color: #323232;" onclick="updateSave({{ titleNumber|floatformat:"0" }})">
+                                    <i id="savebutton{{titleNumber|floatformat:"0"}}" class="fa fa-plus"  aria-hidden="true" style="color:white; font-size: 30px;vertical-align: top"></i>
+                                    <font id="buttonMessage{{titleNumber|floatformat:"0"}}" style="color: white;font-size: 18px;">&nbsp;&nbsp;&nbsp;Add to my List</font>
+                                    <input type="hidden" name="paperNumber" value="{{ titleNumber|floatformat:"0" }}">
+                                </button>
+                            {% endif %}
+                        </div>
+                        <br>
+                        <div>
+                            <a style="text-decoration: none" href="episode?id={{TitleList}}&id2={{ Session }}" onClick="this.href=this.href+'&'+new Date().getTime()">
+                                <div class="videoPlayButton">
+                                    <div class="videoPlayButtonIcon">
+                                        <i class="fa fa-play-circle" style="vertical-align: middle;"></i>
+                                    </div>
+                                    <div class="videoPlayButtonText">Watch Now
+                                    </div>
+                                </div>
+                            </a>
+                            <div style="display: inline-block;margin-left: 3%">
+                                {% if PDFList == 'missing' %}
+                                    <p style="font-size: 18px;color: lawngreen;">No PDF files</p>
+                                {% else %}
+                                    <p style="font-size: 18px"><a href="https://ras.papercept.net/proceedings/IROS20/{{ PDFList }}" target="_blank" style="color: lawngreen;"> Open PDF files</a></p>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <br>
+                        <div class="paperlikeviewcountdiv">
+                            {% if paperLikeButtonColor == 1 %}
+                                <button class="likeButton" type="submit" style="margin: auto;background-color: #323232 ;" onclick="updateLike({{ titleNumber|floatformat:"0" }})">
+                                    <i id="thumbs{{titleNumber|floatformat:"0"}}" class="fa fa-thumbs-up" style="color:yellow; font-size: 30px"></i>
+                                    <input type="text" id="{{ titleNumber|floatformat:"0" }}" value="{{ paperLikeCount }}" class="thumbsuptext" name="likeCount" readonly/>
+                                    <input type="hidden" name="paperNumber" value="{{ titleNumber|floatformat:"0" }}">
+                                </button>
+                            {% else %}
+                                <button class="likeButton" type="submit" style="padding: 0% ;background-color: #323232;" onclick="updateLike({{ titleNumber|floatformat:"0" }})">
+                                    <i id="thumbs{{titleNumber|floatformat:"0"}}" class="fa fa-thumbs-up" style="color:grey; font-size: 30px"></i>
+                                    <input type="text" id="{{ titleNumber|floatformat:"0" }}" value="{{ paperLikeCount }}" class="thumbsuptext" name="likeCount" readonly/>
+                                    <input type="hidden" name="paperNumber" value="{{ titleNumber|floatformat:"0" }}">
+                                </button>
+                            {% endif %}
+                            <span class="listHitCount" style="color: white;font-size: 18px">{{ paperHitCount }} views</span>
+                        </div>
                     </td>
                 </tr>
             </table>
@@ -335,7 +286,7 @@
             <div class="swiper-wrapper">
                 {% for j in SessionList %}
                     <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion }}&id3={{PavilionNum}}" style="color:white; text-decoration: none;">
-                        <img onError="this.onerror=null;this.src='{% static './resources/logo2.png' %}';" src="{% static 'img'%}/pavilion{{ PavilionNum }}/{{ j }}.jpg">
+                        <img class="netflix-slider-img" onError="this.onerror=null;this.src='{% static './resources/logo2.png' %}';" src="{% static 'img'%}/pavilion{{ PavilionNum }}/{{ j }}.jpg">
                         <div class="onimg-caption">{{ j }}
                         </div>
                     </a>
@@ -381,6 +332,7 @@
                 success: function(json) {
                     $('#savebutton'+titleNumber).removeClass(savebuttonClass);
                     $('#savebutton'+titleNumber).addClass(json['paperSaveButtonStatus']);
+                    $('#buttonMessage'+titleNumber).html('&nbsp;&nbsp;&nbsp;'+json['buttonMessage'])
                 },
                 error: function(err) {
                     alert("Failed to Retrieve JSON file from Server");
@@ -450,19 +402,19 @@
         var span = document.getElementsByClassName("closeModal")[0];
 
         // When the user clicks on <span> (x), close the modal
-        span.onclick = function() {
+        modalImg.onclick = function() {
             modal.style.display = "none";
         }
 
     </script>
-
     <script>
         function highlightClicked(src){
             modal.style.display = "block";
             modalImg.src = src;
-            captionText.innerHTML = "Click X on the upper right corner to close";
+            captionText.innerHTML = "Tap on the image to close";
         }
     </script>
+
 </div>
 </body>
 </html>

@@ -349,12 +349,24 @@
 </script>
 <script>
     function enableMute(video) {
-        var vid = document.getElementById(video);
-        vid.muted = true;
+        {#var vid = document.getElementById(video);#}
+        var vid1 = document.getElementById('video0')
+        var vid2 = document.getElementById('video1')
+        var vid3 = document.getElementById('video2')
+        vid1.muted=true;
+        vid2.muted=true;
+        vid3.muted=true;
+        {#vid.muted = true;#}
     }
     function disbleMute(video) {
-        var vid = document.getElementById(video);
-        vid.muted = false;
+        {#var vid = document.getElementById(video);#}
+        var vid1 = document.getElementById('video0')
+        var vid2 = document.getElementById('video1')
+        var vid3 = document.getElementById('video2')
+        vid1.muted=false;
+        vid2.muted=false;
+        vid3.muted=false;
+        {#vid.muted = false;#}
     }
 </script>
 </div>
