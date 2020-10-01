@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <!-- Link Swiper's CSS -->
     <link rel="stylesheet" href="{% static 'package/css/swiper.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/styles0921.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles0930.css' %}">
     <link rel="stylesheet" href="{% static 'css/paperimg0930.css' %}">
     <script
             src="https://kit.fontawesome.com/7541329784.js"
@@ -34,7 +34,7 @@
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
     />
     <link rel="stylesheet" href="{% static 'css/index_land0717.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/index_header0921.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/index_header0930.css' %}" />
 
 </head>
 <body>
@@ -306,14 +306,25 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
     <script>
         function updateLike(titleNumber){
+            var currLikeCount= parseInt($('#'+titleNumber)[0].value,10);
+            var currLikeColor =$('#thumbs'+titleNumber)[0].style.color;
+
+            if(currLikeColor == 'yellow'){
+                $('#'+titleNumber)[0].value = currLikeCount -1;
+                $('#thumbs'+titleNumber)[0].style.color =  'grey';
+            }else{
+
+                $('#'+titleNumber)[0].value = currLikeCount + 1;
+                $('#thumbs'+titleNumber)[0].style.color =  'yellow';
+            }
             $.ajax({
                 url:'post_like',
                 type:'POST',
                 data:{'paperNumber':titleNumber},
                 dataType:'json',
                 success: function(json) {
-                    $('#'+titleNumber)[0].value =  json['likeCount'];
-                    $('#thumbs'+titleNumber)[0].style.color =  json['likeButtonColor'];
+                    {#$('#'+titleNumber)[0].value =  json['likeCount'];#}
+                    {#$('#thumbs'+titleNumber)[0].style.color =  json['likeButtonColor'];#}
                 },
                 error: function(err) {
                     alert("Failed to Retrieve JSON file from Server");
@@ -324,15 +335,24 @@
     <script>
         function updateSave(titleNumber){
             var savebuttonClass = document.getElementById("savebutton"+titleNumber).className;
+            if(savebuttonClass == 'fa fa-plus'){
+                $('#savebutton'+titleNumber).removeClass(savebuttonClass);
+                $('#savebutton'+titleNumber).addClass('fa fa-check-circle');
+                $('#buttonMessage'+titleNumber).html('&nbsp;&nbsp;&nbsp;Added to my list')
+            }else{
+                $('#savebutton'+titleNumber).removeClass(savebuttonClass);
+                $('#savebutton'+titleNumber).addClass('fa fa-plus');
+                $('#buttonMessage'+titleNumber).html('&nbsp;&nbsp;&nbsp;Add to my list')
+            }
             $.ajax({
                 url:'post_save',
                 type:'POST',
                 data:{'paperNumber':titleNumber},
                 dataType:'json',
                 success: function(json) {
-                    $('#savebutton'+titleNumber).removeClass(savebuttonClass);
-                    $('#savebutton'+titleNumber).addClass(json['paperSaveButtonStatus']);
-                    $('#buttonMessage'+titleNumber).html('&nbsp;&nbsp;&nbsp;'+json['buttonMessage'])
+                    {#$('#savebutton'+titleNumber).removeClass(savebuttonClass);#}
+                    {#$('#savebutton'+titleNumber).addClass(json['paperSaveButtonStatus']);#}
+                    {#$('#buttonMessage'+titleNumber).html('&nbsp;&nbsp;&nbsp;'+json['buttonMessage'])#}
                 },
                 error: function(err) {
                     alert("Failed to Retrieve JSON file from Server");
@@ -414,7 +434,18 @@
             captionText.innerHTML = "Tap on the image to close";
         }
     </script>
-
+    <script>
+        window.addEventListener( "pageshow", function ( event ) {
+            var historyTraversal = event.persisted ||
+                ( typeof window.performance != "undefined" &&
+                    window.performance.navigation.type === 2 );
+            if ( historyTraversal ) {
+                // Handle page restore.
+                window.location.reload();
+                console.log('save my ass')
+            }
+        });
+    </script>
 </div>
 </body>
 </html>
