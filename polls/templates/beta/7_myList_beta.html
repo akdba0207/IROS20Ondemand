@@ -20,7 +20,8 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <!-- Link Swiper's CSS -->
     <link rel="stylesheet" href="{% static 'package/css/swiper.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/styles0930.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles1007.css' %}">
+
     <script
             src="https://kit.fontawesome.com/7541329784.js"
             crossorigin="anonymous"
@@ -33,55 +34,75 @@
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
     />
-    <link rel="stylesheet" href="{% static 'css/index_land0717.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/index_header0930.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/index_header1006.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/mylistStyle1006.css' %}">
 
 </head>
 <body>
 
-<header>
-    <div class="logo">
-        <a href="entrance">
-            <img src="{% static './resources/logo.png'%}"/>
-        </a>
-        <button class="header-toggleBtn"><i class="fa fa-bars"></i></button>
-    </div>
-
-    <ul class="categories">
-        <li class="category category1"><a href="entrance" style="color:white; text-decoration: none;">Home</a></li>
-        <li class="category category2"><a href="mylist?" onClick="this.href=this.href.split('?')[0]+'?'+new Date().getTime()" style="color:white; text-decoration: none;">My Lists</a></li>
-        <li class="category category3"><a href="logout" style="color:white; text-decoration: none;">Logout</a></li>
-    </ul>
-
-    <ul class="search_notice_info">
-        <form>
-            <input type="text" id="search_bar" value="" class="searchBar" onkeydown="if(event.keyCode === 13) {event.preventDefault(); document.getElementById('searchBtn').click()}"/>
-            <d onclick="if(search_bar.value.length > 0)search()">
-                <a id = "keywordDelivery" href="javascript: void(0)">
-                    <i id="searchBtn" class="fa fa-search" style="color:white;"></i>
+<nav style="background-color: rgba(0,0,0,0.7)" class="navbar navbar-expand-md navbar-dark fixed-top">
+    <!-- Brand/logo -->
+    <a class="navbar-brand" href="entrance">
+        <img src="{% static './resources/logo.png'%}" width="150px"/>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="collapsibleNavbar">
+        <!-- Links -->
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="entrance" style="color:white; ">Home</a>
+            </li>
+            <!-- Dropdown -->
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" style="color: white" href="#" id="navbardrop" data-toggle="dropdown">
+                    Entrance
                 </a>
-            </d>
-        </form>
-    </ul>
-</header>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="main?id=technicalpaper">Technical Talks</a>
+                    <a class="dropdown-item" href="main?id=wstr">Workshops and Tutorials</a>
+                    <a class="dropdown-item" href="main?id=competition">Robot Competition</a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="mylist?" onClick="this.href=this.href+new Date().getTime()" style="color:white;">My Lists</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="logout" style="color:white;">Logout</a>
+            </li>
+        </ul>
+        <ul class="navbar-nav">
+            <form class="form-inline navbar-right">
+                <input type="text" id="search_bar" value="" class="searchBar" onkeydown="if(event.keyCode === 13) {event.preventDefault(); document.getElementById('searchBtn').click()}"/>
+                <d onclick="if(search_bar.value.length > 0)search()">
+                    <a id = "keywordDelivery" href="javascript: void(0)">
+                        <i id="searchBtn" class="fa fa-search" style="color:white;margin-left: 100%;font-size: 18px"></i>
+                    </a>
+                </d>
+            </form>
+        </ul>
 
-<div style="width:95%; margin:0 auto; padding-top: 8%;" align="justify">
+    </div>
+</nav>
 
+<div style="width:95%; margin:0 auto; padding-top: 50px;" align="justify">
+    <p>&nbsp;</p>
     {% if mylistSpecialNumber == 0 and  mylistWorkshopsNumber == 0 and mylistEpisodeNumber == 0 %}
-        <h3>&nbsp;&nbsp;My Lists is empty</h3>
+        <h3 class="pavtitle">&nbsp;&nbsp;My Lists is empty</h3>
     {% endif %}
 
     {% if mylistSpecialNumber == 0 %}
     {% else %}
         <h3>&nbsp;&nbsp;My Lists : Specials</h3>
-        <div style="width: 100%; padding-bottom: 2%; display: inline-flex; flex-wrap: wrap">
+        <div class="mylistMainDiv">
             {% for mylistSpecialSpeaker, mylistSpecialSpecial, mylistSpecialGenre in mylistSpecialContext %}
-                <div style="position: relative; border-style: solid; border-color: white;margin: 1%;width: 22%; display:inline-block;">
+                <div class="mylistBlock">
                     <a href="specialsepisode?id={{mylistSpecialSpeaker}}&id2={{ mylistSpecialSpecial }}&id3={{ mylistSpecialGenre }}" onClick="this.href=this.href+'&'+new Date().getTime()">
-                        <img src="{% static './resources/playlogo.png'%}" width="100%"></a>
-                    <div style="position: absolute; z-index: 1;color: white; bottom: 0; text-align: center; font-size: 100%; background-color: rgba(0,0,0,0.7); width: 100%">
-                        <p>{{ mylistSpecialSpecial}} : {{ mylistSpecialSpeaker }}</p>
-                    </div>
+                        <img src="{% static './resources/playlogo.png'%}" width="100%">
+                        <div class="mylistBlockCaption">
+                            <p>{{ mylistSpecialSpecial}} : {{ mylistSpecialSpeaker }}</p>
+                        </div></a>
                 </div>
             {% endfor %}
         </div>
@@ -90,14 +111,14 @@
     {% if mylistWorkshopsNumber == 0 %}
     {% else %}
         <h3>&nbsp;&nbsp;My Lists : Workshops</h3>
-        <div style="width: 100%; padding-bottom: 2%; display: inline-flex; flex-wrap: wrap">
+        <div class="mylistMainDiv">
             {% for mylistWorkshopsSpeaker, mylistWorkshopsWorkshop, mylistWorkshopsGenre, mylistWorkshopsSpeakerNumber, mylistWorkshopsTalkTitle in mylistWorkshopsContext %}
-                <div style="position: relative; border-style: solid; border-color: white; margin: 1%;width: 22%;; display:inline-flex;">
+                <div class="mylistBlock">
                     <a href="workshopsepisode?id={{mylistWorkshopsSpeaker}}&id2={{ mylistWorkshopsWorkshop }}&id3={{ mylistWorkshopsGenre }}&id4={{ mylistWorkshopsSpeakerNumber }}" onClick="this.href=this.href+'&'+new Date().getTime()">
-                        <img src="{% static './resources/playlogo.png'%}" width="100%"></a>
-                    <div style="position: absolute; z-index: 1;color: white; bottom: 0; text-align: center; font-size: 100%; background-color: rgba(0,0,0,0.7); width: 100%">
-                        <p>{{ mylistWorkshopsTalkTitle }}</p>
-                    </div>
+                        <img src="{% static './resources/playlogo.png'%}" width="100%">
+                        <div class="mylistBlockCaption">
+                            <p>{{ mylistWorkshopsTalkTitle }}</p>
+                        </div></a>
                 </div>
             {% endfor %}
         </div>
@@ -106,14 +127,20 @@
     {% if mylistEpisodeNumber == 0 %}
     {% else %}
         <h3>&nbsp;&nbsp;My Lists : Episodes</h3>
-        <div style="width: 100%; padding-bottom: 2%; display: inline-flex; flex-wrap: wrap">
-            {% for mylistEpisodeTitle, mylistEpisodeSession in mylistEpisodeContext %}
-                <div style="position: relative; border-style: solid; border-color: white;margin: 1%;width: 22%; display:inline-flex;">
+        <div class="mylistMainDiv">
+            {% for mylistEpisodeTitle, mylistEpisodeSession,mylistEpisodeNumber in mylistEpisodeContext %}
+                <div class="mylistBlock">
                     <a href="episode?id={{mylistEpisodeTitle}}&id2={{ mylistEpisodeSession }}" onClick="this.href=this.href+'&'+new Date().getTime()">
-                        <img src="{% static './resources/playlogo.png'%}" width="100%"></a>
-                    <div style="position: absolute; z-index: 1;color: white; bottom: 0; text-align: center; font-size: 100%; background-color: rgba(0,0,0,0.7); width: 100%">
-                        <p>{{ mylistEpisodeTitle }}</p>
-                    </div>
+                        {% if mylistEpisodeNumber < 100 %}
+                            <img width="100%" id="paperHighlight" onError="this.onerror=null;this.src='{% static './resources/playlogo.png' %}';" src="{% static './img/IROS20_Digest' %}/00{{ mylistEpisodeNumber|floatformat:"0" }}_PPT.JPG">
+                        {% elif mylistEpisodeNumber >= 100 and mylistEpisodeNumber < 1000 %}
+                            <img width="100%" id="paperHighlight" onError="this.onerror=null;this.src='{% static './resources/playlogo.png' %}';" src="{% static './img/IROS20_Digest' %}/0{{ mylistEpisodeNumber|floatformat:"0" }}_PPT.JPG">
+                        {% elif mylistEpisodeNumber >= 1000 %}
+                            <img width="100%" id="paperHighlight" onError="this.onerror=null;this.src='{% static './resources/playlogo.png' %}';" src="{% static './img/IROS20_Digest' %}/{{ mylistEpisodeNumber|floatformat:"0" }}_PPT.JPG">
+                        {% endif %}
+                        <div class="mylistBlockCaption">
+                            <p>{{ mylistEpisodeTitle }}</p>
+                        </div></a>
                 </div>
             {% endfor %}
         </div>
@@ -121,48 +148,15 @@
 
 </div>
 
-<script src="{% static 'js/index_header.js' %}"></script>
 <script src="{% static 'package/js/swiper.min.js' %}"></script>
-
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
 <script>
     function search(){
         const query = document.getElementById("search_bar").value;
         document.getElementById("keywordDelivery").href = "searchresult?id="+query;
     }
-
-</script>
-<script>
-    var swiper = new Swiper('.swiper-container', {
-        {#slidesPerView: 7,#}
-        {#spaceBetween: 10,#}
-        slidesPerGroup: 2,
-        pagination: {
-            el: '.swiper-pagination',
-            clickable: true,
-        },
-        navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
-        },
-        breakpoints: {
-            // when window width is >= 320px
-            200: {
-                slidesPerView: 4,
-                slidesPerColumnFill:'row',
-                spaceBetween: 4
-            },
-            // when window width is >= 480px
-            600: {
-                slidesPerView: 5,
-                spaceBetween: 5
-            },
-            // when window width is >= 640px
-            900: {
-                slidesPerView: 6,
-                spaceBetween: 6
-            }
-        }
-    });
 </script>
 
 </body>

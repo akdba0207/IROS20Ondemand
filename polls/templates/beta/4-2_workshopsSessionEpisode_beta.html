@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <!-- Link Swiper's CSS -->
     <link rel="stylesheet" href="{% static 'package/css/swiper.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/styles0930.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles1007.css' %}">
     <script
             src="https://kit.fontawesome.com/7541329784.js"
             crossorigin="anonymous"
@@ -32,8 +32,7 @@
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
     />
-    <link rel="stylesheet" href="{% static 'css/index_land0717.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/index_header0930.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/index_header1006.css' %}" />
     <script>
         function hitCounter(titleNumber){
             var mainHitcount = document.getElementById("mainHitCount");
@@ -54,32 +53,52 @@
     </script>
 </head>
 <body onload="hitCounter({{ SelectedPaperNumber }})">
-<header>
-    <div class="logo">
-        <a href="entrance">
-            <img src="{% static './resources/logo.png'%}"/>
-        </a>
-        <button class="header-toggleBtn"><i class="fa fa-bars"></i></button>
-    </div>
-
-    <ul class="categories">
-        <li class="category category1"><a href="entrance" style="color:white; text-decoration: none;">Home</a></li>
-        <li class="category category2"><a href="mylist?" onClick="this.href=this.href.split('?')[0]+'?'+new Date().getTime()" style="color:white; text-decoration: none;">My Lists</a></li>
-        <li class="category category3"><a href="logout" style="color:white; text-decoration: none;">Logout</a></li>
-    </ul>
-
-    <ul class="search_notice_info">
-        <form>
-            <input type="text" id="search_bar" value="" class="searchBar" onkeydown="if(event.keyCode === 13) {event.preventDefault(); document.getElementById('searchBtn').click()}"/>
-            <d onclick="if(search_bar.value.length > 0)search()">
-                <a id = "keywordDelivery" href="javascript: void(0)">
-                    <i id="searchBtn" class="fa fa-search" style="color:white;"></i>
+<nav style="background-color: rgba(0,0,0,0.7)" class="navbar navbar-expand-md navbar-dark fixed-top">
+    <!-- Brand/logo -->
+    <a class="navbar-brand" href="entrance">
+        <img src="{% static './resources/logo.png'%}" width="150px"/>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="collapsibleNavbar">
+        <!-- Links -->
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="entrance" style="color:white; ">Home</a>
+            </li>
+            <!-- Dropdown -->
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" style="color: white" href="#" id="navbardrop" data-toggle="dropdown">
+                    Entrance
                 </a>
-            </d>
-        </form>
-    </ul>
-</header>
-<div style="width:95%; margin:0 auto; padding-top: 5%;" align="justify">
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="main?id=technicalpaper">Technical Talks</a>
+                    <a class="dropdown-item" href="main?id=wstr">Workshops and Tutorials</a>
+                    <a class="dropdown-item" href="main?id=competition">Robot Competition</a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="mylist?" onClick="this.href=this.href+new Date().getTime()" style="color:white;">My Lists</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="logout" style="color:white;">Logout</a>
+            </li>
+        </ul>
+        <ul class="navbar-nav">
+            <form class="form-inline navbar-right">
+                <input type="text" id="search_bar" value="" class="searchBar" onkeydown="if(event.keyCode === 13) {event.preventDefault(); document.getElementById('searchBtn').click()}"/>
+                <d onclick="if(search_bar.value.length > 0)search()">
+                    <a id = "keywordDelivery" href="javascript: void(0)">
+                        <i id="searchBtn" class="fa fa-search" style="color:white;margin-left: 100%;font-size: 18px"></i>
+                    </a>
+                </d>
+            </form>
+        </ul>
+
+    </div>
+</nav>
+<div style="width:95%; margin:0 auto; padding-top: 50px;" align="justify">
 
     <p>&nbsp;</p>
     {#    <video style="display:block; margin: 0 auto; width: 40%; height: auto" controls autoplay>#}
@@ -222,7 +241,6 @@
         {% endif %}
     {% endfor %}
 
-    <script src="{% static 'js/index_header.js' %}"></script>
     <script src="{% static 'package/js/swiper.min.js' %}"></script>
 
     <script>

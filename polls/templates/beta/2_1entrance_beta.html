@@ -15,31 +15,8 @@
         });
     </script>
     <link rel="stylesheet" href="{% static '/css/login0922.css' %}">
+    <link rel="stylesheet" href="{% static '/css/entranceStyle1005.css' %}">
 
-    <style>
-        body {
-            font-family: "Roboto", sans-serif;
-        }
-        .entranceToggle {
-            width: 200px;
-            height: 200px;
-            border-style: solid;
-            border-color: transparent;
-            border-width: 5px;
-            color:  grey;
-        }
-        .entranceToggle:hover {
-            transform: scale(1.1);
-            border-style: solid;
-            border-color: white;
-            border-width: 5px;
-            color: white;
-        }
-        .entranceToggleContainer{
-            width: 200px;
-            height: 200px
-        }
-    </style>
 </head>
 
 <body bgcolor="#1F1F1F">
@@ -47,36 +24,26 @@
     <img src="{% static './resources/logo.png'%}">
 </div>
 <center>
-    <table width="60%" style="margin-top: 10%">
-        <tbody>
-        <tr>
-            <th scope="col" style="width: 33%;"> <center>
-                <a href="main?id=technicalpaper" style="text-decoration: none;"><div class="entranceToggle">
-                    <div class="entranceToggleContainer" style="background-color: yellow;"> </div>
-                    <p class="entranceToggleCaption" style="font-size: 20px;">Technical Talks</p>
-                </div>
-                </a>
-            </center>
-            </th>
-            <th scope="col" style="width: 33%"> <center>
-                <a href="main?id=wstr" style="text-decoration: none;"><div class="entranceToggle">
-                    <div class="entranceToggleContainer"  style="background-color: hotpink;"> </div>
-                    <p class="entranceToggleCaption" style="font-size: 20px">Workshops and Tutorials</p>
-                </div>
-                </a>
-            </center>
-            </th>
-            <th scope="col"style="width: 33%"> <center>
-                <a href="main?id=competition" style="text-decoration: none;"><div class="entranceToggle">
-                    <div class="entranceToggleContainer"  style="background-color: greenyellow;"> </div>
-                    <p class="entranceToggleCaption"style="font-size: 20px">Robot Competition</p>
-                </div>
-                </a>
-            </center>
-            </th>
-        </tr>
-        </tbody>
-    </table>
+
+    <span class="entranceOrganizer">
+        <a href="main?id=technicalpaper" style="text-decoration: none;"><div class="entranceToggle">
+            <div class="entranceToggleContainer" style="background-color: yellow;"> </div>
+            <p class="entranceToggleCaption" style="font-size: 20px;font-weight: bold">Technical Talks</p>
+        </div>
+        </a>
+        <p>&nbsp;</p>
+        <a href="main?id=wstr" style="text-decoration: none;"><div class="entranceToggle">
+            <div class="entranceToggleContainer"  style="background-color: hotpink;"> </div>
+            <p class="entranceToggleCaption" style="font-size: 20px;font-weight: bold">Workshops and Tutorials</p>
+        </div>
+        </a>
+        <p>&nbsp;</p>
+        <a href="main?id=competition" style="text-decoration: none;"><div class="entranceToggle">
+            <div class="entranceToggleContainer"  style="background-color: greenyellow;"> </div>
+            <p class="entranceToggleCaption"style="font-size: 20px;font-weight: bold">Robot Competition</p>
+        </div>
+        </a>
+    </span>
 </center>
 </body>
 </html>

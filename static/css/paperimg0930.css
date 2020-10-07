@@ -64,7 +64,7 @@
 }
 
 .videoPlayButton{
-    width: 20%;
+    width: 30%;
     text-align: center;
     color: white;
     margin-top:5%;
@@ -92,10 +92,79 @@
 .paperlikeviewcountdiv{
     margin-bottom: 2%;
 }
+.pdfopenButton{
+    display: inline-block;
+    margin-left: 3%;
+    font-size: 18px;
+}
 
-/* 100% Image Width on Smaller Screens */
-@media only screen and (max-width: 700px){
+@media only screen and (max-width: 400px){
     .modal-content {
         width: 100%;
+    }
+    .videoPlayButton{
+        width: 50%;
+        padding: 3%;
+    }
+    .videoPlayButtonText{
+        display: inline;
+        font-size: 80%;
+    }
+    .videoPlayButtonIcon{
+        display: inline;
+        font-size: 100%;
+    }
+    .paperlikeviewcountdiv{
+        margin-bottom: 2%;
+    }
+    .pdfopenButton{
+        font-size: 100%
+    }
+}
+
+@media only screen and (max-width: 600px) and (min-width: 401px){
+    .modal-content {
+        width: 100%;
+    }
+    .videoPlayButton{
+        width: 50%;
+        padding: 3%;
+    }
+    .videoPlayButtonText{
+        display: inline;
+        font-size: 80%;
+    }
+    .videoPlayButtonIcon{
+        display: inline;
+        font-size: 100%;
+    }
+    .paperlikeviewcountdiv{
+        margin-bottom: 2%;
+    }
+    .pdfopenButton{
+        font-size: 100%
+    }
+}
+
+@media only screen and (max-width: 1200px) and (min-width: 601px) {
+    .modal-content {
+        width: 100%;
+    }
+    .videoPlayButton{
+        width: 40%;
+    }
+    .videoPlayButtonText{
+        display: inline;
+        font-size: 100%;
+    }
+    .videoPlayButtonIcon{
+        display: inline;
+        font-size: 100%;
+    }
+    .paperlikeviewcountdiv{
+        margin-bottom: 2%;
+    }
+    .pdfopenButton{
+        font-size: 120%
     }
 }

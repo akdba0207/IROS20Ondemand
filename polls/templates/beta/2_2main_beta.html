@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <!-- Link Swiper's CSS -->
     <link rel="stylesheet" href="{% static 'package/css/swiper.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/styles0930.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles1007.css' %}">
 
     <script src="https://s3-us-west-2.amazonaws.com/ieeeshutpages/gdpr/settings.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css" />
@@ -34,46 +34,59 @@
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
     />
-    <link rel="stylesheet" href="{% static 'css/index_land0717.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/index_header0930.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/index_header1006.css' %}" />
 
 </head>
 <body>
-
-<header>
-    <div class="logo">
-        <a href="entrance">
-            <img src="{% static './resources/logo.png'%}" />
-        </a>
-        {#        <button class="header-toggleBtn"><i class="fa fa-bars"></i></button>#}
-    </div>
-
-    <ul class="categories">
-        <li class="category category1"><a href="entrance" style="color:white; text-decoration: none;">Home</a></li>
-        {#        <li class="category category2"><a href="mylist?" onClick="this.href=this.href.split('?')[0]+'?'+new Date().getTime()" style="color:white; text-decoration: none;">My Lists</a></li>#}
-        <li class="category category2"><a href="mylist?" onClick="this.href=this.href+new Date().getTime()" style="color:white; text-decoration: none;">My Lists</a></li>
-        <li class="category category3"><a href="logout" style="color:white; text-decoration: none;">Logout</a></li>
-    </ul>
-
-    <ul class="search_notice_info">
-        <form>
-            <input type="text" id="search_bar" value="" class="searchBar" onkeydown="if(event.keyCode === 13) {event.preventDefault(); document.getElementById('searchBtn').click()}"/>
-            <d onclick="if(search_bar.value.length > 0)search()">
-                <a id = "keywordDelivery" href="javascript: void(0)">
-                    <i id="searchBtn" class="fa fa-search" style="color:white;"></i>
+<nav style="background-color: rgba(0,0,0,0.7)" class="navbar navbar-expand-md navbar-dark fixed-top">
+    <!-- Brand/logo -->
+    <a class="navbar-brand" href="entrance">
+        <img src="{% static './resources/logo.png'%}" width="150px"/>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="collapsibleNavbar">
+        <!-- Links -->
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="entrance" style="color:white; ">Home</a>
+            </li>
+            <!-- Dropdown -->
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" style="color: white" href="#" id="navbardrop" data-toggle="dropdown">
+                    Entrance
                 </a>
-            </d>
-        </form>
-    </ul>
-</header>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="main?id=technicalpaper">Technical Talks</a>
+                    <a class="dropdown-item" href="main?id=wstr">Workshops and Tutorials</a>
+                    <a class="dropdown-item" href="main?id=competition">Robot Competition</a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="mylist?" onClick="this.href=this.href+new Date().getTime()" style="color:white;">My Lists</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="logout" style="color:white;">Logout</a>
+            </li>
+        </ul>
+        <ul class="navbar-nav">
+            <form class="form-inline navbar-right">
+                <input type="text" id="search_bar" value="" class="searchBar" onkeydown="if(event.keyCode === 13) {event.preventDefault(); document.getElementById('searchBtn').click()}"/>
+                <d onclick="if(search_bar.value.length > 0)search()">
+                    <a id = "keywordDelivery" href="javascript: void(0)">
+                        <i id="searchBtn" class="fa fa-search" style="color:white;margin-left: 100%;font-size: 18px"></i>
+                    </a>
+                </d>
+            </form>
+        </ul>
 
-{#TODO :  Video control and pause, auto slide in 10 seconds.#}
+    </div>
+</nav>
+
 <div style="width:95%; margin:0 auto;" align="justify">
-    {##}
-    {##}
-    {#TODO: working area Gyuho#}
-
-    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+    <div class="greetings"><p style="color: white;padding-top: 100px">Welcome to IROS 2020 On-Demand!</p></div>
+    <div style="padding-top: 10px" id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
         {#        <ol class="carousel-indicators ">#}
         {##}
         {#            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active">#}
@@ -81,21 +94,19 @@
         {#            <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>#}
         {#            <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>#}
         {#        </ol>#}
-        <div style="text-align: center; padding-top: 4%"><p style="color: white; font-size: 150%">Welcome to IROS 2020 On-Demand!</p></div>
 
         <div class="carousel-inner" >
             <div class="carousel-item active">
                 <div style="text-align: right">
                     <div class="carousel-video">
-                        <input type="file" accept="video/*" />
-                        <video id="video0" autoplay loop>
+                        <video id="video0" autoplay loop playsinline>
                         </video>
                     </div>
                     <div class="carousel-caption" >
                         <p>PLATINUM SPONSOR VIDEO example</p>
                         <p id="platinumSponsor1"></p>
                         <p>Company info goes here</p>
-                        <div style="width: 50%; text-align: left; font-size: 100%;">
+                        <div class="pltVolumeBtn">
                             <button style="background-color: transparent;border: none; margin:auto; outline: none;color: red;" class="UnmuteBtn"  onclick="disbleMute('video0')" type="button">
                                 <i class="fas fa-volume-up"></i>
                             </button>
@@ -109,14 +120,14 @@
             <div class="carousel-item">
                 <div style="text-align: right">
                     <div class="carousel-video">
-                        <video id="video1" loop>
+                        <video id="video1" loop playsinline>
                         </video>
                     </div>
                     <div class="carousel-caption">
                         <p>PLATINUM SPONSOR VIDEO example</p>
                         <p id="platinumSponsor2"></p>
                         <p>Company info goes here</p>
-                        <div style="width: 50%; text-align: left; font-size: 100%;">
+                        <div class="pltVolumeBtn">
                             <button style="background-color: transparent;border: none; margin:auto; outline: none;color: red;" class="UnmuteBtn"  onclick="disbleMute('video1')" type="button">
                                 <i class="fas fa-volume-up"></i>
                             </button>
@@ -130,14 +141,14 @@
             <div class="carousel-item">
                 <div style="text-align: right">
                     <div class="carousel-video">
-                        <video id="video2" loop>
+                        <video id="video2" loop playsinline>
                         </video>
                     </div>
                     <div class="carousel-caption">
                         <p>PLATINUM SPONSOR VIDEO example</p>
                         <p id="platinumSponsor3"></p>
                         <p>Company info goes here</p>
-                        <div style="width: 50%; text-align: left; font-size: 100%;">
+                        <div class="pltVolumeBtn">
                             <button style="background-color: transparent;border: none; margin:auto; outline: none;color: red;" class="UnmuteBtn"  onclick="disbleMute('video2')" type="button">
                                 <i class="fas fa-volume-up"></i>
                             </button>
@@ -180,17 +191,19 @@
         {#                </div>#}
         {#            </div>#}
         {#        {% endif %}#}
-
-
+        {% if showcontents == 3 %}
+            <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Robot Competition - Under Construction</h3>
+        {% endif %}
         {% if showcontents == 2 %}
             <div class="netflix-slider">
-                <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{Genre.1}}</h3>
+                <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{Genre.1}} - Under Construction</h3>
                 {% if allowWSContents == 1%}
                     <div class="swiper-container">
                         <div class="swiper-wrapper">
                             {% for j in Workshops %}
                                 <div class="swiper-slide"><a href="workshops?id={{j}}&id2={{ Genre.1 }}" onClick="this.href=this.href+'&'+new Date().getTime()" style="color:white; text-decoration: none;">
-                                    <img src="{% static 'img'%}/Workshops/{{ j }}.jpg">
+                                    <img class="netflix-slider-img" onError="this.onerror=null;this.src='{% static './resources/logo2.png' %}';" src="{% static 'img'%}/Workshops/{{ j }}.jpg">
+
                                     <div class="onimg-caption">{{ j }}
                                     </div>
                                 </a>
@@ -209,11 +222,13 @@
         {% if showcontents == 1 %}
             {% for Pavilion, Sessions in  PavSessions %}
                 <div class="netflix-slider">
+                    {#                    <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp<a style="color:white;text-decoration: none" href="carousel?id={{ Pavilion }}&id2={{ forloop.counter }}">{{Pavilion}}</a></h3>#}
                     <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp{{Pavilion}}</h3>
                     <div style="width: 100%; padding-bottom: 2%; display: inline-flex; flex-wrap: wrap">
-                        <div class="swiper-slide" style="width: 16%; display: inline-block; color: white; margin-top: 1%;" >
-                            <img class="keynoteimg" src="{% static './resources/logo2.png'%}"/>
-                            <div class="onimg-caption">Keynotes
+                        <div class="keynoteimg">
+                            <img src="{% static './resources/logo2.png'%}"/>
+                            <div class="keynoteimgcaption">
+                                Keynotes
                             </div>
                         </div>
                         <div class="swiper-container" style="display: inline-block; width: 70%;">
@@ -239,7 +254,6 @@
         <p>&nbsp;</p>
     </div>
 </div>
-</div>
 
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -248,7 +262,7 @@
 <script>
     $(document).ready(function() {
         $('#carouselExampleIndicators').carousel({
-            interval:3000,
+            interval:10000,
         }).on('slide.bs.carousel', function (args){
             var videoList = document.getElementsByTagName("video");
             videoList[args.from].pause();
@@ -256,7 +270,6 @@
         })
     });
 </script>
-<script src="{% static 'js/index_header.js' %}"></script>
 <script src="{% static 'package/js/swiper.min.js' %}"></script>
 <!-- Initialize Swiper -->
 {#<script>#}
@@ -287,19 +300,19 @@
         breakpoints: {
             // when window width is >= 320px
             200: {
-                slidesPerView: 4,
+                slidesPerView: 3,
                 slidesPerColumnFill:'row',
-                spaceBetween: 4
+                spaceBetween: 5
             },
             // when window width is >= 480px
             600: {
-                slidesPerView: 5,
-                spaceBetween: 5
+                slidesPerView: 4,
+                spaceBetween: 4
             },
             // when window width is >= 640px
             900: {
-                slidesPerView: 6,
-                spaceBetween: 6
+                slidesPerView: 5,
+                spaceBetween: 5
             }
         }
     });
@@ -367,6 +380,19 @@
         vid2.muted=false;
         vid3.muted=false;
         {#vid.muted = false;#}
+    }
+</script>
+<script>
+    if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
+        document.write("mobile");
+        var vid1 = document.getElementById('video0')
+        var vid2 = document.getElementById('video1')
+        var vid3 = document.getElementById('video2')
+        vid1.muted=true;
+        vid2.muted=true;
+        vid3.muted=true;
+    }else{
+        document.write("not mobile");
     }
 </script>
 </div>

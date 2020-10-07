@@ -1,0 +1,24 @@
+.nav-item{
+    font-size: 18px;
+    text-align: center;
+}
+.nav-item:hover{
+    background-color: #b3b3b3;
+}
+.dropdown-menu{
+    text-align: center;
+    background-color: rgba(0,0,0,0.7);
+}
+.dropdown-item{
+    color: white;
+}
+.form-inline{
+    padding-right: 30px;
+}
+.form-inline{
+    text-align: center;
+    margin: 0 auto;
+}
+#search_bar{
+    width: 200px;
+}

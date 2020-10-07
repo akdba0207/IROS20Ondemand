@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <!-- Link Swiper's CSS -->
     <link rel="stylesheet" href="{% static 'package/css/swiper.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/styles0930.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles1007.css' %}">
     <link rel="stylesheet" href="{% static 'css/paperimg0930.css' %}">
 
     <script
@@ -34,40 +34,59 @@
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
     />
-    <link rel="stylesheet" href="{% static 'css/index_land0717.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/index_header0930.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/index_header1006.css' %}" />
 
 </head>
 <body>
-
-<header>
-    <div class="logo">
-        <a href="entrance">
-            <img src="{% static './resources/logo.png'%}"/>
-        </a>
-        <button class="header-toggleBtn"><i class="fa fa-bars"></i></button>
-    </div>
-
-    <ul class="categories">
-        <li class="category category1"><a href="entrance" style="color:white; text-decoration: none;">Home</a></li>
-        <li class="category category2"><a href="mylist?" onClick="this.href=this.href.split('?')[0]+'?'+new Date().getTime()" style="color:white; text-decoration: none;">My Lists</a></li>
-        <li class="category category3"><a href="logout" style="color:white; text-decoration: none;">Logout</a></li>
-    </ul>
-
-    <ul class="search_notice_info">
-        <form>
-            <input type="text" id="search_bar" value="" class="searchBar" onkeydown="if(event.keyCode === 13) {event.preventDefault(); document.getElementById('searchBtn').click()}"/>
-            <d onclick="if(search_bar.value.length > 0)search()">
-                <a id = "keywordDelivery" href="javascript: void(0)">
-                    <i id="searchBtn" class="fa fa-search" style="color:white;"></i>
+<nav style="background-color: rgba(0,0,0,0.7)" class="navbar navbar-expand-md navbar-dark fixed-top">
+    <!-- Brand/logo -->
+    <a class="navbar-brand" href="entrance">
+        <img src="{% static './resources/logo.png'%}" width="150px"/>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="collapsibleNavbar">
+        <!-- Links -->
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="entrance" style="color:white; ">Home</a>
+            </li>
+            <!-- Dropdown -->
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" style="color: white" href="#" id="navbardrop" data-toggle="dropdown">
+                    Entrance
                 </a>
-            </d>
-        </form>
-    </ul>
-</header>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="main?id=technicalpaper">Technical Talks</a>
+                    <a class="dropdown-item" href="main?id=wstr">Workshops and Tutorials</a>
+                    <a class="dropdown-item" href="main?id=competition">Robot Competition</a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="mylist?" onClick="this.href=this.href+new Date().getTime()" style="color:white;">My Lists</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="logout" style="color:white;">Logout</a>
+            </li>
+        </ul>
+        <ul class="navbar-nav">
+            <form class="form-inline navbar-right">
+                <input type="text" id="search_bar" value="" class="searchBar" onkeydown="if(event.keyCode === 13) {event.preventDefault(); document.getElementById('searchBtn').click()}"/>
+                <d onclick="if(search_bar.value.length > 0)search()">
+                    <a id = "keywordDelivery" href="javascript: void(0)">
+                        <i id="searchBtn" class="fa fa-search" style="color:white;margin-left: 100%;font-size: 18px"></i>
+                    </a>
+                </d>
+            </form>
+        </ul>
 
-<div style="width:95%; margin:0 auto; padding-top: 12%;" align="justify">
-    <h3>&nbsp;&nbsp;Search Results : </h3>
+    </div>
+</nav>
+
+<div style="width:95%; margin:0 auto; padding-top: 50px;" align="justify">
+    <p>&nbsp;</p>
+    <h3 style="font-size: 24px;">&nbsp;&nbsp;Search Results : </h3>
     <p>&nbsp;</p>
 
     <div id="highlightModal" class="modal">
@@ -76,11 +95,11 @@
         <div id="caption"></div>
     </div>
 
-    {% for AuthorList1, AuthorList2, AuthorList3, AuthorList4,AuthorList5,AuthorList6,AffiliationList1,AffiliationList2,AffiliationList3,AffiliationList4,AffiliationList5,TitleList, PDFList, titleNumber, paperLikeCount, paperLikeButtonColor, paperSaveButtonStatus, SessionList, paperHitCount in EpisodeContext %}
-        <div class="epilisttable" style="width: 80%; height: auto; text-align: center; margin-left: 10%; background-color: transparent; margin-bottom:1%">
-            <table border="0" cellpadding="0" cellspacing="0" style="background-color: #323232;" >
+    {% for AuthorList1, AuthorList2, AuthorList3, AuthorList4,AuthorList5,AuthorList6,AffiliationList1,AffiliationList2,AffiliationList3,AffiliationList4,AffiliationList5,TitleList, PDFList, titleNumber, paperLikeCount, paperLikeButtonColor, paperSaveButtonStatus, SessionList, paperHitCount, awardeeCount,awardNameCount in EpisodeContext %}
+        <div class="epilisttable">
+            <table border="0" cellpadding="0" cellspacing="0" style="background-color: #323232;border-radius: 10px" >
                 <tr>
-                    <td style="width: 30%;color:white">
+                    <td class="epilisttableleft">
                         {#                        <a href="episode?id={{TitleList}}&id2={{ SessionList }}" onClick="this.href=this.href+'&'+new Date().getTime()">#}
                         {% if titleNumber < 100 %}
                             <img id="paperHighlight" onError="this.onerror=null;this.src='{% static './resources/playlogo.png' %}';" src="{% static './img/IROS20_Digest' %}/00{{ titleNumber|floatformat:"0" }}_PPT.JPG" onclick="highlightClicked(this.src)">
@@ -90,10 +109,14 @@
                             <img id="paperHighlight" onError="this.onerror=null;this.src='{% static './resources/playlogo.png' %}';" src="{% static './img/IROS20_Digest' %}/{{ titleNumber|floatformat:"0" }}_PPT.JPG" onclick="highlightClicked(this.src)">
                         {% endif %}
                         {#                        </a>#}
-                        Click image to zoom-in &nbsp;&nbsp;&nbsp;<i class="fa fa-search-plus"></i>
+                        Click image to zoom-in &nbsp;&nbsp;&nbsp;<i class="fa fa-search-plus" style="vertical-align: middle"></i>
                     </td>
-                    <td valign="top" align="left" style="padding-left: 5%; padding-top: 3%;word-break: keep-all">
-                        <p class="papertitle" style="color: white;">Title : {{ TitleList }}</p>
+                    <td valign="top" align="left" class="epilisttableright">
+                        {% if awardeeCount == 1 %}
+                            <p class="awardpapertitle">Nominated to {{ awardNameCount }} &#10030;</p>
+                        {% else %}
+                        {% endif %}
+                        <p class="papertitle" style="color: white;">{{ TitleList }}</p>
                         <table class="paperInfo" border="0" cellpadding="0" cellspacing="0" width="100% "style="background-color: #323232; text-align: left;color: white;">
                             <tbody>
 
@@ -157,14 +180,14 @@
                             {% csrf_token %}
                             {% if paperSaveButtonStatus == 1 %}
                                 <button class="saveButton" type="submit" style="margin: auto;background-color: #323232; color: white" onclick="updateSave({{ titleNumber|floatformat:"0" }})">
-                                    <i id="savebutton{{titleNumber|floatformat:"0"}}" class="fa fa-check-circle"  aria-hidden="true" style="color:white; font-size: 30px;vertical-align: top"></i>
-                                    <font id="buttonMessage{{titleNumber|floatformat:"0"}}" style="color: white;font-size: 18px;">&nbsp;&nbsp;&nbsp;Added to my list</font>
+                                    <i id="savebutton{{titleNumber|floatformat:"0"}}" class="fa fa-check-circle"  aria-hidden="true" style="color:white; vertical-align: top"></i>
+                                    <font id="buttonMessage{{titleNumber|floatformat:"0"}}" style="color: white;">&nbsp;&nbsp;&nbsp;Added to my list</font>
                                     <input type="hidden" name="paperNumber" value="{{ titleNumber|floatformat:"0" }}">
                                 </button>
                             {% else %}
                                 <button class="saveButton" type="submit" style="padding: 0% ;background-color: #323232;" onclick="updateSave({{ titleNumber|floatformat:"0" }})">
-                                    <i id="savebutton{{titleNumber|floatformat:"0"}}" class="fa fa-plus"  aria-hidden="true" style="color:white; font-size: 30px;vertical-align: top"></i>
-                                    <font id="buttonMessage{{titleNumber|floatformat:"0"}}" style="color: white;font-size: 18px;">&nbsp;&nbsp;&nbsp;Add to my List</font>
+                                    <i id="savebutton{{titleNumber|floatformat:"0"}}" class="fa fa-plus"  aria-hidden="true" style="color:white; vertical-align: top"></i>
+                                    <font id="buttonMessage{{titleNumber|floatformat:"0"}}" style="color: white;">&nbsp;&nbsp;&nbsp;Add to my List</font>
                                     <input type="hidden" name="paperNumber" value="{{ titleNumber|floatformat:"0" }}">
                                 </button>
                             {% endif %}
@@ -180,7 +203,7 @@
                                     </div>
                                 </div>
                             </a>
-                            <div style="display: inline-block;margin-left: 3%">
+                            <div class="pdfopenButton">
                                 {% if PDFList == 'missing' %}
                                     <p style="font-size: 18px;color: lawngreen;">No PDF files</p>
                                 {% else %}
@@ -192,13 +215,13 @@
                         <div class="paperlikeviewcountdiv">
                             {% if paperLikeButtonColor == 1 %}
                                 <button class="likeButton" type="submit" style="margin: auto;background-color: #323232 ;" onclick="updateLike({{ titleNumber|floatformat:"0" }})">
-                                    <i id="thumbs{{titleNumber|floatformat:"0"}}" class="fa fa-thumbs-up" style="color:yellow; font-size: 30px"></i>
+                                    <i id="thumbs{{titleNumber|floatformat:"0"}}" class="fa fa-thumbs-up" style="color:yellow;"></i>
                                     <input type="text" id="{{ titleNumber|floatformat:"0" }}" value="{{ paperLikeCount }}" class="thumbsuptext" name="likeCount" readonly/>
                                     <input type="hidden" name="paperNumber" value="{{ titleNumber|floatformat:"0" }}">
                                 </button>
                             {% else %}
                                 <button class="likeButton" type="submit" style="padding: 0% ;background-color: #323232;" onclick="updateLike({{ titleNumber|floatformat:"0" }})">
-                                    <i id="thumbs{{titleNumber|floatformat:"0"}}" class="fa fa-thumbs-up" style="color:grey; font-size: 30px"></i>
+                                    <i id="thumbs{{titleNumber|floatformat:"0"}}" class="fa fa-thumbs-up" style="color:grey;"></i>
                                     <input type="text" id="{{ titleNumber|floatformat:"0" }}" value="{{ paperLikeCount }}" class="thumbsuptext" name="likeCount" readonly/>
                                     <input type="hidden" name="paperNumber" value="{{ titleNumber|floatformat:"0" }}">
                                 </button>
@@ -212,7 +235,6 @@
     {% endfor %}
 
 
-    <script src="{% static 'js/index_header.js' %}"></script>
     <script src="{% static 'package/js/swiper.min.js' %}"></script>
     <script>
         function search(){
@@ -254,6 +276,7 @@
     </script>
     <script>
         function updateSave(titleNumber){
+            var savebuttonClass = document.getElementById("savebutton"+titleNumber).className;
             if(savebuttonClass == 'fa fa-plus'){
                 $('#savebutton'+titleNumber).removeClass(savebuttonClass);
                 $('#savebutton'+titleNumber).addClass('fa fa-check-circle');

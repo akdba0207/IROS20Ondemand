@@ -1,0 +1,37 @@
+.mylistMainDiv{
+    width: 100%; padding-bottom: 2%; display: inline-flex; flex-wrap: wrap;
+}
+.mylistBlock{
+    position: relative; border-style: solid; border-color: white;margin: 1%;width: 22%; display:inline-block;
+}
+.mylistBlockCaption{
+    position: absolute; z-index: 1;color: white; bottom: 0; text-align: center; font-size: 100%; background-color: rgba(0,0,0,0.7); width: 100%
+}
+
+@media only screen and (max-width: 400px){
+
+    .mylistBlock{
+        margin: 1%;width: 45%;
+    }
+    .mylistBlockCaption{
+        font-size: 85%;
+    }
+}
+
+@media only screen and (max-width: 750px) and (min-width: 401px) {
+    .mylistBlock{
+        margin: 1%;width: 45%;
+    }
+    .mylistBlockCaption{
+        font-size: 90%;
+    }
+}
+
+@media only screen and (max-width: 1200px) and (min-width: 751px) {
+    .mylistBlock{
+        margin: 1%;width: 30%;
+    }
+    .mylistBlockCaption{
+        font-size: 100%;
+    }
+}

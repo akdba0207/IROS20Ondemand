@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <!-- Link Swiper's CSS -->
     <link rel="stylesheet" href="{% static 'package/css/swiper.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/styles0930.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles1007.css' %}">
     <script
             src="https://kit.fontawesome.com/7541329784.js"
             crossorigin="anonymous"
@@ -34,7 +34,7 @@
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
     />
     <link rel="stylesheet" href="{% static 'css/index_land0717.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/index_header0930.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/index_header1006.css' %}" />
 
 </head>
 <body>
@@ -92,7 +92,7 @@
         <h3>&nbsp;&nbsp;My Lists : Workshops</h3>
         <div style="width: 100%; padding-bottom: 2%; display: inline-flex; flex-wrap: wrap">
             {% for mylistWorkshopsSpeaker, mylistWorkshopsWorkshop, mylistWorkshopsGenre, mylistWorkshopsSpeakerNumber, mylistWorkshopsTalkTitle in mylistWorkshopsContext %}
-                <div style="position: relative; border-style: solid; border-color: white; margin: 1%;width: 22%;; display:inline-flex;">
+                <div style="position: relative; border-style: solid; border-color: white; margin: 1%;width: 22%; display:inline-flex;">
                     <a href="workshopsepisode?id={{mylistWorkshopsSpeaker}}&id2={{ mylistWorkshopsWorkshop }}&id3={{ mylistWorkshopsGenre }}&id4={{ mylistWorkshopsSpeakerNumber }}" onClick="this.href=this.href+'&'+new Date().getTime()">
                         <img src="{% static './resources/playlogo.png'%}" width="100%"></a>
                     <div style="position: absolute; z-index: 1;color: white; bottom: 0; text-align: center; font-size: 100%; background-color: rgba(0,0,0,0.7); width: 100%">

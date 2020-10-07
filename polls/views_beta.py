@@ -35,22 +35,17 @@ from polls.search import searchByKeyword, findSimilarTopic
 pre = os.path.dirname(os.path.realpath(__file__))
 
 # IROS2020 Excel file
-excel_file0 = 'IROS20_OnDemand__09_24_main.xlsx'
+excel_file0 = 'IROS20_OnDemand__10_05_main.xlsx'
 path0 = os.path.join(pre, excel_file0)
 iros2020_raw_orgin = pd.read_excel(path0, sheet_name=0)
 iros2020_raw_orgin_empty_filter = iros2020_raw_orgin.fillna('missing')
 iros2020_raw = iros2020_raw_orgin_empty_filter.iloc[0:1445,:] #Technical paper is from 0~1445
+iros2020_award = iros2020_raw_orgin_empty_filter[(iros2020_raw_orgin_empty_filter['Theme']=='Award Finalists')] #IROS Award Session
 
-# print(iros2020_raw)
 # Call Genres, Pavilion
 excel_file1 = 'IROS2020_onDemand_beta.xlsx'
 path1 = os.path.join(pre, excel_file1)
 Cartegories = pd.read_excel(path1, sheet_name=0)
-
-excel_file2 = 'ICRA20Digest4369_1.xlsx'
-path2 = os.path.join(pre, excel_file2)
-icra_example = pd.read_excel(path2, sheet_name=0)
-icra_example = icra_example.fillna('missing')
 
 # Call Keynotes and Plenaries
 excel_file3 = 'ICRA20KeynotesandPlenaries.xlsx'
@@ -69,10 +64,6 @@ path6 = os.path.join(pre, excel_file6)
 icra_sponsors = pd.read_excel(path6, sheet_name=0)
 icra_sponsors = icra_sponsors.fillna('missing')
 
-# Pavilion Monday Session
-icra_Monday = icra_example[(icra_example['SchCode'].str[0] == 'M') & (icra_example['SchCode'].str[1] == 'o')]
-icra_sessiontitle = icra_Monday['Session title']
-
 iros_sessiontitle = iros2020_raw['Theme']
 totalGenre = sorted(list(set(iros2020_raw['Theme'])))
 # print(totalGenre)
@@ -87,7 +78,8 @@ organizedGenre = [totalGenre[0],
                   totalGenre[4],
                   totalGenre[5],
                   totalGenre[11],
-                  totalGenre[7]]
+                  totalGenre[7],
+                  'Award Finalists']
 
 Pavilion1 = iros2020_raw[iros2020_raw['Theme']==organizedGenre[0]]
 Pavilion2 = iros2020_raw[iros2020_raw['Theme']==organizedGenre[1]]
@@ -101,6 +93,7 @@ Pavilion9 = iros2020_raw[iros2020_raw['Theme']==organizedGenre[8]]
 Pavilion10 = iros2020_raw[iros2020_raw['Theme']==organizedGenre[9]]
 Pavilion11 = iros2020_raw[iros2020_raw['Theme']==organizedGenre[10]]
 Pavilion12 = iros2020_raw[iros2020_raw['Theme']==organizedGenre[11]]
+Pavilion13 = iros2020_award[(iros2020_award['Theme']==organizedGenre[12])] #Award Sessions
 
 Sessions1 = sorted(list(set(Pavilion1['Session title'])))
 Sessions2 = sorted(list(set(Pavilion2['Session title'])))
@@ -114,43 +107,7 @@ Sessions9 = sorted(list(set(Pavilion9['Session title'])))
 Sessions10 = sorted(list(set(Pavilion10['Session title'])))
 Sessions11 = sorted(list(set(Pavilion11['Session title'])))
 Sessions12 = sorted(list(set(Pavilion12['Session title'])))
-
-# print(organizedGenre[0] + ' = '+str(len(Sessions1)))
-# print(organizedGenre[1] + ' = '+str(len(Sessions2)))
-# print(organizedGenre[2] + ' = '+str(len(Sessions3)))
-# print(organizedGenre[3] + ' = '+str(len(Sessions4)))
-# print(organizedGenre[4] + ' = '+str(len(Sessions5)))
-# print(organizedGenre[5] + ' = '+str(len(Sessions6)))
-# print(organizedGenre[6] + ' = '+str(len(Sessions7)))
-# print(organizedGenre[7] + ' = '+str(len(Sessions8)))
-# print(organizedGenre[8] + ' = '+str(len(Sessions9)))
-# print(organizedGenre[9] + ' = '+str(len(Sessions10)))
-# print(organizedGenre[10] + ' = '+str(len(Sessions11)))
-# print(organizedGenre[11] + ' = '+str(len(Sessions12)))
-# print(organizedGenre[0])
-# print(Sessions1)
-# print(organizedGenre[1])
-# print(Sessions2)
-# print(organizedGenre[2])
-# print(Sessions3)
-# print(organizedGenre[3])
-# print(Sessions4)
-# print(organizedGenre[4])
-# print(Sessions5)
-# print(organizedGenre[5])
-# print(Sessions6)
-# print(organizedGenre[6])
-# print(Sessions7)
-# print(organizedGenre[7])
-# print(Sessions8)
-# print(organizedGenre[8])
-# print(Sessions9)
-# print(organizedGenre[9])
-# print(Sessions10)
-# print(organizedGenre[10])
-# print(Sessions11)
-# print(organizedGenre[11])
-# print(Sessions12)
+Sessions13 = sorted(list(set(Pavilion13['Session title'])))
 
 
 # totalSessions = zip(Sessions1, Sessions2, Sessions3, Sessions4, Sessions5)
@@ -266,7 +223,8 @@ def main(request):
     # else:
     #     allowWSContents = 0
     Sessions = [Sessions1,Sessions2,Sessions3,Sessions4,Sessions5,Sessions6,Sessions7,
-                   Sessions8,Sessions9,Sessions10,Sessions11,Sessions12]
+                Sessions8,Sessions9,Sessions10,Sessions11,Sessions12, Sessions13]
+
     PavSessions = zip(organizedGenre, Sessions)
     return render(request, './beta/2_2main_beta.html',
                   {'PavSessions':PavSessions,
@@ -284,6 +242,62 @@ def main(request):
 #########################################################################################################
 # Sessions : Pavilion, Specials, Workshops
 # @login_required
+def carousel(request):
+    if request.user.is_authenticated == False:
+        return render(request, './beta/1-1_loginError_beta.html')
+    else:
+        user_verification(request)
+    current_user = request.user.username
+    current_account = get_object_or_404(User, username=current_user)
+
+    selectedPavilion = request.GET['id']
+    selectedPavilionNum = request.GET['id2']
+
+    if selectedPavilion == organizedGenre[0]:
+        selectedSessionList = Sessions1
+    elif selectedPavilion == organizedGenre[1]:
+        selectedSessionList = Sessions2
+    elif selectedPavilion == organizedGenre[2]:
+        selectedSessionList = Sessions3
+    elif selectedPavilion == organizedGenre[3]:
+        selectedSessionList = Sessions4
+    elif selectedPavilion == organizedGenre[4]:
+        selectedSessionList = Sessions5
+    elif selectedPavilion == organizedGenre[5]:
+        selectedSessionList = Sessions6
+    elif selectedPavilion == organizedGenre[6]:
+        selectedSessionList = Sessions7
+    elif selectedPavilion == organizedGenre[7]:
+        selectedSessionList = Sessions8
+    elif selectedPavilion == organizedGenre[8]:
+        selectedSessionList = Sessions9
+    elif selectedPavilion == organizedGenre[9]:
+        selectedSessionList = Sessions10
+    elif selectedPavilion == organizedGenre[10]:
+        selectedSessionList = Sessions11
+    elif selectedPavilion == organizedGenre[11]:
+        selectedSessionList = Sessions12
+    else:
+        selectedSessionList = []
+
+    # Gold Sponsor Video
+    goldSponsorSession = icra_sponsors[(icra_sponsors['Location'] == 'Aerial Systems - Applications I')].reset_index()
+    goldSponsorName = goldSponsorSession['Name'].reset_index()
+    goldSponsorVideo = goldSponsorSession['Video'].reset_index()
+    goldSponsorWebpage = goldSponsorSession['Link'].reset_index()
+
+    if request.method == "GET":
+
+        return render(request, './beta/2_3_carousel_beta.html', {'Pavilion': selectedPavilion,
+                                                                 'PavilionNum': selectedPavilionNum,
+                                                                 'SessionList': selectedSessionList,
+                                                                 'goldSponsorName': goldSponsorName['Name'],
+                                                                 'goldSponsorVideo': goldSponsorVideo['Video'],
+                                                                 'goldSponsorSession': goldSponsorSession[
+                                                                     'Location'],
+                                                                 'goldSponsorWebpage': goldSponsorWebpage['Link']
+                                                                 })
+
 def tvshow(request):
     if request.user.is_authenticated == False:
         return render(request, './beta/1-1_loginError_beta.html')
@@ -321,10 +335,43 @@ def tvshow(request):
         selectedSessionList = Sessions11
     elif selectedPavilion == organizedGenre[11]:
         selectedSessionList = Sessions12
+    elif selectedPavilion == organizedGenre[12]:
+        selectedSessionList = Sessions13
     else:
         selectedSessionList = []
 
-    EpisodeList = iros2020_raw[(iros2020_raw['Session title'] == selectedSession)]
+    if selectedPavilion == organizedGenre[12]:
+        AwardList = iros2020_award[(iros2020_award['Session title']==selectedSession)]
+        AwardTitleList = AwardList['Title'].reset_index()
+        findPaperinRaw= iros2020_raw[(iros2020_raw['Title'])==AwardTitleList['Title'].iloc[0]]
+
+        for awardListNum in range(1,len(AwardTitleList)):
+            sorting = findPaperinRaw.append(iros2020_raw[(iros2020_raw['Title'])==AwardTitleList['Title'].iloc[awardListNum]])
+            findPaperinRaw = sorting
+        EpisodeList = findPaperinRaw
+        TitleList = EpisodeList['Title'].reset_index()
+        PDFList = EpisodeList['FN'].reset_index()
+        titleNumber = EpisodeList['Nr'].reset_index()
+    else:
+        EpisodeList = iros2020_raw[(iros2020_raw['Session title'] == selectedSession)]
+        TitleList = EpisodeList['Title'].reset_index()
+        PDFList = EpisodeList['FN'].reset_index()
+        titleNumber = EpisodeList['Nr'].reset_index()
+
+    awardeeCount = []
+    awardNameCount = []
+    for titles in TitleList['Title']:
+        titleMatch = iros2020_award[(iros2020_award['Title'] == titles)]
+        if titleMatch.empty is True:
+            awardConut = 0
+            awardName = ''
+        else:
+            awardConut = 1
+            awardName1 = titleMatch['Session title'].reset_index()
+            awardName = awardName1['Session title'].iloc[0]
+        awardNameCount.append(awardName)
+        awardeeCount.append(awardConut)
+
     AuthorList1 = EpisodeList['Author1'].reset_index()
     AuthorList2 = EpisodeList['Author2'].reset_index()
     AuthorList3 = EpisodeList['Author3'].reset_index()
@@ -336,10 +383,6 @@ def tvshow(request):
     AffiliationList3 = EpisodeList['Affiliation3'].reset_index()
     AffiliationList4 = EpisodeList['Affiliation4'].reset_index()
     AffiliationList5 = EpisodeList['Affiliation5'].reset_index()
-
-    TitleList = EpisodeList['Title'].reset_index()
-    PDFList = EpisodeList['FN'].reset_index()
-    titleNumber = EpisodeList['Nr'].reset_index()
 
     # Gold Sponsor Video
     goldSponsorSession = icra_sponsors[(icra_sponsors['Location'] == selectedSession)].reset_index()
@@ -384,7 +427,7 @@ def tvshow(request):
                              AffiliationList5['Affiliation5'],
                              TitleList['Title'],
                              PDFList['FN'], titleNumber['Nr'], paperLikeCount, paperLikeButtonColor,
-                             paperSaveButtonStatus, paperHitCount)
+                             paperSaveButtonStatus, paperHitCount, awardeeCount, awardNameCount)
         return render(request, './beta/3_pavilionSession_beta.html', {'Pavilion': selectedPavilion,
                                                                       'PavilionNum': selectedPavilionNum,
                                                                       'SessionList': selectedSessionList,
@@ -570,9 +613,23 @@ def episode(request):
     PDFList = similarPaper['FN'].reset_index()
     titleNumber = similarPaper['Nr'].reset_index()
 
+    awardeeCount = []
+    awardNameCount = []
+    for titles in TitleList['Title']:
+        titleMatch = iros2020_award[(iros2020_award['Title'] == titles)]
+        if titleMatch.empty is True:
+            awardConut = 0
+            awardName = ''
+        else:
+            awardConut = 1
+            awardName1 = titleMatch['Session title'].reset_index()
+            awardName = awardName1['Session title'].iloc[0]
+        awardNameCount.append(awardName)
+        awardeeCount.append(awardConut)
+
+
     # Comments load area
     lengthComments = Comments.objects.filter(paper_id=selectedNumber['Nr'].iloc[0]).count()
-
     arrayComments = []
     for ac in range(lengthComments):
         arrayComments.append(Comments.objects.filter(paper_id=selectedNumber['Nr'].iloc[0])[ac].comment)
@@ -624,8 +681,8 @@ def episode(request):
                          AffiliationList4['Affiliation4'],
                          AffiliationList5['Affiliation5'],
                          TitleList['Title'],
-                         PDFList['FN'], titleNumber['Nr'], suggestEpisodeNum, paperLikeCount, paperLikeButtonColor,
-                         SessionTitle['Session title'], paperSaveButtonStatus, paperHitCount)
+                         PDFList['FN'], titleNumber['Nr'], paperLikeCount, paperLikeButtonColor,
+                         SessionTitle['Session title'], paperSaveButtonStatus, paperHitCount,awardeeCount,awardNameCount)
 
         return render(request, './beta/4_pavilionSessionEpisode_beta.html', {'VideoList': VideoList['VID'],
                                                                              'Title': selectedTitle,
@@ -884,6 +941,20 @@ def searchresult(request):
         PDFList = searchTitle['FN'].reset_index()
         titleNumber = searchTitle['Nr'].reset_index()
 
+        awardeeCount = []
+        awardNameCount = []
+        for titles in TitleList['Title']:
+            titleMatch = iros2020_award[(iros2020_award['Title'] == titles)]
+            if titleMatch.empty is True:
+                awardConut = 0
+                awardName = ''
+            else:
+                awardConut = 1
+                awardName1 = titleMatch['Session title'].reset_index()
+                awardName = awardName1['Session title'].iloc[0]
+            awardNameCount.append(awardName)
+            awardeeCount.append(awardConut)
+
         paperLikeCount = []
         paperLikeButtonColor = []
         paperSaveButtonStatus = []
@@ -923,7 +994,7 @@ def searchresult(request):
                              AffiliationList5['Affiliation5'],
                              TitleList['Title'],
                              PDFList['FN'], titleNumber['Nr'], paperLikeCount, paperLikeButtonColor,
-                             paperSaveButtonStatus, SessionList['Session title'], paperHitCount)
+                             paperSaveButtonStatus, SessionList['Session title'], paperHitCount, awardeeCount, awardNameCount)
 
         return render(request, './beta/5_searchResult_beta.html', {'EpisodeContext': resultList,
                                                                    })
@@ -966,7 +1037,7 @@ def mylist(request):
             mylistEpisodeSession.append(mylistEpisode['Session title'].iloc[0])
             mylistEpisodeTitle.append(mylistEpisode['Title'].iloc[0])
 
-        mylistEpisodeContext = zip(mylistEpisodeTitle, mylistEpisodeSession)
+        mylistEpisodeContext = zip(mylistEpisodeTitle, mylistEpisodeSession,mylistEpisodeNumber)
     else:
         mylistEpisodeContext = []
 
@@ -1106,7 +1177,7 @@ def post_save(request):
             paper.save_users.add(current_account)
             buttonStatus = 'fa fa-check-circle'
             buttonMessage = 'Added to my list'
-        print(buttonMessage)
+        # print(buttonMessage)
 
         response = {'paperSaveButtonStatus': buttonStatus,'buttonMessage':buttonMessage}
 
