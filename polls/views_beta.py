@@ -1211,7 +1211,29 @@ def post_hitcount(request):
             json.dumps(response),
             content_type="application/json"
         )
+        
+@csrf_exempt
+def update_playtime(request):
+    if request.user.is_authenticated == False:
+        return render(request, './beta/1-1_loginError_beta.html')
+    else:
+        user_verification(request)
 
+    if request.is_ajax:
+        video_number = int(request.POST['paperNumber'])
+        video_playtime = int(request.POST['time'])
+        vid_object = get_object_or_404(VideoTimers, paper_id=video_number)
+
+        # For active page
+        total_time = vid_object.seconds + video_playtime/1000
+
+        VideoTimers.objects.filter(paper_id=video_number).update(seconds=total_time)
+        response = {'total_time': total_time}
+
+        return HttpResponse(
+            json.dumps(response),
+            content_type="application/json"
+        )
 
 ############################################################################
 ############################################################################
