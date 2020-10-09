@@ -350,9 +350,9 @@
     </script>
     <script>
         function goBack() {
-            var oldURL = document.referrer;
-            var newURL = oldURL.substr(0, oldURL.length-new Date().getTime().toString().length);
-            location.href=newURL+new Date().getTime();
+            {#var oldURL = document.referrer;#}
+            {#var newURL = oldURL.substr(0, oldURL.length-new Date().getTime().toString().length);#}
+            location.href=document.referrer;
         }
     </script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -497,7 +497,8 @@
             console.log("total time: " + timePlayed + "ms");
             timeStarted = -1;
         }
-    </script>
+</script>
+   
         <script>
             function update_playtime(titleNumber) {
                 $.ajax({
@@ -566,6 +567,13 @@
             update_playtime("{{ SelectedPaperNumber|floatformat:"0" }}");
         });
 
+    </script>
+    <script>
+        window.addEventListener("beforeunload", function(event){
+            console.log("Updating Vid Playtime"+" {{ SelectedPaperNumber }}");
+            catch_backpress();
+            update_playtime("{{ SelectedPaperNumber|floatformat:"0" }}");
+        });
     </script>
 </div>
 </body>

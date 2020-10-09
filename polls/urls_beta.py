@@ -11,7 +11,6 @@ urlpatterns = [
     path('main', views_beta.main, name='main'),
     # path('mainWSTR', views_beta.mainWSTR, name='mainWSTR'),
     # path('mainRBCompetition', views_beta.mainRBCompetition, name='mainRBCompetition'),
-    path('carousel',views_beta.carousel),
     path('tvshow', views_beta.tvshow),
     path('specials', views_beta.specials),
     path('workshops', views_beta.workshops),

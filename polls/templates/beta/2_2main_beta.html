@@ -94,46 +94,27 @@
         {#            <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>#}
         {#            <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>#}
         {#        </ol>#}
-
         <div class="carousel-inner" >
             <div class="carousel-item active">
                 <div style="text-align: right">
                     <div class="carousel-video">
-                        <video id="video0" autoplay loop playsinline>
-                        </video>
-                    </div>
-                    <div class="carousel-caption" >
-                        <p>PLATINUM SPONSOR VIDEO example</p>
-                        <p id="platinumSponsor1"></p>
-                        <p>Company info goes here</p>
-                        <div class="pltVolumeBtn">
-                            <button style="background-color: transparent;border: none; margin:auto; outline: none;color: red;" class="UnmuteBtn"  onclick="disbleMute('video0')" type="button">
-                                <i class="fas fa-volume-up"></i>
-                            </button>
-                            <button style="background-color: transparent;border: none;margin:auto;outline: none; color: red;" class="MuteBtn" onclick="enableMute('video0')" type="button">
-                                <i class="fas fa-volume-mute"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="carousel-item">
-                <div style="text-align: right">
-                    <div class="carousel-video">
-                        <video id="video1" loop playsinline>
+                        <video id="video1" loop playsinline autoplay>
                         </video>
                     </div>
                     <div class="carousel-caption">
-                        <p>PLATINUM SPONSOR VIDEO example</p>
-                        <p id="platinumSponsor2"></p>
-                        <p>Company info goes here</p>
-                        <div class="pltVolumeBtn">
-                            <button style="background-color: transparent;border: none; margin:auto; outline: none;color: red;" class="UnmuteBtn"  onclick="disbleMute('video1')" type="button">
-                                <i class="fas fa-volume-up"></i>
-                            </button>
-                            <button style="background-color: transparent;border: none;margin:auto;outline: none; color: red;" class="MuteBtn" onclick="enableMute('video1')" type="button">
-                                <i class="fas fa-volume-mute"></i>
-                            </button>
+                        <div style="position: absolute;bottom: 3%">
+                            <div class="carousel-pbox">
+                                <img id="psponsorImg1" width="100%">
+                                <p class="carousel-p1">IROS Platinum Partner</p>
+                                <p class="carousel-p2">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam a dolor vitae metus tincidunt sollicitudin.
+                                    Nulla molestie eget turpis nec fermentum. Curabitur quis bibendum justo.</p>
+                                <p class="carousel-p3"><a id="psponsorLink1" style="color: coral"></a></p>
+                            </div>
+                            <div class="pltVolumeBtn">
+                                <button style="background-color: transparent;border: none; margin:auto; outline: none;color: red;" class="UnmuteBtn"  onclick="disbleMute('muteBtn1')" type="button">
+                                    <i id="muteBtn1" class="fas fa-volume-up"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -145,16 +126,43 @@
                         </video>
                     </div>
                     <div class="carousel-caption">
-                        <p>PLATINUM SPONSOR VIDEO example</p>
-                        <p id="platinumSponsor3"></p>
-                        <p>Company info goes here</p>
-                        <div class="pltVolumeBtn">
-                            <button style="background-color: transparent;border: none; margin:auto; outline: none;color: red;" class="UnmuteBtn"  onclick="disbleMute('video2')" type="button">
-                                <i class="fas fa-volume-up"></i>
-                            </button>
-                            <button style="background-color: transparent;border: none;margin:auto;outline: none; color: red;" class="MuteBtn" onclick="enableMute('video2')" type="button">
-                                <i class="fas fa-volume-mute"></i>
-                            </button>
+                        <div style="position: absolute;bottom: 3%">
+                            <div class="carousel-pbox">
+                                <img id="psponsorImg2" width="100%">
+                                <p class="carousel-p1">IROS Platinum Partner</p>
+                                <p class="carousel-p2">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam a dolor vitae metus tincidunt sollicitudin.
+                                    Nulla molestie eget turpis nec fermentum. Curabitur quis bibendum justo.</p>
+                                <p class="carousel-p3"><a style="color: coral;" id="psponsorLink2"></a></p>
+                            </div>
+                            <div class="pltVolumeBtn">
+                                <button style="background-color: transparent;border: none; margin:auto; outline: none;color: red;" class="UnmuteBtn" onclick="disbleMute('muteBtn2')" type="button">
+                                    <i id="muteBtn2" class="fas fa-volume-up"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div style="text-align: right">
+                    <div class="carousel-video">
+                        <video id="video3" loop playsinline>
+                        </video>
+                    </div>
+                    <div class="carousel-caption">
+                        <div style="position: absolute;bottom: 3%">
+                            <div class="carousel-pbox">
+                                <img id="psponsorImg3" width="100%">
+                                <p class="carousel-p1">IROS Platinum Partner</p>
+                                <p class="carousel-p2">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam a dolor vitae metus tincidunt sollicitudin.
+                                    Nulla molestie eget turpis nec fermentum. Curabitur quis bibendum justo.</p>
+                                <p class="carousel-p3"><a style="color: coral;" id="psponsorLink3"></a></p>
+                            </div>
+                            <div class="pltVolumeBtn">
+                                <button style="background-color: transparent;border: none; margin:auto; outline: none;color: red;" class="UnmuteBtn"  onclick="disbleMute('muteBtn3')" type="button">
+                                    <i id="muteBtn3" class="fas fa-volume-up"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -170,27 +178,6 @@
     </div>
 
     <div style="transform: translate(0px, 0px)">
-        {#        {% if showcontents == 1 %}#}
-        {#            <div class="netflix-slider">#}
-        {#                <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{Genre.0}}</h3>#}
-        {#                <div class="swiper-container">#}
-        {#                    <div class="swiper-wrapper">#}
-        {#                        {% for j in Specials %}#}
-        {#                            <div class="swiper-slide"><a href="specials?id={{j}}&id2={{ Genre.0 }}" onClick="this.href=this.href+'&'+new Date().getTime()" style="color:white; text-decoration: none;">#}
-        {#                                <img src="{% static 'img'%}/Specials/{{ j }}.jpg">#}
-        {#                                <div class="onimg-caption">{{ j }}#}
-        {#                                </div>#}
-        {#                            </a>#}
-        {#                            </div>#}
-        {#                        {% endfor %}#}
-        {#                    </div>#}
-        {#                    <!-- Add Pagination -->#}
-        {#      <div class="swiper-pagination"></div>#}
-        {#                    <div class="swiper-button-next"></div>#}
-        {#                    <div class="swiper-button-prev"></div>#}
-        {#                </div>#}
-        {#            </div>#}
-        {#        {% endif %}#}
         {% if showcontents == 3 %}
             <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Robot Competition - Under Construction</h3>
         {% endif %}
@@ -220,10 +207,15 @@
         {% endif %}
 
         {% if showcontents == 1 %}
-            {% for Pavilion, Sessions in  PavSessions %}
+            {% for Pavilion, Sessions, partnerName, partnerLevel in  PavSessions %}
                 <div class="netflix-slider">
                     {#                    <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp<a style="color:white;text-decoration: none" href="carousel?id={{ Pavilion }}&id2={{ forloop.counter }}">{{Pavilion}}</a></h3>#}
-                    <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp{{Pavilion}}</h3>
+                    {% if partnerLevel == 'missing' %}
+                        <h3 style="margin-left: 3%">{{Pavilion}}</h3>
+                    {% else %}
+                        <h3 style="margin-left: 3%">{{Pavilion}} - <font style="color: coral; font-size: 90%; font-family: 'Trebuchet MS'">With support from IROS
+                            {{ partnerLevel }} Partner "{{partnerName }}"</font></h3>
+                    {% endif %}
                     <div style="width: 100%; padding-bottom: 2%; display: inline-flex; flex-wrap: wrap">
                         <div class="keynoteimg">
                             <img src="{% static './resources/logo2.png'%}"/>
@@ -320,16 +312,24 @@
 
 <script>
     videoList = [];
-    videoList.push("{% static 'video/1'%}");
     videoList.push("{% static 'video/2'%}");
     videoList.push("{% static 'video/3'%}");
+    videoList.push("{% static 'video/4'%}");
 
-    console.log(videoList);
+    imgList = [];
+    imgList.push("{% static 'img/Sponsors/Platinum/Amazon.png'%}");
+    imgList.push("{% static 'img/Sponsors/Platinum/Toyota.png'%}");
+    imgList.push("{% static 'img/Sponsors/Platinum/Naver Labs.png'%}");
 
     videoMap = new Map();
-    videoMap.set(videoList[0], "(e.g Waymo)");
-    videoMap.set(videoList[1], "(e.g Google)");
-    videoMap.set(videoList[2], "(e.g Amazon)");
+    videoMap.set(videoList[0], "https://www.amazon.science/");
+    videoMap.set(videoList[1], "https://www.tri.global/");
+    videoMap.set(videoList[2], "https://www.naverlabs.com/");
+
+    imgMap = new Map();
+    imgMap.set(videoList[0],imgList[0]);
+    imgMap.set(videoList[1],imgList[1]);
+    imgMap.set(videoList[2],imgList[2]);
 
     //for(i = 1; i <= videoList.length; i++)
     //  indexArr[i-1] = i;
@@ -347,50 +347,68 @@
         }
     }
 
-    document.getElementById('video0').setAttribute('src', videoList[0]+'.mp4');
-    document.getElementById('video0').load();
-    document.getElementById('video0').play();
-    document.getElementById('platinumSponsor1').innerHTML = videoMap.get(videoList[0]);
-
-    document.getElementById('video1').setAttribute('src', videoList[1]+'.mp4');
+    document.getElementById('video1').setAttribute('src', videoList[0]+'.mp4');
     document.getElementById('video1').load();
-    document.getElementById('platinumSponsor2').innerHTML = videoMap.get(videoList[1]);
+    document.getElementById('psponsorLink1').innerHTML = "Click " + videoMap.get(videoList[0]);
+    document.getElementById('psponsorLink1').href = videoMap.get(videoList[0]);
+    document.getElementById('psponsorImg1').src = imgMap.get(videoList[0]);
 
-    document.getElementById('video2').setAttribute('src', videoList[2]+'.mp4');
+    document.getElementById('video2').setAttribute('src', videoList[1]+'.mp4');
     document.getElementById('video2').load();
-    document.getElementById('platinumSponsor3').innerHTML = videoMap.get(videoList[2]);
+    document.getElementById('psponsorLink2').innerHTML = "Click " + videoMap.get(videoList[1])
+    document.getElementById('psponsorLink2').href = videoMap.get(videoList[1]);
+    document.getElementById('psponsorImg2').src = imgMap.get(videoList[1]);
+
+
+    document.getElementById('video3').setAttribute('src', videoList[2]+'.mp4');
+    document.getElementById('video3').load();
+    document.getElementById('psponsorLink3').innerHTML = "Click " + videoMap.get(videoList[2]);
+    document.getElementById('psponsorLink3').href = videoMap.get(videoList[2]);
+    document.getElementById('psponsorImg3').src = imgMap.get(videoList[2]);
+
 </script>
 <script>
-    function enableMute(video) {
+    function disbleMute(mutebtn) {
         {#var vid = document.getElementById(video);#}
-        var vid1 = document.getElementById('video0')
+        var mutebuttonClass = document.getElementById(mutebtn).className;
+        var mutebuttonClass2 = document.getElementById('muteBtn1').className;
+        var mutebuttonClass3 = document.getElementById('muteBtn2').className;
+        var mutebuttonClass4 = document.getElementById('muteBtn3').className;
         var vid2 = document.getElementById('video1')
         var vid3 = document.getElementById('video2')
-        vid1.muted=true;
-        vid2.muted=true;
-        vid3.muted=true;
-        {#vid.muted = true;#}
-    }
-    function disbleMute(video) {
-        {#var vid = document.getElementById(video);#}
-        var vid1 = document.getElementById('video0')
-        var vid2 = document.getElementById('video1')
-        var vid3 = document.getElementById('video2')
-        vid1.muted=false;
-        vid2.muted=false;
-        vid3.muted=false;
-        {#vid.muted = false;#}
+        var vid4 = document.getElementById('video3')
+        if(mutebuttonClass == 'fas fa-volume-up'){
+            $('#muteBtn1').removeClass(mutebuttonClass2);
+            $('#muteBtn1').addClass('fas fa-volume-mute');
+            $('#muteBtn2').removeClass(mutebuttonClass3);
+            $('#muteBtn2').addClass('fas fa-volume-mute');
+            $('#muteBtn3').removeClass(mutebuttonClass4);
+            $('#muteBtn3').addClass('fas fa-volume-mute');
+            vid2.muted=true;
+            vid3.muted=true;
+            vid4.muted=true;
+        }else{
+            $('#muteBtn1').removeClass(mutebuttonClass2);
+            $('#muteBtn1').addClass('fas fa-volume-up');
+            $('#muteBtn2').removeClass(mutebuttonClass3);
+            $('#muteBtn2').addClass('fas fa-volume-up');
+            $('#muteBtn3').removeClass(mutebuttonClass4);
+            $('#muteBtn3').addClass('fas fa-volume-up');
+            vid2.muted=false;
+            vid3.muted=false;
+            vid4.muted=false;
+        }
     }
 </script>
 <script>
     if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
         document.write("mobile");
-        var vid1 = document.getElementById('video0')
         var vid2 = document.getElementById('video1')
         var vid3 = document.getElementById('video2')
-        vid1.muted=true;
+        var vid4 = document.getElementById('video3')
         vid2.muted=true;
         vid3.muted=true;
+        vid4.muted=true;
     }else{
         document.write("not mobile");
     }
