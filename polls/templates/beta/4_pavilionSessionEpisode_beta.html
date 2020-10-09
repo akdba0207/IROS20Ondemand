@@ -497,26 +497,27 @@
             console.log("total time: " + timePlayed + "ms");
             timeStarted = -1;
         }
-    </script>
-    <script>
-        function update_playtime(titleNumber) {
-            $.ajax({
-                url: 'update_playtime',
-                type: 'POST',
-                data: {
-                    'paperNumber': titleNumber,
-                    'time': timePlayed,
-                },
-                dataType: 'json',
-                success: function (json) {
-                    console.log("successfully updated video playtime: " + json['total_time'] + " seconds");
-                },
-                error: function (err) {
-                    alert("Failed to Retrieve JSON file from Server");
-                }
-            });
-        }
-    </script>
+</script>
+   
+        <script>
+            function update_playtime(titleNumber) {
+                $.ajax({
+                    url: 'update_playtime',
+                    type: 'POST',
+                    data: {
+                        'paperNumber': titleNumber,
+                        'time': timePlayed,
+                    },
+                    dataType: 'json',
+                    success: function (json) {
+                        console.log("successfully updated video playtime: " + json['total_time'] + " seconds");
+                    },
+                    error: function (err) {
+                        alert("Failed to Retrieve JSON file from Server");
+                    }
+                });
+            }
+        </script>
     <script>
         // Get the modal
         var modal = document.getElementById("highlightModal");
@@ -559,6 +560,13 @@
             episodeComment.style.height = result;
             console.log(result);
         }, false );
+
+        window.addEventListener("beforeunload", function(event){
+            console.log("Updating Vid Playtime"+" {{ SelectedPaperNumber }}");
+            catch_backpress();
+            update_playtime("{{ SelectedPaperNumber|floatformat:"0" }}");
+        });
+
     </script>
     <script>
         window.addEventListener("beforeunload", function(event){

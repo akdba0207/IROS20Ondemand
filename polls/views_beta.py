@@ -1188,7 +1188,7 @@ def post_hitcount(request):
             json.dumps(response),
             content_type="application/json"
         )
-
+        
 @csrf_exempt
 def update_playtime(request):
     if request.user.is_authenticated == False:
