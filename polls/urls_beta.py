@@ -11,7 +11,6 @@ urlpatterns = [
     path('main', views_beta.main, name='main'),
     # path('mainWSTR', views_beta.mainWSTR, name='mainWSTR'),
     # path('mainRBCompetition', views_beta.mainRBCompetition, name='mainRBCompetition'),
-    path('carousel',views_beta.carousel),
     path('tvshow', views_beta.tvshow),
     path('specials', views_beta.specials),
     path('workshops', views_beta.workshops),
@@ -26,6 +25,7 @@ urlpatterns = [
     path('post_hitcount', views_beta.post_hitcount, name='post_hitcount'),
     path('signup', views_beta.signup, name='signup'),
     path('resendactivation', views_beta.resendactivation, name='resendactivation'),
+    path('update_playtime', views_beta.update_playtime, name='update_playtime'),
 
     re_path(r'^account_activation_sent/$', views_beta.account_activation_sent, name='account_activation_sent'),
     re_path(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',

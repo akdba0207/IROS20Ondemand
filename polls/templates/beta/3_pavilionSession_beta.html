@@ -84,9 +84,14 @@
     </div>
 </nav>
 <div style="width:95%; margin:0 auto; padding-top: 100px;" align="justify">
-    <h3 class="pavtitle">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{Pavilion}}</h3>
+    <h3 class="pavtitle" style="font-family: Candara"><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{Pavilion}}</b></h3>
     <br>
-
+    {% if goldSponsorSession|length == 0 %}
+    {% else %}
+        <div class="gsSessiontitle" style="text-align: center;">
+            <p style="color: white;margin:0;"><i>Welcome to the Session : "{{ Session }}"</i></p>
+        </div>
+    {% endif %}
     <div class = "landingtable">
         <table border="0" cellpadding="0" cellspacing="0">
             {% if goldSponsorSession|length == 0 %}
@@ -96,42 +101,43 @@
                         <div></div>
                     </td>
                     <td class="sessionTitle" style="word-break: keep-all;">
-                        <p style="color: white;margin:0">Welcome to Session :</p>
-                        <p style="color: white;margin:0">{{ Session }}</p>
+                        <p style="color: white;margin:0"><i>Welcome to the Session :</i></p>
+                        <p style="color: white;margin:0"><i>"{{ Session }}"</i></p>
                     </td>
                 </tr>
             {% else %}
                 <tr>
                     <td class="gsTableLeft">
+                        {% if goldSponsorVideoType.0 == 'YouTube'%}
+                            <div style="position: relative;overflow: hidden;text-align: center">
+                                <iframe class="gsGoldpartnerVid2" src="https://www.youtube.com/embed/{{ goldSponsorVideoLink.0 }}" frameborder="0"
+                                        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"></iframe>
+                            </div>
+                        {% else %}
+                            <div style="position: relative;overflow: hidden;">
+                                <video id="videoGoldSponsor" width="100%" autoplay loop playsinline>
+                                    <source src="{% static './video'%}/Gold Sponsor/{{ goldSponsorVideo.0 }}.mp4" type="video/mp4">
+                                </video>
+                            </div>
+                            <div class="gsVidCaptionBtn">
+                                <button style="background-color: transparent;border: none; margin:auto; outline: none;color: red;" class="UnmuteBtn"  onclick="disbleMute('videoGoldSponsor')" type="button">
+                                    <i id="muteBtn" class="fas fa-volume-up"></i>
+                                </button>
+                            </div>
+                        {% endif %}
+                    </td>
+                    <td style="background-color: rgba(0,0,0,.8)">
                         <div style="position: relative;overflow: hidden">
-                            <video id="videoGoldSponsor" width="117%" autoplay loop playsinline>
-                                <source src="{% static './video'%}/Gold Sponsor/{{ goldSponsorVideo.0 }}.mp4" type="video/mp4">
-                            </video>
                             <div class="gsVidCaption">
-                                <p style="margin:0">Sample Gold Partner Video Placement</p>
-                                <p style="margin:0"><a href="{{ goldSponsorWebpage.0 }}" target="_blank"  style="color:white; text-decoration: none;">Click {{ goldSponsorWebpage.0 }}</a> </p>
-                                <div class="gsVidCaptionBtn">
-                                    <button style="background-color: transparent;border: none; margin:auto; outline: none;color: red;" class="UnmuteBtn"  onclick="disbleMute('videoGoldSponsor')" type="button">
-                                        <i class="fas fa-volume-up"></i>
-                                    </button>
-                                    <button style="background-color: transparent;border: none;margin:auto;outline: none; color: red;" class="MuteBtn" onclick="enableMute('videoGoldSponsor')" type="button">
-                                        <i class="fas fa-volume-mute"></i>
-                                    </button>
+                                <div style="width: 100%;text-align: center;">
+                                    <img id="psponsorImg3" src="{% static 'img/Sponsors/Gold'%}/{{ goldSponsorName.0 }}.png" width="90%">
+                                    <p class="gsVidCaption-p1">IROS Platinum Partner</p>
+                                    <p class="gsVidCaption-p2">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam a dolor vitae metus tincidunt sollicitudin.
+                                        Nulla molestie eget turpis nec fermentum. Curabitur quis bibendum justo.</p>
+                                    <p class="gsVidCaption-p3"><a id="psponsorLink3" style="color: coral;" href="https://www.naverlabs.com/">Click : {{ goldSponsorWebpage.0}}</a></p>
                                 </div>
                             </div>
                         </div>
-                        <div class="gsVidCaptionShade"></div>
-                    </td>
-                    <td>
-                    <div style="position: relative;overflow: hidden">
-                        <img width="100%" onError="this.onerror=null;this.src='{% static './resources/logo2.png' %}';" src="{% static 'img'%}/pavilion{{ PavilionNum}}/{{Session}}.jpg" width="100%">
-                        <div class="gsImgCaption">
-                            <div class="gsImgCaptionText">
-                                <p style="color: white;margin:0">Welcome to Session :</p>
-                                <p style="color: white;margin:0">{{ Session }}</p>
-                            </div>
-                        </div>
-                    </div>
                     </td>
                 </tr>
             {% endif %}
@@ -465,16 +471,20 @@
         });
     </script>
     <script>
-        function enableMute(video) {
-            var vid = document.getElementById(video);
-            vid.muted = true;
-        }
         function disbleMute(video) {
+            var mutebuttonClass = document.getElementById('muteBtn').className;
             var vid = document.getElementById(video);
-            vid.muted = false;
+            if(mutebuttonClass == 'fas fa-volume-up'){
+                $('#muteBtn').removeClass(mutebuttonClass);
+                $('#muteBtn').addClass('fas fa-volume-mute');
+                vid.muted = true;
+            }else{
+                $('#muteBtn').removeClass(mutebuttonClass);
+                $('#muteBtn').addClass('fas fa-volume-up');
+                vid.muted=false;
+            }
         }
     </script>
-
     <script>
         // Get the modal
         var modal = document.getElementById("highlightModal");

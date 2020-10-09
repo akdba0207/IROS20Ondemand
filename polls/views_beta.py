@@ -8,7 +8,7 @@ from django.forms import forms
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
-from polls.models import Papers, Comments, Users, Profile
+from polls.models import Papers, Comments, Users, Profile, VideoTimers
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth import login as auth_login, authenticate
 from django.contrib.auth import logout as auth_logout
@@ -59,10 +59,10 @@ icra_workshops = pd.read_excel(path4, sheet_name=0)
 icra_workshops = icra_workshops.fillna('missing')
 
 # Call Sponsors
-excel_file6 = 'ICRA20Sponsors.xlsx'
+excel_file6 = 'IROS20_Partners.xlsx'
 path6 = os.path.join(pre, excel_file6)
-icra_sponsors = pd.read_excel(path6, sheet_name=0)
-icra_sponsors = icra_sponsors.fillna('missing')
+iros_partners = pd.read_excel(path6, sheet_name=0)
+iros_partners = iros_partners.fillna('missing')
 
 iros_sessiontitle = iros2020_raw['Theme']
 totalGenre = sorted(list(set(iros2020_raw['Theme'])))
@@ -110,15 +110,27 @@ Sessions12 = sorted(list(set(Pavilion12['Session title'])))
 Sessions13 = sorted(list(set(Pavilion13['Session title'])))
 
 
-# totalSessions = zip(Sessions1, Sessions2, Sessions3, Sessions4, Sessions5)
+# totalSessions = zip(Sessions1, Sessions2, Sessions3, Sessions4, Sessions5,
+#                     Sessions6,Sessions7,Sessions8,Sessions9,Sessions10,Sessions11,Sessions12,Sessions13)
+# #
+# pavilionDict1, pavilionDict2, pavilionDict3, \
+# pavilionDict4, pavilionDict5,pavilionDict6,pavilionDict7,pavilionDict8,\
+# pavilionDict9,pavilionDict10, pavilionDict11,pavilionDict12,pavilionDict13= dict()
 #
-# pavilionDict1, pavilionDict2, pavilionDict3, pavilionDict4, pavilionDict5 = dict()
-# for a,b,c,d,e in totalSessions:
-#     pavilionDict1[a] = Cartegories['Pavilion'][0]
-#     pavilionDict2[b] = Cartegories['Pavilion'][1]
-#     pavilionDict3[c] = Cartegories['Pavilion'][2]
-#     pavilionDict4[d] = Cartegories['Pavilion'][3]
-#     pavilionDict5[e] = Cartegories['Pavilion'][4]
+# for a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13 in totalSessions:
+#     pavilionDict1[a1] = organizedGenre[0]
+#     pavilionDict2[a2] = organizedGenre[1]
+#     pavilionDict3[a3] = organizedGenre[2]
+#     pavilionDict4[a4] = organizedGenre[3]
+#     pavilionDict5[a5] = organizedGenre[4]
+#     pavilionDict6[a6] = organizedGenre[5]
+#     pavilionDict7[a7] = organizedGenre[6]
+#     pavilionDict8[a8] = organizedGenre[7]
+#     pavilionDict9[a9] = organizedGenre[8]
+#     pavilionDict10[a10] = organizedGenre[9]
+#     pavilionDict11[a11] = organizedGenre[10]
+#     pavilionDict12[a12] = organizedGenre[11]
+#     pavilionDict13[a13] = organizedGenre[12]
 
 # Specials
 
@@ -222,10 +234,26 @@ def main(request):
     #     allowWSContents = 1
     # else:
     #     allowWSContents = 0
+    partnerName = []
+    partnerLevel = []
+    for i in organizedGenre:
+        partner1 = iros_partners[(iros_partners['Theme'] == i)]
+        if partner1.empty is True:
+            partnerName2 ='missing'
+            partnerLevel2 = 'missing'
+        else:
+            partnerName1 = partner1['Name'].reset_index()
+            partnerName2 = partnerName1['Name'].iloc[0]
+            partnerLevel1 = partner1['Cartegory'].reset_index()
+            partnerLevel2 = partnerLevel1['Cartegory'].iloc[0]
+
+        partnerName.append(partnerName2)
+        partnerLevel.append(partnerLevel2)
+
     Sessions = [Sessions1,Sessions2,Sessions3,Sessions4,Sessions5,Sessions6,Sessions7,
                 Sessions8,Sessions9,Sessions10,Sessions11,Sessions12, Sessions13]
 
-    PavSessions = zip(organizedGenre, Sessions)
+    PavSessions = zip(organizedGenre, Sessions, partnerName, partnerLevel)
     return render(request, './beta/2_2main_beta.html',
                   {'PavSessions':PavSessions,
                    'Genre': Cartegories['Genre'],
@@ -242,62 +270,6 @@ def main(request):
 #########################################################################################################
 # Sessions : Pavilion, Specials, Workshops
 # @login_required
-def carousel(request):
-    if request.user.is_authenticated == False:
-        return render(request, './beta/1-1_loginError_beta.html')
-    else:
-        user_verification(request)
-    current_user = request.user.username
-    current_account = get_object_or_404(User, username=current_user)
-
-    selectedPavilion = request.GET['id']
-    selectedPavilionNum = request.GET['id2']
-
-    if selectedPavilion == organizedGenre[0]:
-        selectedSessionList = Sessions1
-    elif selectedPavilion == organizedGenre[1]:
-        selectedSessionList = Sessions2
-    elif selectedPavilion == organizedGenre[2]:
-        selectedSessionList = Sessions3
-    elif selectedPavilion == organizedGenre[3]:
-        selectedSessionList = Sessions4
-    elif selectedPavilion == organizedGenre[4]:
-        selectedSessionList = Sessions5
-    elif selectedPavilion == organizedGenre[5]:
-        selectedSessionList = Sessions6
-    elif selectedPavilion == organizedGenre[6]:
-        selectedSessionList = Sessions7
-    elif selectedPavilion == organizedGenre[7]:
-        selectedSessionList = Sessions8
-    elif selectedPavilion == organizedGenre[8]:
-        selectedSessionList = Sessions9
-    elif selectedPavilion == organizedGenre[9]:
-        selectedSessionList = Sessions10
-    elif selectedPavilion == organizedGenre[10]:
-        selectedSessionList = Sessions11
-    elif selectedPavilion == organizedGenre[11]:
-        selectedSessionList = Sessions12
-    else:
-        selectedSessionList = []
-
-    # Gold Sponsor Video
-    goldSponsorSession = icra_sponsors[(icra_sponsors['Location'] == 'Aerial Systems - Applications I')].reset_index()
-    goldSponsorName = goldSponsorSession['Name'].reset_index()
-    goldSponsorVideo = goldSponsorSession['Video'].reset_index()
-    goldSponsorWebpage = goldSponsorSession['Link'].reset_index()
-
-    if request.method == "GET":
-
-        return render(request, './beta/2_3_carousel_beta.html', {'Pavilion': selectedPavilion,
-                                                                 'PavilionNum': selectedPavilionNum,
-                                                                 'SessionList': selectedSessionList,
-                                                                 'goldSponsorName': goldSponsorName['Name'],
-                                                                 'goldSponsorVideo': goldSponsorVideo['Video'],
-                                                                 'goldSponsorSession': goldSponsorSession[
-                                                                     'Location'],
-                                                                 'goldSponsorWebpage': goldSponsorWebpage['Link']
-                                                                 })
-
 def tvshow(request):
     if request.user.is_authenticated == False:
         return render(request, './beta/1-1_loginError_beta.html')
@@ -385,10 +357,13 @@ def tvshow(request):
     AffiliationList5 = EpisodeList['Affiliation5'].reset_index()
 
     # Gold Sponsor Video
-    goldSponsorSession = icra_sponsors[(icra_sponsors['Location'] == selectedSession)].reset_index()
+    goldSponsorSession = iros_partners[(iros_partners['Location'] == selectedSession)].reset_index()
     goldSponsorName = goldSponsorSession['Name'].reset_index()
-    goldSponsorVideo = goldSponsorSession['Video'].reset_index()
-    goldSponsorWebpage = goldSponsorSession['Link'].reset_index()
+    print(selectedSession)
+    goldSponsorVideo = goldSponsorSession['Video Name'].reset_index()
+    goldSponsorWebpage = goldSponsorSession['Webpage Link'].reset_index()
+    goldSponsorVideoType = goldSponsorSession['Type'].reset_index()
+    goldSponsorVideoLink = goldSponsorSession['Video Link'].reset_index()
 
     if request.method == "GET":
         paperLikeCount = []
@@ -434,10 +409,12 @@ def tvshow(request):
                                                                       'Session': selectedSession,
                                                                       'EpisodeContext': EpisodeContext,
                                                                       'goldSponsorName': goldSponsorName['Name'],
-                                                                      'goldSponsorVideo': goldSponsorVideo['Video'],
+                                                                      'goldSponsorVideo': goldSponsorVideo['Video Name'],
                                                                       'goldSponsorSession': goldSponsorSession[
                                                                           'Location'],
-                                                                      'goldSponsorWebpage': goldSponsorWebpage['Link']
+                                                                      'goldSponsorWebpage': goldSponsorWebpage['Webpage Link'],
+                                                                      'goldSponsorVideoType':goldSponsorVideoType['Type'],
+                                                                      'goldSponsorVideoLink':goldSponsorVideoLink['Video Link']
                                                                       })
 
 
@@ -1212,7 +1189,28 @@ def post_hitcount(request):
             content_type="application/json"
         )
 
+@csrf_exempt
+def update_playtime(request):
+    if request.user.is_authenticated == False:
+        return render(request, './beta/1-1_loginError_beta.html')
+    else:
+        user_verification(request)
 
+    if request.is_ajax:
+        video_number = int(request.POST['paperNumber'])
+        video_playtime = int(request.POST['time'])
+        vid_object = get_object_or_404(VideoTimers, paper_id=video_number)
+
+        # For active page
+        total_time = vid_object.seconds + video_playtime/1000
+
+        VideoTimers.objects.filter(paper_id=video_number).update(seconds=total_time)
+        response = {'total_time': total_time}
+
+        return HttpResponse(
+            json.dumps(response),
+            content_type="application/json"
+        )
 ############################################################################
 ############################################################################
 ############################################################################
@@ -1262,6 +1260,14 @@ def post_hitcount(request):
 #     db = VideoTimers(paper_id=icra_example['Nr'][i])
 #     db.save()
 # print(is_routable)
+
+# # Paper ViewCount Update
+# viewcountResetter = Papers.objects.all()
+# for viewcountID in range(len(viewcountResetter)):
+#     Papers.objects.filter(paper_id=viewcountResetter[viewcountID].paper_id).update(paper_hitcount=0)
+
+# #FYI, paper_like_user, paper_save_users, comments_comment_users can be manually deleted
+
 @csrf_exempt
 def signup(request):
     if request.method == 'POST':

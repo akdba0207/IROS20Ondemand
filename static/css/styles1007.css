@@ -23,24 +23,39 @@ body {
     display: block;
     bottom: 0px;
     width: 100%;
-    background-image: linear-gradient(to right, rgba(31,31,31,1) 35%, rgba(31,31,31,0));
+    background-image: linear-gradient(to right, rgba(31,31,31,1) 25%, rgba(31,31,31,0));
     height: 100%;
     z-index:1;
+}
+.carousel-pbox{
+    width: 40%;
+    text-align: center;
+}
+.carousel-p1{
+    margin-top: 1%;
+    color: coral;
+    font-size: 28px;
+}
+.carousel-p2{
+    width: 100%;
+    font-size: 20px;
+    margin-top: 0%;
+    color: yellow;
+    text-align: left;
+    line-height: 1.0;
+    word-break: break-all;
+}
+.carousel-p3{
+    font-size: 18px;margin-top:0px;text-align: right;margin-bottom: -20px;
 }
 .pltVolumeBtn{
     width: 50%;
     text-align: left;
     font-size: 150%;
-    padding-top: 2%;
-}
-.carousel-caption p{
-    padding-top: 3%;
-    font-size: 30px;
-    color: yellow;
-    margin: auto;
+    padding-top: -20px;
 }
 .carousel-item video {
-    width: 50%;
+    width: 60%;
     z-index: 0;
 }
 
@@ -162,6 +177,9 @@ h3 {
 .pavtitle{
     font-size: 28px;
 }
+.gsSessiontitle{
+    font-size: 24px;
+}
 .landingtable{
     width: 90%;
     height: auto;
@@ -213,46 +231,36 @@ h3 {
 }
 /*gold sponsor case*/
 .gsTableLeft{
-    width: 50%;
+    width: 60%;
+    background-color: rgba(0,0,0,0.8);
+}
+.gsGoldpartnerVid2{
+    width: 960px;
+    height: 400px;
 }
 .gsVidCaption{
-    position: absolute;
     z-index: 1;
-    color: yellow;
-    bottom: 0;
-    text-align: center;
     font-size: 32px;
-    background-color: rgba(0,0,0,0.7);
-    width: 100%
+    width: 100%;
+}
+.gsVidCaption-p1{
+    margin-top: 0px;margin-bottom: 0;margin-right: 0;color: coral
+}
+.gsVidCaption-p2{
+    width: 90%;margin-left: 5%;margin-top: 0px;font-size: 24px;
+    color: yellow; text-align: left; word-break: break-all;
+    line-height: 1.2;
+}
+.gsVidCaption-p3{
+    font-size: 18px;
 }
 .gsVidCaptionBtn{
     width: 50%; text-align: left;
+    margin-top: -40px;
+    position: absolute;
 }
 .gsVidCaptionBtn i{
-    font-size: 100%;
-}
-.gsImgCaption{
-    position: absolute;
-    text-align: right;
-    display: block;
-    bottom: 0px;
-    width: 100%;
-    background-image: linear-gradient(to left, rgba(0,0,0,.7) 100%, rgba(0,0,0,0.2));
-    height: 100%;
-    z-index:1;
-}
-.gsImgCaptionText{
-    margin-top: 30%;
-    vertical-align: middle;
-    margin-right : 5%;
-    font-size: 32px;
-}
-.gsVidCaptionShade{
-    transform: translateY(-140px);
-    position: absolute;
-    background-image: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1));
-    width: 85.5%;
-    height: 150px;
+    font-size: 200%;
 }
 .epilisttable{
     width: 80%;
@@ -332,21 +340,42 @@ h3 {
     .carousel-caption {
         bottom: 0px;
         width: 100%;
-        background-image: linear-gradient(to right, rgba(31,31,31,1) 5%, rgba(31,31,31,0));
+        background-image: linear-gradient(to right, rgba(31,31,31,1) 15%, rgba(31,31,31,0));
         height: 100%;
         z-index:1;
     }
-    .carousel-item video {
-        width: 80%;
-        z-index: 0;
+    .carousel-pbox{
+        width: 40%;
+        margin-top: 0%;
+        bottom: 10%;
     }
-    .carousel-caption p{
-        font-size: 100%;
-        margin:auto;
+    .carousel-pbox img{
+        width: 80%;
+    }
+    .carousel-p1{
+        margin-top: 2%;
+        color: coral;
+        font-size: 70%;
+    }
+    .carousel-p2{
+        width: 100%;
+        font-size: 50%;
+        margin-top: -8%;
+        color: yellow;
+        text-align: left;
+    }
+    .carousel-p3{
+        font-size: 50%;margin-top:-10%;text-align: right;
+        margin-bottom: 10%;
     }
     .pltVolumeBtn {
         font-size: 120%;
-        margin-top: 0%;
+        margin-top: -5%;
+        text-align: left;
+    }
+    .carousel-item video {
+        width: 75%;
+        z-index: 0;
     }
     .onimg-caption{
         font-size: 70%;
@@ -378,6 +407,9 @@ h3 {
     /*Session page*/
     .pavtitle{
         font-size: 14px;
+    }
+    .gsSessiontitle{
+        font-size: 10px;
     }
     .landingtable{
         width: 95%;
@@ -428,26 +460,30 @@ h3 {
     .gsTableLeft{
         width: 60%;
     }
+    .gsGoldpartnerVid2{
+        width: 200px;
+        height: 100px;
+    }
     .gsVidCaption{
-        font-size: 80%;
-        background-color: rgba(0,0,0,0.7);
+        z-index: 1;
         width: 100%;
-        margin:auto;
     }
-    .gsVidCaptionBtn i{
-        font-size: 150%;
-        margin-top: 30%;
+    .gsVidCaption img{
+        width: 80%;
     }
-    .gsImgCaptionText{
-        font-size: 80%;
-        text-align: right;
-        vertical-align: middle;
-        word-break: keep-all;
+    .gsVidCaption-p1{
+        font-size: 30%;
+        margin-top: -7%;
     }
-    .gsVidCaptionShade{
-        transform: translateY(-50px);
-        height: 50px;
-        width: 90.25%;
+    .gsVidCaption-p2{
+        margin-top: 2%;
+        font-size: 25%;
+    }
+    .gsVidCaption-p3{
+        font-size: 18%;
+        width: 100%;
+        text-align: center;
+        margin-top: -6%;
     }
     .epilisttable{
         width: 95%;
@@ -487,21 +523,38 @@ h3 {
     .carousel-caption {
         bottom: 0px;
         width: 100%;
-        background-image: linear-gradient(to right, rgba(31,31,31,1) 5%, rgba(31,31,31,0));
+        background-image: linear-gradient(to right, rgba(31,31,31,1) 12%, rgba(31,31,31,0));
         height: 100%;
         z-index:1;
     }
-    .carousel-item video {
-        width: 80%;
-        z-index: 0;
+    .carousel-pbox{
+        width: 40%;
+        height: 100%;
+        margin-top: -3%;
     }
-    .carousel-caption p{
-        font-size: 100%;
-        margin:auto;
+    .carousel-p1{
+        margin-top: 2%;
+        color: coral;
+        font-size: 90%;
+    }
+    .carousel-p2{
+        width: 100%;
+        font-size: 65%;
+        margin-top: -5%;
+        color: yellow;
+        text-align: left;
+    }
+    .carousel-p3{
+        font-size: 60%;margin-top:-5%;text-align: right;margin-bottom: 10%;
     }
     .pltVolumeBtn {
         font-size: 120%;
-        margin-top: 0%;
+        margin-top: -5%;
+        text-align: left;
+    }
+    .carousel-item video {
+        width: 75%;
+        z-index: 0;
     }
     .onimg-caption{
         font-size: 70%;
@@ -535,6 +588,9 @@ h3 {
     /*Session page*/
     .pavtitle{
         font-size: 18px;
+    }
+    .gsSessiontitle{
+        font-size: 14px;
     }
     .landingtable{
         width: 95%;
@@ -584,28 +640,35 @@ h3 {
     .gsTableLeft{
         width: 60%;
     }
+    .gsGoldpartnerVid2{
+        width: 250px;
+        height: 120px;
+    }
     .gsVidCaption{
-        font-size: 80%;
-        background-color: rgba(0,0,0,0.7);
+        z-index: 1;
         width: 100%;
-        margin:auto;
+    }
+    .gsVidCaption img{
+        width: 80%;
+    }
+    .gsVidCaption-p1{
+        font-size: 35%;
+        margin-top: -5%;
+    }
+    .gsVidCaption-p2{
+        margin-top: 2%;
+        font-size: 28%;
+    }
+    .gsVidCaption-p3{
+        font-size: 22%;
+        width: 100%;
+        text-align: center;
+        margin-top: -6%;
     }
     .gsVidCaptionBtn i{
         font-size: 150%;
         margin-top: 30%;
     }
-    .gsImgCaptionText{
-        font-size: 80%;
-        text-align: right;
-        vertical-align: middle;
-        word-break: keep-all;
-    }
-    .gsVidCaptionShade{
-        transform: translateY(-45px);
-        height: 50px;
-        width: 90.25%;
-    }
-
     .epilisttable{
         width: 95%;
         margin-left: 2.5%;
@@ -646,17 +709,36 @@ h3 {
         height: 100%;
         z-index:1;
     }
+    .carousel-pbox{
+        width: 35%;
+        height: 100%;
+        bottom: 0px;
+        position: relative;
+    }
+    .carousel-p1{
+        margin-top: 2%;
+        color: coral;
+        font-size: 100%;
+    }
+    .carousel-p2{
+        width: 100%;
+        font-size: 80%;
+        line-height: 1.2;
+        margin-top: -2%;
+        color: yellow;
+        text-align: left;
+    }
+    .carousel-p3{
+        font-size: 80%;margin-top:0%;text-align: right;margin-bottom: 10%;
+    }
+    .pltVolumeBtn {
+        font-size: 120%;
+        margin-top: -5%;
+        text-align: left;
+    }
     .carousel-item video {
         width: 70%;
         z-index: 0;
-    }
-    .carousel-caption p{
-        font-size: 150%;
-        margin:auto;
-    }
-    .pltVolumeBtn {
-        font-size: 180%;
-        margin-top: 0%;
     }
     .onimg-caption{
         font-size: 80%
@@ -668,6 +750,9 @@ h3 {
     /*Session page*/
     .pavtitle{
         font-size: 24px;
+    }
+    .gsSessiontitle{
+        font-size: 20px;
     }
     .landingtable{
         width: 95%;
@@ -717,28 +802,35 @@ h3 {
     .gsTableLeft{
         width: 60%;
     }
+    .gsGoldpartnerVid2{
+        width: 380px;
+        height: 200px;
+    }
     .gsVidCaption{
-        font-size: 120%;
-        background-color: rgba(0,0,0,0.7);
+        z-index: 1;
         width: 100%;
-        margin:auto;
+    }
+    .gsVidCaption img{
+        width: 90%;
+    }
+    .gsVidCaption-p1{
+        font-size: 50%;
+        margin-top: 0%;
+    }
+    .gsVidCaption-p2{
+        margin-top: 2%;
+        font-size: 40%;
+    }
+    .gsVidCaption-p3{
+        font-size: 30%;
+        width: 100%;
+        text-align: center;
+        margin-top: -3%;
     }
     .gsVidCaptionBtn i{
         font-size: 150%;
         margin-top: 30%;
     }
-    .gsImgCaptionText{
-        font-size: 120%;
-        text-align: right;
-        vertical-align: middle;
-        word-break: keep-all;
-    }
-    .gsVidCaptionShade{
-        transform: translateY(-45px);
-        height: 50px;
-        width: 90.25%;
-    }
-
     .epilisttable{
         width: 95%;
         margin-left: 2.5%;

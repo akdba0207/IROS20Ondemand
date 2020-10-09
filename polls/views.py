@@ -57,7 +57,7 @@ icra_workshops = pd.read_excel(path4, sheet_name=0)
 icra_workshops = icra_workshops.fillna('missing')
 
 # Call Sponsors
-excel_file6 = 'ICRA20Sponsors.xlsx'
+excel_file6 = 'IROS20_Partners.xlsx'
 path6 = os.path.join(pre, excel_file6)
 icra_sponsors = pd.read_excel(path6, sheet_name=0)
 icra_sponsors = icra_sponsors.fillna('missing')
