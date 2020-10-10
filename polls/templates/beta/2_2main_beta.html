@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <!-- Link Swiper's CSS -->
     <link rel="stylesheet" href="{% static 'package/css/swiper.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/styles1007.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles1010-1.css' %}">
 
     <script src="https://s3-us-west-2.amazonaws.com/ieeeshutpages/gdpr/settings.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css" />
@@ -38,346 +38,375 @@
 
 </head>
 <body>
-<nav style="background-color: rgba(0,0,0,0.7)" class="navbar navbar-expand-md navbar-dark fixed-top">
-    <!-- Brand/logo -->
-    <a class="navbar-brand" href="entrance">
-        <img src="{% static './resources/logo.png'%}" width="150px"/>
-    </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="collapsibleNavbar">
-        <!-- Links -->
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="entrance" style="color:white; ">Home</a>
-            </li>
-            <!-- Dropdown -->
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" style="color: white" href="#" id="navbardrop" data-toggle="dropdown">
-                    Entrance
-                </a>
-                <div class="dropdown-menu">
-                    <a class="dropdown-item" href="main?id=technicalpaper">Technical Talks</a>
-                    <a class="dropdown-item" href="main?id=wstr">Workshops and Tutorials</a>
-                    <a class="dropdown-item" href="main?id=competition">Robot Competition</a>
-                </div>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="mylist?" onClick="this.href=this.href+new Date().getTime()" style="color:white;">My Lists</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="logout" style="color:white;">Logout</a>
-            </li>
-        </ul>
-        <ul class="navbar-nav">
-            <form class="form-inline navbar-right">
-                <input type="text" id="search_bar" value="" class="searchBar" onkeydown="if(event.keyCode === 13) {event.preventDefault(); document.getElementById('searchBtn').click()}"/>
-                <d onclick="if(search_bar.value.length > 0)search()">
-                    <a id = "keywordDelivery" href="javascript: void(0)">
-                        <i id="searchBtn" class="fa fa-search" style="color:white;margin-left: 100%;font-size: 18px"></i>
+<div class="onDemandwidthControl">
+    <nav style="background-color: rgba(0,0,0,0.7)" class="navbar navbar-expand-md navbar-dark fixed-top">
+        <!-- Brand/logo -->
+        <a class="navbar-brand" href="entrance">
+            <img src="{% static './resources/logo.png'%}" width="150px"/>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+            <!-- Links -->
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="entrance" style="color:white; ">Home</a>
+                </li>
+                <!-- Dropdown -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" style="color: white" href="#" id="navbardrop" data-toggle="dropdown">
+                        Entrance
                     </a>
-                </d>
-            </form>
-        </ul>
-
-    </div>
-</nav>
-
-<div style="width:95%; margin:0 auto;" align="justify">
-    <div class="greetings"><p style="color: white;padding-top: 100px">Welcome to IROS 2020 On-Demand!</p></div>
-    <div style="padding-top: 10px" id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-        {#        <ol class="carousel-indicators ">#}
-        {##}
-        {#            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active">#}
-        {#            </li>#}
-        {#            <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>#}
-        {#            <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>#}
-        {#        </ol>#}
-        <div class="carousel-inner" >
-            <div class="carousel-item active">
-                <div style="text-align: right">
-                    <div class="carousel-video">
-                        <video id="video1" loop playsinline autoplay>
-                        </video>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="main?id=technicalpaper">Technical Talks</a>
+                        <a class="dropdown-item" href="main?id=wstr">Workshops and Tutorials</a>
+                        <a class="dropdown-item" href="main?id=competition">Robot Competition</a>
                     </div>
-                    <div class="carousel-caption">
-                        <div style="position: absolute;bottom: 3%">
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="mylist?" onClick="this.href=this.href+new Date().getTime()" style="color:white;">My Lists</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="logout" style="color:white;">Logout</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav">
+                <form class="form-inline navbar-right">
+                    <input type="text" id="search_bar" value="" class="searchBar" onkeydown="if(event.keyCode === 13) {event.preventDefault(); document.getElementById('searchBtn').click()}"/>
+                    <d onclick="if(search_bar.value.length > 0)search()">
+                        <a id = "keywordDelivery" href="javascript: void(0)">
+                            <i id="searchBtn" class="fa fa-search" style="color:white;margin-left: 100%;font-size: 18px"></i>
+                        </a>
+                    </d>
+                </form>
+            </ul>
+
+        </div>
+    </nav>
+
+    <div style="width:95%; margin:0 auto;" align="justify">
+        <div class="greetings"><p style="color: white;padding-top: 100px">Welcome to IROS 2020 On-Demand!</p></div>
+        <div style="padding-top: 10px" id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+            {#        <ol class="carousel-indicators ">#}
+            {##}
+            {#            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active">#}
+            {#            </li>#}
+            {#            <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>#}
+            {#            <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>#}
+            {#        </ol>#}
+            <div class="carousel-inner" >
+                <div class="carousel-item active">
+                    <div class="carousel-covers">
+                        <div class="carousel-video" id="carousel-video-reader">
+                            <video id="video1" loop playsinline autoplay>
+                            </video>
+                        </div>
+                        <div class="carousel-caption1">
                             <div class="carousel-pbox">
+                                <span style="display: inline-block;vertical-align: middle;line-height: normal;">
                                 <img id="psponsorImg1" width="100%">
                                 <p class="carousel-p1">IROS Platinum Partner</p>
                                 <p class="carousel-p2">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam a dolor vitae metus tincidunt sollicitudin.
                                     Nulla molestie eget turpis nec fermentum. Curabitur quis bibendum justo.</p>
                                 <p class="carousel-p3"><a id="psponsorLink1" style="color: coral"></a></p>
-                            </div>
-                            <div class="pltVolumeBtn">
-                                <button style="background-color: transparent;border: none; margin:auto; outline: none;color: red;" class="UnmuteBtn"  onclick="disbleMute('muteBtn1')" type="button">
-                                    <i id="muteBtn1" class="fas fa-volume-up"></i>
-                                </button>
+                                <div class="pltVolumeBtn">
+                                    <button style="background-color: transparent;border: none; margin:0 auto; outline: none;color: red;" class="UnmuteBtn"  onclick="disbleMute('muteBtn1')" type="button">
+                                        <i id="muteBtn1" class="fas fa-volume-up"></i>
+                                    </button>
+                                </div></span>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="carousel-item">
-                <div style="text-align: right">
-                    <div class="carousel-video">
-                        <video id="video2" loop playsinline>
-                        </video>
-                    </div>
-                    <div class="carousel-caption">
-                        <div style="position: absolute;bottom: 3%">
+                <div class="carousel-item">
+                    <div class="carousel-covers">
+                        <div class="carousel-video" id="carousel-video-reader">
+                            <video id="video2" loop playsinline>
+                            </video>
+                        </div>
+                        <div class="carousel-caption1">
                             <div class="carousel-pbox">
+                                <span>
                                 <img id="psponsorImg2" width="100%">
                                 <p class="carousel-p1">IROS Platinum Partner</p>
                                 <p class="carousel-p2">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam a dolor vitae metus tincidunt sollicitudin.
                                     Nulla molestie eget turpis nec fermentum. Curabitur quis bibendum justo.</p>
                                 <p class="carousel-p3"><a style="color: coral;" id="psponsorLink2"></a></p>
-                            </div>
-                            <div class="pltVolumeBtn">
-                                <button style="background-color: transparent;border: none; margin:auto; outline: none;color: red;" class="UnmuteBtn" onclick="disbleMute('muteBtn2')" type="button">
-                                    <i id="muteBtn2" class="fas fa-volume-up"></i>
-                                </button>
+                                <div class="pltVolumeBtn">
+                                    <button style="background-color: transparent;border: none; margin:0 auto; outline: none;color: red;" class="UnmuteBtn" onclick="disbleMute('muteBtn2')" type="button">
+                                        <i id="muteBtn2" class="fas fa-volume-up"></i>
+                                    </button>
+                                </div></span>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="carousel-item">
-                <div style="text-align: right">
-                    <div class="carousel-video">
-                        <video id="video3" loop playsinline>
-                        </video>
-                    </div>
-                    <div class="carousel-caption">
-                        <div style="position: absolute;bottom: 3%">
+                <div class="carousel-item">
+                    <div class="carousel-covers">
+                        <div class="carousel-video" id="carousel-video-reader">
+                            <video id="video3" loop playsinline>
+                            </video>
+                        </div>
+                        <div class="carousel-caption1">
                             <div class="carousel-pbox">
+                                <span>
                                 <img id="psponsorImg3" width="100%">
                                 <p class="carousel-p1">IROS Platinum Partner</p>
                                 <p class="carousel-p2">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam a dolor vitae metus tincidunt sollicitudin.
                                     Nulla molestie eget turpis nec fermentum. Curabitur quis bibendum justo.</p>
                                 <p class="carousel-p3"><a style="color: coral;" id="psponsorLink3"></a></p>
-                            </div>
-                            <div class="pltVolumeBtn">
-                                <button style="background-color: transparent;border: none; margin:auto; outline: none;color: red;" class="UnmuteBtn"  onclick="disbleMute('muteBtn3')" type="button">
-                                    <i id="muteBtn3" class="fas fa-volume-up"></i>
-                                </button>
+                                <div class="pltVolumeBtn">
+                                    <button style="background-color: transparent;border: none; margin:0 auto; outline: none;color: red;" class="UnmuteBtn"  onclick="disbleMute('muteBtn3')" type="button">
+                                        <i id="muteBtn3" class="fas fa-volume-up"></i>
+                                    </button>
+                                </div></span>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
+            </div>
+            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span> </a>
+            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span> </a>
         </div>
-        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span> </a>
-        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="sr-only">Next</span> </a>
-    </div>
 
-    <div style="transform: translate(0px, 0px)">
-        {% if showcontents == 3 %}
-            <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Robot Competition - Under Construction</h3>
-        {% endif %}
-        {% if showcontents == 2 %}
-            <div class="netflix-slider">
-                <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{Genre.1}} - Under Construction</h3>
-                {% if allowWSContents == 1%}
-                    <div class="swiper-container">
-                        <div class="swiper-wrapper">
-                            {% for j in Workshops %}
-                                <div class="swiper-slide"><a href="workshops?id={{j}}&id2={{ Genre.1 }}" onClick="this.href=this.href+'&'+new Date().getTime()" style="color:white; text-decoration: none;">
-                                    <img class="netflix-slider-img" onError="this.onerror=null;this.src='{% static './resources/logo2.png' %}';" src="{% static 'img'%}/Workshops/{{ j }}.jpg">
-
-                                    <div class="onimg-caption">{{ j }}
-                                    </div>
-                                </a>
-                                </div>
-                            {% endfor %}
-                        </div>
-                        <!-- Add Pagination -->
-                        {#      <div class="swiper-pagination"></div>#}
-                        <div class="swiper-button-next"></div>
-                        <div class="swiper-button-prev"></div>
-                    </div>
-                {% endif %}
-            </div>
-        {% endif %}
-
-        {% if showcontents == 1 %}
-            {% for Pavilion, Sessions, partnerName, partnerLevel in  PavSessions %}
+        <div style="transform: translate(0px, 0px)">
+            {% if showcontents == 3 %}
+                <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Robot Competition - Under Construction</h3>
+            {% endif %}
+            {% if showcontents == 2 %}
                 <div class="netflix-slider">
-                    {#                    <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp<a style="color:white;text-decoration: none" href="carousel?id={{ Pavilion }}&id2={{ forloop.counter }}">{{Pavilion}}</a></h3>#}
-                    {% if partnerLevel == 'missing' %}
-                        <h3 style="margin-left: 3%">{{Pavilion}}</h3>
-                    {% else %}
-                        <h3 style="margin-left: 3%">{{Pavilion}} - <font style="color: coral; font-size: 90%; font-family: 'Trebuchet MS'">With support from IROS
-                            {{ partnerLevel }} Partner "{{partnerName }}"</font></h3>
-                    {% endif %}
-                    <div style="width: 100%; padding-bottom: 2%; display: inline-flex; flex-wrap: wrap">
-                        <div class="keynoteimg">
-                            <img src="{% static './resources/logo2.png'%}"/>
-                            <div class="keynoteimgcaption">
-                                Keynotes
-                            </div>
-                        </div>
-                        <div class="swiper-container" style="display: inline-block; width: 70%;">
+                    <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{Genre.1}} - Under Construction</h3>
+                    {% if allowWSContents == 1%}
+                        <div class="swiper-container">
                             <div class="swiper-wrapper">
-                                {% for j in Sessions %}
-                                    <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion }}&id3={{ forloop.parentloop.counter }}" onClick="this.href=this.href+'&'+new Date().getTime()" style="color:white; text-decoration: none;">
-                                        <img class="netflix-slider-img" onError="this.onerror=null;this.src='{% static './resources/logo2.png' %}';" src="{% static 'img'%}/pavilion{{ forloop.parentloop.counter }}/{{ j }}.jpg">
+                                {% for j in Workshops %}
+                                    <div class="swiper-slide"><a href="workshops?id={{j}}&id2={{ Genre.1 }}" onClick="this.href=this.href+'&'+new Date().getTime()" style="color:white; text-decoration: none;">
+                                        <img class="netflix-slider-img" onError="this.onerror=null;this.src='{% static './resources/logo2.png' %}';" src="{% static 'img'%}/Workshops/{{ j }}.jpg">
+
                                         <div class="onimg-caption">{{ j }}
                                         </div>
                                     </a>
                                     </div>
                                 {% endfor %}
                             </div>
-                            {#                <!-- Add Pagination -->#}
-                            {#          <div class="swiper-pagination"></div>#}
+                            <!-- Add Pagination -->
+                            {#      <div class="swiper-pagination"></div>#}
                             <div class="swiper-button-next"></div>
                             <div class="swiper-button-prev"></div>
                         </div>
-                    </div>
+                    {% endif %}
                 </div>
-            {% endfor %}
-        {% endif %}
-        <p>&nbsp;</p>
+            {% endif %}
+
+            {% if showcontents == 1 %}
+                {% for Pavilion, Sessions, partnerName, partnerLevel in  PavSessions %}
+                    <div class="netflix-slider">
+                        {#                    <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp<a style="color:white;text-decoration: none" href="carousel?id={{ Pavilion }}&id2={{ forloop.counter }}">{{Pavilion}}</a></h3>#}
+                        {% if partnerLevel == 'missing' %}
+                            <h3 style="margin-left: 3%">{{Pavilion}}</h3>
+                        {% else %}
+                            <h3 style="margin-left: 3%">{{Pavilion}} - <font style="color: coral; font-size: 90%; font-family: 'Trebuchet MS'">With support from IROS
+                                {{ partnerLevel }} Partner "{{partnerName }}"</font></h3>
+                        {% endif %}
+                        <div style="width: 100%; padding-bottom: 2%; display: inline-flex; flex-wrap: wrap">
+                            <div class="keynoteimg">
+                                <img src="{% static './resources/logo2.png'%}"/>
+                                <div class="keynoteimgcaption">
+                                    Keynotes
+                                </div>
+                            </div>
+                            <div class="swiper-container" style="display: inline-block; width: 70%;">
+                                <div class="swiper-wrapper">
+                                    {% for j in Sessions %}
+                                        <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion }}&id3={{ forloop.parentloop.counter }}" onClick="this.href=this.href+'&'+new Date().getTime()" style="color:white; text-decoration: none;">
+                                            <img class="netflix-slider-img" onError="this.onerror=null;this.src='{% static './resources/logo2.png' %}';" src="{% static 'img'%}/pavilion{{ forloop.parentloop.counter }}/{{ j }}.jpg">
+                                            <div class="onimg-caption">{{ j }}
+                                            </div>
+                                        </a>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                {#                <!-- Add Pagination -->#}
+                                {#          <div class="swiper-pagination"></div>#}
+                                <div class="swiper-button-next"></div>
+                                <div class="swiper-button-prev"></div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+            <p>&nbsp;</p>
+        </div>
     </div>
-</div>
 
 
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
-<script>
-    $(document).ready(function() {
-        $('#carouselExampleIndicators').carousel({
-            interval:10000,
-        }).on('slide.bs.carousel', function (args){
-            var videoList = document.getElementsByTagName("video");
-            videoList[args.from].pause();
-            videoList[args.to].play();
-        })
-    });
-</script>
-<script src="{% static 'package/js/swiper.min.js' %}"></script>
-<!-- Initialize Swiper -->
-{#<script>#}
-{#    unmuteButton.addEventListener('click', function() {#}
-{#        video.muted = false;#}
-{#    });#}
-{#</script>#}
-<script>
-    function search(){
-        const query = document.getElementById("search_bar").value;
-        document.getElementById("keywordDelivery").href = "searchresult?id="+query;
-    }
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function() {
+            $('#carouselExampleIndicators').carousel({
+                interval:10000,
+            }).on('slide.bs.carousel', function (args){
+                var videoList = document.getElementsByTagName("video");
+                videoList[args.from].pause();
+                videoList[args.to].play();
+            })
+        });
+    </script>
+    <script src="{% static 'package/js/swiper.min.js' %}"></script>
+    <!-- Initialize Swiper -->
+    {#<script>#}
+    {#    unmuteButton.addEventListener('click', function() {#}
+    {#        video.muted = false;#}
+    {#    });#}
+    {#</script>#}
+    <script>
+        function search(){
+            const query = document.getElementById("search_bar").value;
+            document.getElementById("keywordDelivery").href = "searchresult?id="+query;
+        }
 
-</script>
-<script>
-    var swiper = new Swiper('.swiper-container', {
-        {#slidesPerView: 7,#}
-        {#spaceBetween: 10,#}
-        slidesPerGroup: 2,
-        pagination: {
-            el: '.swiper-pagination',
-            clickable: true,
-        },
-        navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
-        },
-        breakpoints: {
-            // when window width is >= 320px
-            200: {
-                slidesPerView: 3,
-                slidesPerColumnFill:'row',
-                spaceBetween: 5
+    </script>
+    <script>
+        var swiper = new Swiper('.swiper-container', {
+            {#slidesPerView: 7,#}
+            {#spaceBetween: 10,#}
+            slidesPerGroup: 1,
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
             },
-            // when window width is >= 480px
-            600: {
-                slidesPerView: 4,
-                spaceBetween: 4
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
             },
-            // when window width is >= 640px
-            900: {
-                slidesPerView: 5,
-                spaceBetween: 5
+            breakpoints: {
+                // when window width is >= 320px
+                200: {
+                    slidesPerView: 3,
+                    slidesPerColumnFill:'row',
+                    spaceBetween: 5
+                },
+                // when window width is >= 480px
+                600: {
+                    slidesPerView: 4,
+                    spaceBetween: 4
+                },
+                // when window width is >= 640px
+                900: {
+                    slidesPerView: 5,
+                    spaceBetween: 5
+                }
+            }
+        });
+    </script>
+
+    <script>
+        videoList = [];
+        videoList.push("{% static 'video/2'%}");
+        videoList.push("{% static 'video/3'%}");
+        videoList.push("{% static 'video/4'%}");
+
+        imgList = [];
+        imgList.push("{% static 'img/Partners/Platinum/Amazon.png'%}");
+        imgList.push("{% static 'img/Partners/Platinum/Toyota.png'%}");
+        imgList.push("{% static 'img/Partners/Platinum/NAVER LABS.png'%}");
+
+        videoMap = new Map();
+        videoMap.set(videoList[0], "https://www.amazon.science/");
+        videoMap.set(videoList[1], "https://www.tri.global/");
+        videoMap.set(videoList[2], "https://www.naverlabs.com/");
+
+        imgMap = new Map();
+        imgMap.set(videoList[0],imgList[0]);
+        imgMap.set(videoList[1],imgList[1]);
+        imgMap.set(videoList[2],imgList[2]);
+
+        //for(i = 1; i <= videoList.length; i++)
+        //  indexArr[i-1] = i;
+
+        maxIndex = videoList.length - 1;
+        //playList = [];
+
+        for(i = 0; i < maxIndex; i++){
+            randomIndex = Math.floor(Math.random() * (maxIndex - i + 1)) + i;
+
+            if(randomIndex !== i){
+                temp = videoList[i];
+                videoList[i] = videoList[randomIndex];
+                videoList[randomIndex] = temp;
             }
         }
-    });
-</script>
 
-<script>
-    videoList = [];
-    videoList.push("{% static 'video/2'%}");
-    videoList.push("{% static 'video/3'%}");
-    videoList.push("{% static 'video/4'%}");
+        document.getElementById('video1').setAttribute('src', videoList[0]+'.mp4');
+        document.getElementById('video1').load();
+        document.getElementById('psponsorLink1').innerHTML = "Click " + videoMap.get(videoList[0]);
+        document.getElementById('psponsorLink1').href = videoMap.get(videoList[0]);
+        document.getElementById('psponsorImg1').src = imgMap.get(videoList[0]);
 
-    imgList = [];
-    imgList.push("{% static 'img/Sponsors/Platinum/Amazon.png'%}");
-    imgList.push("{% static 'img/Sponsors/Platinum/Toyota.png'%}");
-    imgList.push("{% static 'img/Sponsors/Platinum/Naver Labs.png'%}");
+        document.getElementById('video2').setAttribute('src', videoList[1]+'.mp4');
+        document.getElementById('video2').load();
+        document.getElementById('psponsorLink2').innerHTML = "Click " + videoMap.get(videoList[1])
+        document.getElementById('psponsorLink2').href = videoMap.get(videoList[1]);
+        document.getElementById('psponsorImg2').src = imgMap.get(videoList[1]);
 
-    videoMap = new Map();
-    videoMap.set(videoList[0], "https://www.amazon.science/");
-    videoMap.set(videoList[1], "https://www.tri.global/");
-    videoMap.set(videoList[2], "https://www.naverlabs.com/");
 
-    imgMap = new Map();
-    imgMap.set(videoList[0],imgList[0]);
-    imgMap.set(videoList[1],imgList[1]);
-    imgMap.set(videoList[2],imgList[2]);
+        document.getElementById('video3').setAttribute('src', videoList[2]+'.mp4');
+        document.getElementById('video3').load();
+        document.getElementById('psponsorLink3').innerHTML = "Click " + videoMap.get(videoList[2]);
+        document.getElementById('psponsorLink3').href = videoMap.get(videoList[2]);
+        document.getElementById('psponsorImg3').src = imgMap.get(videoList[2]);
 
-    //for(i = 1; i <= videoList.length; i++)
-    //  indexArr[i-1] = i;
-
-    maxIndex = videoList.length - 1;
-    //playList = [];
-
-    for(i = 0; i < maxIndex; i++){
-        randomIndex = Math.floor(Math.random() * (maxIndex - i + 1)) + i;
-
-        if(randomIndex !== i){
-            temp = videoList[i];
-            videoList[i] = videoList[randomIndex];
-            videoList[randomIndex] = temp;
+    </script>
+    <script>
+        function disbleMute(mutebtn) {
+            {#var vid = document.getElementById(video);#}
+            var mutebuttonClass = document.getElementById(mutebtn).className;
+            var mutebuttonClass2 = document.getElementById('muteBtn1').className;
+            var mutebuttonClass3 = document.getElementById('muteBtn2').className;
+            var mutebuttonClass4 = document.getElementById('muteBtn3').className;
+            var vid2 = document.getElementById('video1')
+            var vid3 = document.getElementById('video2')
+            var vid4 = document.getElementById('video3')
+            if(mutebuttonClass == 'fas fa-volume-up'){
+                $('#muteBtn1').removeClass(mutebuttonClass2);
+                $('#muteBtn1').addClass('fas fa-volume-mute');
+                $('#muteBtn2').removeClass(mutebuttonClass3);
+                $('#muteBtn2').addClass('fas fa-volume-mute');
+                $('#muteBtn3').removeClass(mutebuttonClass4);
+                $('#muteBtn3').addClass('fas fa-volume-mute');
+                vid2.muted=true;
+                vid3.muted=true;
+                vid4.muted=true;
+            }else{
+                $('#muteBtn1').removeClass(mutebuttonClass2);
+                $('#muteBtn1').addClass('fas fa-volume-up');
+                $('#muteBtn2').removeClass(mutebuttonClass3);
+                $('#muteBtn2').addClass('fas fa-volume-up');
+                $('#muteBtn3').removeClass(mutebuttonClass4);
+                $('#muteBtn3').addClass('fas fa-volume-up');
+                vid2.muted=false;
+                vid3.muted=false;
+                vid4.muted=false;
+            }
         }
-    }
-
-    document.getElementById('video1').setAttribute('src', videoList[0]+'.mp4');
-    document.getElementById('video1').load();
-    document.getElementById('psponsorLink1').innerHTML = "Click " + videoMap.get(videoList[0]);
-    document.getElementById('psponsorLink1').href = videoMap.get(videoList[0]);
-    document.getElementById('psponsorImg1').src = imgMap.get(videoList[0]);
-
-    document.getElementById('video2').setAttribute('src', videoList[1]+'.mp4');
-    document.getElementById('video2').load();
-    document.getElementById('psponsorLink2').innerHTML = "Click " + videoMap.get(videoList[1])
-    document.getElementById('psponsorLink2').href = videoMap.get(videoList[1]);
-    document.getElementById('psponsorImg2').src = imgMap.get(videoList[1]);
-
-
-    document.getElementById('video3').setAttribute('src', videoList[2]+'.mp4');
-    document.getElementById('video3').load();
-    document.getElementById('psponsorLink3').innerHTML = "Click " + videoMap.get(videoList[2]);
-    document.getElementById('psponsorLink3').href = videoMap.get(videoList[2]);
-    document.getElementById('psponsorImg3').src = imgMap.get(videoList[2]);
-
-</script>
-<script>
-    function disbleMute(mutebtn) {
-        {#var vid = document.getElementById(video);#}
-        var mutebuttonClass = document.getElementById(mutebtn).className;
-        var mutebuttonClass2 = document.getElementById('muteBtn1').className;
-        var mutebuttonClass3 = document.getElementById('muteBtn2').className;
-        var mutebuttonClass4 = document.getElementById('muteBtn3').className;
-        var vid2 = document.getElementById('video1')
-        var vid3 = document.getElementById('video2')
-        var vid4 = document.getElementById('video3')
-        if(mutebuttonClass == 'fas fa-volume-up'){
+    </script>
+    <script>
+        if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
+            document.write("mobile");
+            var vid2 = document.getElementById('video1')
+            var vid3 = document.getElementById('video2')
+            var vid4 = document.getElementById('video3')
+            var mutebuttonClass2 = document.getElementById('muteBtn1').className;
+            var mutebuttonClass3 = document.getElementById('muteBtn2').className;
+            var mutebuttonClass4 = document.getElementById('muteBtn3').className;
             $('#muteBtn1').removeClass(mutebuttonClass2);
             $('#muteBtn1').addClass('fas fa-volume-mute');
             $('#muteBtn2').removeClass(mutebuttonClass3);
@@ -388,31 +417,22 @@
             vid3.muted=true;
             vid4.muted=true;
         }else{
-            $('#muteBtn1').removeClass(mutebuttonClass2);
-            $('#muteBtn1').addClass('fas fa-volume-up');
-            $('#muteBtn2').removeClass(mutebuttonClass3);
-            $('#muteBtn2').addClass('fas fa-volume-up');
-            $('#muteBtn3').removeClass(mutebuttonClass4);
-            $('#muteBtn3').addClass('fas fa-volume-up');
-            vid2.muted=false;
-            vid3.muted=false;
-            vid4.muted=false;
+            document.write("not mobile");
         }
-    }
-</script>
-<script>
-    if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
-        document.write("mobile");
-        var vid2 = document.getElementById('video1')
-        var vid3 = document.getElementById('video2')
-        var vid4 = document.getElementById('video3')
-        vid2.muted=true;
-        vid3.muted=true;
-        vid4.muted=true;
-    }else{
-        document.write("not mobile");
-    }
-</script>
+    </script>
+{#    <script>#}
+{#        var v = document.getElementById("video1");#}
+{#        var width,height;#}
+{#        var partnerCaption = document.getElementsByClassName("carousel-caption1");#}
+{#        v.addEventListener( "loadedmetadata", function (e) {#}
+{#            var result = $("#video1").css('height');#}
+{#            console.log(result);#}
+{#            for(var i=0; i < partnerCaption.length; i++) {#}
+{#                partnerCaption[i].style.height = result;#}
+{#            }#}
+{#        }, false );#}
+{#    </script>#}
+</div>
 </div>
 </body>
 </html>

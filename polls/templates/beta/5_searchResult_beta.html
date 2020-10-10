@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <!-- Link Swiper's CSS -->
     <link rel="stylesheet" href="{% static 'package/css/swiper.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/styles1007.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles1010-1.css' %}">
     <link rel="stylesheet" href="{% static 'css/paperimg0930.css' %}">
 
     <script
@@ -38,303 +38,312 @@
 
 </head>
 <body>
-<nav style="background-color: rgba(0,0,0,0.7)" class="navbar navbar-expand-md navbar-dark fixed-top">
-    <!-- Brand/logo -->
-    <a class="navbar-brand" href="entrance">
-        <img src="{% static './resources/logo.png'%}" width="150px"/>
-    </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="collapsibleNavbar">
-        <!-- Links -->
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="entrance" style="color:white; ">Home</a>
-            </li>
-            <!-- Dropdown -->
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" style="color: white" href="#" id="navbardrop" data-toggle="dropdown">
-                    Entrance
-                </a>
-                <div class="dropdown-menu">
-                    <a class="dropdown-item" href="main?id=technicalpaper">Technical Talks</a>
-                    <a class="dropdown-item" href="main?id=wstr">Workshops and Tutorials</a>
-                    <a class="dropdown-item" href="main?id=competition">Robot Competition</a>
-                </div>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="mylist?" onClick="this.href=this.href+new Date().getTime()" style="color:white;">My Lists</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="logout" style="color:white;">Logout</a>
-            </li>
-        </ul>
-        <ul class="navbar-nav">
-            <form class="form-inline navbar-right">
-                <input type="text" id="search_bar" value="" class="searchBar" onkeydown="if(event.keyCode === 13) {event.preventDefault(); document.getElementById('searchBtn').click()}"/>
-                <d onclick="if(search_bar.value.length > 0)search()">
-                    <a id = "keywordDelivery" href="javascript: void(0)">
-                        <i id="searchBtn" class="fa fa-search" style="color:white;margin-left: 100%;font-size: 18px"></i>
+<div class="onDemandwidthControl">
+
+    <nav style="background-color: rgba(0,0,0,0.7)" class="navbar navbar-expand-md navbar-dark fixed-top">
+        <!-- Brand/logo -->
+        <a class="navbar-brand" href="entrance">
+            <img src="{% static './resources/logo.png'%}" width="150px"/>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+            <!-- Links -->
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="entrance" style="color:white; ">Home</a>
+                </li>
+                <!-- Dropdown -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" style="color: white" href="#" id="navbardrop" data-toggle="dropdown">
+                        Entrance
                     </a>
-                </d>
-            </form>
-        </ul>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="main?id=technicalpaper">Technical Talks</a>
+                        <a class="dropdown-item" href="main?id=wstr">Workshops and Tutorials</a>
+                        <a class="dropdown-item" href="main?id=competition">Robot Competition</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="mylist?" onClick="this.href=this.href+new Date().getTime()" style="color:white;">My Lists</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="logout" style="color:white;">Logout</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav">
+                <form class="form-inline navbar-right">
+                    <input type="text" id="search_bar" value="" class="searchBar" onkeydown="if(event.keyCode === 13) {event.preventDefault(); document.getElementById('searchBtn').click()}"/>
+                    <d onclick="if(search_bar.value.length > 0)search()">
+                        <a id = "keywordDelivery" href="javascript: void(0)">
+                            <i id="searchBtn" class="fa fa-search" style="color:white;margin-left: 100%;font-size: 18px"></i>
+                        </a>
+                    </d>
+                </form>
+            </ul>
 
-    </div>
-</nav>
+        </div>
+    </nav>
 
-<div style="width:95%; margin:0 auto; padding-top: 50px;" align="justify">
-    <p>&nbsp;</p>
-    <h3 style="font-size: 24px;">&nbsp;&nbsp;Search Results : </h3>
-    <p>&nbsp;</p>
+    <div style="width:95%; margin:0 auto; padding-top: 50px;" align="justify">
+        <p>&nbsp;</p>
+        <h3 style="font-size: 24px;">&nbsp;&nbsp;Search Results : </h3>
+        <p>&nbsp;</p>
 
-    <div id="highlightModal" class="modal">
-        {#        <span class="closeModal">&times;</span>#}
-        <img class="modal-content" id="highlightModalImage">
-        <div id="caption"></div>
-    </div>
+        <div id="highlightModal" class="modal">
+            {#        <span class="closeModal">&times;</span>#}
+            <img class="modal-content" id="highlightModalImage">
+            <div id="caption"></div>
+        </div>
 
-    {% for AuthorList1, AuthorList2, AuthorList3, AuthorList4,AuthorList5,AuthorList6,AffiliationList1,AffiliationList2,AffiliationList3,AffiliationList4,AffiliationList5,TitleList, PDFList, titleNumber, paperLikeCount, paperLikeButtonColor, paperSaveButtonStatus, SessionList, paperHitCount, awardeeCount,awardNameCount in EpisodeContext %}
-        <div class="epilisttable">
-            <table border="0" cellpadding="0" cellspacing="0" style="background-color: #323232;border-radius: 10px" >
-                <tr>
-                    <td class="epilisttableleft">
-                        {#                        <a href="episode?id={{TitleList}}&id2={{ SessionList }}" onClick="this.href=this.href+'&'+new Date().getTime()">#}
-                        {% if titleNumber < 100 %}
-                            <img id="paperHighlight" onError="this.onerror=null;this.src='{% static './resources/playlogo.png' %}';" src="{% static './img/IROS20_Digest' %}/00{{ titleNumber|floatformat:"0" }}_PPT.JPG" onclick="highlightClicked(this.src)">
-                        {% elif titleNumber >= 100 and titleNumber < 1000 %}
-                            <img id="paperHighlight" onError="this.onerror=null;this.src='{% static './resources/playlogo.png' %}';"  src="{% static './img/IROS20_Digest' %}/0{{ titleNumber|floatformat:"0" }}_PPT.JPG" onclick="highlightClicked(this.src)">
-                        {% elif titleNumber >= 1000 %}
-                            <img id="paperHighlight" onError="this.onerror=null;this.src='{% static './resources/playlogo.png' %}';" src="{% static './img/IROS20_Digest' %}/{{ titleNumber|floatformat:"0" }}_PPT.JPG" onclick="highlightClicked(this.src)">
-                        {% endif %}
-                        {#                        </a>#}
-                        Click image to zoom-in &nbsp;&nbsp;&nbsp;<i class="fa fa-search-plus" style="vertical-align: middle"></i>
-                    </td>
-                    <td valign="top" align="left" class="epilisttableright">
-                        {% if awardeeCount == 1 %}
-                            <p class="awardpapertitle">Nominated to {{ awardNameCount }} &#10030;</p>
-                        {% else %}
-                        {% endif %}
-                        <p class="papertitle" style="color: white;">{{ TitleList }}</p>
-                        <table class="paperInfo" border="0" cellpadding="0" cellspacing="0" width="100% "style="background-color: #323232; text-align: left;color: white;">
-                            <tbody>
+        {% for AuthorList1, AuthorList2, AuthorList3, AuthorList4,AuthorList5,AuthorList6,AffiliationList1,AffiliationList2,AffiliationList3,AffiliationList4,AffiliationList5,TitleList, PDFList, titleNumber, paperLikeCount, paperLikeButtonColor, paperSaveButtonStatus, SessionList, paperHitCount, awardeeCount,awardNameCount,pavilionList, pavilionNumList in EpisodeContext %}
+            <div class="epilisttable">
+                <div style="width: 100%;text-align: left">
+                    <p class="papertitle" style="margin-bottom: 0%">
+                        <a href="tvshow?id={{SessionList}}&id2={{ pavilionList }}&id3={{pavilionNumList}}" style="color: floralwhite;">
+                            <mark style="background-color: darkslategray;color: floralwhite">Under Session >> {{ SessionList }}</mark>
+                        </a></p>
+                </div>
+                <table border="0" cellpadding="0" cellspacing="0" style="border-radius: 10px" >
+                    <tr>
+                        <td class="epilisttableleft">
+                            {#                        <a href="episode?id={{TitleList}}&id2={{ SessionList }}" onClick="this.href=this.href+'&'+new Date().getTime()">#}
+                            {% if titleNumber < 100 %}
+                                <img id="paperHighlight" onError="this.onerror=null;this.src='{% static './resources/playlogo.png' %}';" src="{% static './img/IROS20_Digest' %}/00{{ titleNumber|floatformat:"0" }}_PPT.JPG" onclick="highlightClicked(this.src)">
+                            {% elif titleNumber >= 100 and titleNumber < 1000 %}
+                                <img id="paperHighlight" onError="this.onerror=null;this.src='{% static './resources/playlogo.png' %}';"  src="{% static './img/IROS20_Digest' %}/0{{ titleNumber|floatformat:"0" }}_PPT.JPG" onclick="highlightClicked(this.src)">
+                            {% elif titleNumber >= 1000 %}
+                                <img id="paperHighlight" onError="this.onerror=null;this.src='{% static './resources/playlogo.png' %}';" src="{% static './img/IROS20_Digest' %}/{{ titleNumber|floatformat:"0" }}_PPT.JPG" onclick="highlightClicked(this.src)">
+                            {% endif %}
+                            {#                        </a>#}
+                            Click image to zoom-in &nbsp;&nbsp;&nbsp;<i class="fa fa-search-plus" style="vertical-align: middle"></i>
+                        </td>
+                        <td valign="top" align="left" class="epilisttableright">
+                            {% if awardeeCount == 1 %}
+                                <i><p class="awardpapertitle">Nominated to {{ awardNameCount }} &#10030;</p></i>
+                            {% else %}
+                            {% endif %}
+                            <p class="papertitle" style="color: white;">{{ TitleList }}</p>
+                            <table class="paperInfo" border="0" cellpadding="0" cellspacing="0" width="100% "style="background-color: #323232; text-align: left;color: white;">
+                                <tbody>
 
-                            <tr>
-                                <td style="width: 40%;"><u>Author</u></td>
-                                <td><u>Affiliation</u></th>
-                            </tr>
-                            {% if AuthorList1 == 'missing' %}
-                                &nbsp;
-                            {% else %}
                                 <tr>
-                                    <td style="width: 40%">{{ AuthorList1 }}</td>
-                                    <td>{{ AffiliationList1 }}</td>
+                                    <td style="width: 40%;"><u>Author</u></td>
+                                    <td><u>Affiliation</u></th>
                                 </tr>
-                            {% endif %}
-                            {% if AuthorList2 == 'missing' %}
-                                &nbsp;
-                            {% else %}
-                                <tr>
-                                    <td style="width: 40%">{{ AuthorList2 }}</td>
-                                    <td>{{ AffiliationList2 }}</td>
-                                </tr>
-                            {% endif %}
-                            {% if AuthorList3 == 'missing' %}
-                                &nbsp;
-                            {% else %}
-                                <tr>
-                                    <td style="width: 40%">{{ AuthorList3 }}</td>
-                                    <td>{{ AffiliationList3 }}</td>
-                                </tr>
-                            {% endif %}
-                            {% if AuthorList4 == 'missing' %}
-                                &nbsp;
-                            {% else %}
-                                <tr>
-
-                                    <td style="width: 40%">{{ AuthorList4|default_if_none:"" }}</td>
-                                    <td>{{ AffiliationList4|default_if_none:"" }}</td>
-                                </tr>
-                            {% endif %}
-                            {% if AuthorList5 == 'missing' %}
-                                &nbsp;
-                            {% else %}
-                                <tr>
-                                    <td style="width: 40%">{{ AuthorList5 }}</td>
-                                    <td>{{ AffiliationList5 }}</td>
-                                </tr>
-                            {% endif %}
-                            {% if AuthorList6 == 'missing' %}
-                                &nbsp;
-                            {% else %}
-                                <tr>
-                                    <td style="width: 40%"><i style="font-size: 100%">Et al</i></td>
-                                    <td>&nbsp;</td>
-                                </tr>
-                            {% endif %}
-                            </tbody>
-                        </table>
-                        <br>
-                        <div style="color: white;">
-                            {% csrf_token %}
-                            {% if paperSaveButtonStatus == 1 %}
-                                <button class="saveButton" type="submit" style="margin: auto;background-color: #323232; color: white" onclick="updateSave({{ titleNumber|floatformat:"0" }})">
-                                    <i id="savebutton{{titleNumber|floatformat:"0"}}" class="fa fa-check-circle"  aria-hidden="true" style="color:white; vertical-align: top"></i>
-                                    <font id="buttonMessage{{titleNumber|floatformat:"0"}}" style="color: white;">&nbsp;&nbsp;&nbsp;Added to my list</font>
-                                    <input type="hidden" name="paperNumber" value="{{ titleNumber|floatformat:"0" }}">
-                                </button>
-                            {% else %}
-                                <button class="saveButton" type="submit" style="padding: 0% ;background-color: #323232;" onclick="updateSave({{ titleNumber|floatformat:"0" }})">
-                                    <i id="savebutton{{titleNumber|floatformat:"0"}}" class="fa fa-plus"  aria-hidden="true" style="color:white; vertical-align: top"></i>
-                                    <font id="buttonMessage{{titleNumber|floatformat:"0"}}" style="color: white;">&nbsp;&nbsp;&nbsp;Add to my List</font>
-                                    <input type="hidden" name="paperNumber" value="{{ titleNumber|floatformat:"0" }}">
-                                </button>
-                            {% endif %}
-                        </div>
-                        <br>
-                        <div>
-                            <a style="text-decoration: none" href="episode?id={{TitleList}}&id2={{ Session }}" onClick="this.href=this.href+'&'+new Date().getTime()">
-                                <div class="videoPlayButton">
-                                    <div class="videoPlayButtonIcon">
-                                        <i class="fa fa-play-circle" style="vertical-align: middle;"></i>
-                                    </div>
-                                    <div class="videoPlayButtonText">Watch Now
-                                    </div>
-                                </div>
-                            </a>
-                            <div class="pdfopenButton">
-                                {% if PDFList == 'missing' %}
-                                    <p style="font-size: 18px;color: lawngreen;">No PDF files</p>
+                                {% if AuthorList1 == 'missing' %}
+                                    &nbsp;
                                 {% else %}
-                                    <p style="font-size: 18px"><a href="https://ras.papercept.net/proceedings/IROS20/{{ PDFList }}" target="_blank" style="color: lawngreen;"> Open PDF files</a></p>
+                                    <tr>
+                                        <td style="width: 40%">{{ AuthorList1 }}</td>
+                                        <td>{{ AffiliationList1 }}</td>
+                                    </tr>
+                                {% endif %}
+                                {% if AuthorList2 == 'missing' %}
+                                    &nbsp;
+                                {% else %}
+                                    <tr>
+                                        <td style="width: 40%">{{ AuthorList2 }}</td>
+                                        <td>{{ AffiliationList2 }}</td>
+                                    </tr>
+                                {% endif %}
+                                {% if AuthorList3 == 'missing' %}
+                                    &nbsp;
+                                {% else %}
+                                    <tr>
+                                        <td style="width: 40%">{{ AuthorList3 }}</td>
+                                        <td>{{ AffiliationList3 }}</td>
+                                    </tr>
+                                {% endif %}
+                                {% if AuthorList4 == 'missing' %}
+                                    &nbsp;
+                                {% else %}
+                                    <tr>
+
+                                        <td style="width: 40%">{{ AuthorList4|default_if_none:"" }}</td>
+                                        <td>{{ AffiliationList4|default_if_none:"" }}</td>
+                                    </tr>
+                                {% endif %}
+                                {% if AuthorList5 == 'missing' %}
+                                    &nbsp;
+                                {% else %}
+                                    <tr>
+                                        <td style="width: 40%">{{ AuthorList5 }}</td>
+                                        <td>{{ AffiliationList5 }}</td>
+                                    </tr>
+                                {% endif %}
+                                {% if AuthorList6 == 'missing' %}
+                                    &nbsp;
+                                {% else %}
+                                    <tr>
+                                        <td style="width: 40%"><i style="font-size: 100%">Et al</i></td>
+                                        <td>&nbsp;</td>
+                                    </tr>
+                                {% endif %}
+                                </tbody>
+                            </table>
+                            <br>
+                            <div style="color: white;">
+                                {% csrf_token %}
+                                {% if paperSaveButtonStatus == 1 %}
+                                    <button class="saveButton" type="submit" style="margin: auto;background-color: #323232; color: white" onclick="updateSave({{ titleNumber|floatformat:"0" }})">
+                                        <i id="savebutton{{titleNumber|floatformat:"0"}}" class="fa fa-check-circle"  aria-hidden="true" style="color:white; vertical-align: top"></i>
+                                        <font id="buttonMessage{{titleNumber|floatformat:"0"}}" style="color: white;">&nbsp;&nbsp;&nbsp;Added to my list</font>
+                                        <input type="hidden" name="paperNumber" value="{{ titleNumber|floatformat:"0" }}">
+                                    </button>
+                                {% else %}
+                                    <button class="saveButton" type="submit" style="padding: 0% ;background-color: #323232;" onclick="updateSave({{ titleNumber|floatformat:"0" }})">
+                                        <i id="savebutton{{titleNumber|floatformat:"0"}}" class="fa fa-plus"  aria-hidden="true" style="color:white; vertical-align: top"></i>
+                                        <font id="buttonMessage{{titleNumber|floatformat:"0"}}" style="color: white;">&nbsp;&nbsp;&nbsp;Add to my List</font>
+                                        <input type="hidden" name="paperNumber" value="{{ titleNumber|floatformat:"0" }}">
+                                    </button>
                                 {% endif %}
                             </div>
-                        </div>
-                        <br>
-                        <div class="paperlikeviewcountdiv">
-                            {% if paperLikeButtonColor == 1 %}
-                                <button class="likeButton" type="submit" style="margin: auto;background-color: #323232 ;" onclick="updateLike({{ titleNumber|floatformat:"0" }})">
-                                    <i id="thumbs{{titleNumber|floatformat:"0"}}" class="fa fa-thumbs-up" style="color:yellow;"></i>
-                                    <input type="text" id="{{ titleNumber|floatformat:"0" }}" value="{{ paperLikeCount }}" class="thumbsuptext" name="likeCount" readonly/>
-                                    <input type="hidden" name="paperNumber" value="{{ titleNumber|floatformat:"0" }}">
-                                </button>
-                            {% else %}
-                                <button class="likeButton" type="submit" style="padding: 0% ;background-color: #323232;" onclick="updateLike({{ titleNumber|floatformat:"0" }})">
-                                    <i id="thumbs{{titleNumber|floatformat:"0"}}" class="fa fa-thumbs-up" style="color:grey;"></i>
-                                    <input type="text" id="{{ titleNumber|floatformat:"0" }}" value="{{ paperLikeCount }}" class="thumbsuptext" name="likeCount" readonly/>
-                                    <input type="hidden" name="paperNumber" value="{{ titleNumber|floatformat:"0" }}">
-                                </button>
-                            {% endif %}
-                            <span class="listHitCount" style="color: white;font-size: 18px">{{ paperHitCount }} views</span>
-                        </div>
-                    </td>
-                </tr>
-            </table>
-        </div>
-    {% endfor %}
+                            <br>
+                            <div>
+                                <a style="text-decoration: none" href="episode?id={{TitleList}}&id2={{ SessionList }}" onClick="this.href=this.href+'&'+new Date().getTime()">
+                                    <div class="videoPlayButton">
+                                        <div class="videoPlayButtonIcon">
+                                            <i class="fa fa-play-circle" style="vertical-align: middle;"></i>
+                                        </div>
+                                        <div class="videoPlayButtonText">Watch Now
+                                        </div>
+                                    </div>
+                                </a>
+                                <div class="pdfopenButton">
+                                    {% if PDFList == 'missing' %}
+                                        <p style="font-size: 18px;color: lawngreen;">No PDF files</p>
+                                    {% else %}
+                                        <p style="font-size: 18px"><a href="https://ras.papercept.net/proceedings/IROS20/{{ PDFList }}" target="_blank" style="color: lawngreen;"> Open PDF files</a></p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <br>
+                            <div class="paperlikeviewcountdiv">
+                                {% if paperLikeButtonColor == 1 %}
+                                    <button class="likeButton" type="submit" style="margin: auto;background-color: #323232 ;" onclick="updateLike({{ titleNumber|floatformat:"0" }})">
+                                        <i id="thumbs{{titleNumber|floatformat:"0"}}" class="fa fa-thumbs-up" style="color:yellow;"></i>
+                                        <input type="text" id="{{ titleNumber|floatformat:"0" }}" value="{{ paperLikeCount }}" class="thumbsuptext" name="likeCount" readonly/>
+                                        <input type="hidden" name="paperNumber" value="{{ titleNumber|floatformat:"0" }}">
+                                    </button>
+                                {% else %}
+                                    <button class="likeButton" type="submit" style="padding: 0% ;background-color: #323232;" onclick="updateLike({{ titleNumber|floatformat:"0" }})">
+                                        <i id="thumbs{{titleNumber|floatformat:"0"}}" class="fa fa-thumbs-up" style="color:grey;"></i>
+                                        <input type="text" id="{{ titleNumber|floatformat:"0" }}" value="{{ paperLikeCount }}" class="thumbsuptext" name="likeCount" readonly/>
+                                        <input type="hidden" name="paperNumber" value="{{ titleNumber|floatformat:"0" }}">
+                                    </button>
+                                {% endif %}
+                                <span class="listHitCount" style="color: white;font-size: 18px">{{ paperHitCount }} views</span>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        {% endfor %}
 
 
-    <script src="{% static 'package/js/swiper.min.js' %}"></script>
-    <script>
-        function search(){
-            const query = document.getElementById("search_bar").value;
-            document.getElementById("keywordDelivery").href = "searchresult?id="+query;
-        }
-
-    </script>
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
-    <script>
-        function updateLike(titleNumber){
-            var currLikeCount= parseInt($('#'+titleNumber)[0].value,10);
-            var currLikeColor =$('#thumbs'+titleNumber)[0].style.color;
-
-            if(currLikeColor == 'yellow'){
-                $('#'+titleNumber)[0].value = currLikeCount -1;
-                $('#thumbs'+titleNumber)[0].style.color =  'grey';
-            }else{
-
-                $('#'+titleNumber)[0].value = currLikeCount + 1;
-                $('#thumbs'+titleNumber)[0].style.color =  'yellow';
+        <script src="{% static 'package/js/swiper.min.js' %}"></script>
+        <script>
+            function search(){
+                const query = document.getElementById("search_bar").value;
+                document.getElementById("keywordDelivery").href = "searchresult?id="+query;
             }
-            $.ajax({
-                url:'post_like',
-                type:'POST',
-                data:{'paperNumber':titleNumber},
-                dataType:'json',
-                success: function(json) {
-                    {#$('#'+titleNumber)[0].value =  json['likeCount'];#}
-                    {#$('#thumbs'+titleNumber)[0].style.color =  json['likeButtonColor'];#}
-                },
-                error: function(err) {
-                    alert("Failed to Retrieve JSON file from Server");
+
+        </script>
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+        <script>
+            function updateLike(titleNumber){
+                var currLikeCount= parseInt($('#'+titleNumber)[0].value,10);
+                var currLikeColor =$('#thumbs'+titleNumber)[0].style.color;
+
+                if(currLikeColor == 'yellow'){
+                    $('#'+titleNumber)[0].value = currLikeCount -1;
+                    $('#thumbs'+titleNumber)[0].style.color =  'grey';
+                }else{
+
+                    $('#'+titleNumber)[0].value = currLikeCount + 1;
+                    $('#thumbs'+titleNumber)[0].style.color =  'yellow';
+                }
+                $.ajax({
+                    url:'post_like',
+                    type:'POST',
+                    data:{'paperNumber':titleNumber},
+                    dataType:'json',
+                    success: function(json) {
+                        {#$('#'+titleNumber)[0].value =  json['likeCount'];#}
+                        {#$('#thumbs'+titleNumber)[0].style.color =  json['likeButtonColor'];#}
+                    },
+                    error: function(err) {
+                        alert("Failed to Retrieve JSON file from Server");
+                    }
+                });
+            }
+        </script>
+        <script>
+            function updateSave(titleNumber){
+                var savebuttonClass = document.getElementById("savebutton"+titleNumber).className;
+                if(savebuttonClass == 'fa fa-plus'){
+                    $('#savebutton'+titleNumber).removeClass(savebuttonClass);
+                    $('#savebutton'+titleNumber).addClass('fa fa-check-circle');
+                    $('#buttonMessage'+titleNumber).html('&nbsp;&nbsp;&nbsp;Added to my list')
+                }else{
+                    $('#savebutton'+titleNumber).removeClass(savebuttonClass);
+                    $('#savebutton'+titleNumber).addClass('fa fa-plus');
+                    $('#buttonMessage'+titleNumber).html('&nbsp;&nbsp;&nbsp;Add to my list')
+                }
+                $.ajax({
+                    url:'post_save',
+                    type:'POST',
+                    data:{'paperNumber':titleNumber},
+                    dataType:'json',
+                    success: function(json) {
+                        {#$('#savebutton'+titleNumber).removeClass(savebuttonClass);#}
+                        {#$('#savebutton'+titleNumber).addClass(json['paperSaveButtonStatus']);#}
+                        {#$('#buttonMessage'+titleNumber).html('&nbsp;&nbsp;&nbsp;'+json['buttonMessage'])#}
+                    },
+                    error: function(err) {
+                        alert("Failed to Retrieve JSON file from Server");
+                    }
+                });
+            }
+        </script>
+        <script>
+            // Get the modal
+            var modal = document.getElementById("highlightModal");
+            var modalImg = document.getElementById("highlightModalImage");
+            var captionText = document.getElementById("caption");
+
+            {#var span = document.getElementsByClassName("closeModal")[0];#}
+
+            // When the user clicks on <span> (x), close the modal
+            modalImg.onclick = function() {
+                modal.style.display = "none";
+            }
+
+        </script>
+        <script>
+            function highlightClicked(src){
+                modal.style.display = "block";
+                modalImg.src = src;
+                captionText.innerHTML = "Tap on the image to close";
+            }
+        </script>
+        <script>
+            window.addEventListener( "pageshow", function ( event ) {
+                var historyTraversal = event.persisted ||
+                    ( typeof window.performance != "undefined" &&
+                        window.performance.navigation.type === 2 );
+                if ( historyTraversal ) {
+                    // Handle page restore.
+                    window.location.reload();
+                    console.log('save my ass')
                 }
             });
-        }
-    </script>
-    <script>
-        function updateSave(titleNumber){
-            var savebuttonClass = document.getElementById("savebutton"+titleNumber).className;
-            if(savebuttonClass == 'fa fa-plus'){
-                $('#savebutton'+titleNumber).removeClass(savebuttonClass);
-                $('#savebutton'+titleNumber).addClass('fa fa-check-circle');
-                $('#buttonMessage'+titleNumber).html('&nbsp;&nbsp;&nbsp;Added to my list')
-            }else{
-                $('#savebutton'+titleNumber).removeClass(savebuttonClass);
-                $('#savebutton'+titleNumber).addClass('fa fa-plus');
-                $('#buttonMessage'+titleNumber).html('&nbsp;&nbsp;&nbsp;Add to my list')
-            }
-            $.ajax({
-                url:'post_save',
-                type:'POST',
-                data:{'paperNumber':titleNumber},
-                dataType:'json',
-                success: function(json) {
-                    {#$('#savebutton'+titleNumber).removeClass(savebuttonClass);#}
-                    {#$('#savebutton'+titleNumber).addClass(json['paperSaveButtonStatus']);#}
-                    {#$('#buttonMessage'+titleNumber).html('&nbsp;&nbsp;&nbsp;'+json['buttonMessage'])#}
-                },
-                error: function(err) {
-                    alert("Failed to Retrieve JSON file from Server");
-                }
-            });
-        }
-    </script>
-    <script>
-        // Get the modal
-        var modal = document.getElementById("highlightModal");
-        var modalImg = document.getElementById("highlightModalImage");
-        var captionText = document.getElementById("caption");
-
-        {#var span = document.getElementsByClassName("closeModal")[0];#}
-
-        // When the user clicks on <span> (x), close the modal
-        modalImg.onclick = function() {
-            modal.style.display = "none";
-        }
-
-    </script>
-    <script>
-        function highlightClicked(src){
-            modal.style.display = "block";
-            modalImg.src = src;
-            captionText.innerHTML = "Tap on the image to close";
-        }
-    </script>
-    <script>
-        window.addEventListener( "pageshow", function ( event ) {
-            var historyTraversal = event.persisted ||
-                ( typeof window.performance != "undefined" &&
-                    window.performance.navigation.type === 2 );
-            if ( historyTraversal ) {
-                // Handle page restore.
-                window.location.reload();
-                console.log('save my ass')
-            }
-        });
-    </script>
+        </script>
+    </div>
 </div>
 </body>
 </html>
