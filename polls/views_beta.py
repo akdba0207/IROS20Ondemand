@@ -2,13 +2,15 @@
 #
 # # Create your views here.
 import json
+from datetime import datetime, timezone
+
 
 from django.contrib import messages
 from django.forms import forms
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
-from polls.models import Papers, Comments, Users, Profile, VideoTimers
+from polls.models import Papers, Comments, Users, Profile, VideoTimers, ActiveTime
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth import login as auth_login, authenticate
 from django.contrib.auth import logout as auth_logout
@@ -42,6 +44,12 @@ iros2020_raw_orgin_empty_filter = iros2020_raw_orgin.fillna('missing')
 iros2020_raw = iros2020_raw_orgin_empty_filter.iloc[0:1445,:] #Technical paper is from 0~1445
 iros2020_award = iros2020_raw_orgin_empty_filter[(iros2020_raw_orgin_empty_filter['Theme']=='Award Finalists')] #IROS Award Session
 
+#IROS2020 Session Chairs and Co-chairs
+excel_file01 = 'IROS20_Sessions_Chairs.xlsx'
+path01 = os.path.join(pre,excel_file01)
+iros20_sessionChairs = pd.read_excel(path01,sheet_name=0)
+iros20_sessionChairs = iros20_sessionChairs.fillna('missing')
+
 # Call Genres, Pavilion
 excel_file1 = 'IROS2020_onDemand_beta.xlsx'
 path1 = os.path.join(pre, excel_file1)
@@ -58,7 +66,7 @@ path4 = os.path.join(pre, excel_file4)
 icra_workshops = pd.read_excel(path4, sheet_name=0)
 icra_workshops = icra_workshops.fillna('missing')
 
-# Call Sponsors
+# Call Partners
 excel_file6 = 'IROS20_Partners.xlsx'
 path6 = os.path.join(pre, excel_file6)
 iros_partners = pd.read_excel(path6, sheet_name=0)
@@ -181,7 +189,21 @@ def login(request):
 
 # Logout
 def logout(request):
-    auth_logout(request)
+    if request.user.is_authenticated is True:
+        activeTime = datetime.now(timezone.utc) - request.user.last_login
+        print(activeTime.total_seconds())
+
+        field_name = 'activeTimeInSeconds'
+        obj = ActiveTime.objects.first()
+        field_object = ActiveTime._meta.get_field(field_name)
+        field_value = field_object.value_from_object(obj)
+        updated_active_time = activeTime.total_seconds() + field_value
+
+        ActiveTime.objects.get.update(activeTimeInSeconds=updated_active_time)
+
+        auth_logout(request)
+
+
     return redirect('login')
 
 
@@ -357,13 +379,24 @@ def tvshow(request):
     AffiliationList5 = EpisodeList['Affiliation5'].reset_index()
 
     # Gold Sponsor Video
-    goldSponsorSession = iros_partners[(iros_partners['Location'] == selectedSession)].reset_index()
-    goldSponsorName = goldSponsorSession['Name'].reset_index()
-    print(selectedSession)
-    goldSponsorVideo = goldSponsorSession['Video Name'].reset_index()
-    goldSponsorWebpage = goldSponsorSession['Webpage Link'].reset_index()
-    goldSponsorVideoType = goldSponsorSession['Type'].reset_index()
-    goldSponsorVideoLink = goldSponsorSession['Video Link'].reset_index()
+    partnerSession = iros_partners[(iros_partners['Location'] == selectedSession)].reset_index()
+    partnerName = partnerSession['Name'].reset_index()
+    # print(selectedSession)
+    partnerVideo = partnerSession['Video Name'].reset_index()
+    partenerWebpage = partnerSession['Webpage Link'].reset_index()
+    partnerVideoType = partnerSession['Type'].reset_index()
+    partnerVideoLink = partnerSession['Video Link'].reset_index()
+    partnerCartegory = partnerSession['Cartegory'].reset_index()
+
+    #Session Chair and Co-Chairs
+    findSession = iros20_sessionChairs[(iros20_sessionChairs['Session title']==selectedSession)].reset_index()
+    findChair = findSession[(findSession['Role']=='Chair')].reset_index()
+    findCoChair = findSession[(findSession['Role'] == 'Co-chair')].reset_index()
+    ChairName = findChair['FirstName'].iloc[0] + findChair['LastName'].iloc[0]
+    ChairAffiliation = findChair['Affiliation'].iloc[0]
+    coChairName = findCoChair['FirstName'].iloc[0] + findCoChair['LastName'].iloc[0]
+    coChairAffiliation = findCoChair['Affiliation'].iloc[0]
+    Overview = findChair['Overview'].iloc[0]
 
     if request.method == "GET":
         paperLikeCount = []
@@ -408,13 +441,19 @@ def tvshow(request):
                                                                       'SessionList': selectedSessionList,
                                                                       'Session': selectedSession,
                                                                       'EpisodeContext': EpisodeContext,
-                                                                      'goldSponsorName': goldSponsorName['Name'],
-                                                                      'goldSponsorVideo': goldSponsorVideo['Video Name'],
-                                                                      'goldSponsorSession': goldSponsorSession[
+                                                                      'partnerCartegory':partnerCartegory['Cartegory'],
+                                                                      'partnerName': partnerName['Name'],
+                                                                      'partnerVideo': partnerVideo['Video Name'],
+                                                                      'partnerSession': partnerSession[
                                                                           'Location'],
-                                                                      'goldSponsorWebpage': goldSponsorWebpage['Webpage Link'],
-                                                                      'goldSponsorVideoType':goldSponsorVideoType['Type'],
-                                                                      'goldSponsorVideoLink':goldSponsorVideoLink['Video Link']
+                                                                      'partenerWebpage': partenerWebpage['Webpage Link'],
+                                                                      'partnerVideoType':partnerVideoType['Type'],
+                                                                      'partnerVideoLink':partnerVideoLink['Video Link'],
+                                                                      'Overview':Overview,
+                                                                      'ChairName':ChairName,
+                                                                      'coChairName':coChairName,
+                                                                      'ChairAffiliation':ChairAffiliation,
+                                                                      'coChairAffiliation':coChairAffiliation
                                                                       })
 
 
@@ -512,6 +551,11 @@ def workshops(request):
     # for q in range(len(Speaker)):
     #     newNumb = int(workshopNumber)*100 + q
     #     db2 = Papers(paper_id=newNumb)
+    #     db2.save()
+    #     print(newNumb)
+    # for q in range(len(Speaker)):
+    #     newNumb = int(workshopNumber) * 100 + q
+    #     db2 = VideoTimers(paper_id=newNumb)
     #     db2.save()
     #     print(newNumb)
 
@@ -630,6 +674,8 @@ def episode(request):
         else:
             selectedPaperbuttonStatus = 0
 
+        selectedpaperHitCount = int(selectedPaper.paper_hitcount) + 1
+
         for titleNr in titleNumber['Nr']:
             paper = get_object_or_404(Papers, paper_id=titleNr)
             if current_account in paper.like_users.all():
@@ -667,6 +713,7 @@ def episode(request):
                                                                              'EpisodeContext': resultList,
                                                                              'SelectedPaperNumber':
                                                                                  selectedNumber['Nr'].iloc[0],
+                                                                             'selectedpaperHitCount':selectedpaperHitCount,
                                                                              'selectedPaperLikeButtonColor': selectedPaperLikeButtonColor,
                                                                              'selectedPaperLikeCount': selectedPaperLikeCount,
                                                                              'selectedPaperbuttonStatus': selectedPaperbuttonStatus,
@@ -901,6 +948,10 @@ def searchresult(request):
             main2 = searchTitle.append(iros2020_raw[(iros2020_raw['Nr'] == int(resultNumber[i]))])
             searchTitle = main2
 
+        pavilionNumMatch = dict()
+        for i in range(len(organizedGenre)):
+            pavilionNumMatch[organizedGenre[i]] = i + 1
+
         # print(searchTitle)
         SessionList = searchTitle['Session title'].reset_index()
         AuthorList1 = searchTitle['Author1'].reset_index()
@@ -917,6 +968,11 @@ def searchresult(request):
         TitleList = searchTitle['Title'].reset_index()
         PDFList = searchTitle['FN'].reset_index()
         titleNumber = searchTitle['Nr'].reset_index()
+        pavilionList = searchTitle['Theme'].reset_index()
+
+        pavilionNumList = []
+        for i in pavilionList['Theme']:
+            pavilionNumList.append(pavilionNumMatch[i])
 
         awardeeCount = []
         awardNameCount = []
@@ -971,7 +1027,7 @@ def searchresult(request):
                              AffiliationList5['Affiliation5'],
                              TitleList['Title'],
                              PDFList['FN'], titleNumber['Nr'], paperLikeCount, paperLikeButtonColor,
-                             paperSaveButtonStatus, SessionList['Session title'], paperHitCount, awardeeCount, awardNameCount)
+                             paperSaveButtonStatus, SessionList['Session title'], paperHitCount, awardeeCount, awardNameCount, pavilionList['Theme'],pavilionNumList)
 
         return render(request, './beta/5_searchResult_beta.html', {'EpisodeContext': resultList,
                                                                    })
@@ -1188,7 +1244,7 @@ def post_hitcount(request):
             json.dumps(response),
             content_type="application/json"
         )
-        
+
 @csrf_exempt
 def update_playtime(request):
     if request.user.is_authenticated == False:
@@ -1243,6 +1299,7 @@ def update_playtime(request):
 # for i in range(1465):
 #     db = Papers(paper_id=iros2020_raw['Nr'][i])
 #     db.save()
+
 # print(len(icra_specials['Nr']))
 # for j in range(len(icra_specials['Nr'])):
 #     db1 = Papers(paper_id=icra_specials['Nr'][j])
@@ -1256,10 +1313,19 @@ def update_playtime(request):
 # print(ip)
 
 # VideoTimers Initialization
-# for i in range(1553):
-#     db = VideoTimers(paper_id=icra_example['Nr'][i])
+#Paper Database ICRA 1553, IROS 1445
+# for i in range(1445):
+#     db = VideoTimers(paper_id=iros2020_raw['Nr'][i])
 #     db.save()
-# print(is_routable)
+#
+# # print(len(icra_specials['Nr']))
+# for j in range(len(icra_specials['Nr'])):
+#     db1 = VideoTimers(paper_id=icra_specials['Nr'][j])
+#     db1.save()
+# # #
+# for k in range(len(icra_workshops['Workshop Number'])):
+#     db2 = VideoTimers(paper_id=icra_workshops['Workshop Number'][k])
+#     db2.save()
 
 # # Paper ViewCount Update
 # viewcountResetter = Papers.objects.all()

@@ -64,3 +64,7 @@ class Comments(models.Model):
 class VideoTimers(models.Model):
     paper_id = models.PositiveIntegerField()
     seconds = models.PositiveIntegerField(default=0)
+
+
+class ActiveTime(models.Model):
+    activeTimeInSeconds = models.PositiveIntegerField(default=0)
