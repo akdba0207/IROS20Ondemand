@@ -37,103 +37,115 @@
 </head>
 <body>
 <div class="onDemandwidthControl">
-<nav style="background-color: rgba(0,0,0,0.7)" class="navbar navbar-expand-md navbar-dark fixed-top">
-    <!-- Brand/logo -->
-    <a class="navbar-brand" href="entrance">
+    <nav style="background-color: rgba(0,0,0,0.7)" class="navbar navbar-expand-md navbar-dark fixed-top">
+        <!-- Brand/logo -->
+        {% if showcontents == 3 %}
+            <a class="navbar-brand" href="main?id=competition">
+        {% elif showcontents == 2 %}
+            <a class="navbar-brand" href="main?id=wstr">
+        {% else %}
+            <a class="navbar-brand" href="main?id=technicalpaper">
+        {% endif %}
         <img src="{% static './resources/logo.png'%}" width="150px"/>
-    </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="collapsibleNavbar">
-        <!-- Links -->
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="entrance" style="color:white; ">Home</a>
-            </li>
-            <!-- Dropdown -->
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" style="color: white" href="#" id="navbardrop" data-toggle="dropdown">
-                    Entrance
-                </a>
-                <div class="dropdown-menu">
-                    <a class="dropdown-item" href="main?id=technicalpaper">Technical Talks</a>
-                    <a class="dropdown-item" href="main?id=wstr">Workshops and Tutorials</a>
-                    <a class="dropdown-item" href="main?id=competition">Robot Competition</a>
-                </div>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="mylist?" onClick="this.href=this.href+new Date().getTime()" style="color:white;">My Lists</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="logout" style="color:white;">Logout</a>
-            </li>
-        </ul>
-        <ul class="navbar-nav">
-            <form class="form-inline navbar-right">
-                <input type="text" id="search_bar" value="" class="searchBar" onkeydown="if(event.keyCode === 13) {event.preventDefault(); document.getElementById('searchBtn').click()}"/>
-                <d onclick="if(search_bar.value.length > 0)search()">
-                    <a id = "keywordDelivery" href="javascript: void(0)">
-                        <i id="searchBtn" class="fa fa-search" style="color:white;margin-left: 100%;font-size: 18px"></i>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+            <!-- Links -->
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    {% if showcontents == 3 %}
+                        <a class="nav-link" href="main?id=competition" style="color:white; ">Home</a>
+                    {% elif showcontents == 2 %}
+                        <a class="nav-link" href="main?id=wstr" style="color:white; ">Home</a>
+                    {% else %}
+                        <a class="nav-link" href="main?id=technicalpaper" style="color:white; ">Home</a>
+                    {% endif %}
+                </li>
+                <!-- Dropdown -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" style="color: white" href="#" id="navbardrop" data-toggle="dropdown">
+                        Entrance
                     </a>
-                </d>
-            </form>
-        </ul>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="main?id=technicalpaper">Technical Talks</a>
+                        <a class="dropdown-item" href="main?id=wstr">Workshops and Tutorials</a>
+                        <a class="dropdown-item" href="main?id=competition">Robot Competition</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="mylist?id=1" onClick="this.href=this.href+'&'+new Date().getTime()" style="color:white;">My Lists</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="logout" style="color:white;">Logout</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav">
+                <form class="form-inline navbar-right">
+                    <input type="text" id="search_bar" value="" class="searchBar" onkeydown="if(event.keyCode === 13) {event.preventDefault(); document.getElementById('searchBtn').click()}"/>
+                    <d onclick="if(search_bar.value.length > 0)search()">
+                        <a id = "keywordDelivery" href="javascript: void(0)">
+                            <i id="searchBtn" class="fa fa-search" style="color:white;margin-left: 100%;font-size: 18px"></i>
+                        </a>
+                    </d>
+                </form>
+            </ul>
+
+        </div>
+    </nav>
+
+    <div style="width:95%; margin:0 auto; padding-top: 100px;" align="justify">
+        <h3 class="pavtitle">&nbsp;&nbsp;Search Results : Not Found </h3>
+        <p>&nbsp;</p>
+        <center>
+            <h3 class="pavtitle">&nbsp;&nbsp;Your Search for "{{ inputKeyword }}" does not have any matches </h3>
+            <h3 class="pavtitle">&nbsp;&nbsp;Try different keywords </h3>
+        </center>
+
+
+        <script src="{% static 'package/js/swiper.min.js' %}"></script>
+        <script>
+            function search(){
+                const query = document.getElementById("search_bar").value;
+                document.getElementById("keywordDelivery").href = "searchresult?id2={{ showcontents }}&id="+query;
+            }
+
+        </script>
+        <!-- Initialize Swiper -->
+
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+        {#<script>#}
+        {#    $(document).ready(function(){#}
+        {#        var nowPlaying = "none";#}
+        {##}
+        {#        $('div').hover(function(){#}
+        {#            nowPlaying = $(this).find('iframe').attr('src');#}
+        {#            $(this).find('iframe').attr('src',nowPlaying+'&autoplay=1');#}
+        {#        }, function(){#}
+        {#            $(this).find('iframe').attr('src',nowPlaying);#}
+        {#        });#}
+        {#    });#}
+        {#</script>#}
+        <script>
+            $(document).ready(function() {
+
+                var vid = $("video").get(0);
+
+                $("video").on("mouseenter",function(){
+                    vid.play();
+                });
+
+                $("video").on("mouseleave",function(){
+                    vid.pause();
+                });
+
+            });
+        </script>
 
     </div>
-</nav>
-
-<div style="width:95%; margin:0 auto; padding-top: 100px;" align="justify">
-    <h3 class="pavtitle">&nbsp;&nbsp;Search Results : Not Found </h3>
-    <p>&nbsp;</p>
-    <center>
-        <h3 class="pavtitle">&nbsp;&nbsp;Your Search for "{{ inputKeyword }}" does not have any matches </h3>
-        <h3 class="pavtitle">&nbsp;&nbsp;Try different keywords </h3>
-    </center>
-
-
-    <script src="{% static 'package/js/swiper.min.js' %}"></script>
-    <script>
-        function search(){
-            const query = document.getElementById("search_bar").value;
-            document.getElementById("keywordDelivery").href = "searchresult?id="+query;
-        }
-
-    </script>
-    <!-- Initialize Swiper -->
-
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
-    {#<script>#}
-    {#    $(document).ready(function(){#}
-    {#        var nowPlaying = "none";#}
-    {##}
-    {#        $('div').hover(function(){#}
-    {#            nowPlaying = $(this).find('iframe').attr('src');#}
-    {#            $(this).find('iframe').attr('src',nowPlaying+'&autoplay=1');#}
-    {#        }, function(){#}
-    {#            $(this).find('iframe').attr('src',nowPlaying);#}
-    {#        });#}
-    {#    });#}
-    {#</script>#}
-    <script>
-        $(document).ready(function() {
-
-            var vid = $("video").get(0);
-
-            $("video").on("mouseenter",function(){
-                vid.play();
-            });
-
-            $("video").on("mouseleave",function(){
-                vid.pause();
-            });
-
-        });
-    </script>
-
-</div>
 </div>
 </body>
 </html>

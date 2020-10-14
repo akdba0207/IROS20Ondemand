@@ -59,7 +59,7 @@
 
     <nav style="background-color: rgba(0,0,0,0.7)" class="navbar navbar-expand-md navbar-dark fixed-top">
         <!-- Brand/logo -->
-        <a class="navbar-brand" href="entrance">
+        <a class="navbar-brand" href="main?id=technicalpaper">
             <img src="{% static './resources/logo.png'%}" width="150px"/>
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
@@ -69,7 +69,7 @@
             <!-- Links -->
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="entrance" style="color:white; ">Home</a>
+                    <a class="nav-link" href="main?id=technicalpaper" style="color:white; ">Home</a>
                 </li>
                 <!-- Dropdown -->
                 <li class="nav-item dropdown">
@@ -83,7 +83,7 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="mylist?" onClick="this.href=this.href+new Date().getTime()" style="color:white;">My Lists</a>
+                    <a class="nav-link" href="mylist?id=1" onClick="this.href=this.href+'&'+new Date().getTime()" style="color:white;">My Lists</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="logout" style="color:white;">Logout</a>
@@ -175,15 +175,13 @@
                 <table border="0" cellpadding="0" cellspacing="0" style="background-color: #323232;border-radius: 10px" >
                     <tr>
                         <td class="epilisttableleft">
-                            {#                        <a href="episode?id={{TitleList}}&id2={{ SessionTitle }}" onClick="this.href=this.href+'&'+new Date().getTime()" style="color:white; text-decoration: none;">#}
                             {% if titleNumber < 100 %}
-                                <img id="paperHighlight" onError="this.onerror=null;this.src='{% static './resources/playlogo.png' %}';" src="{% static './img/IROS20_Digest' %}/00{{ titleNumber|floatformat:"0" }}_PPT.JPG" onclick="highlightClicked(this.src)">
+                                <img id="paperHighlight" onError="this.onerror=null;this.src='{% static './resources/logo2.png' %}';" src="{% static './img/IROS20_Digest' %}/00{{ titleNumber|floatformat:"0" }}_PPT.JPG" onclick="highlightClicked(this.src)">
                             {% elif titleNumber >= 100 and titleNumber < 1000 %}
-                                <img id="paperHighlight" onError="this.onerror=null;this.src='{% static './resources/playlogo.png' %}';" src="{% static './img/IROS20_Digest' %}/0{{ titleNumber|floatformat:"0" }}_PPT.JPG" onclick="highlightClicked(this.src)">
+                                <img id="paperHighlight" onError="this.onerror=null;this.src='{% static './resources/logo2.png' %}';" src="{% static './img/IROS20_Digest' %}/0{{ titleNumber|floatformat:"0" }}_PPT.JPG" onclick="highlightClicked(this.src)">
                             {% elif titleNumber >= 1000 %}
-                                <img id="paperHighlight" onError="this.onerror=null;this.src='{% static './resources/playlogo.png' %}';" src="{% static './img/IROS20_Digest' %}/{{ titleNumber|floatformat:"0" }}_PPT.JPG" onclick="highlightClicked(this.src)">
+                                <img id="paperHighlight" onError="this.onerror=null;this.src='{% static './resources/logo2.png' %}';" src="{% static './img/IROS20_Digest' %}/{{ titleNumber|floatformat:"0" }}_PPT.JPG" onclick="highlightClicked(this.src)">
                             {% endif %}
-                            {#                        </a>#}
                             Click image to zoom-in &nbsp;&nbsp;&nbsp;<i class="fa fa-search-plus" style="vertical-align: middle"></i>
                         </td>
                         <td valign="top" align="left" class="epilisttableright">
@@ -312,43 +310,10 @@
         <script>
             function search(){
                 const query = document.getElementById("search_bar").value;
-                document.getElementById("keywordDelivery").href = "searchresult?id="+query;
+                document.getElementById("keywordDelivery").href = "searchresult?id2=1&id="+query;
             }
+        </script>
 
-        </script>
-        <script>
-            var swiper = new Swiper('.swiper-container', {
-                {#slidesPerView: 7,#}
-                {#spaceBetween: 10,#}
-                slidesPerGroup: 2,
-                pagination: {
-                    el: '.swiper-pagination',
-                    clickable: true,
-                },
-                navigation: {
-                    nextEl: '.swiper-button-next',
-                    prevEl: '.swiper-button-prev',
-                },
-                breakpoints: {
-                    // when window width is >= 320px
-                    200: {
-                        slidesPerView: 4,
-                        slidesPerColumnFill:'row',
-                        spaceBetween: 4
-                    },
-                    // when window width is >= 480px
-                    600: {
-                        slidesPerView: 5,
-                        spaceBetween: 5
-                    },
-                    // when window width is >= 640px
-                    900: {
-                        slidesPerView: 6,
-                        spaceBetween: 6
-                    }
-                }
-            });
-        </script>
         <script>
             function goBack() {
                 {#var oldURL = document.referrer;#}

@@ -42,7 +42,7 @@
 
     <nav style="background-color: rgba(0,0,0,0.7)" class="navbar navbar-expand-md navbar-dark fixed-top">
         <!-- Brand/logo -->
-        <a class="navbar-brand" href="entrance">
+        <a class="navbar-brand" href="main?id=technicalpaper">
             <img src="{% static './resources/logo.png'%}" width="150px"/>
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
@@ -52,7 +52,7 @@
             <!-- Links -->
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="entrance" style="color:white; ">Home</a>
+                    <a class="nav-link" href="main?id=technicalpaper" style="color:white; ">Home</a>
                 </li>
                 <!-- Dropdown -->
                 <li class="nav-item dropdown">
@@ -66,7 +66,7 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="mylist?" onClick="this.href=this.href+new Date().getTime()" style="color:white;">My Lists</a>
+                    <a class="nav-link" href="mylist?id=1" onClick="this.href=this.href+'&'+new Date().getTime()" style="color:white;">My Lists</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="logout" style="color:white;">Logout</a>
@@ -134,9 +134,13 @@
                                     <div style="width: 100%;text-align: center;">
                                         <img id="psponsorImg3" src="{% static 'img/Partners/Gold'%}/{{ partnerName.0 }}.png" width="90%">
                                         <p class="gsVidCaption-p1">IROS {{ partnerCartegory.0 }} Partner</p>
-                                        <p class="gsVidCaption-p2">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam a dolor vitae metus tincidunt sollicitudin.
-                                            Nulla molestie eget turpis nec fermentum. Curabitur quis bibendum justo.</p>
-                                        <p class="gsVidCaption-p3"><a id="psponsorLink3" style="color: coral;" href="https://www.naverlabs.com/">Click : {{ partenerWebpage.0}}</a></p>
+                                        {% if partnerAbstract|length == 0 %}
+                                            <p class="gsVidCaption-p2">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam a dolor vitae metus tincidunt sollicitudin.
+                                                Nulla molestie eget turpis nec fermentum. Curabitur quis bibendum justo.</p>
+                                        {% else %}
+                                            <p class="gsVidCaption-p2">{{ partnerAbstract.0 }}</p>
+                                        {% endif %}
+                                        <p class="gsVidCaption-p3"><a id="psponsorLink3" target="_blank" style="color: coral;" href="{{ partenerWebpage.0}}">Click : {{ partenerWebpage.0}}</a></p>
                                     </div>
                                 </div>
                             </div>
@@ -408,7 +412,7 @@
         <script>
             function search(){
                 const query = document.getElementById("search_bar").value;
-                document.getElementById("keywordDelivery").href = "searchresult?id="+query;
+                document.getElementById("keywordDelivery").href = "searchresult?id2=1&id="+query;
             }
 
         </script>
@@ -489,7 +493,7 @@
                 if ( historyTraversal ) {
                     // Handle page restore.
                     window.location.reload();
-                    console.log('save my ass')
+                    {#console.log('save my ass')#}
                 }
             });
         </script>

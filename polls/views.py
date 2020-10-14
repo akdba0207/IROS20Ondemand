@@ -46,7 +46,7 @@ icra_example = pd.read_excel(path2, sheet_name=0)
 icra_example = icra_example.fillna('missing')
 
 # Call Keynotes and Plenaries
-excel_file3 = 'ICRA20KeynotesandPlenaries.xlsx'
+excel_file3 = 'IROS20_KeynotesandPlenaries.xlsx'
 path3 = os.path.join(pre, excel_file3)
 icra_specials = pd.read_excel(path3, sheet_name=0)
 

@@ -42,7 +42,13 @@
 
     <nav style="background-color: rgba(0,0,0,0.7)" class="navbar navbar-expand-md navbar-dark fixed-top">
         <!-- Brand/logo -->
-        <a class="navbar-brand" href="entrance">
+        {% if showcontents == 3 %}
+            <a class="navbar-brand" href="main?id=competition">
+        {% elif showcontents == 2 %}
+            <a class="navbar-brand" href="main?id=wstr">
+        {% else %}
+            <a class="navbar-brand" href="main?id=technicalpaper">
+        {% endif %}
             <img src="{% static './resources/logo.png'%}" width="150px"/>
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
@@ -52,7 +58,13 @@
             <!-- Links -->
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="entrance" style="color:white; ">Home</a>
+                    {% if showcontents == 3 %}
+                        <a class="nav-link" href="main?id=competition" style="color:white; ">Home</a>
+                    {% elif showcontents == 2 %}
+                        <a class="nav-link" href="main?id=wstr" style="color:white; ">Home</a>
+                    {% else %}
+                        <a class="nav-link" href="main?id=technicalpaper" style="color:white; ">Home</a>
+                    {% endif %}
                 </li>
                 <!-- Dropdown -->
                 <li class="nav-item dropdown">
@@ -66,7 +78,7 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="mylist?" onClick="this.href=this.href+new Date().getTime()" style="color:white;">My Lists</a>
+                    <a class="nav-link" href="mylist?id=1" onClick="this.href=this.href+'&'+new Date().getTime()" style="color:white;">My Lists</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="logout" style="color:white;">Logout</a>
@@ -213,9 +225,9 @@
                                 </a>
                                 <div class="pdfopenButton">
                                     {% if PDFList == 'missing' %}
-                                        <p style="font-size: 18px;color: lawngreen;">No PDF files</p>
+                                        <p style="color: lawngreen;">No PDF files</p>
                                     {% else %}
-                                        <p style="font-size: 18px"><a href="https://ras.papercept.net/proceedings/IROS20/{{ PDFList }}" target="_blank" style="color: lawngreen;"> Open PDF files</a></p>
+                                        <p><a href="https://ras.papercept.net/proceedings/IROS20/{{ PDFList }}" target="_blank" style="color: lawngreen;"> Open PDF files</a></p>
                                     {% endif %}
                                 </div>
                             </div>
@@ -247,7 +259,7 @@
         <script>
             function search(){
                 const query = document.getElementById("search_bar").value;
-                document.getElementById("keywordDelivery").href = "searchresult?id="+query;
+                document.getElementById("keywordDelivery").href = "searchresult?id2={{ showcontents }}&id="+query;
             }
 
         </script>

@@ -20,6 +20,8 @@
     <!-- Link Swiper's CSS -->
     <link rel="stylesheet" href="{% static 'package/css/swiper.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/styles1010-1.css' %}">
+    <link rel="stylesheet" href="{% static 'css/paperimg0930.css' %}">
+
     <script
             src="https://kit.fontawesome.com/7541329784.js"
             crossorigin="anonymous"
@@ -33,282 +35,346 @@
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
     />
     <link rel="stylesheet" href="{% static 'css/index_header1006.css' %}" />
-
+    <style>
+        .morecontent span {
+            display: none;
+        }
+    </style>
 </head>
 <body>
 <div class="onDemandwidthControl">
 
-<nav style="background-color: rgba(0,0,0,0.7)" class="navbar navbar-expand-md navbar-dark fixed-top">
-    <!-- Brand/logo -->
-    <a class="navbar-brand" href="entrance">
-        <img src="{% static './resources/logo.png'%}" width="150px"/>
-    </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="collapsibleNavbar">
-        <!-- Links -->
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="entrance" style="color:white; ">Home</a>
-            </li>
-            <!-- Dropdown -->
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" style="color: white" href="#" id="navbardrop" data-toggle="dropdown">
-                    Entrance
-                </a>
-                <div class="dropdown-menu">
-                    <a class="dropdown-item" href="main?id=technicalpaper">Technical Talks</a>
-                    <a class="dropdown-item" href="main?id=wstr">Workshops and Tutorials</a>
-                    <a class="dropdown-item" href="main?id=competition">Robot Competition</a>
-                </div>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="mylist?" onClick="this.href=this.href+new Date().getTime()" style="color:white;">My Lists</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="logout" style="color:white;">Logout</a>
-            </li>
-        </ul>
-        <ul class="navbar-nav">
-            <form class="form-inline navbar-right">
-                <input type="text" id="search_bar" value="" class="searchBar" onkeydown="if(event.keyCode === 13) {event.preventDefault(); document.getElementById('searchBtn').click()}"/>
-                <d onclick="if(search_bar.value.length > 0)search()">
-                    <a id = "keywordDelivery" href="javascript: void(0)">
-                        <i id="searchBtn" class="fa fa-search" style="color:white;margin-left: 100%;font-size: 18px"></i>
+    <nav style="background-color: rgba(0,0,0,0.7)" class="navbar navbar-expand-md navbar-dark fixed-top">
+        <!-- Brand/logo -->
+        <a class="navbar-brand" href="main?id=technicalpaper">
+            <img src="{% static './resources/logo.png'%}" width="150px"/>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+            <!-- Links -->
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="main?id=technicalpaper" style="color:white; ">Home</a>
+                </li>
+                <!-- Dropdown -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" style="color: white" href="#" id="navbardrop" data-toggle="dropdown">
+                        Entrance
                     </a>
-                </d>
-            </form>
-        </ul>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="main?id=technicalpaper">Technical Talks</a>
+                        <a class="dropdown-item" href="main?id=wstr">Workshops and Tutorials</a>
+                        <a class="dropdown-item" href="main?id=competition">Robot Competition</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="mylist?id=1" onClick="this.href=this.href+'&'+new Date().getTime()" style="color:white;">My Lists</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="logout" style="color:white;">Logout</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav">
+                <form class="form-inline navbar-right">
+                    <input type="text" id="search_bar" value="" class="searchBar" onkeydown="if(event.keyCode === 13) {event.preventDefault(); document.getElementById('searchBtn').click()}"/>
+                    <d onclick="if(search_bar.value.length > 0)search()">
+                        <a id = "keywordDelivery" href="javascript: void(0)">
+                            <i id="searchBtn" class="fa fa-search" style="color:white;margin-left: 100%;font-size: 18px"></i>
+                        </a>
+                    </d>
+                </form>
+            </ul>
 
-    </div>
-</nav>
+        </div>
+    </nav>
 
-<div style="width:95%; margin:0 auto; padding-top: 50px;" align="justify">
-    <p>&nbsp;</p>
-    <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{selectedSpecial}}</h3>
-    <br>
+    <div style="width:95%; margin:0 auto; padding-top: 50px;" align="justify">
+        <p>&nbsp;</p>
+        <h3 class="pavtitle"><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{selectedSpecial}}</b></h3>
+        <br>
 
-    <div class = "landingtable" style="width: 90%; height: auto; text-align: left; margin-left: 5%; margin-bottom:2%">
-        <table border="0" cellpadding="0" cellspacing="0" style="background-color: #323232; width: 100%; border-style: solid; border-color:white;border-width: 10px;">
-            <tr>
-                <td style="width: 60%;">
-                    <img src="{% static 'img'%}/{{ selectedGenre }}/{{selectedSpecial}}.jpg">
-                </td>
-                <td class="sessionTitle" style="word-break: keep-all;">
-                    <p style="color: white;">Welcome to Session :</p>
-                    <p style="color: white;">{{ selectedSpecial }}</p>
-                </td>
-            </tr>
-        </table>
-    </div>
-
-
-    {% for speakerName, speakerBiography, specialEpisodeAbstract,specialEpisodeNumber, specialLikeCount, specialLikeButtonColor, specialSaveButtonStatus, specialHitCount in specialEpisodeContext %}
-        <div class="epilisttable" style="width: 80%; height: auto; text-align: center; margin-left: 10%; background-color: #323232; margin-bottom:1%">
-            <table border="0" cellpadding="0" cellspacing="0" style="background-color: transparent;" >
+        <div class = "landingtable" style="width: 90%; height: auto; text-align: left; margin-left: 5%; margin-bottom:2%">
+            <table border="0" cellpadding="0" cellspacing="0">
                 <tr>
-                    <td style="width: 30%">
-                        <a href="specialsepisode?id={{speakerName}}&id2={{selectedSpecial}}&id3={{ selectedGenre }}" onClick="this.href=this.href+'&'+new Date().getTime()">
-                            <img src="{% static 'img'%}/{{ selectedGenre }}/{{selectedSpecial}}/{{ speakerName }}.jpg"></a>
+                    <td class="landingtabletopLeft">
+                        <img width="100%" onError="this.onerror=null;this.src='{% static './resources/logo2.png' %}';" src="{% static 'img'%}/Specials/{{selectedSpecial}}.jpg">
                     </td>
-                    <td valign="top" align="left" style="padding-left: 5%; padding-top: 3%;word-break: keep-all;">
-                        <p class="papertitle" style="color: white;">Title : {{ TitleList }}</p>
-                        <table class="paperInfo" border="0" cellpadding="0" cellspacing="0" width="100% "style="background-color: #323232; text-align: left;color: white;">
-                            <tbody>
-                            <tr>
-                                <td style="width: 10%;"><u>Speaker</u></td>
-                                <td style="width: 90%"><u>{{ speakerName }}</u></td>
-                            </tr>
-                            <tr>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr>
-                                <td style="width: 10%">Biography</td>
-                                <td style="width: 90%"><div class="more">{{ speakerBiography}}</div></td>
-                            </tr>
-                            <tr>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr>
-                                <td style="width: 10%">Abstract</td>
-                                <td style="width: 90%"><div class="more">{{ specialEpisodeAbstract }}</div></td>
-                            </tr>
-
-                            </tbody>
-                        </table>
-                        {% if specialLikeButtonColor == 1 %}
-                            <button class="likeButton" type="submit" style="margin: auto;background-color: #323232 ;" onclick="updateLike({{ specialEpisodeNumber }})">
-                                <i id="thumbs{{specialEpisodeNumber}}" class="fa fa-thumbs-up" style="color:yellow; font-size: 30px"></i>
-                                <input type="text" id="{{ specialEpisodeNumber }}" value="{{ specialLikeCount }}" class="thumbsuptext" name="likeCount" readonly/>
-                                <input type="hidden" name="paperNumber" value="{{ specialEpisodeNumber }}">
-                            </button>
-                        {% else %}
-                            <button class="likeButton" type="submit" style="padding: 0% ;background-color: #323232;" onclick="updateLike({{ specialEpisodeNumber }})">
-                                <i id="thumbs{{specialEpisodeNumber}}" class="fa fa-thumbs-up" style="color:grey; font-size: 30px"></i>
-                                <input type="text" id="{{ specialEpisodeNumber }}" value="{{ specialLikeCount }}" class="thumbsuptext" name="likeCount" readonly/>
-                                <input type="hidden" name="paperNumber" value="{{ specialEpisodeNumber }}">
-                            </button>
-                        {% endif %}
-                        <span class="listHitCount" style="color: white;font-size: 18px">{{ specialHitCount }} views</span>
-                    </td>
-                    <td class="savePapers" style="width: 5%; color: white">
-                        {% csrf_token %}
-                        {% if specialSaveButtonStatus == 1 %}
-                            <button class="saveButton" type="submit" style="margin: auto;background-color: #323232 ;" onclick="updateSave({{ specialEpisodeNumber }})">
-                                <i id="savebutton{{specialEpisodeNumber}}" class="fa fa-check-circle"  aria-hidden="true" style="color:white; font-size: 30px"></i>
-                                <input type="hidden" name="paperNumber" value="{{ specialEpisodeNumber }}">
-                            </button>
-                            <p>My List</p>
-                        {% else %}
-                            <button class="saveButton" type="submit" style="padding: 0% ;background-color: #323232;" onclick="updateSave({{ specialEpisodeNumber }})">
-                                <i id="savebutton{{specialEpisodeNumber}}" class="fa fa-plus"  aria-hidden="true" style="color:white; font-size: 30px"></i>
-                                <input type="hidden" name="paperNumber" value="{{ specialEpisodeNumber }}">
-                            </button>
-                            <p>My List</p>
-                        {% endif %}
+                    <td class="sessionTitle" style="word-break: keep-all;">
+                        <p style="color: white;"><i>Welcome to IROS Specials : </i></p>
+                        <p style="color: white;"><i>{{ selectedSpecial }}</i></p>
                     </td>
                 </tr>
             </table>
         </div>
-    {% endfor %}
-    <p>&nbsp;</p>
-    <div class="netflix-slider">
-        <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Other {{ selectedGenre }}</h3>
-        <div class="swiper-container">
-            <div class="swiper-wrapper">
-                {% for j in SpecialsSession %}
-                    <div class="swiper-slide"><a href="specials?id={{j}}&id2={{ selectedGenre }}" style="color:white; text-decoration: none;">
-                        <img src="{% static 'img'%}/{{ selectedGenre }}/{{ j }}.jpg">
-                        <div class="onimg-caption">{{ j }}
-                        </div>
-                    </a>
-                    </div>
-                {% endfor %}
+
+
+        {% for speakerName, speakerBiography, specialEpisodeAbstract,specialEpisodeNumber, specialLikeCount, specialLikeButtonColor, specialSaveButtonStatus, specialHitCount, specialEpisodeTitle in specialEpisodeContext %}
+            <div class="epilisttable">
+                <table border="0" cellpadding="0" cellspacing="0" style="background-color: transparent;" >
+                    <tr>
+                        <td class="epilisttableleft">
+                            <img width="100%" onError="this.onerror=null;this.src='{% static './resources/logo2.png' %}';" src="{% static 'img'%}/Specials/{{selectedSpecial}}/{{ speakerName }}.jpg">
+                        </td>
+                        <td valign="top" align="left" class="epilisttableright">
+                            <p class="papertitle" style="color: white;">{{ specialEpisodeTitle }}</p>
+                            <table class="paperInfo" border="0" cellpadding="0" cellspacing="0" width="100% "style="background-color: #323232; text-align: left;color: white;">
+                                <tbody>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 20%;"><u>Speaker</u></td>
+                                    <td style="width: 70%"><u>{{ speakerName }}</u></td>
+                                </tr>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 20%">Biography</td>
+                                    <td style="width: 70%"><div class="more">{{ speakerBiography}}</div></td>
+                                </tr>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 20%">Abstract</td>
+                                    <td style="width: 70%"><div class="more">{{ specialEpisodeAbstract }}</div></td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+                            <br>
+                            <div style="color: white;">
+                                {% csrf_token %}
+                                {% if specialSaveButtonStatus == 1 %}
+                                    <button class="saveButton" type="submit" style="margin: auto;background-color: #323232; color: white" onclick="updateSave({{ specialEpisodeNumber|floatformat:"0" }})">
+                                        <i id="savebutton{{specialEpisodeNumber|floatformat:"0"}}" class="fa fa-check-circle"  aria-hidden="true" style="color:white;vertical-align: top"></i>
+                                        <font id="buttonMessage{{specialEpisodeNumber|floatformat:"0"}}" style="color: white;">&nbsp;&nbsp;&nbsp;Added to my list</font>
+                                        <input type="hidden" name="paperNumber" value="{{ specialEpisodeNumber|floatformat:"0" }}">
+                                    </button>
+                                {% else %}
+                                    <button class="saveButton" type="submit" style="padding: 0% ;background-color: #323232;" onclick="updateSave({{ specialEpisodeNumber|floatformat:"0" }})">
+                                        <i id="savebutton{{specialEpisodeNumber|floatformat:"0"}}" class="fa fa-plus"  aria-hidden="true" style="color:white;vertical-align: top"></i>
+                                        <font id="buttonMessage{{specialEpisodeNumber|floatformat:"0"}}" style="color: white;">&nbsp;&nbsp;&nbsp;Add to my List</font>
+                                        <input type="hidden" name="paperNumber" value="{{ specialEpisodeNumber|floatformat:"0" }}">
+                                    </button>
+                                {% endif %}
+                            </div>
+                            <br>
+                            <div>
+                                {#                                <a style="text-decoration: none" href="specialsepisode?id={{speakerName}}&id2={{selectedSpecial}}&id3={{ selectedGenre }}" onClick="this.href=this.href+'&'+new Date().getTime()">#}
+                                <div class="videoPlayButton">
+                                    <div class="videoPlayButtonIcon">
+                                        <i class="fa fa-play-circle" style="vertical-align: middle;"></i>
+                                    </div>
+                                    {#                                    <div class="videoPlayButtonText">Watch Now#}
+                                    <div class="videoPlayButtonText">Under Construction
+                                    </div>
+                                </div>
+                                {#                                </a>#}
+                                {#                                <div class="pdfopenButton">#}
+                                {#                                    {% if PDFList == 'missing' %}#}
+                                {#                                        <p style="color: lawngreen;">No PDF files</p>#}
+                                {#                                    {% else %}#}
+                                {#                                        <p><a href="https://ras.papercept.net/proceedings/IROS20/{{ PDFList }}" target="_blank" style="color: lawngreen;"> Open PDF files</a></p>#}
+                                {#                                    {% endif %}#}
+                                {#                                </div>#}
+                            </div>
+                            <br>
+                            <div class="paperlikeviewcountdiv">
+                                {% if specialLikeButtonColor == 1 %}
+                                    <button class="likeButton" type="submit" style="margin: auto;background-color: #323232 ;" onclick="updateLike({{ specialEpisodeNumber|floatformat:"0" }})">
+                                        <i id="thumbs{{specialEpisodeNumber|floatformat:"0"}}" class="fa fa-thumbs-up" style="color:yellow;"></i>
+                                        <input type="text" id="{{ specialEpisodeNumber|floatformat:"0" }}" value="{{ specialLikeCount }}" class="thumbsuptext" name="likeCount" readonly/>
+                                        <input type="hidden" name="paperNumber" value="{{ specialEpisodeNumber|floatformat:"0" }}">
+                                    </button>
+                                {% else %}
+                                    <button class="likeButton" type="submit" style="padding: 0% ;background-color: #323232;" onclick="updateLike({{ specialEpisodeNumber|floatformat:"0" }})">
+                                        <i id="thumbs{{specialEpisodeNumber|floatformat:"0"}}" class="fa fa-thumbs-up" style="color:grey;"></i>
+                                        <input type="text" id="{{ specialEpisodeNumber|floatformat:"0" }}" value="{{ specialLikeCount }}" class="thumbsuptext" name="likeCount" readonly/>
+                                        <input type="hidden" name="paperNumber" value="{{ specialEpisodeNumber|floatformat:"0" }}">
+                                    </button>
+                                {% endif %}
+                                <span class="listHitCount">{{ specialHitCount }} views</span>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
             </div>
-            <!-- Add Pagination -->
-            {#      <div class="swiper-pagination"></div>#}
-            <div class="swiper-button-next"></div>
-            <div class="swiper-button-prev"></div>
+        {% endfor %}
+        <p>&nbsp;</p>
+        <div class="netflix-slider">
+            <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Other {{ selectedGenre }}</h3>
+            <div class="swiper-container">
+                <div class="swiper-wrapper">
+                    {% for j in SpecialsSession %}
+                        <div class="swiper-slide"><a href="specials?id={{j}}&id2={{ selectedGenre }}" style="color:white; text-decoration: none;">
+                            <img class="netflix-slider-img" onError="this.onerror=null;this.src='{% static './resources/logo2.png' %}';" src="{% static 'img'%}/Specials/{{ j }}.jpg">
+                            <div class="onimg-caption">{{ j }}
+                            </div>
+                        </a>
+                        </div>
+                    {% endfor %}
+                </div>
+                <!-- Add Pagination -->
+                {#      <div class="swiper-pagination"></div>#}
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+            </div>
         </div>
-    </div>
 
 
-    <script src="{% static 'package/js/swiper.min.js' %}"></script>
-    <script>
-        function search(){
-            const query = document.getElementById("search_bar").value;
-            document.getElementById("keywordDelivery").href = "searchresult?id="+query;
-        }
-    </script>
-    <script>
-        var swiper = new Swiper('.swiper-container', {
-            {#slidesPerView: 7,#}
-            {#spaceBetween: 10,#}
-            slidesPerGroup: 2,
-            pagination: {
-                el: '.swiper-pagination',
-                clickable: true,
-            },
-            navigation: {
-                nextEl: '.swiper-button-next',
-                prevEl: '.swiper-button-prev',
-            },
-            breakpoints: {
-                // when window width is >= 320px
-                200: {
-                    slidesPerView: 4,
-                    slidesPerColumnFill:'row',
-                    spaceBetween: 4
-                },
-                // when window width is >= 480px
-                600: {
-                    slidesPerView: 5,
-                    spaceBetween: 5
-                },
-                // when window width is >= 640px
-                900: {
-                    slidesPerView: 6,
-                    spaceBetween: 6
-                }
+        <script src="{% static 'package/js/swiper.min.js' %}"></script>
+        <script>
+            function search(){
+                const query = document.getElementById("search_bar").value;
+                document.getElementById("keywordDelivery").href = "searchresult?id2=1&id="+query;
             }
-        });
-    </script>
-
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
-    <script>
-        function updateLike(titleNumber){
-            $.ajax({
-                url:'post_like',
-                type:'POST',
-                data:{'paperNumber':titleNumber},
-                dataType:'json',
-                success: function(json) {
-                    $('#'+titleNumber)[0].value =  json['likeCount'];
-                    $('#thumbs'+titleNumber)[0].style.color =  json['likeButtonColor'];
+        </script>
+        <script>
+            var swiper = new Swiper('.swiper-container', {
+                {#slidesPerView: 7,#}
+                {#spaceBetween: 10,#}
+                slidesPerGroup: 2,
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true,
                 },
-                error: function(err) {
-                    alert("Failed to Retrieve JSON file from Server");
+                navigation: {
+                    nextEl: '.swiper-button-next',
+                    prevEl: '.swiper-button-prev',
+                },
+                breakpoints: {
+                    // when window width is >= 320px
+                    200: {
+                        slidesPerView: 4,
+                        slidesPerColumnFill:'row',
+                        spaceBetween: 4
+                    },
+                    // when window width is >= 480px
+                    600: {
+                        slidesPerView: 5,
+                        spaceBetween: 5
+                    },
+                    // when window width is >= 640px
+                    900: {
+                        slidesPerView: 6,
+                        spaceBetween: 6
+                    }
                 }
             });
-        }
-    </script>
-    <script>
-        function updateSave(titleNumber){
-            var savebuttonClass = document.getElementById("savebutton"+titleNumber).className;
-            $.ajax({
-                url:'post_save',
-                type:'POST',
-                data:{'paperNumber':titleNumber},
-                dataType:'json',
-                success: function(json) {
+        </script>
+
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+        <script>
+            function updateLike(titleNumber){
+                var currLikeCount= parseInt($('#'+titleNumber)[0].value,10);
+                var currLikeColor =$('#thumbs'+titleNumber)[0].style.color;
+                if(currLikeColor == 'yellow'){
+                    $('#'+titleNumber)[0].value = currLikeCount -1;
+                    $('#thumbs'+titleNumber)[0].style.color =  'grey';
+                }else{
+
+                    $('#'+titleNumber)[0].value = currLikeCount + 1;
+                    $('#thumbs'+titleNumber)[0].style.color =  'yellow';
+                }
+                $.ajax({
+                    url:'post_like',
+                    type:'POST',
+                    data:{'paperNumber':titleNumber},
+                    dataType:'json',
+                    success: function(json) {
+                        {#$('#'+titleNumber)[0].value =  json['likeCount'];#}
+                        {#$('#thumbs'+titleNumber)[0].style.color =  json['likeButtonColor'];#}
+                    },
+                    error: function(err) {
+                        alert("Failed to Retrieve JSON file from Server");
+                    }
+                });
+            }
+        </script>
+        <script>
+            function updateSave(titleNumber){
+                var savebuttonClass = document.getElementById("savebutton"+titleNumber).className;
+                if(savebuttonClass == 'fa fa-plus'){
                     $('#savebutton'+titleNumber).removeClass(savebuttonClass);
-                    $('#savebutton'+titleNumber).addClass(json['paperSaveButtonStatus']);
-                },
-                error: function(err) {
-                    alert("Failed to Retrieve JSON file from Server");
+                    $('#savebutton'+titleNumber).addClass('fa fa-check-circle');
+                    $('#buttonMessage'+titleNumber).html('&nbsp;&nbsp;&nbsp;Added to my list')
+                }else{
+                    $('#savebutton'+titleNumber).removeClass(savebuttonClass);
+                    $('#savebutton'+titleNumber).addClass('fa fa-plus');
+                    $('#buttonMessage'+titleNumber).html('&nbsp;&nbsp;&nbsp;Add to my list')
+                }
+                $.ajax({
+                    url:'post_save',
+                    type:'POST',
+                    data:{'paperNumber':titleNumber},
+                    dataType:'json',
+                    success: function(json) {
+                        {#$('#savebutton'+titleNumber).removeClass(savebuttonClass);#}
+                        {#$('#savebutton'+titleNumber).addClass(json['paperSaveButtonStatus']);#}
+                    },
+                    error: function(err) {
+                        alert("Failed to Retrieve JSON file from Server");
+                    }
+                });
+            }
+        </script>
+        <script>
+            $(document).ready(function() {
+                // Configure/customize these variables.
+                var showChar = 100;  // How many characters are shown by default
+                var ellipsestext = "...";
+                var moretext = "Show more";
+                var lesstext = "Show less";
+
+                $('.more').each(function() {
+                    var content = $(this).html();
+
+                    if(content.length > showChar) {
+                        var c = content.substr(0, showChar);
+                        var h = content.substr(showChar-1, content.length - showChar);
+                        {#console.log(h)#}
+                        var html = c + '<span class="moreellipses">' + ellipsestext+ '&nbsp;</span><span class="morecontent"><span>' + h + '</span>&nbsp;&nbsp;<a href="" class="morelink">' + moretext + '</a></span>';
+                        $(this).html(html);
+                    }
+                });
+
+                $(".morelink").click(function(){
+                    if($(this).hasClass("less")) {
+                        $(this).removeClass("less");
+                        $(this).html(moretext);
+                    } else {
+                        $(this).addClass("less");
+                        $(this).html(lesstext);
+                    }
+                    $(this).parent().prev().toggle();
+                    $(this).prev().toggle();
+                    return false;
+                });
+            });
+        </script>
+        <script>
+            window.addEventListener( "pageshow", function ( event ) {
+                var historyTraversal = event.persisted ||
+                    ( typeof window.performance != "undefined" &&
+                        window.performance.navigation.type === 2 );
+                if ( historyTraversal ) {
+                    // Handle page restore.
+                    window.location.reload();
+                    {#console.log('save my ass')#}
                 }
             });
-        }
-    </script>
-    <script>
-        $(document).ready(function() {
-            // Configure/customize these variables.
-            var showChar = 200;  // How many characters are shown by default
-            var ellipsestext = "...";
-            var moretext = "Show more";
-            var lesstext = "Show less";
+        </script>
 
-            $('.more').each(function() {
-                var content = $(this).html();
-
-                if(content.length > showChar) {
-                    var c = content.substr(0, showChar);
-                    var h = content.substr(showChar, content.length - showChar);
-                    var html = c + '<span class="moreellipses">' + ellipsestext+ '&nbsp;</span><span class="morecontent"><span>' + h + '</span>&nbsp;&nbsp;<a href="" class="morelink">' + moretext + '</a></span>';
-                    $(this).html(html);
-                }
-            });
-
-            $(".morelink").click(function(){
-                if($(this).hasClass("less")) {
-                    $(this).removeClass("less");
-                    $(this).html(moretext);
-                } else {
-                    $(this).addClass("less");
-                    $(this).html(lesstext);
-                }
-                $(this).parent().prev().toggle();
-                $(this).prev().toggle();
-                return false;
-            });
-        });    </script>
-
-</div>
+    </div>
 </div>
 </body>
 </html>

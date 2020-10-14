@@ -40,11 +40,16 @@
 </head>
 <body>
 <div class="onDemandwidthControl">
-
     <nav style="background-color: rgba(0,0,0,0.7)" class="navbar navbar-expand-md navbar-dark fixed-top">
         <!-- Brand/logo -->
-        <a class="navbar-brand" href="entrance">
-            <img src="{% static './resources/logo.png'%}" width="150px"/>
+        {% if showcontents == 3 %}
+            <a class="navbar-brand" href="main?id=competition">
+        {% elif showcontents == 2 %}
+            <a class="navbar-brand" href="main?id=wstr">
+        {% else %}
+            <a class="navbar-brand" href="main?id=technicalpaper">
+        {% endif %}
+        <img src="{% static './resources/logo.png'%}" width="150px"/>
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
             <span class="navbar-toggler-icon"></span>
@@ -53,7 +58,13 @@
             <!-- Links -->
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="entrance" style="color:white; ">Home</a>
+                    {% if showcontents == 3 %}
+                        <a class="nav-link" href="main?id=competition" style="color:white; ">Home</a>
+                    {% elif showcontents == 2 %}
+                        <a class="nav-link" href="main?id=wstr" style="color:white; ">Home</a>
+                    {% else %}
+                        <a class="nav-link" href="main?id=technicalpaper" style="color:white; ">Home</a>
+                    {% endif %}
                 </li>
                 <!-- Dropdown -->
                 <li class="nav-item dropdown">
@@ -67,7 +78,7 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="mylist?" onClick="this.href=this.href+new Date().getTime()" style="color:white;">My Lists</a>
+                    <a class="nav-link" href="mylist?id={{ showcontents }}" onClick="this.href=this.href+'&'+new Date().getTime()" style="color:white;">My Lists</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="logout" style="color:white;">Logout</a>
@@ -157,7 +168,7 @@
         {% endif %}
         {% if mylistSpecialNumber == 0 %}
         {% else %}
-            <h3>&nbsp;&nbsp;My Lists : Specials</h3>
+            <h3>&nbsp;&nbsp;My Lists : IROS Specials</h3>
             <div class="mylistMainDiv">
                 {% for mylistSpecialSpeaker, mylistSpecialSpecial, mylistSpecialGenre in mylistSpecialContext %}
                     <div class="mylistBlock">
@@ -173,11 +184,11 @@
 
         {% if mylistWorkshopsNumber == 0 %}
         {% else %}
-            <h3>&nbsp;&nbsp;My Lists : Workshops</h3>
+            <h3>&nbsp;&nbsp;My Lists : Workshops and Tutorials</h3>
             <div class="mylistMainDiv">
-                {% for mylistWorkshopsSpeaker, mylistWorkshopsWorkshop, mylistWorkshopsGenre, mylistWorkshopsSpeakerNumber, mylistWorkshopsTalkTitle in mylistWorkshopsContext %}
+                {% for mylistWorkshopsWorkshop, mylistWorkshopsTalkTitle in mylistWorkshopsContext %}
                     <div class="mylistBlock">
-                        <a href="workshopsepisode?id={{mylistWorkshopsSpeaker}}&id2={{ mylistWorkshopsWorkshop }}&id3={{ mylistWorkshopsGenre }}&id4={{ mylistWorkshopsSpeakerNumber }}" onClick="this.href=this.href+'&'+new Date().getTime()">
+                        <a href="workshopsepisode?id={{mylistWorkshopsTalkTitle}}&id2={{mylistWorkshopsWorkshop}}" onClick="this.href=this.href+'&'+new Date().getTime()">
                             <img src="{% static './resources/playlogo.png'%}" width="100%">
                             <div class="mylistBlockCaption">
                                 <p>{{ mylistWorkshopsTalkTitle }}</p>
@@ -189,7 +200,7 @@
 
         {% if mylistEpisodeNumber == 0 %}
         {% else %}
-            <h3>&nbsp;&nbsp;My Lists : Episodes</h3>
+            <h3>&nbsp;&nbsp;My Lists : Technical Talks</h3>
             <div class="mylistMainDiv">
                 {% for mylistEpisodeTitle, mylistEpisodeSession,mylistEpisodeNumber in mylistEpisodeContext %}
                     <div class="mylistBlock">
@@ -218,7 +229,7 @@
     <script>
         function search(){
             const query = document.getElementById("search_bar").value;
-            document.getElementById("keywordDelivery").href = "searchresult?id="+query;
+            document.getElementById("keywordDelivery").href = "searchresult?id2={{ showcontents }}&id="+query;
         }
     </script>
     <script>
@@ -354,6 +365,18 @@
                 partnerCaption[i].style.height = result;
             }
         }, false );
+    </script>
+    <script>
+        window.addEventListener( "pageshow", function ( event ) {
+            var historyTraversal = event.persisted ||
+                ( typeof window.performance != "undefined" &&
+                    window.performance.navigation.type === 2 );
+            if ( historyTraversal ) {
+                // Handle page restore.
+                window.location.reload();
+                console.log('save my ass')
+            }
+        });
     </script>
 </div>
 </body>
