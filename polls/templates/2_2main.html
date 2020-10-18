@@ -256,8 +256,8 @@
                                 {% for j in Specials %}
                                     <div class="swiper-slide"><a href="specials?id={{j}}" onClick="this.href=this.href+'&'+new Date().getTime()" style="color:white; text-decoration: none;">
                                         <img class="netflix-slider-img" onError="this.onerror=null;this.src='{% static './resources/logo2.png' %}';" src="{% static 'img'%}/Specials/{{ j }}.jpg">
-                                        {% if j == 'Award Winners' %}
-                                            <div class="onimg-caption">{{ j }}<br><font style="color: red"><b>Premiers Nov. 2</b>
+                                        {% if j == 'Award Winners' or j == 'BiR-IROS: Black in Robotics IROS 2020' %}
+                                            <div class="onimg-caption">{{ j }}<br><font style="color: red"><b>Premiers Nov. 2</b></font>
                                             </div>
                                         {% else %}
                                             <div class="onimg-caption">{{ j }}

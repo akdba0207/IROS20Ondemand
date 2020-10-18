@@ -129,7 +129,7 @@ Sessions13 = sorted(list(set(Pavilion13['Session title'])))
 #     pavilionDict5[e] = Cartegories['Pavilion'][4]
 # SpecialsSession = sorted(list(set(Specials['Genre'])))
 
-SpecialsSession = ['Plenaries', 'Keynotes', 'IROS Original Series', 'Award Winners']
+SpecialsSession = ['Plenaries', 'Keynotes', 'IROS Original Series', 'Award Winners', 'BiR-IROS: Black in Robotics IROS 2020']
 
 # Workshops
 Workshops = iros_wstr[(iros_wstr['Type'] == 'Workshop Paper')]

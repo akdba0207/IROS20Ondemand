@@ -182,7 +182,7 @@
                             </td>
                             <td valign="top" align="left" class="epilisttableright">
                                 {% if  specialEpisodeTitle != 'missing' %}
-                                    <p class="papertitle" style="color: white;">{{ selectedSpecial }} - {{ TitleList }}</p>
+                                    <p class="papertitle" style="color: white;">{{ TitleList }}</p>
                                 {% endif %}
                                 <table class="paperInfo" border="0" cellpadding="0" cellspacing="0" width="100% "style="background-color: #323232; text-align: left;color: white;">
                                     <tbody>
@@ -345,14 +345,24 @@
         </script>
         <script>
             function updateLike(titleNumber){
+                var currLikeCount= parseInt($('#'+titleNumber)[0].value,10);
+                var currLikeColor =$('#thumbs'+titleNumber)[0].style.color;
+                if(currLikeColor == 'yellow'){
+                    $('#'+titleNumber)[0].value = currLikeCount -1;
+                    $('#thumbs'+titleNumber)[0].style.color =  'grey';
+                }else{
+
+                    $('#'+titleNumber)[0].value = currLikeCount + 1;
+                    $('#thumbs'+titleNumber)[0].style.color =  'yellow';
+                }
                 $.ajax({
                     url:'post_like',
                     type:'POST',
                     data:{'paperNumber':titleNumber},
                     dataType:'json',
                     success: function(json) {
-                        $('#'+titleNumber)[0].value =  json['likeCount'];
-                        $('#thumbs'+titleNumber)[0].style.color =  json['likeButtonColor'];
+                        {#$('#'+titleNumber)[0].value =  json['likeCount'];#}
+                        {#$('#thumbs'+titleNumber)[0].style.color =  json['likeButtonColor'];#}
                     },
                     error: function(err) {
                         alert("Failed to Retrieve JSON file from Server");
@@ -363,14 +373,23 @@
         <script>
             function updateSave(titleNumber){
                 var savebuttonClass = document.getElementById("savebutton"+titleNumber).className;
+                if(savebuttonClass == 'fa fa-plus'){
+                    $('#savebutton'+titleNumber).removeClass(savebuttonClass);
+                    $('#savebutton'+titleNumber).addClass('fa fa-check-circle');
+                    $('#buttonMessage'+titleNumber).html('&nbsp;&nbsp;&nbsp;Added to my list')
+                }else{
+                    $('#savebutton'+titleNumber).removeClass(savebuttonClass);
+                    $('#savebutton'+titleNumber).addClass('fa fa-plus');
+                    $('#buttonMessage'+titleNumber).html('&nbsp;&nbsp;&nbsp;Add to my list')
+                }
                 $.ajax({
                     url:'post_save',
                     type:'POST',
                     data:{'paperNumber':titleNumber},
                     dataType:'json',
                     success: function(json) {
-                        $('#savebutton'+titleNumber).removeClass(savebuttonClass);
-                        $('#savebutton'+titleNumber).addClass(json['paperSaveButtonStatus']);
+                        {#$('#savebutton'+titleNumber).removeClass(savebuttonClass);#}
+                        {#$('#savebutton'+titleNumber).addClass(json['paperSaveButtonStatus']);#}
                     },
                     error: function(err) {
                         alert("Failed to Retrieve JSON file from Server");
