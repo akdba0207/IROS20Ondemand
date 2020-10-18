@@ -48,13 +48,8 @@ path01 = os.path.join(pre,excel_file01)
 iros20_sessionChairs = pd.read_excel(path01,sheet_name=0)
 iros20_sessionChairs = iros20_sessionChairs.fillna('missing')
 
-# Call Genres, Pavilion
-excel_file1 = 'IROS2020_onDemand_beta.xlsx'
-path1 = os.path.join(pre, excel_file1)
-Cartegories = pd.read_excel(path1, sheet_name=0)
-
 # Call Keynotes and Plenaries
-excel_file3 = 'IROS20_KeynotesandPlenaries.xlsx'
+excel_file3 = 'IROS20_Specials.xlsx'
 path3 = os.path.join(pre, excel_file3)
 iros_specials = pd.read_excel(path3, sheet_name=0)
 iros_specials = iros_specials.fillna('missing')
@@ -70,6 +65,12 @@ excel_file6 = 'IROS20_Partners.xlsx'
 path6 = os.path.join(pre, excel_file6)
 iros_partners = pd.read_excel(path6, sheet_name=0)
 iros_partners = iros_partners.fillna('missing')
+
+# Call Competition
+excel_file7 = 'IROS20_Competition.xlsx'
+path7 = os.path.join(pre,excel_file7)
+iros_competition = pd.read_excel(path7,sheet_name=0)
+iros_competition = iros_competition.fillna('missing')
 
 iros_sessiontitle = iros2020_raw['Theme']
 totalGenre = sorted(list(set(iros2020_raw['Theme'])))
@@ -146,7 +147,7 @@ Sessions13 = sorted(list(set(Pavilion13['Session title'])))
 #                          | (iros_specials['Genre'] == 'Keynotes')]
 # SpecialsSession = sorted(list(set(Specials['Genre'])))
 
-SpecialsSession = ['Plenaries', 'Keynotes', 'Originals', 'Award Winners']
+SpecialsSession = ['Plenaries', 'Keynotes', 'IROS Original Series', 'Award Winners']
 
 # Workshops
 Workshops = iros_wstr[(iros_wstr['Type'] == 'Workshop Paper')]
@@ -164,7 +165,7 @@ WSThursdaySession = sorted(list(set(WorkshopsThursday['Workshop Title'])))
 TRSundaySession = sorted(list(set(TutorialsSunday['Workshop Title'])))
 TRThursdaySession = sorted(list(set(TutorialsThursday['Workshop Title'])))
 
-PavilionWSTR = ['Workshops - October 25th', 'Workshops - October 29th','Tutorials - October 25th', 'Tutorials - October 29th']
+PavilionWSTR = ['Workshops', 'More Workshops','Tutorials', 'More Tutorials']
 #########################################################################################################
 #########################################################################################################
 #########################################################################################################
@@ -253,10 +254,16 @@ def main(request):
     #     allowWSContents = 1
     # else:
     #     allowWSContents = 0
+
+    ##Technical talk and specials
     partnerName = []
     partnerLevel = []
+    specialKeynoteSpeaker = []
+    specialKNTitle = []
+    specialKNNumber = []
     for i in organizedGenre:
         partner1 = iros_partners[(iros_partners['Theme'] == i)]
+        keynotes = iros_specials[(iros_specials['Location']== i)].reset_index()
         if partner1.empty is True:
             partnerName2 ='missing'
             partnerLevel2 = 'missing'
@@ -266,17 +273,56 @@ def main(request):
             partnerLevel1 = partner1['Cartegory'].reset_index()
             partnerLevel2 = partnerLevel1['Cartegory'].iloc[0]
 
+        if keynotes.empty is True:
+            KNspeaker = 'missing'
+            KNTitle = 'missing'
+            KNNumber = 'missing'
+        else:
+            KNspeaker = keynotes['Speaker'].iloc[0]
+            KNTitle = keynotes['Title'].iloc[0]
+            KNNumber = keynotes['Nr'].iloc[0]
+
         partnerName.append(partnerName2)
         partnerLevel.append(partnerLevel2)
+        specialKeynoteSpeaker.append(KNspeaker)
+        specialKNTitle.append(KNTitle)
+        specialKNNumber.append(KNNumber)
+
     SpecialPavilion = 'IROS Specials'
 
     Sessions = [Sessions1,Sessions2,Sessions3,Sessions4,Sessions5,Sessions6,Sessions7,
                 Sessions8,Sessions9,Sessions10,Sessions11,Sessions12, Sessions13]
 
-    PavSessions = zip(organizedGenre, Sessions, partnerName, partnerLevel)
+    PavSessions = zip(organizedGenre, Sessions, partnerName, partnerLevel, specialKeynoteSpeaker,specialKNTitle,specialKNNumber)
 
-    SessionWSTR = [WSSundaySession,WSThursdaySession,TRSundaySession,TRThursdaySession]
-    PavWSTR =zip(PavilionWSTR,SessionWSTR)
+    ##WS/TR
+
+    WSSundayNumber =[]
+    WSThursdayNumber=[]
+    TRSundaySNumber=[]
+    TRThursdayNumber=[]
+
+    for i in range(len(WSSundaySession)):
+        Workshopslist = WorkshopsSunday[(WorkshopsSunday['Workshop Title'] == WSSundaySession[i])].reset_index()
+        WSSundayNumber.append(Workshopslist['WS/TR Nr'].iloc[0])
+    for j in range(len(WSThursdaySession)):
+        Workshopslist = WorkshopsThursday[(WorkshopsThursday['Workshop Title'] == WSThursdaySession[j])].reset_index()
+        WSThursdayNumber.append(Workshopslist['WS/TR Nr'].iloc[0])
+    for k in range(len(TRSundaySession)):
+        Workshopslist = TutorialsSunday[(TutorialsSunday['Workshop Title'] == TRSundaySession[k])].reset_index()
+        TRSundaySNumber.append(Workshopslist['WS/TR Nr'].iloc[0])
+    for l in range(len(TRThursdaySession)):
+        Workshopslist = TutorialsThursday[(TutorialsThursday['Workshop Title'] == TRThursdaySession[l])].reset_index()
+        TRThursdayNumber.append(Workshopslist['WS/TR Nr'].iloc[0])
+
+    SessionWSTRName = [WSSundaySession,WSThursdaySession,TRSundaySession,TRThursdaySession]
+    SessionWSTRNumber = [WSSundayNumber, WSThursdayNumber,TRSundaySNumber,TRThursdayNumber]
+    PavWSTR =zip(PavilionWSTR,SessionWSTRName, SessionWSTRNumber)
+
+    # Competition
+    competitionNumber = iros_competition['Nr'].reset_index()
+    competitionTitle = iros_competition['Title'].reset_index()
+    PavCompetition = zip(competitionNumber['Nr'], competitionTitle['Title'])
 
     return render(request, './beta/2_2main_beta.html',
                   {'PavSessions':PavSessions,
@@ -286,8 +332,8 @@ def main(request):
                    'UserName': UserName,
                    'allowWSContents': allowWSContents,
                    'showcontents': showcontents,
+                   'PavCompetition':PavCompetition,
                    })
-
 
 #########################################################################################################
 #########################################################################################################
@@ -379,6 +425,7 @@ def tvshow(request):
     AffiliationList3 = EpisodeList['Affiliation3'].reset_index()
     AffiliationList4 = EpisodeList['Affiliation4'].reset_index()
     AffiliationList5 = EpisodeList['Affiliation5'].reset_index()
+    Video = EpisodeList['VID'].reset_index()
 
     # Partner information
     partnerSession = iros_partners[(iros_partners['Location'] == selectedSession)].reset_index()
@@ -438,7 +485,7 @@ def tvshow(request):
                              AffiliationList5['Affiliation5'],
                              TitleList['Title'],
                              PDFList['FN'], titleNumber['Nr'], paperLikeCount, paperLikeButtonColor,
-                             paperSaveButtonStatus, paperHitCount, awardeeCount, awardNameCount)
+                             paperSaveButtonStatus, paperHitCount, awardeeCount, awardNameCount,Video['VID'])
         return render(request, './beta/3_pavilionSession_beta.html', {'Pavilion': selectedPavilion,
                                                                       'PavilionNum': selectedPavilionNum,
                                                                       'SessionList': selectedSessionList,
@@ -470,13 +517,14 @@ def specials(request):
     current_account = get_object_or_404(User, username=current_user)
 
     selectedSpecial = request.GET['id']
-    selectedGenre = request.GET['id2']
     specialEpisodeList = iros_specials[(iros_specials['Genre'] == selectedSpecial)]
     speakerName = specialEpisodeList['Speaker'].reset_index()
     speakerBiography = specialEpisodeList['Bio'].reset_index()
     specialEpisodeAbstract = specialEpisodeList['Abstract'].reset_index()
     specialEpisodeNumber = specialEpisodeList['Nr'].reset_index()
     specialEpisodeTitle = specialEpisodeList['Title'].reset_index()
+    speakerAffiliation = specialEpisodeList['Affiliation'].reset_index()
+    speakerVideo = specialEpisodeList['Video'].reset_index()
 
     specialLikeCount = []
     specialLikeButtonColor = []
@@ -504,11 +552,10 @@ def specials(request):
                                 speakerBiography['Bio'],
                                 specialEpisodeAbstract['Abstract'],
                                 specialEpisodeNumber['Nr'], specialLikeCount, specialLikeButtonColor,
-                                specialSaveButtonStatus, specialHitCount,specialEpisodeTitle['Title']
+                                specialSaveButtonStatus, specialHitCount,specialEpisodeTitle['Title'],speakerAffiliation['Affiliation'],speakerVideo['Video']
                                 )
 
     return render(request, './beta/3-1_plenariesSession_beta.html', {'selectedSpecial': selectedSpecial,
-                                                                     'selectedGenre': selectedGenre,
                                                                      'specialEpisodeContext': specialEpisodeContext,
                                                                      'SpecialsSession': SpecialsSession,
                                                                      })
@@ -522,30 +569,48 @@ def workshops(request):
     current_user = request.user.username
     current_account = get_object_or_404(User, username=current_user)
 
-    selectedWorkshops = request.GET['id']
+    selectedWorkshopsNumber = request.GET['id']
     selectedGenre = request.GET['id2']
 
     if selectedGenre == PavilionWSTR[0]:
         WorkshopsSession = WSSundaySession
+        WorkshopDate = WorkshopsSunday
     elif selectedGenre == PavilionWSTR[1]:
         WorkshopsSession = WSThursdaySession
+        WorkshopDate = WorkshopsThursday
     elif selectedGenre == PavilionWSTR[2]:
         WorkshopsSession = TRSundaySession
+        WorkshopDate = TutorialsSunday
     elif selectedGenre == PavilionWSTR[3]:
         WorkshopsSession = TRThursdaySession
+        WorkshopDate = TutorialsThursday
     else:
         WorkshopsSession = []
 
-    workshopsEpisodeList = iros_wstr[(iros_wstr['Workshop Title'] == selectedWorkshops)].reset_index()
-    workshopsHomepage = workshopsEpisodeList['Webpage'].iloc[0]
-    workshopOrganizers = workshopsEpisodeList['Organizer'].iloc[0]
-    workshopNumber = workshopsEpisodeList['Nr'].reset_index()
+    workshopSessionNumbers = []
+    for i in range(len(WorkshopsSession)):
+        Workshopslist = WorkshopDate[(WorkshopDate['Workshop Title'] == WorkshopsSession[i])].reset_index()
+        workshopSessionNumbers.append(Workshopslist['WS/TR Nr'].iloc[0])
 
+    workshopsEpisodeList = iros_wstr[(iros_wstr['WS/TR Nr'] == selectedWorkshopsNumber)].reset_index()
+    WorkshopsTitle = workshopsEpisodeList['Workshop Title'].iloc[0]
+    workshopsHomepage = workshopsEpisodeList['Webpage'].iloc[0]
+    workshopAbstract = workshopsEpisodeList['Workshop Abstract'].iloc[0]
+    workshopOrganizers =[]
+    workshopOrganizersAfilliation = []
+    for i in range(1,11):
+        workshopOrganizers.append(workshopsEpisodeList['Organizer'+str(i)].iloc[0])
+        workshopOrganizersAfilliation.append(workshopsEpisodeList['Organizer'+str(i)+'Affil'].iloc[0])
+
+    workshopOrganizersInfo=zip(workshopOrganizers,workshopOrganizersAfilliation)
+
+    workshopNumber = workshopsEpisodeList['Nr'].reset_index()
     Speaker = workshopsEpisodeList['Speaker'].reset_index()
     Institution = workshopsEpisodeList['Institution'].reset_index()
     Talktitle = workshopsEpisodeList['Title'].reset_index()
     Video = workshopsEpisodeList['Video'].reset_index()
-    Abstract = workshopsEpisodeList['Abstract'].reset_index()
+    Abstract = workshopsEpisodeList['Presentation Abstract'].reset_index()
+    Dummy = workshopsEpisodeList['Dummy'].reset_index()
 
     workshopLikeCount = []
     workshopLikeButtonColor = []
@@ -567,19 +632,72 @@ def workshops(request):
         workshopSaveButtonStatus.append(buttonStatus)
         workshopHitCount.append(paper.paper_hitcount)
 
-    print(workshopLikeButtonColor)
+    # print(workshopLikeButtonColor)
     WorkshopsContext = zip(Speaker['Speaker'], Institution['Institution'], Talktitle['Title'], workshopNumber['Nr'], workshopLikeButtonColor,
-                           workshopLikeCount, workshopSaveButtonStatus, workshopHitCount,Video['Video'], Abstract['Abstract'])
+                           workshopLikeCount, workshopSaveButtonStatus, workshopHitCount,Video['Video'], Abstract['Presentation Abstract'],Dummy['Dummy'])
 
-    return render(request, './beta/3-2_workshopsSession_beta.html', {'selectedWorkshops': selectedWorkshops,
+    count = 0
+    for k in range(len(Video['Video'])):
+        if Video['Video'].iloc[k] == 'missing':
+            count += 1
+        if count == len(Video['Video']):
+            noShowContents = 1
+        else:
+            noShowContents = 0
+
+    return render(request, './beta/3-2_workshopsSession_beta.html', {'selectedWorkshopsNumber': selectedWorkshopsNumber,
+                                                                     'selectedWorkshopsTitle':WorkshopsTitle,
+                                                                     'workshopAbstract':workshopAbstract,
                                                                      'selectedGenre': selectedGenre,
                                                                      'WorkshopsContext': WorkshopsContext,
                                                                      'WorkshopsSession': WorkshopsSession,
+                                                                     'workshopSessionNumbers':workshopSessionNumbers,
                                                                      'workshopsHomepage': workshopsHomepage,
-                                                                     'workshopOrganizers': workshopOrganizers,
+                                                                     'workshopOrganizersInfo':workshopOrganizersInfo,
+                                                                     'noShowContents':noShowContents
                                                                      })
 
+def competition(request):
+    if request.user.is_authenticated == False:
+        return render(request, './beta/1-1_loginError_beta.html')
+    else:
+        user_verification(request)
+    current_user = request.user.username
+    current_account = get_object_or_404(User, username=current_user)
 
+    selectedCompetitionNumber= request.GET['id']
+
+    findCompetition=iros_competition[(iros_competition['Nr']==int(selectedCompetitionNumber))].reset_index()
+
+    CompetitionTitle = findCompetition['Title'].iloc[0]
+    CompetitionHomepage = findCompetition['Webpage'].iloc[0]
+    CompetitionLive = findCompetition['LiveStream'].iloc[0]
+    CompetitionDate = findCompetition['Date'].iloc[0]
+    CompetitionDescription = findCompetition['Description'].iloc[0]
+    CompetitionVideo = findCompetition['Video'].iloc[0]
+    CompetitionOrganizers = []
+    CompetitionOrganizersAfilliation = []
+    for i in range(1, 8):
+        CompetitionOrganizers.append(findCompetition['Organizer' + str(i)].iloc[0])
+        CompetitionOrganizersAfilliation.append(findCompetition['Affiliation' + str(i)].iloc[0])
+
+    CompetitionOrganizersInfo = zip(CompetitionOrganizers, CompetitionOrganizersAfilliation)
+
+    # Competition
+    competitionNumber = iros_competition['Nr'].reset_index()
+    competitionTitle = iros_competition['Title'].reset_index()
+    PavCompetition = zip(competitionNumber['Nr'], competitionTitle['Title'])
+
+    return render(request,'./beta/3-3_competitionSession_beta.html',{'selectedCompetitionNumber':selectedCompetitionNumber,
+                                                                     'CompetitionTitle':CompetitionTitle,
+                                                                     'CompetitionHomepage':CompetitionHomepage,
+                                                                     'CompetitionLive':CompetitionLive,
+                                                                     'CompetitionDate':CompetitionDate,
+                                                                     'CompetitionDescription':CompetitionDescription,
+                                                                     'CompetitionVideo':CompetitionVideo,
+                                                                     'CompetitionOrganizersInfo':CompetitionOrganizersInfo,
+                                                                     'PavCompetition':PavCompetition,
+                                                                     })
 #########################################################################################################
 #########################################################################################################
 #########################################################################################################
@@ -592,14 +710,14 @@ def episode(request):
     current_user = request.user.username
     current_account = get_object_or_404(User, username=current_user)
 
-    selectedTitle = request.GET['id']
+    selectedNumber = request.GET['id']
     selectedSession = request.GET['id2']
 
-    findVideo = iros2020_raw[(iros2020_raw['Title'] == selectedTitle)]
+    findVideo = iros2020_raw[(iros2020_raw['Nr'] == int(selectedNumber))]
     VideoList = findVideo['VID'].reset_index()
-    selectedNumber = findVideo['Nr'].reset_index()
-    suggestEpisodeNum = findSimilarTopic(selectedNumber['Nr'].iloc[0])
-
+    selectedTitle = findVideo['Title'].reset_index()
+    suggestEpisodeNum = findSimilarTopic(int(selectedNumber))
+    # print(selectedTitle)
     similarPaper = iros2020_raw[(iros2020_raw['Nr'] == int(suggestEpisodeNum[0]))]
 
     for i in range(1, 12):
@@ -618,6 +736,7 @@ def episode(request):
     AffiliationList4 = similarPaper['Affiliation4'].reset_index()
     AffiliationList5 = similarPaper['Affiliation5'].reset_index()
     SessionTitle = similarPaper['Session title'].reset_index()
+    Video = similarPaper['VID'].reset_index()
 
     TitleList = similarPaper['Title'].reset_index()
     PDFList = similarPaper['FN'].reset_index()
@@ -639,10 +758,10 @@ def episode(request):
 
 
     # Comments load area
-    lengthComments = Comments.objects.filter(paper_id=selectedNumber['Nr'].iloc[0]).count()
+    lengthComments = Comments.objects.filter(paper_id=int(selectedNumber)).count()
     arrayComments = []
     for ac in range(lengthComments):
-        arrayComments.append(Comments.objects.filter(paper_id=selectedNumber['Nr'].iloc[0])[ac].comment)
+        arrayComments.append(Comments.objects.filter(paper_id=int(selectedNumber))[ac].comment)
 
     paperLikeCount = []
     paperLikeButtonColor = []
@@ -650,7 +769,7 @@ def episode(request):
     paperHitCount = []
 
     if request.method == "GET":
-        selectedPaper = get_object_or_404(Papers, paper_id=selectedNumber['Nr'].iloc[0])
+        selectedPaper = get_object_or_404(Papers, paper_id=int(selectedNumber))
 
         if current_account in selectedPaper.like_users.all():
             selectedPaperLikeButtonColor = 1
@@ -694,14 +813,14 @@ def episode(request):
                          AffiliationList5['Affiliation5'],
                          TitleList['Title'],
                          PDFList['FN'], titleNumber['Nr'], paperLikeCount, paperLikeButtonColor,
-                         SessionTitle['Session title'], paperSaveButtonStatus, paperHitCount,awardeeCount,awardNameCount)
+                         SessionTitle['Session title'], paperSaveButtonStatus, paperHitCount,awardeeCount,awardNameCount,Video['VID'])
 
         return render(request, './beta/4_pavilionSessionEpisode_beta.html', {'VideoList': VideoList['VID'],
-                                                                             'Title': selectedTitle,
+                                                                             'Title': selectedTitle['Title'],
                                                                              'Session': selectedSession,
                                                                              'EpisodeContext': resultList,
                                                                              'SelectedPaperNumber':
-                                                                                 selectedNumber['Nr'].iloc[0],
+                                                                                 selectedNumber,
                                                                              'selectedpaperHitCount':selectedpaperHitCount,
                                                                              'selectedPaperLikeButtonColor': selectedPaperLikeButtonColor,
                                                                              'selectedPaperLikeCount': selectedPaperLikeCount,
@@ -720,12 +839,12 @@ def specialsepisode(request):
     current_account = get_object_or_404(User, username=current_user)
 
     # Selected Specials
-    selectedSpeaker = request.GET['id']
+    selectedSpecialNr = request.GET['id']
     selectedSpecial = request.GET['id2']
-    selectedGenre = request.GET['id3']
-    findspeaker = iros_specials[(iros_specials['Speaker'] == selectedSpeaker)]
-    specialVideo = findspeaker['Video'].reset_index()
-    selectedSpecialNumber = findspeaker['Nr'].reset_index()
+    findspeaker = iros_specials[(iros_specials['Nr'] == int(selectedSpecialNr))].reset_index()
+    selectedSpeaker = findspeaker['Speaker'].iloc[0]
+    selectedTitle = findspeaker['Title'].iloc[0]
+    specialVideo = findspeaker['Video'].iloc[0]
 
     # Other Specials
     specialEpisodeList = iros_specials[(iros_specials['Genre'] == selectedSpecial)]
@@ -734,15 +853,16 @@ def specialsepisode(request):
     specialEpisodeAbstract = specialEpisodeList['Abstract'].reset_index()
     specialEpisodeNumber = specialEpisodeList['Nr'].reset_index()
     specialEpisodeTitle = specialEpisodeList['Title'].reset_index()
+    specialEpisodeAffiliation = specialEpisodeList['Affiliation'].reset_index()
 
     # Comments load area
-    lengthComments = Comments.objects.filter(paper_id=selectedSpecialNumber['Nr'].iloc[0]).count()
+    lengthComments = Comments.objects.filter(paper_id=int(selectedSpecialNr)).count()
     arrayComments = []
     for ac in range(lengthComments):
-        arrayComments.append(Comments.objects.filter(paper_id=selectedSpecialNumber['Nr'].iloc[0])[ac].comment)
+        arrayComments.append(Comments.objects.filter(paper_id=int(selectedSpecialNr))[ac].comment)
 
     if request.method == "GET":
-        selectedSpecialLike = get_object_or_404(Papers, paper_id=selectedSpecialNumber['Nr'].iloc[0])
+        selectedSpecialLike = get_object_or_404(Papers, paper_id=int(selectedSpecialNr))
 
         selectedSpecialHitCount = int(selectedSpecialLike.paper_hitcount) + 1
         # Selected Sepcial Like
@@ -784,20 +904,18 @@ def specialsepisode(request):
                                     speakerBiography['Bio'],
                                     specialEpisodeAbstract['Abstract'],
                                     specialEpisodeNumber['Nr'], specialLikeCount, specialLikeButtonColor,
-                                    specialSaveButtonStatus, specialHitCount
+                                    specialSaveButtonStatus, specialHitCount,specialEpisodeTitle['Title'],specialEpisodeAffiliation['Affiliation']
                                     )
 
-        return render(request, './beta/4-1_plenariesSessionEpisode_beta.html', {'specialVideo': specialVideo['Video'],
-                                                                                'specialEpisodeTitle':specialEpisodeTitle['Title'],
-                                                                                'selectedSpeaker': selectedSpeaker,
+        return render(request, './beta/4-1_plenariesSessionEpisode_beta.html', {'specialVideo': specialVideo,
                                                                                 'selectedSpecial': selectedSpecial,
-                                                                                'selectedGenre': selectedGenre,
+                                                                                'selectedTitle':selectedTitle,
                                                                                 'specialEpisodeContext': specialEpisodeContext,
                                                                                 'selectedSpecialLikeCount': selectedSpecialLikeCount,
                                                                                 'selectedSpecialLikeButtonColor': selectedSpecialLikeButtonColor,
                                                                                 'selectedSpecialSaveButtonStatus': selectedSpecialSaveButtonStatus,
                                                                                 'SelectedPaperNumber':
-                                                                                    selectedSpecialNumber['Nr'].iloc[0],
+                                                                                    selectedSpecialNr,
                                                                                 'arrayComments': arrayComments,
                                                                                 'lengthComments': lengthComments,
                                                                                 'selectedSpecialHitCount':selectedSpecialHitCount,
@@ -812,23 +930,29 @@ def workshopsepisode(request):
     current_user = request.user.username
     current_account = get_object_or_404(User, username=current_user)
 
-    selectedTitle = request.GET['id']
-    selectedWorkshops = request.GET['id2']
+    selectedTitleNumber = request.GET['id']
+    selectedWorkshopsNumber = request.GET['id2']
 
-    findTitle = iros_wstr[(iros_wstr['Title'] == selectedTitle)].reset_index()
-    selectedWorkshopEpisodeNumber = findTitle['Nr'].iloc[0]
-    print(selectedWorkshopEpisodeNumber)
-    selectedWorkshopVideo = findTitle['Video'].reset_index()
+    findWorkshop = iros_wstr[(iros_wstr['Nr'] == int(selectedTitleNumber))].reset_index()
+    selectedWorkshopTalkTitle = findWorkshop['Title'].iloc[0]
+    selectedWorkshopVideo = findWorkshop['Video'].iloc[0]
+    selectedWorkshopTitle = findWorkshop['Workshop Title'].iloc[0]
+    findWSorTR = findWorkshop['WS/TR Nr'].iloc[0]
+
+    if findWSorTR[0] == 'W':
+        WSorTR = 1
+    else:
+        WSorTR = 0
 
     # Comments load area
-    lengthComments = Comments.objects.filter(paper_id=int(selectedWorkshopEpisodeNumber)).count()
+    lengthComments = Comments.objects.filter(paper_id=int(selectedTitleNumber)).count()
     arrayComments = []
     for ac in range(lengthComments):
-        arrayComments.append(Comments.objects.filter(paper_id=int(selectedWorkshopEpisodeNumber))[ac].comment)
+        arrayComments.append(Comments.objects.filter(paper_id=int(selectedTitleNumber))[ac].comment)
 
     if request.method == "GET":
         # Selected Workshop Like, MyList
-        selectedWorkshopLike = get_object_or_404(Papers, paper_id=int(selectedWorkshopEpisodeNumber))
+        selectedWorkshopLike = get_object_or_404(Papers, paper_id=int(selectedTitleNumber))
 
         selectedWorkshopHitCount = int(selectedWorkshopLike.paper_hitcount) + 1
 
@@ -843,12 +967,14 @@ def workshopsepisode(request):
         else:
             selectedWorkshopSaveButtonStatus = 0
 
-        workshopsEpisodeList = iros_wstr[(iros_wstr['Workshop Title'] == selectedWorkshops)].reset_index()
+        workshopsEpisodeList = iros_wstr[(iros_wstr['WS/TR Nr'] == selectedWorkshopsNumber)].reset_index()
         workshopsVideo = workshopsEpisodeList['Video'].reset_index()
         workshopNumber = workshopsEpisodeList['Nr'].reset_index()
         workshopSpeaker = workshopsEpisodeList['Speaker'].reset_index()
         workshopInstitution = workshopsEpisodeList['Institution'].reset_index()
         workshopTitle = workshopsEpisodeList['Title'].reset_index()
+        workshopAbstract = workshopsEpisodeList['Presentation Abstract'].reset_index()
+        workshopDummy = workshopsEpisodeList['Dummy'].reset_index()
 
         # Other Workshops Like
         workshopLikeCount = []
@@ -874,20 +1000,22 @@ def workshopsepisode(request):
             workshopHitCount.append(paper.paper_hitcount)
 
         WorkshopsContext = zip(workshopSpeaker['Speaker'], workshopInstitution['Institution'], workshopTitle['Title'], workshopNumber['Nr'], workshopLikeButtonColor,
-                               workshopLikeCount, workshopSaveButtonStatus, workshopHitCount, workshopsVideo['Video'])
+                               workshopLikeCount, workshopSaveButtonStatus, workshopHitCount, workshopsVideo['Video'], workshopAbstract['Presentation Abstract'],workshopDummy['Dummy'])
 
         return render(request, './beta/4-2_workshopsSessionEpisode_beta.html',
-                      {'workshopsVideo': selectedWorkshopVideo['Video'],
-                       'workshopsTalkTitle': selectedTitle,
-                       'selectedWorkshops': selectedWorkshops,
+                      {'workshopsVideo': selectedWorkshopVideo,
+                       'workshopsTalkTitle': selectedWorkshopTalkTitle,
+                       'selectedWorkshops': selectedWorkshopTitle,
+                       'selectedWorkshopsNumber':selectedWorkshopsNumber,
                        'WorkshopsContext': WorkshopsContext,
-                       'selectedWorkshopEpisodeNumber': selectedWorkshopEpisodeNumber,
+                       'selectedWorkshopEpisodeNumber': selectedTitleNumber,
                        'selectedWorkshopLikeButtonColor': selectedWorkshopLikeButtonColor,
                        'selectedWorkshopLikeCount': selectedWorkshopLikeCount,
                        'selectedWorkshopSaveButtonStatus': selectedWorkshopSaveButtonStatus,
                        'arrayComments': arrayComments,
                        'lengthComments': lengthComments,
-                       'selectedWorkshopHitCount':selectedWorkshopHitCount
+                       'selectedWorkshopHitCount':selectedWorkshopHitCount,
+                       'WSorTR':WSorTR
                        })
 
 
@@ -946,6 +1074,7 @@ def searchresult(request):
         PDFList = searchTitle['FN'].reset_index()
         titleNumber = searchTitle['Nr'].reset_index()
         pavilionList = searchTitle['Theme'].reset_index()
+        VideoList = searchTitle['VID'].reset_index()
 
         pavilionNumList = []
         for i in pavilionList['Theme']:
@@ -1004,7 +1133,7 @@ def searchresult(request):
                              AffiliationList5['Affiliation5'],
                              TitleList['Title'],
                              PDFList['FN'], titleNumber['Nr'], paperLikeCount, paperLikeButtonColor,
-                             paperSaveButtonStatus, SessionList['Session title'], paperHitCount, awardeeCount, awardNameCount, pavilionList['Theme'],pavilionNumList)
+                             paperSaveButtonStatus, SessionList['Session title'], paperHitCount, awardeeCount, awardNameCount, pavilionList['Theme'],pavilionNumList,VideoList['VID'])
 
         return render(request, './beta/5_searchResult_beta.html', {'EpisodeContext': resultList,
                                                                    'showcontents': int(showcontents)
@@ -1025,7 +1154,7 @@ def mylist(request):
     user = get_object_or_404(User, username=current_account)
 
     showcontents = request.GET['id']
-    print(showcontents)
+    # print(showcontents)
     mylistQuery = user.save_papers.all()
     mylistNumber = mylistQuery.count()
 
@@ -1059,29 +1188,30 @@ def mylist(request):
 
         mylistSpecialSpeaker = []
         mylistSpecialSpecial = []
-        mylistSpecialGenre = []
+        mylistSpecialTitle = []
         for j in range(len(mylistSpecialNumber)):
             mylistSpecial = iros_specials[(iros_specials['Nr'] == int(mylistSpecialNumber[j]))].reset_index()
             mylistSpecialSpeaker.append(mylistSpecial['Speaker'].iloc[0])
             mylistSpecialSpecial.append(mylistSpecial['Genre'].iloc[0])
-            mylistSpecialGenre.append('Specials')
+            mylistSpecialTitle.append(mylistSpecial['Title'].iloc[0])
 
-        mylistSpecialContext = zip(mylistSpecialSpeaker, mylistSpecialSpecial, mylistSpecialGenre)
+        mylistSpecialContext = zip(mylistSpecialSpeaker, mylistSpecialSpecial,  mylistSpecialNumber, mylistSpecialTitle)
     else:
         mylistSpecialContext = []
 
     # MyList Workshops
     if len(mylistWorkshopsNumber) != 0:
 
-        mylistWorkshopsWorkshop = []
-        mylistWorkshopsTalkTitle = []
-
+        mylistWorkshopsNr = []
+        mylistWorkshopsTalkNr = []
+        mylistWorkshopsTitle = []
         for w in range(len(mylistWorkshopsNumber)):
             mylistWorkshops = iros_wstr[(iros_wstr['Nr'] == int(mylistWorkshopsNumber[w]))].reset_index()
-            mylistWorkshopsWorkshop.append(mylistWorkshops['Workshop Title'].iloc[0])
-            mylistWorkshopsTalkTitle.append(mylistWorkshops['Title'].iloc[0])
+            mylistWorkshopsNr.append(mylistWorkshops['WS/TR Nr'].iloc[0])
+            mylistWorkshopsTalkNr.append(mylistWorkshops['Nr'].iloc[0])
+            mylistWorkshopsTitle.append(mylistWorkshops['Title'].iloc[0])
 
-        mylistWorkshopsContext = zip(mylistWorkshopsWorkshop, mylistWorkshopsTalkTitle)
+        mylistWorkshopsContext = zip(mylistWorkshopsNr, mylistWorkshopsTalkNr,mylistWorkshopsTitle)
     else:
         mylistWorkshopsContext = []
 
@@ -1307,6 +1437,67 @@ def update_playtime(request):
 
 # #FYI, paper_like_user, paper_save_users, comments_comment_users can be manually deleted
 
+# # #CVENT Registration
+# excel_file10 = 'IROS Soft Launch - SPC Members.xlsx'
+# path10 = os.path.join(pre, excel_file10)
+# iros_cVentRegist= pd.read_excel(path10, sheet_name=0)
+# iros_cVentRegist = iros_cVentRegist.fillna('missing')
+
+# print(iros_cVentRegist['Registration Type'].iloc[0])
+#
+# duplicatecount = 0
+# for i in range(len(iros_cVentRegist['Email Address'])):
+#     cVentCheck = User.objects.filter(username__iexact=iros_cVentRegist['Email Address'].iloc[i])
+#
+#     if cVentCheck.exists() is True:
+#         duplicatecount +=1
+#         print(iros_cVentRegist['Email Address'].iloc[i])
+#         if cVentCheck[0].is_superuser is False:
+#             User.objects.filter(username__iexact=iros_cVentRegist['Email Address'].iloc[i]).update(is_superuser=True)
+#     else:
+#         newMember = User.objects.create_user(username=iros_cVentRegist['Email Address'].iloc[i], email=iros_cVentRegist['Email Address'].iloc[i], password='a')
+#         newMember.profile.email_confirmed=True
+#         newMember.is_active=True
+#         newMember.is_superuser=True
+#         newMember.profile.primary = 'Yes'
+#         newMember.profile.member = 'Yes'
+#         newMember.profile.affiliation = 'University'
+#         newMember.profile.previous_attendance = 'More than 5 times'
+#         newMember.save()
+
+
+        # RegisterType = iros_cVentRegist['Registration Type'].iloc[i]
+        # if RegisterType == 'Associate Member':
+        #     newMember.profile.primary = 'Yes'
+        #     newMember.profile.member = 'Yes'
+        # elif RegisterType == 'Graduate Student Member':
+        #     newMember.profile.primary = 'Yes'
+        #     newMember.profile.member = 'Yes'
+        # elif RegisterType == 'IEEE Life Fellow':
+        #     newMember.profile.primary = 'Yes'
+        #     newMember.profile.member = 'Yes'
+        # elif RegisterType == 'IEEE Life Member':
+        #     newMember.profile.primary = 'Yes'
+        #     newMember.profile.member = 'Yes'
+        # elif RegisterType == 'IEEE Life Senior':
+        #     newMember.profile.primary = 'Yes'
+        #     newMember.profile.member = 'Yes'
+        # elif RegisterType == 'IEEE Member':
+        #     newMember.profile.primary = 'Yes'
+        #     newMember.profile.member = 'Yes'
+        # elif RegisterType == 'IEEE Student Member':
+        #     newMember.profile.primary = 'Yes'
+        #     newMember.profile.member = 'Yes'
+        # elif RegisterType == 'Non Member':
+        #     newMember.profile.primary = 'Yes'
+        #     newMember.profile.member = 'No'
+        # elif RegisterType == 'Senior Member':
+        #     newMember.profile.primary = 'Yes'
+        #     newMember.profile.member = 'Yes'
+        # elif RegisterType == 'Student Non-Member':
+        #     newMember.profile.primary = 'Yes'
+        #     newMember.profile.member = 'No'
+# print(duplicatecount)
 @csrf_exempt
 def signup(request):
     if request.method == 'POST':
@@ -1413,7 +1604,7 @@ def activate(request, uidb64, token):
         user.profile.email_confirmed = True
         user.save()
 
-        print(1)
+        # print(1)
         # auth_login(request, user)
 
         # current_site = get_current_site(request)

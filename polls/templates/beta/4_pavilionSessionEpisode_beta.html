@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <!-- Link Swiper's CSS -->
     <link rel="stylesheet" href="{% static 'package/css/swiper.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/styles1010-1.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles1017.css' %}">
     <link rel="stylesheet" href="{% static 'css/paperimg0930.css' %}">
     <link rel="stylesheet" href="{% static 'css/episodeStyle1009.css' %}">
 
@@ -112,7 +112,7 @@
                     <source src="https://ras.papercept.net/proceedings/IROS20/{{ VideoList.0 }}" type="video/mp4">
                 </video>
         </div>
-            <h3 class="episodeTitle">Title : {{Title}}</h3>
+            <h3 class="episodeTitle">Title : {{Title.0}}</h3>
         <center>
         <table class="episodeBtn" order="0" cellpadding="0" cellspacing="0">
             <tr>
@@ -169,7 +169,7 @@
             <div id="caption"></div>
         </div>
 
-        {% for AuthorList1, AuthorList2, AuthorList3, AuthorList4,AuthorList5, AuthorList6, AffiliationList1,AffiliationList2,AffiliationList3,AffiliationList4,AffiliationList5,TitleList, PDFList, titleNumber, paperLikeCount,paperLikeButtonColor, SessionTitle, paperSaveButtonStatus, paperHitCount, awardeeCount, awardNameCount in EpisodeContext %}
+        {% for AuthorList1, AuthorList2, AuthorList3, AuthorList4,AuthorList5, AuthorList6, AffiliationList1,AffiliationList2,AffiliationList3,AffiliationList4,AffiliationList5,TitleList, PDFList, titleNumber, paperLikeCount,paperLikeButtonColor, SessionTitle, paperSaveButtonStatus, paperHitCount, awardeeCount, awardNameCount, Video in EpisodeContext %}
 
             <div class="epilisttable">
                 <table border="0" cellpadding="0" cellspacing="0" style="background-color: #323232;border-radius: 10px" >
@@ -248,33 +248,42 @@
                                 </tbody>
                             </table>
                             <br>
-                            <div style="color: white;">
-                                {% csrf_token %}
-                                {% if paperSaveButtonStatus == 1 %}
-                                    <button class="saveButton" type="submit" style="margin: auto;background-color: #323232; color: white" onclick="updateSave({{ titleNumber|floatformat:"0" }})">
-                                        <i id="savebutton{{titleNumber|floatformat:"0"}}" class="fa fa-check-circle"  aria-hidden="true" style="color:white; font-size: 30px;vertical-align: top"></i>
-                                        <font id="buttonMessage{{titleNumber|floatformat:"0"}}" style="color: white;">&nbsp;&nbsp;&nbsp;Added to my List</font>
-                                        <input type="hidden" name="paperNumber" value="{{ titleNumber|floatformat:"0" }}">
-                                    </button>
-                                {% else %}
-                                    <button class="saveButton" type="submit" style="padding: 0% ;background-color: #323232;" onclick="updateSave({{ titleNumber|floatformat:"0" }})">
-                                        <i id="savebutton{{titleNumber|floatformat:"0"}}" class="fa fa-plus"  aria-hidden="true" style="color:white; font-size: 30px;vertical-align: top"></i>
-                                        <font id="buttonMessage{{titleNumber|floatformat:"0"}}" style="color: white;">&nbsp;&nbsp;&nbsp;Add to my List</font>
-                                        <input type="hidden" name="paperNumber" value="{{ titleNumber|floatformat:"0" }}">
-                                    </button>
-                                {% endif %}
-                            </div>
+                            {% if Video != 'missing'%}
+                                <div style="color: white;">
+                                    {% csrf_token %}
+                                    {% if paperSaveButtonStatus == 1 %}
+                                        <button class="saveButton" type="submit" style="margin: auto;background-color: #323232; color: white" onclick="updateSave({{ titleNumber|floatformat:"0" }})">
+                                            <i id="savebutton{{titleNumber|floatformat:"0"}}" class="fa fa-check-circle"  aria-hidden="true" style="color:white; font-size: 30px;vertical-align: top"></i>
+                                            <font id="buttonMessage{{titleNumber|floatformat:"0"}}" style="color: white;">&nbsp;&nbsp;&nbsp;Added to my List</font>
+                                            <input type="hidden" name="paperNumber" value="{{ titleNumber|floatformat:"0" }}">
+                                        </button>
+                                    {% else %}
+                                        <button class="saveButton" type="submit" style="padding: 0% ;background-color: #323232;" onclick="updateSave({{ titleNumber|floatformat:"0" }})">
+                                            <i id="savebutton{{titleNumber|floatformat:"0"}}" class="fa fa-plus"  aria-hidden="true" style="color:white; font-size: 30px;vertical-align: top"></i>
+                                            <font id="buttonMessage{{titleNumber|floatformat:"0"}}" style="color: white;">&nbsp;&nbsp;&nbsp;Add to my List</font>
+                                            <input type="hidden" name="paperNumber" value="{{ titleNumber|floatformat:"0" }}">
+                                        </button>
+                                    {% endif %}
+                                </div>
+                            {% endif %}
                             <br>
                             <div>
-                                <a style="text-decoration: none" href="episode?id={{TitleList}}&id2={{ SessionTitle }}" onClick="this.href=this.href+'&'+new Date().getTime()">
+                                {% if Video == 'missing'%}
                                     <div class="videoPlayButton">
-                                        <div class="videoPlayButtonIcon">
-                                            <i class="fa fa-play-circle" style="vertical-align: middle;"></i>
-                                        </div>
-                                        <div class="videoPlayButtonText">Watch Now
+                                        <div class="videoPlayButtonText">No Video Available
                                         </div>
                                     </div>
-                                </a>
+                                {% else %}
+                                    <a style="text-decoration: none" href="episode?id={{titleNumber|floatformat:"0"}}&id2={{ SessionTitle }}" onClick="this.href=this.href+'&'+new Date().getTime()">
+                                        <div class="videoPlayButton">
+                                            <div class="videoPlayButtonIcon">
+                                                <i class="fa fa-play-circle" style="vertical-align: middle;"></i>
+                                            </div>
+                                            <div class="videoPlayButtonText">Watch Now
+                                            </div>
+                                        </div>
+                                    </a>
+                                {% endif %}
                                 <div class="pdfopenButton">
                                     {% if PDFList == 'missing' %}
                                         <p style="color: lawngreen;">No PDF files</p>
@@ -284,22 +293,24 @@
                                 </div>
                             </div>
                             <br>
-                            <div class="paperlikeviewcountdiv">
-                                {% if paperLikeButtonColor == 1 %}
-                                    <button class="likeButton" type="submit" style="margin: auto;background-color: #323232 ;" onclick="updateLike({{ titleNumber|floatformat:"0" }})">
-                                        <i id="thumbs{{titleNumber|floatformat:"0"}}" class="fa fa-thumbs-up" style="color:yellow;"></i>
-                                        <input type="text" id="{{ titleNumber|floatformat:"0" }}" value="{{ paperLikeCount }}" class="thumbsuptext" name="likeCount" readonly/>
-                                        <input type="hidden" name="paperNumber" value="{{ titleNumber|floatformat:"0" }}">
-                                    </button>
-                                {% else %}
-                                    <button class="likeButton" type="submit" style="padding: 0% ;background-color: #323232;" onclick="updateLike({{ titleNumber|floatformat:"0" }})">
-                                        <i id="thumbs{{titleNumber|floatformat:"0"}}" class="fa fa-thumbs-up" style="color:grey;"></i>
-                                        <input type="text" id="{{ titleNumber|floatformat:"0" }}" value="{{ paperLikeCount }}" class="thumbsuptext" name="likeCount" readonly/>
-                                        <input type="hidden" name="paperNumber" value="{{ titleNumber|floatformat:"0" }}">
-                                    </button>
-                                {% endif %}
-                                <span class="listHitCount">{{ paperHitCount }} views</span>
-                            </div>
+                            {% if Video != 'missing'%}
+                                <div class="paperlikeviewcountdiv">
+                                    {% if paperLikeButtonColor == 1 %}
+                                        <button class="likeButton" type="submit" style="margin: auto;background-color: #323232 ;" onclick="updateLike({{ titleNumber|floatformat:"0" }})">
+                                            <i id="thumbs{{titleNumber|floatformat:"0"}}" class="fa fa-thumbs-up" style="color:yellow;"></i>
+                                            <input type="text" id="{{ titleNumber|floatformat:"0" }}" value="{{ paperLikeCount }}" class="thumbsuptext" name="likeCount" readonly/>
+                                            <input type="hidden" name="paperNumber" value="{{ titleNumber|floatformat:"0" }}">
+                                        </button>
+                                    {% else %}
+                                        <button class="likeButton" type="submit" style="padding: 0% ;background-color: #323232;" onclick="updateLike({{ titleNumber|floatformat:"0" }})">
+                                            <i id="thumbs{{titleNumber|floatformat:"0"}}" class="fa fa-thumbs-up" style="color:grey;"></i>
+                                            <input type="text" id="{{ titleNumber|floatformat:"0" }}" value="{{ paperLikeCount }}" class="thumbsuptext" name="likeCount" readonly/>
+                                            <input type="hidden" name="paperNumber" value="{{ titleNumber|floatformat:"0" }}">
+                                        </button>
+                                    {% endif %}
+                                    <span class="listHitCount">{{ paperHitCount }} views</span>
+                                </div>
+                            {% endif %}
                         </td>
                     </tr>
                 </table>

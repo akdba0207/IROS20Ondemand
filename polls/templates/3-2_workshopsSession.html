@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>IROS 2020 On-Demand : Sessions</title>
+    <title>IROS 2020 On-Demand : Workshops/Tutorials</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
 
     <script src="https://s3-us-west-2.amazonaws.com/ieeeshutpages/gdpr/settings.js"></script>
@@ -19,7 +19,8 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <!-- Link Swiper's CSS -->
     <link rel="stylesheet" href="{% static 'package/css/swiper.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/styles1010-1.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles1017.css' %}">
+    <link rel="stylesheet" href="{% static 'css/paperimg0930.css' %}">
     <script
             src="https://kit.fontawesome.com/7541329784.js"
             crossorigin="anonymous"
@@ -32,229 +33,420 @@
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
     />
-    <link rel="stylesheet" href="{% static 'css/index_land0717.css' %}" />
     <link rel="stylesheet" href="{% static 'css/index_header1006.css' %}" />
+    <style>
+        .morecontent span {
+            display: none;
+        }
+    </style>
 
 </head>
 <body>
-<header>
-    <div class="logo">
-        <a href="entrance">
-            <img src="{% static './resources/logo.png'%}"/>
+<div class="onDemandwidthControl">
+
+    <nav style="background-color: rgba(0,0,0,0.7)" class="navbar navbar-expand-md navbar-dark fixed-top">
+        <!-- Brand/logo -->
+        <a class="navbar-brand" href="main?id=wstr">
+            <img src="{% static './resources/logo.png'%}" width="150px"/>
         </a>
-        <button class="header-toggleBtn"><i class="fa fa-bars"></i></button>
-    </div>
-
-    <ul class="categories">
-        <li class="category category1"><a href="entrance" style="color:white; text-decoration: none;">Home</a></li>
-        <li class="category category2"><a href="mylist?" onClick="this.href=this.href.split('?')[0]+'?'+new Date().getTime()" style="color:white; text-decoration: none;">My Lists</a></li>
-        <li class="category category3"><a href="logout" style="color:white; text-decoration: none;">Logout</a></li>
-    </ul>
-
-    <ul class="search_notice_info">
-        <form>
-            <input type="text" id="search_bar" value="" class="searchBar" onkeydown="if(event.keyCode === 13) {event.preventDefault(); document.getElementById('searchBtn').click()}"/>
-            <d onclick="search()">
-                <a id = "keywordDelivery" href="">
-                    <i id="searchBtn" class="fa fa-search" style="color:white;"></i>
-                </a>
-            </d>
-        </form>
-    </ul>
-</header>
-
-<div style="width:95%; margin:0 auto; padding-top: 5%;" align="justify">
-    <p>&nbsp;</p>
-    <br>
-
-    <div class = "landingtable" style="width: 90%; height: auto; text-align: left; margin-left: 5%; margin-bottom:2%">
-        <table border="0" cellpadding="0" cellspacing="0" style="background-color: #323232; width: 100%; border-style: solid; border-color:white;border-width: 10px;">
-            <tr>
-                <td style="width: 60%;">
-                    <img src="{% static 'img'%}/{{ selectedGenre }}/{{selectedWorkshops}}.jpg">
-                </td>
-                <td class="sessionTitle" style="word-break: keep-all;">
-                    <p style="color: white; font-size: 30px">Welcome to Workshop</p>
-                    <p style="color: white; font-size: 40px">{{ selectedWorkshops }}</p>
-                    <p style="color: white; font-size: 40px">&nbsp;</p>
-                    <p style="color: white;">Organizers : {{ workshopOrganizers }}</p>
-                    <p><a href="{{ workshopsHomepage }}" style="color: white;"> <u>Click</u> for Workshop Home Page</a></p>
-                </td>
-            </tr>
-        </table>
-    </div>
-
-
-    {% for Speaker, Institution, TalkTitle, workshopEpisodeNumber, workshopLikeButtonColor, workshopLikeCount, workshopSaveButtonStatus, workshopHitCount in WorkshopsContext %}
-        {% if Speaker == 'missing' %}
-            &nbsp;
-        {% else %}
-            <div class="epilisttable" style="width: 80%; height: auto; text-align: center; margin-left: 10%; background-color: transparent; margin-bottom:1%">
-                <table border="0" cellpadding="0" cellspacing="0" style="background-color: #323232;" >
-                    <tr>
-                        <td style="width: 30%">
-                            <a href="workshopsepisode?id={{Speaker}}&id2={{selectedWorkshops}}&id3={{ selectedGenre }}&id4={{ forloop.counter0|add:1 }}" onClick="this.href=this.href+'&'+new Date().getTime()">
-                                <img src="{% static './resources/playlogo.png'%}"></a>
-                        </td>
-                        <td valign="top" align="left" style="padding-left: 5%; padding-top: 3%;word-break: keep-all">
-                            <p class="papertitle" style="color: white;">Title : {{ TalkTitle }}</p>
-                            <table class="paperInfo" border="0" cellpadding="0" cellspacing="0" width="100% "style="background-color: #323232; text-align: left;color: white;">
-                                <tbody>
-                                <tr>
-                                    <td style="width: 20%;">Speaker</td>
-                                    <td>{{ Speaker }}</td>
-                                </tr>
-
-                                <tr>
-                                    <td style="width: 20%">Institution</td>
-                                    <td>{{ Institution }}</td>
-                                </tr>
-                                <tr>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                </tr>
-                                </tbody>
-                            </table>
-                            {% if workshopLikeButtonColor == 1 %}
-                                <button class="likeButton" type="submit" style="margin: auto;background-color: #323232 ;" onclick="updateLike({{ workshopEpisodeNumber }})">
-                                    <i id="thumbs{{workshopEpisodeNumber}}" class="fa fa-thumbs-up" style="color:yellow; font-size: 30px"></i>
-                                    <input type="text" id="{{ workshopEpisodeNumber }}" value="{{ workshopLikeCount }}" class="thumbsuptext" name="likeCount" readonly/>
-                                    <input type="hidden" name="paperNumber" value="{{ workshopEpisodeNumber }}">
-                                </button>
-                            {% else %}
-                                <button class="likeButton" type="submit" style="padding: 0% ;background-color: #323232;" onclick="updateLike({{ workshopEpisodeNumber }})">
-                                    <i id="thumbs{{workshopEpisodeNumber}}" class="fa fa-thumbs-up" style="color:grey; font-size: 30px"></i>
-                                    <input type="text" id="{{ workshopEpisodeNumber }}" value="{{ workshopLikeCount }}" class="thumbsuptext" name="likeCount" readonly/>
-                                    <input type="hidden" name="paperNumber" value="{{ workshopEpisodeNumber }}">
-                                </button>
-                            {% endif %}
-                            <span class="listHitCount" style="color: white;font-size: 18px">{{ workshopHitCount }} views</span>
-                        </td>
-                        <td class="savePapers" style="width: 5%; color: white">
-                            {% csrf_token %}
-                            {% if workshopSaveButtonStatus == 1 %}
-                                <button class="saveButton" type="submit" style="margin: auto;background-color: #323232 ;" onclick="updateSave({{ workshopEpisodeNumber }})">
-                                    <i id="savebutton{{workshopEpisodeNumber}}" class="fa fa-check-circle"  aria-hidden="true" style="color:white; font-size: 30px"></i>
-                                    <input type="hidden" name="paperNumber" value="{{ workshopEpisodeNumber }}">
-                                </button>
-                                <p>My List</p>
-                            {% else %}
-                                <button class="saveButton" type="submit" style="padding: 0% ;background-color: #323232;" onclick="updateSave({{ workshopEpisodeNumber }})">
-                                    <i id="savebutton{{workshopEpisodeNumber}}" class="fa fa-plus"  aria-hidden="true" style="color:white; font-size: 30px"></i>
-                                    <input type="hidden" name="paperNumber" value="{{ workshopEpisodeNumber }}">
-                                </button>
-                                <p>My List</p>
-                            {% endif %}
-                        </td>
-                    </tr>
-                </table>
-            </div>
-        {% endif %}
-    {% endfor %}
-    <p>&nbsp;</p>
-    <div class="netflix-slider">
-        <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Other {{ selectedGenre }}</h3>
-        <div class="swiper-container">
-            <div class="swiper-wrapper">
-                {% for j in WorkshopsSession %}
-                    <div class="swiper-slide"><a href="specials?id={{j}}&id2={{ selectedGenre }}" style="color:white; text-decoration: none;">
-                        <img src="{% static 'img'%}/{{ selectedGenre }}/{{ j }}.jpg">
-                        <div class="onimg-caption">{{ j }}
-                        </div>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+            <!-- Links -->
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="main?id=wstr" style="color:white; ">Home</a>
+                </li>
+                <!-- Dropdown -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" style="color: white" href="#" id="navbardrop" data-toggle="dropdown">
+                        Entrance
                     </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="main?id=technicalpaper">Technical Talks</a>
+                        <a class="dropdown-item" href="main?id=wstr">Workshops and Tutorials</a>
+                        <a class="dropdown-item" href="main?id=competition">Robot Competition</a>
                     </div>
-                {% endfor %}
-            </div>
-            <!-- Add Pagination -->
-            {#      <div class="swiper-pagination"></div>#}
-            <div class="swiper-button-next"></div>
-            <div class="swiper-button-prev"></div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="mylist?id=2" onClick="this.href=this.href+'&'+new Date().getTime()" style="color:white;">My Lists</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="logout" style="color:white;">Logout</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav">
+                <form class="form-inline navbar-right">
+                    <input type="text" id="search_bar" value="" class="searchBar" onkeydown="if(event.keyCode === 13) {event.preventDefault(); document.getElementById('searchBtn').click()}"/>
+                    <d onclick="if(search_bar.value.length > 0)search()">
+                        <a id = "keywordDelivery" href="javascript: void(0)">
+                            <i id="searchBtn" class="fa fa-search" style="color:white;margin-left: 100%;font-size: 18px"></i>
+                        </a>
+                    </d>
+                </form>
+            </ul>
         </div>
-    </div>
+    </nav>
+
+    <div style="width:95%; margin:0 auto; padding-top:  50px;" align="justify">
+        <p>&nbsp;</p>
+        <br>
+
+        <div class="landingtable">
+            <table border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td class="landingtabletopLeft">
+                        {% if selectedGenre == 'Workshops' or selectedGenre == 'More Workshops'%}
+                            <img width="100%" onError="this.onerror=null;this.src='{% static './resources/logo2.png' %}';" src="{% static 'img/Workshops' %}/{{selectedWorkshopsNumber}}.jpg">
+                        {% else %}
+                            <img width="100%" onError="this.onerror=null;this.src='{% static './resources/logo2.png' %}';" src="{% static 'img/Tutorials' %}/{{selectedWorkshopsNumber}}.jpg">
+                        {% endif %}
+                        <div></div>
+                    </td>
+                    <td class="sessionTitle" style="word-break: keep-all;background-color: rgba(0,0,0,.8)">
+                        {% if selectedGenre == 'Workshops' or selectedGenre == 'More Workshops'%}
+                            <p style="color: powderblue; margin:0"><i>Welcome to workshop : </i></p>
+                        {% else %}
+                            <p style="color: powderblue; margin:0"><i>Welcome to tutorial : </i></p>
+                        {% endif %}
+                        <p style="color: powderblue; margin:0"><i>{{ selectedWorkshopsTitle }}</i></p>
+                        <p style="color: powderblue; margin:0">&nbsp;</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                    {% if  workshopsHomepage != 'missing'%}
+                        <div class="landingtablebottom">
+                            <div class="landingtablebottomleft">
+                                <p style="display: inline">Webpage</p>
+                            </div>
+                            <div class="landingtablebottomright">
+                                {% if selectedGenre == 'Workshops' or selectedGenre == 'More Workshops'%}
+                                    <a href="{{ workshopsHomepage }}" target="_blank" style="color: white;"> {{ workshopsHomepage }}</a>
+                                {% else %}
+                                    <a href="{{ workshopsHomepage }}" target="_blank" style="color: white;"> {{ workshopsHomepage }}</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endif %}
+                        <div class="landingtablebottom">
+                            <div class="landingtablebottomleft">
+                                <p style="display: inline">Organizers</p>
+                            </div>
+                            <div class="landingtablebottomright">
+                                <p style="color: white;display: inline">
+                                    {% for workshopOrganizers, workshopOrganizersAfilliation in workshopOrganizersInfo%}
+                                        {% if workshopOrganizers != 'missing' %}
+                                            {{ workshopOrganizers }} ({{ workshopOrganizersAfilliation}})<br>
+                                        {% endif %}
+                                    {% endfor %}
+                                </p>
+                            </div>
+                        </div>
+                        {% if  workshopAbstract != 'missing'%}
+                            <div class="landingtablebottom">
+                                <div class="landingtablebottomleft">
+                                    <p style="display: inline">Overview</p>
+                                </div>
+                                <div class="landingtablebottomright">
+                                    <div class="more" style="color: white;">{{ workshopAbstract }}</div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        {% if noShowContents == 1 %}
+            {% if selectedGenre == 'Workshops' or selectedGenre == 'More Workshops'%}
+                <h3 class="pavtitle" style="text-align: center"><b>No contents available at this workshop, please check their <a href="{{ workshopsHomepage }}" target="_blank" style="color: white;">"Home Page"</a></b></h3>
+            {% else %}
+                <h3 class="pavtitle" style="text-align: center"><b>No contents available at this tutorial, please check their <a href="{{ workshopsHomepage }}" target="_blank" style="color: white;">"Home Page"</a></b></h3>
+            {% endif %}
+        {% else %}
+            {% for Speaker, Institution, TalkTitle, workshopEpisodeNumber, workshopLikeButtonColor, workshopLikeCount, workshopSaveButtonStatus, workshopHitCount, Video, Abstract, Dummy in WorkshopsContext %}
+                {% if Video == 'missing' %}
+                {% else %}
+                    <div class="epilisttable">
+                        <table border="0" cellpadding="0" cellspacing="0" style="background-color: transparent;" >
+                            <tr>
+                                <td class="epilisttableleft">
+                                    <img width="100%" onError="this.onerror=null;this.src='{% static './resources/logo2.png' %}';" src="{% static './resources/logo2.png' %}">
+                                </td>
+                                <td valign="top" align="left" class="epilisttableright">
+                                    <p class="papertitle" style="color: white;">{{ TalkTitle }}</p>
+                                    <table class="paperInfo" border="0" cellpadding="0" cellspacing="0" width="100% "style="background-color: #323232; text-align: left;color: white;">
+                                        <tbody>
+                                        <tr>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width: 20%;word-break: break-word">Speaker / Organizer</td>
+                                            <td style="width: 60%;">{{ Speaker }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Affiliation</td>
+                                            <td>{{ Institution }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>&nbsp;</td>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                        {% if Abstract == 'missing' %}
+                                        {% else %}
+                                            <tr>
+                                                <td>Abstract</td>
+                                                <td><div class="more">{{ Abstract }}</div></td>
+                                            </tr>
+                                        {% endif %}
+                                        </tbody>
+                                    </table>
+                                    <br>
+                                    {% if Dummy != 1 %}
+                                        <div style="color: white;">
+                                            {% csrf_token %}
+                                            {% if workshopSaveButtonStatus == 1 %}
+                                                <button class="saveButton" type="submit" style="margin: auto;background-color: #323232; color: white" onclick="updateSave({{ workshopEpisodeNumber|floatformat:"0" }})">
+                                                    <i id="savebutton{{workshopEpisodeNumber|floatformat:"0"}}" class="fa fa-check-circle"  aria-hidden="true" style="color:white;vertical-align: top"></i>
+                                                    <font id="buttonMessage{{workshopEpisodeNumber|floatformat:"0"}}" style="color: white;">&nbsp;&nbsp;&nbsp;Added to my list</font>
+                                                    <input type="hidden" name="paperNumber" value="{{ workshopEpisodeNumber|floatformat:"0" }}">
+                                                </button>
+                                            {% else %}
+                                                <button class="saveButton" type="submit" style="padding: 0% ;background-color: #323232;" onclick="updateSave({{ workshopEpisodeNumber|floatformat:"0" }})">
+                                                    <i id="savebutton{{workshopEpisodeNumber|floatformat:"0"}}" class="fa fa-plus"  aria-hidden="true" style="color:white;vertical-align: top"></i>
+                                                    <font id="buttonMessage{{workshopEpisodeNumber|floatformat:"0"}}" style="color: white;">&nbsp;&nbsp;&nbsp;Add to my List</font>
+                                                    <input type="hidden" name="paperNumber" value="{{ workshopEpisodeNumber|floatformat:"0" }}">
+                                                </button>
+                                            {% endif %}
+                                        </div>
+                                    {% endif %}
+                                    <br>
+                                    <div>
+                                        {% if Dummy == 1 %}
+                                            <div class="videoPlayButton">
+                                                <div class="videoPlayButtonText">Expected to be released
+                                                </div>
+                                            </div>
+                                        {% else %}
+                                            <a style="text-decoration: none" href="workshopsepisode?id={{workshopEpisodeNumber|floatformat:"0"}}&id2={{selectedWorkshopsNumber}}" onClick="this.href=this.href+'&'+new Date().getTime()">
+                                                <div class="videoPlayButton">
+                                                    <div class="videoPlayButtonIcon">
+                                                        <i class="fa fa-play-circle" style="vertical-align: middle;"></i>
+                                                    </div>
+                                                    <div class="videoPlayButtonText">Watch Now
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        {% endif %}
+                                    </div>
+                                    <br>
+                                    {% if Dummy != 1 %}
+                                        <div class="paperlikeviewcountdiv">
+                                            {% if workshopLikeButtonColor == 1 %}
+                                                <button class="likeButton" type="submit" style="margin: auto;background-color: #323232 ;" onclick="updateLike({{ workshopEpisodeNumber|floatformat:"0" }})">
+                                                    <i id="thumbs{{workshopEpisodeNumber|floatformat:"0"}}" class="fa fa-thumbs-up" style="color:yellow;"></i>
+                                                    <input type="text" id="{{ workshopEpisodeNumber|floatformat:"0" }}" value="{{ workshopLikeCount }}" class="thumbsuptext" name="likeCount" readonly/>
+                                                    <input type="hidden" name="paperNumber" value="{{ workshopEpisodeNumber|floatformat:"0" }}">
+                                                </button>
+                                            {% else %}
+                                                <button class="likeButton" type="submit" style="padding: 0% ;background-color: #323232;" onclick="updateLike({{ workshopEpisodeNumber|floatformat:"0" }})">
+                                                    <i id="thumbs{{workshopEpisodeNumber|floatformat:"0"}}" class="fa fa-thumbs-up" style="color:grey;"></i>
+                                                    <input type="text" id="{{ workshopEpisodeNumber|floatformat:"0" }}" value="{{ workshopLikeCount }}" class="thumbsuptext" name="likeCount" readonly/>
+                                                    <input type="hidden" name="paperNumber" value="{{ workshopEpisodeNumber|floatformat:"0" }}">
+                                                </button>
+                                            {% endif %}
+                                            <span class="listHitCount">{{ workshopHitCount }} views</span>
+                                        </div>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+        <p>&nbsp;</p>
+        <div class="netflix-slider">
+            <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Other {{ selectedGenre }}</h3>
+            <div class="swiper-container">
+                <div class="swiper-wrapper">
+                    {% for SessionWSTRNumber in workshopSessionNumbers %}
+                        {% for SessionWSTRName in WorkshopsSession %}
+                            {% if forloop.counter == forloop.parentloop.counter %}
+                                <div class="swiper-slide"><a href="workshops?id={{SessionWSTRNumber}}&id2={{ selectedGenre }}" style="color:white; text-decoration: none;">
+                                    {% if selectedGenre == 'Workshops' or selectedGenre == 'More Workshops'%}
+                                        <img class="netflix-slider-img" onError="this.onerror=null;this.src='{% static './resources/logo2.png' %}';" src="{% static 'img/Workshops' %}/{{SessionWSTRNumber}}.jpg">
+                                    {% else %}
+                                        <img class="netflix-slider-img" onError="this.onerror=null;this.src='{% static './resources/logo2.png' %}';" src="{% static 'img/Tutorials' %}/{{SessionWSTRNumber}}.jpg">
+                                    {% endif %}
+                                    <div class="onimg-caption">{{ SessionWSTRName }}
+                                    </div>
+                                </a>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    {% endfor %}
+                </div>
+                <!-- Add Pagination -->
+                {#      <div class="swiper-pagination"></div>#}
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+            </div>
+        </div>
 
 
-    <script src="{% static 'js/index_header.js' %}"></script>
-    <script src="{% static 'package/js/swiper.min.js' %}"></script>
-    <script>
-        function search(){
-            const query = document.getElementById("search_bar").value;
-            document.getElementById("keywordDelivery").href = "searchresult?id="+query;
-        }
-
-    </script>
-    <!-- Initialize Swiper -->
-
-    <script>
-        var swiper = new Swiper('.swiper-container', {
-            {#slidesPerView: 7,#}
-            {#spaceBetween: 10,#}
-            slidesPerGroup: 2,
-            pagination: {
-                el: '.swiper-pagination',
-                clickable: true,
-            },
-            navigation: {
-                nextEl: '.swiper-button-next',
-                prevEl: '.swiper-button-prev',
-            },
-            breakpoints: {
-                // when window width is >= 320px
-                200: {
-                    slidesPerView: 4,
-                    slidesPerColumnFill:'row',
-                    spaceBetween: 4
-                },
-                // when window width is >= 480px
-                600: {
-                    slidesPerView: 5,
-                    spaceBetween: 5
-                },
-                // when window width is >= 640px
-                900: {
-                    slidesPerView: 6,
-                    spaceBetween: 6
-                }
+        <script src="{% static 'package/js/swiper.min.js' %}"></script>
+        <script>
+            function search(){
+                const query = document.getElementById("search_bar").value;
+                document.getElementById("keywordDelivery").href = "searchresult?id2=2&id="+query;
             }
-        });
-    </script>
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
-    <script>
-        function updateLike(titleNumber){
-            $.ajax({
-                url:'post_like',
-                type:'POST',
-                data:{'paperNumber':titleNumber},
-                dataType:'json',
-                success: function(json) {
-                    $('#'+titleNumber)[0].value =  json['likeCount'];
-                    $('#thumbs'+titleNumber)[0].style.color =  json['likeButtonColor'];
+
+        </script>
+        <!-- Initialize Swiper -->
+
+        <script>
+            var swiper = new Swiper('.swiper-container', {
+                {#slidesPerView: 7,#}
+                {#spaceBetween: 10,#}
+                slidesPerGroup: 2,
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true,
                 },
-                error: function(err) {
-                    alert("Failed to Retrieve JSON file from Server");
+                navigation: {
+                    nextEl: '.swiper-button-next',
+                    prevEl: '.swiper-button-prev',
+                },
+                breakpoints: {
+                    // when window width is >= 320px
+                    200: {
+                        slidesPerView: 4,
+                        slidesPerColumnFill:'row',
+                        spaceBetween: 4
+                    },
+                    // when window width is >= 480px
+                    600: {
+                        slidesPerView: 5,
+                        spaceBetween: 5
+                    },
+                    // when window width is >= 640px
+                    900: {
+                        slidesPerView: 6,
+                        spaceBetween: 6
+                    }
                 }
             });
-        }
-    </script>
-    <script>
-        function updateSave(titleNumber){
-            var savebuttonClass = document.getElementById("savebutton"+titleNumber).className;
-            $.ajax({
-                url:'post_save',
-                type:'POST',
-                data:{'paperNumber':titleNumber},
-                dataType:'json',
-                success: function(json) {
+        </script>
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+        <script>
+            function updateLike(titleNumber){
+                var currLikeCount= parseInt($('#'+titleNumber)[0].value,10);
+                var currLikeColor =$('#thumbs'+titleNumber)[0].style.color;
+                if(currLikeColor == 'yellow'){
+                    $('#'+titleNumber)[0].value = currLikeCount -1;
+                    $('#thumbs'+titleNumber)[0].style.color =  'grey';
+                }else{
+
+                    $('#'+titleNumber)[0].value = currLikeCount + 1;
+                    $('#thumbs'+titleNumber)[0].style.color =  'yellow';
+                }
+                $.ajax({
+                    url:'post_like',
+                    type:'POST',
+                    data:{'paperNumber':titleNumber},
+                    dataType:'json',
+                    success: function(json) {
+                        {#$('#'+titleNumber)[0].value =  json['likeCount'];#}
+                        {#$('#thumbs'+titleNumber)[0].style.color =  json['likeButtonColor'];#}
+                    },
+                    error: function(err) {
+                        alert("Failed to Retrieve JSON file from Server");
+                    }
+                });
+            }
+        </script>
+        <script>
+            function updateSave(titleNumber){
+                var savebuttonClass = document.getElementById("savebutton"+titleNumber).className;
+                if(savebuttonClass == 'fa fa-plus'){
                     $('#savebutton'+titleNumber).removeClass(savebuttonClass);
-                    $('#savebutton'+titleNumber).addClass(json['paperSaveButtonStatus']);
-                },
-                error: function(err) {
-                    alert("Failed to Retrieve JSON file from Server");
+                    $('#savebutton'+titleNumber).addClass('fa fa-check-circle');
+                    $('#buttonMessage'+titleNumber).html('&nbsp;&nbsp;&nbsp;Added to my list')
+                }else{
+                    $('#savebutton'+titleNumber).removeClass(savebuttonClass);
+                    $('#savebutton'+titleNumber).addClass('fa fa-plus');
+                    $('#buttonMessage'+titleNumber).html('&nbsp;&nbsp;&nbsp;Add to my list')
+                }
+                $.ajax({
+                    url:'post_save',
+                    type:'POST',
+                    data:{'paperNumber':titleNumber},
+                    dataType:'json',
+                    success: function(json) {
+                        {#$('#savebutton'+titleNumber).removeClass(savebuttonClass);#}
+                        {#$('#savebutton'+titleNumber).addClass(json['paperSaveButtonStatus']);#}
+                    },
+                    error: function(err) {
+                        alert("Failed to Retrieve JSON file from Server");
+                    }
+                });
+            }
+        </script>
+        <script>
+            $(document).ready(function() {
+                // Configure/customize these variables.
+                var showChar = 100;  // How many characters are shown by default
+                var ellipsestext = "...";
+                var moretext = "Show more";
+                var lesstext = "Show less";
+
+                $('.more').each(function() {
+                    var content = $(this).html();
+
+                    if(content.length > showChar) {
+                        var c = content.substr(0, showChar);
+                        var h = content.substr(showChar-1, content.length - showChar);
+                        {#console.log(h)#}
+                        var html = c + '<span class="moreellipses">' + ellipsestext+ '&nbsp;</span><span class="morecontent"><span>' + h + '</span>&nbsp;&nbsp;<a href="" class="morelink">' + moretext + '</a></span>';
+                        $(this).html(html);
+                    }
+                });
+
+                $(".morelink").click(function(){
+                    if($(this).hasClass("less")) {
+                        $(this).removeClass("less");
+                        $(this).html(moretext);
+                    } else {
+                        $(this).addClass("less");
+                        $(this).html(lesstext);
+                    }
+                    $(this).parent().prev().toggle();
+                    $(this).prev().toggle();
+                    return false;
+                });
+            });
+        </script>
+        <script>
+            window.addEventListener( "pageshow", function ( event ) {
+                var historyTraversal = event.persisted ||
+                    ( typeof window.performance != "undefined" &&
+                        window.performance.navigation.type === 2 );
+                if ( historyTraversal ) {
+                    // Handle page restore.
+                    window.location.reload();
+                    {#console.log('save my ass')#}
                 }
             });
-        }
-    </script>
+        </script>
+    </div>
 </div>
 </body>
 </html>

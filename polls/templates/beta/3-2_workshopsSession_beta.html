@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>IROS 2020 On-Demand : Sessions</title>
+    <title>IROS 2020 On-Demand : Workshops/Tutorials</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
 
     <script src="https://s3-us-west-2.amazonaws.com/ieeeshutpages/gdpr/settings.js"></script>
@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <!-- Link Swiper's CSS -->
     <link rel="stylesheet" href="{% static 'package/css/swiper.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/styles1010-1.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles1017.css' %}">
     <link rel="stylesheet" href="{% static 'css/paperimg0930.css' %}">
     <script
             src="https://kit.fontawesome.com/7541329784.js"
@@ -86,7 +86,6 @@
                     </d>
                 </form>
             </ul>
-
         </div>
     </nav>
 
@@ -94,126 +93,203 @@
         <p>&nbsp;</p>
         <br>
 
-        <div class = "landingtable" style="width: 90%; height: auto; text-align: left; margin-left: 5%; margin-bottom:2%">
-            <table border="0" cellpadding="0" cellspacing="0" style="background-color: #323232; width: 100%; border-style: solid; border-color:white;border-width: 10px;">
+        <div class="landingtable">
+            <table border="0" cellpadding="0" cellspacing="0">
                 <tr>
                     <td class="landingtabletopLeft">
-                        <img width="100%" onError="this.onerror=null;this.src='{% static './resources/logo2.png' %}';" src="{% static './resources/logo2.png' %}">
+                        {% if selectedGenre == 'Workshops' or selectedGenre == 'More Workshops'%}
+                            <img width="100%" onError="this.onerror=null;this.src='{% static './resources/logo2.png' %}';" src="{% static 'img/Workshops' %}/{{selectedWorkshopsNumber}}.jpg">
+                        {% else %}
+                            <img width="100%" onError="this.onerror=null;this.src='{% static './resources/logo2.png' %}';" src="{% static 'img/Tutorials' %}/{{selectedWorkshopsNumber}}.jpg">
+                        {% endif %}
+                        <div></div>
                     </td>
-                    <td class="sessionTitle" style="word-break: keep-all;">
-                        <p style="color: white; margin:0"><i>Welcome to Workshop</i></p>
-                        <p style="color: white; margin:0"><i>{{ selectedWorkshops }}</i></p>
-                        <p style="color: white; margin:0">&nbsp;</p>
-                        <p style="color: white; margin:0">Organizers : {{ workshopOrganizers }}</p>
-                        <p><a href="{{ workshopsHomepage }}" style="color: white;"> <u>Click</u> for Workshop Home Page</a></p>
+                    <td class="sessionTitle" style="word-break: keep-all;background-color: rgba(0,0,0,.8)">
+                        {% if selectedGenre == 'Workshops' or selectedGenre == 'More Workshops'%}
+                            <p style="color: powderblue; margin:0"><i>Welcome to workshop : </i></p>
+                        {% else %}
+                            <p style="color: powderblue; margin:0"><i>Welcome to tutorial : </i></p>
+                        {% endif %}
+                        <p style="color: powderblue; margin:0"><i>{{ selectedWorkshopsTitle }}</i></p>
+                        <p style="color: powderblue; margin:0">&nbsp;</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                    {% if  workshopsHomepage != 'missing'%}
+                        <div class="landingtablebottom">
+                            <div class="landingtablebottomleft">
+                                <p style="display: inline">Webpage</p>
+                            </div>
+                            <div class="landingtablebottomright">
+                                {% if selectedGenre == 'Workshops' or selectedGenre == 'More Workshops'%}
+                                    <a href="{{ workshopsHomepage }}" target="_blank" style="color: white;"> {{ workshopsHomepage }}</a>
+                                {% else %}
+                                    <a href="{{ workshopsHomepage }}" target="_blank" style="color: white;"> {{ workshopsHomepage }}</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endif %}
+                        <div class="landingtablebottom">
+                            <div class="landingtablebottomleft">
+                                <p style="display: inline">Organizers</p>
+                            </div>
+                            <div class="landingtablebottomright">
+                                <p style="color: white;display: inline">
+                                    {% for workshopOrganizers, workshopOrganizersAfilliation in workshopOrganizersInfo%}
+                                        {% if workshopOrganizers != 'missing' %}
+                                            {{ workshopOrganizers }} ({{ workshopOrganizersAfilliation}})<br>
+                                        {% endif %}
+                                    {% endfor %}
+                                </p>
+                            </div>
+                        </div>
+                        {% if  workshopAbstract != 'missing'%}
+                            <div class="landingtablebottom">
+                                <div class="landingtablebottomleft">
+                                    <p style="display: inline">Overview</p>
+                                </div>
+                                <div class="landingtablebottomright">
+                                    <div class="more" style="color: white;">{{ workshopAbstract }}</div>
+                                </div>
+                            </div>
+                        {% endif %}
                     </td>
                 </tr>
             </table>
         </div>
 
-
-        {% for Speaker, Institution, TalkTitle, workshopEpisodeNumber, workshopLikeButtonColor, workshopLikeCount, workshopSaveButtonStatus, workshopHitCount, Video, Abstract in WorkshopsContext %}
-            {% if Video == 'missing' %}
+        {% if noShowContents == 1 %}
+            {% if selectedGenre == 'Workshops' or selectedGenre == 'More Workshops'%}
+                <h3 class="pavtitle" style="text-align: center"><b>No contents available at this workshop, please check their <a href="{{ workshopsHomepage }}" target="_blank" style="color: white;">"Home Page"</a></b></h3>
             {% else %}
-                <div class="epilisttable">
-                    <table border="0" cellpadding="0" cellspacing="0" style="background-color: transparent;" >
-                        <tr>
-                            <td class="epilisttableleft">
-                                <img width="100%" onError="this.onerror=null;this.src='{% static './resources/logo2.png' %}';" src="{% static './resources/logo2.png' %}">
-                            </td>
-                            <td valign="top" align="left" class="epilisttableright">
-                                <p class="papertitle" style="color: white;">{{ TalkTitle }}</p>
-                                <table class="paperInfo" border="0" cellpadding="0" cellspacing="0" width="100% "style="background-color: #323232; text-align: left;color: white;">
-                                    <tbody>
-                                    <tr>
-                                        <td>&nbsp;</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="width: 20%;">Speaker</td>
-                                        <td style="width: 50%;">{{ Speaker }}</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td style="width: 20%;">Institution</td>
-                                        <td style="width: 50%;">{{ Institution }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>&nbsp;</td>
-                                        <td>&nbsp;</td>
-                                    </tr>
-                                    {% if Abstract == 'missing' %}
-                                    {% else %}
-                                        <tr>
-                                            <td style="width: 20%">Abstract</td>
-                                            <td style="width: 80%"><div class="more">{{ Abstract }}</div></td>
-                                        </tr>
-                                    {% endif %}
-                                    </tbody>
-                                </table>
-                                <br>
-                                <div style="color: white;">
-                                    {% csrf_token %}
-                                    {% if workshopSaveButtonStatus == 1 %}
-                                        <button class="saveButton" type="submit" style="margin: auto;background-color: #323232; color: white" onclick="updateSave({{ workshopEpisodeNumber|floatformat:"0" }})">
-                                            <i id="savebutton{{workshopEpisodeNumber|floatformat:"0"}}" class="fa fa-check-circle"  aria-hidden="true" style="color:white;vertical-align: top"></i>
-                                            <font id="buttonMessage{{workshopEpisodeNumber|floatformat:"0"}}" style="color: white;">&nbsp;&nbsp;&nbsp;Added to my list</font>
-                                            <input type="hidden" name="paperNumber" value="{{ workshopEpisodeNumber|floatformat:"0" }}">
-                                        </button>
-                                    {% else %}
-                                        <button class="saveButton" type="submit" style="padding: 0% ;background-color: #323232;" onclick="updateSave({{ workshopEpisodeNumber|floatformat:"0" }})">
-                                            <i id="savebutton{{workshopEpisodeNumber|floatformat:"0"}}" class="fa fa-plus"  aria-hidden="true" style="color:white;vertical-align: top"></i>
-                                            <font id="buttonMessage{{workshopEpisodeNumber|floatformat:"0"}}" style="color: white;">&nbsp;&nbsp;&nbsp;Add to my List</font>
-                                            <input type="hidden" name="paperNumber" value="{{ workshopEpisodeNumber|floatformat:"0" }}">
-                                        </button>
-                                    {% endif %}
-                                </div>
-                                <br>
-                                <div>
-                                    <a style="text-decoration: none" href="workshopsepisode?id={{TalkTitle}}&id2={{selectedWorkshops}}" onClick="this.href=this.href+'&'+new Date().getTime()">
-                                        <div class="videoPlayButton">
-                                            <div class="videoPlayButtonIcon">
-                                                <i class="fa fa-play-circle" style="vertical-align: middle;"></i>
-                                            </div>
-                                            <div class="videoPlayButtonText">Watch Now
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                                <br>
-                                <div class="paperlikeviewcountdiv">
-                                    {% if workshopLikeButtonColor == 1 %}
-                                        <button class="likeButton" type="submit" style="margin: auto;background-color: #323232 ;" onclick="updateLike({{ workshopEpisodeNumber|floatformat:"0" }})">
-                                            <i id="thumbs{{workshopEpisodeNumber|floatformat:"0"}}" class="fa fa-thumbs-up" style="color:yellow;"></i>
-                                            <input type="text" id="{{ workshopEpisodeNumber|floatformat:"0" }}" value="{{ workshopLikeCount }}" class="thumbsuptext" name="likeCount" readonly/>
-                                            <input type="hidden" name="paperNumber" value="{{ workshopEpisodeNumber|floatformat:"0" }}">
-                                        </button>
-                                    {% else %}
-                                        <button class="likeButton" type="submit" style="padding: 0% ;background-color: #323232;" onclick="updateLike({{ workshopEpisodeNumber|floatformat:"0" }})">
-                                            <i id="thumbs{{workshopEpisodeNumber|floatformat:"0"}}" class="fa fa-thumbs-up" style="color:grey;"></i>
-                                            <input type="text" id="{{ workshopEpisodeNumber|floatformat:"0" }}" value="{{ workshopLikeCount }}" class="thumbsuptext" name="likeCount" readonly/>
-                                            <input type="hidden" name="paperNumber" value="{{ workshopEpisodeNumber|floatformat:"0" }}">
-                                        </button>
-                                    {% endif %}
-                                    <span class="listHitCount">{{ workshopHitCount }} views</span>
-                                </div>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
+                <h3 class="pavtitle" style="text-align: center"><b>No contents available at this tutorial, please check their <a href="{{ workshopsHomepage }}" target="_blank" style="color: white;">"Home Page"</a></b></h3>
             {% endif %}
-        {% endfor %}
+        {% else %}
+            {% for Speaker, Institution, TalkTitle, workshopEpisodeNumber, workshopLikeButtonColor, workshopLikeCount, workshopSaveButtonStatus, workshopHitCount, Video, Abstract, Dummy in WorkshopsContext %}
+                {% if Video == 'missing' %}
+                {% else %}
+                    <div class="epilisttable">
+                        <table border="0" cellpadding="0" cellspacing="0" style="background-color: transparent;" >
+                            <tr>
+                                <td class="epilisttableleft">
+                                    <img width="100%" onError="this.onerror=null;this.src='{% static './resources/logo2.png' %}';" src="{% static './resources/logo2.png' %}">
+                                </td>
+                                <td valign="top" align="left" class="epilisttableright">
+                                    <p class="papertitle" style="color: white;">{{ TalkTitle }}</p>
+                                    <table class="paperInfo" border="0" cellpadding="0" cellspacing="0" width="100% "style="background-color: #323232; text-align: left;color: white;">
+                                        <tbody>
+                                        <tr>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width: 20%;word-break: break-word">Speaker / Organizer</td>
+                                            <td style="width: 60%;">{{ Speaker }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Affiliation</td>
+                                            <td>{{ Institution }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>&nbsp;</td>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                        {% if Abstract == 'missing' %}
+                                        {% else %}
+                                            <tr>
+                                                <td>Abstract</td>
+                                                <td><div class="more">{{ Abstract }}</div></td>
+                                            </tr>
+                                        {% endif %}
+                                        </tbody>
+                                    </table>
+                                    <br>
+                                    {% if Dummy != 1 %}
+                                        <div style="color: white;">
+                                            {% csrf_token %}
+                                            {% if workshopSaveButtonStatus == 1 %}
+                                                <button class="saveButton" type="submit" style="margin: auto;background-color: #323232; color: white" onclick="updateSave({{ workshopEpisodeNumber|floatformat:"0" }})">
+                                                    <i id="savebutton{{workshopEpisodeNumber|floatformat:"0"}}" class="fa fa-check-circle"  aria-hidden="true" style="color:white;vertical-align: top"></i>
+                                                    <font id="buttonMessage{{workshopEpisodeNumber|floatformat:"0"}}" style="color: white;">&nbsp;&nbsp;&nbsp;Added to my list</font>
+                                                    <input type="hidden" name="paperNumber" value="{{ workshopEpisodeNumber|floatformat:"0" }}">
+                                                </button>
+                                            {% else %}
+                                                <button class="saveButton" type="submit" style="padding: 0% ;background-color: #323232;" onclick="updateSave({{ workshopEpisodeNumber|floatformat:"0" }})">
+                                                    <i id="savebutton{{workshopEpisodeNumber|floatformat:"0"}}" class="fa fa-plus"  aria-hidden="true" style="color:white;vertical-align: top"></i>
+                                                    <font id="buttonMessage{{workshopEpisodeNumber|floatformat:"0"}}" style="color: white;">&nbsp;&nbsp;&nbsp;Add to my List</font>
+                                                    <input type="hidden" name="paperNumber" value="{{ workshopEpisodeNumber|floatformat:"0" }}">
+                                                </button>
+                                            {% endif %}
+                                        </div>
+                                    {% endif %}
+                                    <br>
+                                    <div>
+                                        {% if Dummy == 1 %}
+                                            <div class="videoPlayButton">
+                                                <div class="videoPlayButtonText">Expected to be released
+                                                </div>
+                                            </div>
+                                        {% else %}
+                                            <a style="text-decoration: none" href="workshopsepisode?id={{workshopEpisodeNumber|floatformat:"0"}}&id2={{selectedWorkshopsNumber}}" onClick="this.href=this.href+'&'+new Date().getTime()">
+                                                <div class="videoPlayButton">
+                                                    <div class="videoPlayButtonIcon">
+                                                        <i class="fa fa-play-circle" style="vertical-align: middle;"></i>
+                                                    </div>
+                                                    <div class="videoPlayButtonText">Watch Now
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        {% endif %}
+                                    </div>
+                                    <br>
+                                    {% if Dummy != 1 %}
+                                        <div class="paperlikeviewcountdiv">
+                                            {% if workshopLikeButtonColor == 1 %}
+                                                <button class="likeButton" type="submit" style="margin: auto;background-color: #323232 ;" onclick="updateLike({{ workshopEpisodeNumber|floatformat:"0" }})">
+                                                    <i id="thumbs{{workshopEpisodeNumber|floatformat:"0"}}" class="fa fa-thumbs-up" style="color:yellow;"></i>
+                                                    <input type="text" id="{{ workshopEpisodeNumber|floatformat:"0" }}" value="{{ workshopLikeCount }}" class="thumbsuptext" name="likeCount" readonly/>
+                                                    <input type="hidden" name="paperNumber" value="{{ workshopEpisodeNumber|floatformat:"0" }}">
+                                                </button>
+                                            {% else %}
+                                                <button class="likeButton" type="submit" style="padding: 0% ;background-color: #323232;" onclick="updateLike({{ workshopEpisodeNumber|floatformat:"0" }})">
+                                                    <i id="thumbs{{workshopEpisodeNumber|floatformat:"0"}}" class="fa fa-thumbs-up" style="color:grey;"></i>
+                                                    <input type="text" id="{{ workshopEpisodeNumber|floatformat:"0" }}" value="{{ workshopLikeCount }}" class="thumbsuptext" name="likeCount" readonly/>
+                                                    <input type="hidden" name="paperNumber" value="{{ workshopEpisodeNumber|floatformat:"0" }}">
+                                                </button>
+                                            {% endif %}
+                                            <span class="listHitCount">{{ workshopHitCount }} views</span>
+                                        </div>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
         <p>&nbsp;</p>
         <div class="netflix-slider">
             <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Other {{ selectedGenre }}</h3>
             <div class="swiper-container">
                 <div class="swiper-wrapper">
-                    {% for j in WorkshopsSession %}
-                        <div class="swiper-slide"><a href="workshops?id={{j}}&id2={{ selectedGenre }}" style="color:white; text-decoration: none;">
-                            <img class="netflix-slider-img" onError="this.onerror=null;this.src='{% static './resources/logo2.png' %}';" src="{% static './resources/logo2.png' %}">
-                            <div class="onimg-caption">{{ j }}
-                            </div>
-                        </a>
-                        </div>
+                    {% for SessionWSTRNumber in workshopSessionNumbers %}
+                        {% for SessionWSTRName in WorkshopsSession %}
+                            {% if forloop.counter == forloop.parentloop.counter %}
+                                <div class="swiper-slide"><a href="workshops?id={{SessionWSTRNumber}}&id2={{ selectedGenre }}" style="color:white; text-decoration: none;">
+                                    {% if selectedGenre == 'Workshops' or selectedGenre == 'More Workshops'%}
+                                        <img class="netflix-slider-img" onError="this.onerror=null;this.src='{% static './resources/logo2.png' %}';" src="{% static 'img/Workshops' %}/{{SessionWSTRNumber}}.jpg">
+                                    {% else %}
+                                        <img class="netflix-slider-img" onError="this.onerror=null;this.src='{% static './resources/logo2.png' %}';" src="{% static 'img/Tutorials' %}/{{SessionWSTRNumber}}.jpg">
+                                    {% endif %}
+                                    <div class="onimg-caption">{{ SessionWSTRName }}
+                                    </div>
+                                </a>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
                     {% endfor %}
                 </div>
                 <!-- Add Pagination -->
