@@ -26,7 +26,7 @@ from polls.tokens_beta import account_activation_token
 from ipware import get_client_ip
 import pandas as pd
 import os
-import math
+import pytz, datetime
 
 from polls.forms_beta import SignUpForm
 
@@ -118,35 +118,6 @@ Sessions11 = sorted(list(set(Pavilion11['Session title'])))
 Sessions12 = sorted(list(set(Pavilion12['Session title'])))
 Sessions13 = sorted(list(set(Pavilion13['Session title'])))
 
-
-# totalSessions = zip(Sessions1, Sessions2, Sessions3, Sessions4, Sessions5,
-#                     Sessions6,Sessions7,Sessions8,Sessions9,Sessions10,Sessions11,Sessions12,Sessions13)
-# #
-# pavilionDict1, pavilionDict2, pavilionDict3, \
-# pavilionDict4, pavilionDict5,pavilionDict6,pavilionDict7,pavilionDict8,\
-# pavilionDict9,pavilionDict10, pavilionDict11,pavilionDict12,pavilionDict13= dict()
-#
-# for a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13 in totalSessions:
-#     pavilionDict1[a1] = organizedGenre[0]
-#     pavilionDict2[a2] = organizedGenre[1]
-#     pavilionDict3[a3] = organizedGenre[2]
-#     pavilionDict4[a4] = organizedGenre[3]
-#     pavilionDict5[a5] = organizedGenre[4]
-#     pavilionDict6[a6] = organizedGenre[5]
-#     pavilionDict7[a7] = organizedGenre[6]
-#     pavilionDict8[a8] = organizedGenre[7]
-#     pavilionDict9[a9] = organizedGenre[8]
-#     pavilionDict10[a10] = organizedGenre[9]
-#     pavilionDict11[a11] = organizedGenre[10]
-#     pavilionDict12[a12] = organizedGenre[11]
-#     pavilionDict13[a13] = organizedGenre[12]
-
-# Specials
-
-# Specials = iros_specials[(iros_specials['Genre'] == 'Plenaries')
-#                          | (iros_specials['Genre'] == 'Keynotes')]
-# SpecialsSession = sorted(list(set(Specials['Genre'])))
-
 SpecialsSession = ['Plenaries', 'Keynotes', 'IROS Original Series', 'Award Winners', 'BiR-IROS: Black in Robotics IROS 2020']
 
 # Workshops
@@ -185,11 +156,22 @@ def login(request):
             ip, is_routable = get_client_ip(request)
             Profile.objects.filter(user_id=login_user_id).update(ip=ip)
 
-            if login_user[0].is_superuser is True:
-                auth_login(request, login_form.get_user())
-                return redirect('entrance')
+            timezone = pytz.utc
+            currenttime = datetime.datetime.utcnow()
+            crrenttimeUTC = timezone.localize(currenttime)
+            target = datetime.datetime(2020, 10, 18, 23, 12)
+            targetUTC = timezone.localize(target)
+            secoundcounter = (targetUTC.timestamp() - crrenttimeUTC.timestamp())
+
+            if secoundcounter <= 0:
+                if login_user[0].is_superuser is True:
+                    auth_login(request, login_form.get_user())
+                    return redirect('entrance')
+                else:
+                    messages.info(request, 'Sorry, you do not have access to the beta page')
+                    return redirect('login')
             else:
-                messages.info(request, 'Sorry, you do not have access to the beta page')
+                messages.info(request, 'Please visit again IROS On-Demand when it opens on October 25th, 2020 (PST)')
                 return redirect('login')
         else:
             # print("not_valid")

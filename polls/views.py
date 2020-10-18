@@ -26,7 +26,7 @@ from polls.tokens_beta import account_activation_token
 from ipware import get_client_ip
 import pandas as pd
 import os
-import math
+import pytz, datetime
 
 from polls.forms_beta import SignUpForm
 
@@ -118,17 +118,6 @@ Sessions11 = sorted(list(set(Pavilion11['Session title'])))
 Sessions12 = sorted(list(set(Pavilion12['Session title'])))
 Sessions13 = sorted(list(set(Pavilion13['Session title'])))
 
-# totalSessions = zip(Sessions1, Sessions2, Sessions3, Sessions4, Sessions5)
-#
-# pavilionDict1, pavilionDict2, pavilionDict3, pavilionDict4, pavilionDict5 = dict()
-# for a,b,c,d,e in totalSessions:
-#     pavilionDict1[a] = Cartegories['Pavilion'][0]
-#     pavilionDict2[b] = Cartegories['Pavilion'][1]
-#     pavilionDict3[c] = Cartegories['Pavilion'][2]
-#     pavilionDict4[d] = Cartegories['Pavilion'][3]
-#     pavilionDict5[e] = Cartegories['Pavilion'][4]
-# SpecialsSession = sorted(list(set(Specials['Genre'])))
-
 SpecialsSession = ['Plenaries', 'Keynotes', 'IROS Original Series', 'Award Winners', 'BiR-IROS: Black in Robotics IROS 2020']
 
 # Workshops
@@ -148,7 +137,6 @@ TRSundaySession = sorted(list(set(TutorialsSunday['Workshop Title'])))
 TRThursdaySession = sorted(list(set(TutorialsThursday['Workshop Title'])))
 
 PavilionWSTR = ['Workshops', 'More Workshops','Tutorials', 'More Tutorials']
-
 #########################################################################################################
 #########################################################################################################
 #########################################################################################################
@@ -168,11 +156,21 @@ def login(request):
             ip, is_routable = get_client_ip(request)
             Profile.objects.filter(user_id=login_user_id).update(ip=ip)
 
-            if login_user[0].is_superuser is True:
-                auth_login(request, login_form.get_user())
-                return redirect('entrance_main')
+            timezone = pytz.utc
+            currenttime = datetime.datetime.utcnow()
+            crrenttimeUTC = timezone.localize(currenttime)
+            target = datetime.datetime(2020, 10, 19, 7, 0)
+            targetUTC = timezone.localize(target)
+            secoundcounter = (targetUTC.timestamp() - crrenttimeUTC.timestamp())
+            if secoundcounter <= 0:
+                if login_user[0].is_superuser is True:
+                    auth_login(request, login_form.get_user())
+                    return redirect('entrance_main')
+                else:
+                    messages.info(request, 'Sorry, you do not have access')
+                    return redirect('login_main')
             else:
-                messages.info(request, 'Please visit again IROS On-Demand when it opens on October 25th, 2020.')
+                messages.info(request, 'Please visit again IROS On-Demand when it opens on October 25th, 2020 (PST)')
                 return redirect('login_main')
 
         else:
