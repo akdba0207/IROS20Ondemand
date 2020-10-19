@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <!-- Link Swiper's CSS -->
     <link rel="stylesheet" href="{% static 'package/css/swiper.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/styles1017.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles1018.css' %}">
     <link rel="stylesheet" href="{% static 'css/paperimg0930.css' %}">
 
     <script
@@ -99,7 +99,7 @@
             <table border="0" cellpadding="0" cellspacing="0">
                 <tr>
                     <td class="landingtabletopLeft">
-                        <img width="100%" onError="this.onerror=null;this.src='{% static './resources/logo2.png' %}';" src="{% static 'img'%}/Specials/{{selectedSpecial}}.jpg">
+                        <img width="100%" onError="this.onerror=null;this.src='{% static './resources/logo2.png' %}';" src="{% static 'img/Specials/speciallogo.png'%}">
                     </td>
                     <td class="sessionTitle" style="word-break: keep-all;background-color: rgba(0,0,0,.8)">
                         <p style="color: navajowhite;"><i>Welcome to IROS Specials : </i></p>
@@ -238,7 +238,7 @@
                 <div class="swiper-wrapper">
                     {% for j in SpecialsSession %}
                         <div class="swiper-slide"><a href="specials?id={{j}}" onClick="this.href=this.href+'&'+new Date().getTime()" style="color:white; text-decoration: none;">
-                            <img class="netflix-slider-img" onError="this.onerror=null;this.src='{% static './resources/logo2.png' %}';" src="{% static 'img'%}/Specials/{{ j }}.jpg">
+                            <img class="netflix-slider-img" onError="this.onerror=null;this.src='{% static './resources/logo2.png' %}';" src="{% static 'img/Specials/speciallogo.png'%}">
                             <div class="onimg-caption">{{ j }}
                             </div>
                         </a>

@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <!-- Link Swiper's CSS -->
     <link rel="stylesheet" href="{% static 'package/css/swiper.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/styles1017.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles1018.css' %}">
 
     <script src="https://s3-us-west-2.amazonaws.com/ieeeshutpages/gdpr/settings.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css" />
@@ -255,7 +255,7 @@
                             <div class="swiper-wrapper">
                                 {% for j in Specials %}
                                     <div class="swiper-slide"><a href="specials?id={{j}}" onClick="this.href=this.href+'&'+new Date().getTime()" style="color:white; text-decoration: none;">
-                                        <img class="netflix-slider-img" onError="this.onerror=null;this.src='{% static './resources/logo2.png' %}';" src="{% static 'img'%}/Specials/{{ j }}.jpg">
+                                        <img class="netflix-slider-img" onError="this.onerror=null;this.src='{% static './resources/logo2.png' %}';" src="{% static 'img/Specials/speciallogo.png'%}">
                                         {% if j == 'Award Winners' or j == 'BiR-IROS: Black in Robotics IROS 2020' %}
                                             <div class="onimg-caption">{{ j }}<br><font style="color: red"><b>Premiers Nov. 2</b></font>
                                             </div>
@@ -300,7 +300,11 @@
                         <div class="swiper-wrapper">
                             {% for j in Sessions %}
                                 <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion }}&id3={{ forloop.parentloop.counter0 }}" onClick="this.href=this.href+'&'+new Date().getTime()" style="color:white; text-decoration: none;">
+                                    {% if Pavilion != 'Award Finalists' %}
                                     <img class="netflix-slider-img" onError="this.onerror=null;this.src='{% static './resources/logo2.png' %}';" src="{% static 'img'%}/pavilion{{ forloop.parentloop.counter0 }}/{{ j }}.jpg">
+                                    {% else %}
+                                    <img class="netflix-slider-img" onError="this.onerror=null;this.src='{% static './resources/logo2.png' %}';" src="{% static 'img/Specials/awardlogo.png'%}">
+                                    {% endif %}
                                     <div class="onimg-caption">{{ j }}
                                     </div>
                                 </a>
@@ -548,5 +552,6 @@
         {#        }, false );#}
         {#    </script>#}
     </div>
+</div>
 </body>
 </html>

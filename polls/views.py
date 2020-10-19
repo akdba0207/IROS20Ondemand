@@ -144,7 +144,24 @@ PavilionWSTR = ['Workshops', 'More Workshops','Tutorials', 'More Tutorials']
 @csrf_exempt
 def login(request):
     if request.user.is_authenticated:
-        return redirect('entrance_main')
+        timezone = pytz.utc
+        currenttime = datetime.datetime.utcnow()
+        crrenttimeUTC = timezone.localize(currenttime)
+        target = datetime.datetime(2020, 10, 19, 6, 45)
+        targetUTC = timezone.localize(target)
+        secoundcounter = (targetUTC.timestamp() - crrenttimeUTC.timestamp())
+
+        if secoundcounter <= 0:
+            if request.user.is_superuser is True:
+                return redirect('entrance_main')
+            else:
+                messages.info(request, 'Sorry, you do not have access')
+                return redirect('login_main')
+        else:
+            auth_logout(request)
+            messages.info(request, 'Please visit again IROS On-Demand when it opens on October 25th, 2020 (PST)')
+            return redirect('login_main')
+
     # print("not_authenticated")
     if request.method == 'POST':
         login_form = AuthenticationForm(request, request.POST)
@@ -159,9 +176,11 @@ def login(request):
             timezone = pytz.utc
             currenttime = datetime.datetime.utcnow()
             crrenttimeUTC = timezone.localize(currenttime)
-            target = datetime.datetime(2020, 10, 19, 7, 0)
+            target = datetime.datetime(2020, 10, 19, 6, 45)
             targetUTC = timezone.localize(target)
             secoundcounter = (targetUTC.timestamp() - crrenttimeUTC.timestamp())
+
+
             if secoundcounter <= 0:
                 if login_user[0].is_superuser is True:
                     auth_login(request, login_form.get_user())

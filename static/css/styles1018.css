@@ -424,7 +424,7 @@ h3 {
         margin: 0 auto;
     }
     .onimg-caption{
-        font-size: 70%;
+        font-size: 65%;
     }
     .keynoteimg {
         padding: 70px 0px;
@@ -437,16 +437,16 @@ h3 {
     .keynoteimgcaption{
         /*transform: translate(0px,10px);*/
         /*width: 20%;*/
-        font-size: 100%;
+        font-size: 85%;
         word-break: break-all;
     }
     .netflix-slider .swiper-slide {
         transition: 250ms all;
         padding: 70px 0px;
-        background-color: rgba(0,0,0,0.7);
+        background-color: rgba(0,0,0,1.0);
     }
     .netflix-slider img {
-        max-width: 80%;
+        max-width: 60%;
         height: auto;
         transform: translate(0px, -15px) scale(2.2);
         /*vertical-align: text-top;*/
@@ -636,11 +636,11 @@ h3 {
         font-size: 70%;
     }
     .keynoteimg {
-        padding: 70px 0px;
+        padding: 60px 0px;
         overflow: hidden;
     }
     .keynoteimg img{
-        max-width: 80%;
+        max-width: 90%;
     }
     .keynoteimgcaption{
 
@@ -649,11 +649,11 @@ h3 {
     }
     .netflix-slider .swiper-slide {
         transition: 250ms all;
-        padding:70px 0px;
-        background-color: rgba(0,0,0,0.7);
+        padding: 60px 0px;
+        background-color: rgba(0,0,0,1.0);
     }
     .netflix-slider img {
-        max-width: 100%;
+        max-width: 70%;
         height: auto;
         transform: translate(0px, -15px) scale(2);
         align-items: flex-start;
@@ -915,7 +915,7 @@ h3 {
         font-size: 70%;
     }
     .keynoteimg {
-        padding: 70px 0px;
+        padding: 50px 0px;
         overflow: hidden;
     }
     .keynoteimg img{
@@ -928,11 +928,11 @@ h3 {
     }
     .netflix-slider .swiper-slide {
         transition: 250ms all;
-        padding:70px 0px;
-        background-color: rgba(0,0,0,0.7);
+        padding:50px 0px;
+        background-color: rgba(0,0,0,1.0);
     }
     .netflix-slider img {
-        max-width: 100%;
+        max-width: 70%;
         height: auto;
         transform: translate(0px, -15px) scale(2);
         align-items: flex-start;
@@ -1005,7 +1005,7 @@ h3 {
         font-size: 70%;
     }
     .keynoteimg {
-        /*padding: 70px 0px;*/
+        padding: 5px 0px;
         overflow: hidden;
         /*background-color: rgba(0,0,0,0.7);*/
     }

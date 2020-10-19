@@ -30,7 +30,7 @@ import pytz, datetime
 
 from polls.forms_beta import SignUpForm
 
-from polls.search import searchByKeyword, findSimilarTopic
+from polls.search import searchByKeyword, findSimilarTopic, searchWSByKeyword
 
 pre = os.path.dirname(os.path.realpath(__file__))
 
@@ -1015,107 +1015,172 @@ def searchresult(request):
 
     inputKeyword = request.GET['id']
     showcontents = request.GET['id2']
-    resultNumber = searchByKeyword(inputKeyword)
+    if int(showcontents) == 2:
+        resultNumber = searchWSByKeyword(inputKeyword)
+    else :
+        resultNumber = searchByKeyword(inputKeyword)
 
-    #Filter workshop, tutorials, and finalists
-    # filterOnlySession = []
-    # for rawNumber in resultNumber:
-    #     if rawNumber < 3140:
-    #         filterOnlySession.append(rawNumber)
-    # resultNumber = filterOnlySession
     resultNumberlength = len(resultNumber)
 
     if not resultNumber:
         return render(request, './beta/6_searchResultError_beta.html', {'inputKeyword': inputKeyword,
                                                                         'showcontents':int(showcontents)})
     else:
-        searchTitle = iros2020_raw[(iros2020_raw['Nr'] == int(resultNumber[0]))]
+        if int(showcontents) == 2 :
+            searchTitle = iros_wstr[(iros_wstr['Nr'] == int(resultNumber[0]))]
 
-        for i in range(1, resultNumberlength):
-            main2 = searchTitle.append(iros2020_raw[(iros2020_raw['Nr'] == int(resultNumber[i]))])
-            searchTitle = main2
+            for i in range(1, resultNumberlength):
+                main2 = searchTitle.append(iros_wstr[(iros_wstr['Nr'] == int(resultNumber[i]))])
+                searchTitle = main2
 
-        pavilionNumMatch = dict()
-        for i in range(len(organizedGenre)-1):
-            pavilionNumMatch[organizedGenre[i+1]] = i + 1
+            # print(searchTitle)
+            WorkshopTitle = searchTitle['Workshop Title'].reset_index()
+            WorkshopNr = searchTitle['WS/TR Nr'].reset_index()
+            Speaker = searchTitle['Speaker'].reset_index()
+            Institution = searchTitle['Institution'].reset_index()
+            Talktitle = searchTitle['Title'].reset_index()
+            titleNumber = searchTitle['Nr'].reset_index()
+            Abstract = searchTitle['Presentation Abstract'].reset_index()
+            VideoList = searchTitle['Video'].reset_index()
+            Dummy = searchTitle['Dummy'].reset_index()
+            SessionDate = searchTitle['Date'].reset_index()
+            getPav = zip(SessionDate['Date'], WorkshopNr['WS/TR Nr'])
 
-        # print(searchTitle)
-        SessionList = searchTitle['Session title'].reset_index()
-        AuthorList1 = searchTitle['Author1'].reset_index()
-        AuthorList2 = searchTitle['Author2'].reset_index()
-        AuthorList3 = searchTitle['Author3'].reset_index()
-        AuthorList4 = searchTitle['Author4'].reset_index()
-        AuthorList5 = searchTitle['Author5'].reset_index()
-        AuthorList6 = searchTitle['Author6'].reset_index()
-        AffiliationList1 = searchTitle['Affiliation1'].reset_index()
-        AffiliationList2 = searchTitle['Affiliation2'].reset_index()
-        AffiliationList3 = searchTitle['Affiliation3'].reset_index()
-        AffiliationList4 = searchTitle['Affiliation4'].reset_index()
-        AffiliationList5 = searchTitle['Affiliation5'].reset_index()
-        TitleList = searchTitle['Title'].reset_index()
-        PDFList = searchTitle['FN'].reset_index()
-        titleNumber = searchTitle['Nr'].reset_index()
-        pavilionList = searchTitle['Theme'].reset_index()
-        VideoList = searchTitle['VID'].reset_index()
-
-        pavilionNumList = []
-        for i in pavilionList['Theme']:
-            pavilionNumList.append(pavilionNumMatch[i])
-
-        awardeeCount = []
-        awardNameCount = []
-        for titles in TitleList['Title']:
-            titleMatch = iros2020_award[(iros2020_award['Title'] == titles)]
-            if titleMatch.empty is True:
-                awardConut = 0
-                awardName = ''
-            else:
-                awardConut = 1
-                awardName1 = titleMatch['Session title'].reset_index()
-                awardName = awardName1['Session title'].iloc[0]
-            awardNameCount.append(awardName)
-            awardeeCount.append(awardConut)
-
-        paperLikeCount = []
-        paperLikeButtonColor = []
-        paperSaveButtonStatus = []
-        paperHitCount = []
-
-        if request.method == "GET":
-
-            for titleNr in titleNumber['Nr']:
-                paper = get_object_or_404(Papers, paper_id=int(titleNr))
-
-                if current_account in paper.like_users.all():
-                    buttonColor = 1
+            # 'Workshops', 'More Workshops', 'Tutorials', 'More Tutorials'
+            pavilionWSTRList = []
+            for SessionCode, WorkshopNumber in getPav:
+                if WorkshopNumber[0] == 'W':
+                    if SessionCode[0] == 'S':
+                        pavilionWSTRName = 'Workshops'
+                    else:
+                        pavilionWSTRName = 'More Workshops'
                 else:
-                    buttonColor = 0
+                    if SessionCode[0] == 'S':
+                        pavilionWSTRName = 'Tutorials'
+                    else:
+                        pavilionWSTRName = 'More Tutorials'
+                pavilionWSTRList.append(pavilionWSTRName)
+            # print(pavilionWSTRList)
 
-                paperLikeButtonColor.append(buttonColor)
-                paperLikeCount.append(paper.like_users.count())
+            paperLikeCount = []
+            paperLikeButtonColor = []
+            paperSaveButtonStatus = []
+            paperHitCount = []
+            if request.method == "GET":
+                for titleNr in titleNumber['Nr']:
+                    paper = get_object_or_404(Papers, paper_id=int(titleNr))
 
-                if current_account in paper.save_users.all():
-                    buttonStatus = 1
+                    if current_account in paper.like_users.all():
+                        buttonColor = 1
+                    else:
+                        buttonColor = 0
+
+                    paperLikeButtonColor.append(buttonColor)
+                    paperLikeCount.append(paper.like_users.count())
+
+                    if current_account in paper.save_users.all():
+                        buttonStatus = 1
+                    else:
+                        buttonStatus = 0
+
+                    paperSaveButtonStatus.append(buttonStatus)
+                    paperHitCount.append(paper.paper_hitcount)
+
+                resultList = zip(WorkshopTitle['Workshop Title'],
+                                 WorkshopNr['WS/TR Nr'],
+                                 Speaker['Speaker'],
+                                 Institution['Institution'],
+                                 Talktitle['Title'], titleNumber['Nr'],
+                                 paperLikeCount, paperLikeButtonColor,
+                                 paperSaveButtonStatus,
+                                 paperHitCount, VideoList['Video'],Abstract['Presentation Abstract'],Dummy['Dummy'], pavilionWSTRList)
+        else:
+            searchTitle = iros2020_raw[(iros2020_raw['Nr'] == int(resultNumber[0]))]
+
+            for i in range(1, resultNumberlength):
+                main2 = searchTitle.append(iros2020_raw[(iros2020_raw['Nr'] == int(resultNumber[i]))])
+                searchTitle = main2
+
+            pavilionNumMatch = dict()
+            for i in range(len(organizedGenre)-1):
+                pavilionNumMatch[organizedGenre[i+1]] = i + 1
+
+            # print(searchTitle)
+            SessionList = searchTitle['Session title'].reset_index()
+            AuthorList1 = searchTitle['Author1'].reset_index()
+            AuthorList2 = searchTitle['Author2'].reset_index()
+            AuthorList3 = searchTitle['Author3'].reset_index()
+            AuthorList4 = searchTitle['Author4'].reset_index()
+            AuthorList5 = searchTitle['Author5'].reset_index()
+            AuthorList6 = searchTitle['Author6'].reset_index()
+            AffiliationList1 = searchTitle['Affiliation1'].reset_index()
+            AffiliationList2 = searchTitle['Affiliation2'].reset_index()
+            AffiliationList3 = searchTitle['Affiliation3'].reset_index()
+            AffiliationList4 = searchTitle['Affiliation4'].reset_index()
+            AffiliationList5 = searchTitle['Affiliation5'].reset_index()
+            TitleList = searchTitle['Title'].reset_index()
+            PDFList = searchTitle['FN'].reset_index()
+            titleNumber = searchTitle['Nr'].reset_index()
+            pavilionList = searchTitle['Theme'].reset_index()
+            VideoList = searchTitle['VID'].reset_index()
+
+            pavilionNumList = []
+            for i in pavilionList['Theme']:
+                pavilionNumList.append(pavilionNumMatch[i])
+
+            awardeeCount = []
+            awardNameCount = []
+            for titles in TitleList['Title']:
+                titleMatch = iros2020_award[(iros2020_award['Title'] == titles)]
+                if titleMatch.empty is True:
+                    awardConut = 0
+                    awardName = ''
                 else:
-                    buttonStatus = 0
+                    awardConut = 1
+                    awardName1 = titleMatch['Session title'].reset_index()
+                    awardName = awardName1['Session title'].iloc[0]
+                awardNameCount.append(awardName)
+                awardeeCount.append(awardConut)
 
-                paperSaveButtonStatus.append(buttonStatus)
+            paperLikeCount = []
+            paperLikeButtonColor = []
+            paperSaveButtonStatus = []
+            paperHitCount = []
+            if request.method == "GET":
 
-                paperHitCount.append(paper.paper_hitcount)
+                for titleNr in titleNumber['Nr']:
+                    paper = get_object_or_404(Papers, paper_id=int(titleNr))
 
-            resultList = zip(AuthorList1['Author1'], AuthorList2['Author2'],
-                             AuthorList3['Author3'],
-                             AuthorList4['Author4'],
-                             AuthorList5['Author5'],
-                             AuthorList6['Author6'],
-                             AffiliationList1['Affiliation1'],
-                             AffiliationList2['Affiliation2'],
-                             AffiliationList3['Affiliation3'],
-                             AffiliationList4['Affiliation4'],
-                             AffiliationList5['Affiliation5'],
-                             TitleList['Title'],
-                             PDFList['FN'], titleNumber['Nr'], paperLikeCount, paperLikeButtonColor,
-                             paperSaveButtonStatus, SessionList['Session title'], paperHitCount, awardeeCount, awardNameCount, pavilionList['Theme'],pavilionNumList,VideoList['VID'])
+                    if current_account in paper.like_users.all():
+                        buttonColor = 1
+                    else:
+                        buttonColor = 0
+
+                    paperLikeButtonColor.append(buttonColor)
+                    paperLikeCount.append(paper.like_users.count())
+
+                    if current_account in paper.save_users.all():
+                        buttonStatus = 1
+                    else:
+                        buttonStatus = 0
+
+                    paperSaveButtonStatus.append(buttonStatus)
+
+                    paperHitCount.append(paper.paper_hitcount)
+
+                resultList = zip(AuthorList1['Author1'], AuthorList2['Author2'],
+                                 AuthorList3['Author3'],
+                                 AuthorList4['Author4'],
+                                 AuthorList5['Author5'],
+                                 AuthorList6['Author6'],
+                                 AffiliationList1['Affiliation1'],
+                                 AffiliationList2['Affiliation2'],
+                                 AffiliationList3['Affiliation3'],
+                                 AffiliationList4['Affiliation4'],
+                                 AffiliationList5['Affiliation5'],
+                                 TitleList['Title'],
+                                 PDFList['FN'], titleNumber['Nr'], paperLikeCount, paperLikeButtonColor,
+                                 paperSaveButtonStatus, SessionList['Session title'], paperHitCount, awardeeCount, awardNameCount, pavilionList['Theme'],pavilionNumList,VideoList['VID'])
 
         return render(request, './beta/5_searchResult_beta.html', {'EpisodeContext': resultList,
                                                                    'showcontents': int(showcontents)
