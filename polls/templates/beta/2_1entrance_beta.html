@@ -1,5 +1,8 @@
 <!doctype html>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+{% include 'beta/session_security/all.html' %}
 {% load static %}
+
 <html>
 <head>
     <meta charset="utf-8">
@@ -15,7 +18,7 @@
         });
     </script>
     <link rel="stylesheet" href="{% static '/css/login0922.css' %}">
-    <link rel="stylesheet" href="{% static '/css/entranceStyle1008.css' %}">
+    <link rel="stylesheet" href="{% static '/css/entranceStyle1015.css' %}">
 
 </head>
 
@@ -25,26 +28,31 @@
 </div>
 <center>
     <span class="entranceSponsorImgOrganizer">
-        <div class="entranceSponsorImg">
-<img src="{% static 'img/societySponsors1.png'%}"></div>
-            <div class="entranceSponsorImg"><img src="{% static 'img/societySponsors2.png'%}"></div>
+        <div class="entranceSponsorImg"><img width="100%" src="{% static 'img/societySponsors1.png'%}"></div>
+            <div class="entranceSponsorImg"><img width="100%"src="{% static 'img/societySponsors2.png'%}"></div>
         </span><br>
 
     <span class="entranceOrganizer">
         <a href="main?id=technicalpaper" style="text-decoration: none;"><div class="entranceToggle">
-            <div class="entranceToggleContainer" style="background-color: yellow;"> </div>
+            <div class="entranceToggleContainer" style="background-color: black;">
+                <img width="100%" src = {% static 'img/entrance/TechnicalTalks.png' %}>
+            </div>
             <p class="entranceToggleCaption" style="font-size: 20px;font-weight: bold">Technical Talks</p>
         </div>
         </a>
         <p>&nbsp;</p>
         <a href="main?id=wstr" style="text-decoration: none;"><div class="entranceToggle">
-            <div class="entranceToggleContainer"  style="background-color: hotpink;"> </div>
+            <div class="entranceToggleContainer"  style="background-color: darkslategrey;">
+                <img width="100%" src = {% static 'img/entrance/WSTR.png' %}>
+            </div>
             <p class="entranceToggleCaption" style="font-size: 20px;font-weight: bold">Workshops and Tutorials</p>
         </div>
         </a>
         <p>&nbsp;</p>
         <a href="main?id=competition" style="text-decoration: none;"><div class="entranceToggle">
-            <div class="entranceToggleContainer"  style="background-color: greenyellow;"> </div>
+            <div class="entranceToggleContainer"  style="background-color: lightgoldenrodyellow;">
+                <img width="100%" src = {% static 'img/entrance/Competition.png' %}>
+            </div>
             <p class="entranceToggleCaption"style="font-size: 20px;font-weight: bold">Robot Competition</p>
         </div>
         </a>
