@@ -3,6 +3,7 @@
 # # Create your views here.
 import json
 
+import session_security
 from django.contrib import messages
 from django.forms import forms
 from django.http import HttpResponse
@@ -14,7 +15,7 @@ from django.contrib.auth import login as auth_login, authenticate
 from django.contrib.auth import logout as auth_logout
 
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, AnonymousUser
 from django.contrib.sites.shortcuts import get_current_site
 from django.shortcuts import render, redirect
 from django.utils.encoding import force_bytes, force_text
@@ -164,38 +165,13 @@ def login(request):
             secoundcounter = (targetUTC.timestamp() - crrenttimeUTC.timestamp())
             currenttime.date()
 
+            profile = Profile.objects.filter(user_id=login_user_id)
+            sub = (profile[0].last_logout - login_user[0].last_login).total_seconds()
 
-            # Calculating Day# from the DDay
-            dday = currentPST - targetPST
-            day = dday.days
+            if profile[0].last_logout is None or sub < 0:
+                record_active_time(login_user, profile)
 
-            if day < 0:
-                day = 0
-
-            # Checking last login time
-            # If None or difference is more than 0, delta is 1,
-            # Otherwise, delta is 0 which means no need to increment daily active user count
-            last_login = login_user[0].last_login
-
-            delta = 0
-            if last_login is None:
-                delta = 1
-            else:
-                user_last = last_login - datetime.timedelta(hours=7)
-                diff = currentPST - user_last
-                if diff.days > 0:
-                    delta = 1
-
-            # Create Day object if does not exist
-            if ActivityRecords.objects.filter(day=day).count() == 0:
-                ActivityRecords(day=day).save()
-
-            # If last login is over one day, update daily active user count
-            if delta == 1:
-                active_day = ActivityRecords.objects.filter(day=day)
-                active_count = active_day[0].active_user_count
-                new_active_count = active_count + 1
-                ActivityRecords.objects.filter(day=day).update(active_user_count=new_active_count)
+            record_active_count(login_user, currentPST, targetPST)
 
             if secoundcounter <= 0:
                 if login_user[0].is_superuser is True:
@@ -215,17 +191,76 @@ def login(request):
     return render(request, './beta/1_login_beta.html')
 
 
+@csrf_exempt
+def record_active_time(login_user, profile):
+    warning_time_in_seconds = 5
+    last_activity_pst = profile[0].last_activity - datetime.timedelta(hours=7)
+    last_login_pst = login_user[0].last_login - datetime.timedelta(hours=7)
+    active_time_in_seconds = (last_activity_pst - last_login_pst).seconds
+
+    print("TIMEOUT LOGOUT DETECTED")
+    print(last_activity_pst)
+    print(last_login_pst)
+    record_metrics(last_login_pst, last_activity_pst)
+
+    profile.update(last_logout=profile[0].last_activity)
+
+    return
+
+
+@csrf_exempt
+def record_active_count(login_user, current_pst, target_pst):
+    # Calculating Day# from the DDay
+    dday = current_pst - target_pst
+    day = dday.days
+
+    if day < 0:
+        day = 0
+
+    # Checking last login time
+    # If None or difference is more than 0, delta is 1,
+    # Otherwise, delta is 0 which means no need to increment daily active user count
+    last_login = login_user[0].last_login
+
+    delta = 0
+    if last_login is None:
+        delta = 1
+    else:
+        user_last = last_login - datetime.timedelta(hours=7)
+        diff = target_pst - user_last
+        if diff.days > 0:
+            delta = 1
+
+    # Create Day object if does not exist
+    if ActivityRecords.objects.filter(day=day).count() == 0:
+        ActivityRecords(day=day).save()
+
+    # If last login is over one day, update daily active user count
+    if delta == 1:
+        active_day = ActivityRecords.objects.filter(day=day)
+        active_count = active_day[0].active_user_count
+        new_active_count = active_count + 1
+        ActivityRecords.objects.filter(day=day).update(active_user_count=new_active_count)
+    # Daily Active User Implementation Done
+
+
+@csrf_exempt
+def save_last_activity(request):
+    print(request.user)
+    print(datetime.datetime.utcnow())
+    Profile.objects.filter(user_id=request.user.id).update(last_activity=datetime.datetime.utcnow())
+    return
+
 # Logout
 def logout(request):
+    if request.user.is_anonymous:
+        return redirect('login')
 
     timezone = pytz.utc
     currentTime = datetime.datetime.utcnow()
-    currentTime_utc = timezone.localize(currentTime)
     ct = timezone.localize(currentTime) - datetime.timedelta(hours=7)
 
-    # curr_day = currentTime.day
     last_login = request.user.last_login - datetime.timedelta(hours=7)
-    # ll = timezone.localize(last_login)
     print("current time in PST:", ct)
     print("last login in PST:", last_login)
     print("subtraction:", ct-last_login)
@@ -233,18 +268,27 @@ def logout(request):
     print("current day: ", ct.day)
     print("last login day: ", last_login.day)
 
+    record_metrics(ct, last_login)
+    Profile.objects.filter(user_id=request.user.id).update(last_logout=currentTime)
+
+    auth_logout(request)
+    return redirect('login')
+
+
+def record_metrics(login, logout):
+    timezone = pytz.utc
     target = datetime.datetime(2020, 10, 19, 7, 0)
     targetUTC = timezone.localize(target)
     targetPST = targetUTC - datetime.timedelta(hours=7)
 
-    dday = ct - targetPST
+    dday = login - targetPST
     dday = dday.days
 
     if ActivityRecords.objects.filter(day=dday).count() == 0:
         ActivityRecords.objects.create(day=dday)
 
-    if ct.day == last_login.day:
-        active_time = ct - last_login
+    if login.day == logout.day:
+        active_time = login - logout
         active_time_in_seconds = active_time.seconds
         print("active time: ", active_time_in_seconds)
         total_active_time = active_time_in_seconds
@@ -254,16 +298,16 @@ def logout(request):
             number = 1
         time = record[0].active_time_in_seconds
         summation = time + total_active_time
-        record.update(active_time_in_seconds=summation, average_active_time=summation/number)
+        record.update(active_time_in_seconds=summation, average_active_time=summation / number)
 
         print("current active time: ", time)
         print("new active time: ", total_active_time)
         print("summation: ", summation)
     else:
 
-        target1 = datetime.datetime(last_login.year, last_login.month, last_login.day, 23, 59, 59)
+        target1 = datetime.datetime(logout.year, logout.month, logout.day, 23, 59, 59)
         target1_PST = timezone.localize(target1) - datetime.timedelta(hours=7)
-        first_time = target1_PST - last_login
+        first_time = target1_PST - logout
         first_time_in_seconds = first_time.seconds
 
         first_day = dday - 1
@@ -278,9 +322,9 @@ def logout(request):
         time = record[0].active_time_in_seconds
         summation = time + first_time_in_seconds
         record.update(active_time_in_seconds=summation, average_active_time=summation / number)
-        target2 = datetime.datetime(ct.year, ct.month, ct.day, 0, 0)
+        target2 = datetime.datetime(login.year, login.month, login.day, 0, 0)
         target2_PST = timezone.localize(target2) - datetime.timedelta(hours=7)
-        second_time = ct - target2_PST
+        second_time = login - target2_PST
         second_time_in_seconds = second_time.seconds
         print("second time: ", second_time_in_seconds)
 
@@ -294,7 +338,6 @@ def logout(request):
 
         total_active_time = first_time_in_seconds + second_time_in_seconds
 
-
     print("total active time: ", total_active_time)
 
     if OverallActivity.objects.filter(name="overall").count() == 0:
@@ -303,10 +346,7 @@ def logout(request):
     overall = OverallActivity.objects.filter(name="overall")
     overall_time = overall[0].active_time_in_seconds
     number = User.objects.count()
-    overall.update(active_time_in_seconds=overall_time+total_active_time, average_active_time=overall_time/number)
-
-    auth_logout(request)
-    return redirect('login')
+    overall.update(active_time_in_seconds=overall_time + total_active_time, average_active_time=overall_time / number)
 
 
 # Login Authentication

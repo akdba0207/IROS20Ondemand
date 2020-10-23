@@ -38,12 +38,13 @@ yourlabs.SessionSecurity.prototype = {
 
     expire: function() {
         this.expired = true;
-        this.returnToUrl = "logout";
+        // this.returnToUrl = "logout";
 
         if (this.returnToUrl !== undefined) {
             window.location.href = this.returnToUrl;
         }
         else {
+            // console.log(session_security.utils.get_last_activity);
             window.location.href = 'logout'
             // window.location.reload();
         }
@@ -53,6 +54,12 @@ yourlabs.SessionSecurity.prototype = {
         this.$warning.fadeIn('slow');
         this.$warning.attr('aria-hidden', 'false');
         $('.session_security_modal').focus();
+        $.ajax({
+            url:'save_last_activity',
+            type:'GET',
+            data:{},
+            dataType:'json',
+        });
     },
 
     hideWarning: function() {
@@ -69,9 +76,6 @@ yourlabs.SessionSecurity.prototype = {
         this.lastActivity = now;
 
         if (this.$warning.is(':visible')) {
-
-
-
             this.ping();
         }
 

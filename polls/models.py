@@ -18,6 +18,7 @@ class Profile(models.Model):
     email_confirmed = models.BooleanField(default=False)
     ip = models.CharField(max_length=50, null=True)
     last_logout = models.DateTimeField(null=True, blank=True)
+    last_activity = models.DateTimeField(null=True, blank=True)
 
     @receiver(post_save, sender=User)
     def update_user_profile(sender, instance, created, **kwargs):
