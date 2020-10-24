@@ -165,11 +165,16 @@ def login(request):
             secoundcounter = (targetUTC.timestamp() - crrenttimeUTC.timestamp())
             currenttime.date()
 
-            profile = Profile.objects.filter(user_id=login_user_id)
-            sub = (profile[0].last_logout - login_user[0].last_login).total_seconds()
+            if login_user[0].last_login is not None:
 
-            if profile[0].last_logout is None or sub < 0:
-                record_active_time(login_user, profile)
+                profile = Profile.objects.filter(user_id=login_user_id)
+                if profile[0].last_logout is None:
+                    sub = 0
+                else:
+                    sub = (profile[0].last_logout - login_user[0].last_login).total_seconds()
+
+                if (profile[0].last_logout is None or sub < 0) and profile[0].last_activity is not None:
+                    record_active_time(login_user, profile)
 
             record_active_count(login_user, currentPST, targetPST)
 
@@ -201,7 +206,7 @@ def record_active_time(login_user, profile):
     print("TIMEOUT LOGOUT DETECTED")
     print(last_activity_pst)
     print(last_login_pst)
-    record_metrics(last_login_pst, last_activity_pst)
+    record_metrics(last_activity_pst, last_login_pst)
 
     profile.update(last_logout=profile[0].last_activity)
 
@@ -334,6 +339,7 @@ def record_metrics(login, logout):
             number = 1
         time = record[0].active_time_in_seconds
         summation = time + second_time_in_seconds
+        print("second summation", summation)
         record.update(active_time_in_seconds=summation, average_active_time=summation / number)
 
         total_active_time = first_time_in_seconds + second_time_in_seconds
@@ -341,13 +347,13 @@ def record_metrics(login, logout):
     print("total active time: ", total_active_time)
 
     if OverallActivity.objects.filter(name="overall").count() == 0:
-        OverallActivity.objects.create(name="ovearll")
+        OverallActivity.objects.create(name="overall")
 
     overall = OverallActivity.objects.filter(name="overall")
     overall_time = overall[0].active_time_in_seconds
     number = User.objects.count()
     overall.update(active_time_in_seconds=overall_time + total_active_time, average_active_time=overall_time / number)
-
+    return
 
 # Login Authentication
 @login_required()

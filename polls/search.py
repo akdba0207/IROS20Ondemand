@@ -19,6 +19,12 @@ data = pd.read_excel(path3, sheet_name=0)
 data = data.fillna('z')
 data = data.iloc[0:1445,:]
 
+# Call Workshops and Tutorials
+excel_file4 = 'IROS20_WSandTR.xlsx'
+path4 = os.path.join(pre, excel_file4)
+iros_wstr = pd.read_excel(path4, sheet_name=0)
+iros_wstr = iros_wstr.fillna('z')
+
 def searchByKeyword(keyword, n_count=12):
 
     key = str.split(keyword.lower())
@@ -49,6 +55,49 @@ def searchByKeyword(keyword, n_count=12):
     scores = sorted(scores.items(), key=lambda x: x[1], reverse=True)
     scores = [k for k, _ in scores[0:n_count]]
     return scores
+
+def searchWSByKeyword(keyword, n_count=12):
+
+    key = str.split(keyword.lower())
+    scores = {}
+    for c in key:
+        ret = iros_wstr[(iros_wstr['Workshop Title'].str.lower().str.find(c) >= 0) |
+                        (iros_wstr['WS/TR Nr'].str.lower().str.find(c) >= 0) |
+                        (iros_wstr['Title'].str.lower().str.find(c) >= 0) |
+                        (iros_wstr['Speaker'].str.lower().str.find(c) >= 0) |
+                        (iros_wstr['Institution'].str.lower().str.find(c) >= 0) |
+                        (iros_wstr['Workshop Abstract'].str.lower().str.find(c) >= 0) |
+                        (iros_wstr['Organizer1'].str.lower().str.find(c) >= 0) |
+                        (iros_wstr['Organizer1Affil'].str.lower().str.find(c) >= 0) |
+                        (iros_wstr['Organizer2'].str.lower().str.find(c) >= 0) |
+                        (iros_wstr['Organizer2Affil'].str.lower().str.find(c) >= 0) |
+                        (iros_wstr['Organizer3'].str.lower().str.find(c) >= 0) |
+                        (iros_wstr['Organizer3Affil'].str.lower().str.find(c) >= 0) |
+                        (iros_wstr['Organizer4'].str.lower().str.find(c) >= 0) |
+                        (iros_wstr['Organizer4Affil'].str.lower().str.find(c) >= 0) |
+                        (iros_wstr['Organizer5'].str.lower().str.find(c) >= 0) |
+                        (iros_wstr['Organizer5Affil'].str.lower().str.find(c) >= 0) |
+                        (iros_wstr['Organizer6'].str.lower().str.find(c) >= 0) |
+                        (iros_wstr['Organizer6Affil'].str.lower().str.find(c) >= 0) |
+                        (iros_wstr['Organizer7'].str.lower().str.find(c) >= 0) |
+                        (iros_wstr['Organizer7Affil'].str.lower().str.find(c) >= 0) |
+                        (iros_wstr['Organizer8'].str.lower().str.find(c) >= 0) |
+                        (iros_wstr['Organizer8Affil'].str.lower().str.find(c) >= 0)|
+                        (iros_wstr['Organizer9'].str.lower().str.find(c) >= 0) |
+                        (iros_wstr['Organizer9Affil'].str.lower().str.find(c) >= 0)|
+                        (iros_wstr['Organizer10'].str.lower().str.find(c) >= 0) |
+                        (iros_wstr['Organizer10Affil'].str.lower().str.find(c) >= 0)]
+
+        for _, r in ret.iterrows():
+            if r['Nr'] in scores:
+                scores[r['Nr']] += 1
+            else:
+                scores[r['Nr']] = 1
+
+    scores = sorted(scores.items(), key=lambda x: x[1], reverse=True)
+    scores = [k for k, _ in scores[0:n_count]]
+    return scores
+
 
 def strip_suffixes(s,suffixes):
     for suf in suffixes:

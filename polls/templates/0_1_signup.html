@@ -23,7 +23,7 @@
 </div>
 
 <div class="ddaycounter">
-    <h2> Countdown to IROS 2020 (10/25/2020)</h2>
+    <h2> Countdown to IROS 2020 (PST 10/25/2020)</h2>
     <div id="countDay">
         <span class="day"></span> Days
         <span class="time"></span> Hours
@@ -126,13 +126,16 @@
 <script>
     function CountDownTimer(dday){
         var countDownDate = new Date(dday).getTime();
+        var timeOffset = new Date().getTimezoneOffset() * 60 * 1000;
+        var PSToffset = 420 * 60 * 1000;
+
         var x = setInterval(function () {
-            var now = new Date().getTime();
-            var distance = countDownDate - now;
+            var now = new Date().getTime()
+            var distance = countDownDate - now - (timeOffset - PSToffset);
             var days = Math.floor(distance / (1000*60*60*24));
             var hours = Math.floor((distance % (1000*60*60*24)) / (1000*60*60));
             var minutes = Math.floor((distance % (1000*60*60))/(1000*60));
-            var seconds = Math.floor((distance % (1000*60))/1000)
+            var seconds = Math.floor((distance % (1000*60))/1000);
             function showRemaining() {
                 if(days <0){
                     days = 0;

@@ -1,0 +1,449 @@
+html, body {
+    position: relative;
+    height: 100%; }
+
+body {
+    background:#1F1F1F;
+    font-family: "Source Sans Pro", sans-serif;
+    font-size: 14px;
+    margin: 0;
+    padding: 0; }
+
+.carousel-caption {
+    position: absolute;
+    text-align: left;
+    display: block;
+    bottom: 0px;
+    width: 100%;
+    background-image: linear-gradient(to right, rgba(31,31,31,1) 35%, rgba(31,31,31,0));
+    height: 100%;
+    z-index:1;
+}
+.carousel-caption p{
+    padding-top: 3%;
+    font-size: 30px;
+    color: yellow;
+}
+.carousel-item video {
+    width: 50%;
+    z-index: 0;
+}
+
+.carousel-control-next{
+    z-index: 10;
+}
+.swiper-container {
+    width: 100%;
+    height: 100%; }
+
+.swiper-slide {
+    text-align: center;
+    font-size: 18px;
+    background: transparent;
+    /* Center slide text vertically */
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+    border-radius: 4px;
+}
+.swiper-slide{
+    overflow: hidden;
+    max-height: 190px;
+    box-shadow: 0px 4px 3px #000000;
+}
+
+.onimg-caption{
+    /*display: inline-block;*/
+    /*bottom: 0%;*/
+    position: absolute;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.7);
+    width: 100%;
+    bottom: 0%;
+}
+
+.keynoteimg {
+    max-width: 120%;
+    height: auto;
+    transform: scale(1.0)}
+
+h1 {
+    font-family: Arial, Helvetica, sans-serif;
+    color: red;
+    text-align: center; }
+
+h2 {
+    font-family: Arial, Helvetica, sans-serif;
+    color: white; }
+h3 {
+    font-family: Arial, Helvetica, sans-serif;
+    color: white; }
+
+:root {
+    --swiper-theme-color: #000000; }
+.netflix-slider-img{
+    width: 100%;
+}
+.netflix-slider .swiper-wrapper {
+    padding: 20px 0; }
+.netflix-slider .swiper-slide {
+    transition: 250ms all;
+    padding: 10px 0px;
+}
+.netflix-slider .swiper-slide:hover {
+    transform: scale(1.1);
+    box-shadow:  0px 55px 40px -15px #000000;
+    border-radius: 4px;
+    z-index: 1; }
+.netflix-slider .swiper-slide:first-child:hover {
+    margin: 0 40px; }
+.netflix-slider .swiper-slide:last-child:hover {
+    margin: 0 -40px; }
+
+.netflix-slider .swiper-button-prev{
+    color: white;
+}
+.netflix-slider .swiper-button-next{
+    color: white;
+}
+.paperimg{
+    max-width: 100%;
+    height: auto;
+}
+.videopage{
+    position:relative;
+    height:360px;
+    /*overflow: hidden;*/
+}
+.videocover{
+    height: 100%;
+    width:100%;
+    clear:both;
+    background-image: linear-gradient(to right, rgba(31,31,31,1) 50%, rgba(31,31,31,0));
+    position:absolute
+}
+
+.onvid-caption{
+    display: inline-block;
+    /*bottom: 0%;*/
+    text-align: left;
+    padding-left: 0%;
+    padding-top: 5%;
+    width: 100%;
+    font-size: 40px;
+    color: yellow;
+}
+
+.videobox{
+    width:100%;
+    display: block;
+    margin: 0 auto;
+    /*padding-top: 5%;*/
+}
+.videobox video{
+    width: 640px;
+    float: right;
+}
+.commentbox {
+    width: 80%;
+    height: 50px;
+    padding: 10px;
+    background-color: #323232;
+    color:white;
+}
+
+.comment{
+    text-align: left;
+    color:white;
+    width: 90%;
+}
+.epilisttable i{
+    font-size: 200%;
+}
+
+.likeButton{
+    outline: none;
+    background-color:transparent;
+    border-style: none;
+}
+.likeButton:focus{
+    outline: none;
+    background-color:transparent;
+    border-style: none;
+}
+.saveButton{
+    outline: none;
+    background-color:transparent;
+    border-style: none;
+}
+.saveButton:focus{
+    outline: none;
+    background-color:transparent;
+    border-style: none;
+}
+
+.thumbsuptext{
+    font-size:100%;
+    width:50px;
+    text-align:left;
+    margin: auto;
+    padding-left: 5px;
+    color:grey;
+    background-color:transparent;
+    border: none;
+    outline:none;
+}
+
+.papertitle{
+    font-size: 20px;
+}
+.paperInfo{
+    font-size: 100%;
+}
+
+.gobackButton{
+    font-size: 100%;
+}
+
+.sessionTitle{
+    font-size: 24px;
+    padding-left: 3%;
+}
+.episodeTitle{
+    font-size: 24px;
+    padding-top: 1%;
+    width: 60%;
+}
+.suggestlisttable{
+    width: 80%;
+    height: auto;
+    text-align: center;
+    margin-left: 10%;
+    background-color: #1F1F1F;
+    margin-bottom:1%
+}
+.morecontent span {
+    display: none;
+}
+
+@media only screen and (max-width: 400px){
+
+    h3 {
+        font-family: Arial, Helvetica, sans-serif;
+        color: white;
+        font-size: 90%}
+
+    .onimg-caption{
+        font-size: 60%;
+    }
+    .netflix-slider .swiper-slide {
+        transition: 250ms all;
+        padding: 70px 0px;
+    }
+    .netflix-slider img {
+        max-width: 100%;
+        height: auto;
+        transform: translate(0px, -15px) scale(2.2);
+
+        /*vertical-align: text-top;*/
+    }
+    .landingtable{
+        font-size: 30%;
+    }
+    .landingtable img{
+        width: 100%;
+    }
+    .epilisttable{
+        font-size: 60%;
+    }
+    .suggestlisttable{
+        font-size: 60%;
+    }
+
+
+
+    .videopage{
+        height: 20%;
+        overflow: hidden;
+    }
+    .videocover{
+        background-image: linear-gradient(to right, rgba(31,31,31,1) 25%, rgba(31,31,31,0));
+    }
+    .onvid-caption{
+        padding-top: 15%;
+        font-size: 100%;
+    }
+    .videobox video{
+        width: 80%;
+        height: auto;
+        float: right;
+        overflow: hidden;
+    }
+
+    .papertitle{
+        font-size: 120%;
+    }
+    .paperInfo{
+        font-size: 100%;
+    }
+    .likeButton{
+        font-size: 100%;
+    }
+    .gobackButton{
+        font-size: 80%;
+    }
+    .episodeTitle{
+        font-size: 80%;
+        padding-top: 10%;
+    }
+    .sessionTitle{
+        font-size: 250%;
+        padding-left: 3%;
+    }
+}
+
+@media only screen and (max-width: 600px) and (min-width: 401px){
+
+    h3 {
+        font-family: Arial, Helvetica, sans-serif;
+        color: white;
+        font-size: 100%}
+
+    .onimg-caption{
+        font-size: 60%
+    }
+    .netflix-slider .swiper-slide {
+        transition: 250ms all;
+        padding:70px 0px;
+    }
+    .netflix-slider img {
+        max-width: 100%;
+        height: auto;
+        transform: translate(0px, -15px) scale(2);
+        align-items: flex-start;
+
+        vertical-align: text-top;
+    }
+
+
+    .landingtable{
+        font-size: 30%;
+    }
+    .epilisttable{
+        font-size: 30%;
+    }
+    .suggestlisttable{
+        font-size: 30%;
+    }
+
+
+    .videopage{
+        height: 20%;
+        overflow: hidden;
+    }
+    .videocover{
+        background-image: linear-gradient(to right, rgba(31,31,31,1) 25%, rgba(31,31,31,0));
+    }
+    .onvid-caption{
+        padding-top: 15%;
+        font-size: 100%;
+    }
+    .videobox video{
+        width: 80%;
+        height: auto;
+        float: right;
+        overflow: hidden;
+    }
+
+    .papertitle{
+        font-size: 200%;
+    }
+    .paperInfo{
+        font-size: 200%;
+    }
+    .likeButton{
+        font-size: 100%;
+    }
+    .gobackButton{
+        font-size: 80%;
+    }
+    .episodeTitle{
+        font-size: 80%;
+        padding-top: 10%;
+    }
+    .sessionTitle{
+        font-size: 250%;
+        padding-left: 3%;
+    }
+}
+
+@media only screen and (max-width: 1200px) and (min-width: 601px) {
+
+
+    h3 {
+        font-family: Arial, Helvetica, sans-serif;
+        color: white;
+        font-size: 120%}
+
+    .onimg-caption{
+        font-size: 80%
+    }
+    .swiper-slide{
+        max-height: 100px;
+    }
+
+    .epilisttable{
+        font-size: 50%;
+    }
+    .suggestlisttable{
+        font-size: 50%;
+    }
+
+    .videopage{
+        height: 20%;
+        overflow: hidden;
+    }
+    .videocover{
+        background-image: linear-gradient(to right, rgba(31,31,31,1) 25%, rgba(31,31,31,0));
+    }
+    .onvid-caption{
+        padding-top: 15%;
+        font-size: 200%;
+    }
+    .videobox video{
+        width: 80%;
+        height: auto;
+        float: right;
+        overflow: hidden;
+    }
+
+    .papertitle{
+        font-size: 240%;
+    }
+    .paperInfo{
+        font-size: 150%;
+    }
+    .likeButton{
+        font-size: 100%;
+    }
+    .gobackButton{
+        font-size: 80%;
+    }
+    .episodeTitle{
+        font-size: 120%;
+        padding-top: 5%;
+    }
+    .sessionTitle{
+        font-size: 150%;
+        padding-left: 3%;
+    }
+}

@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <!-- Link Swiper's CSS -->
     <link rel="stylesheet" href="{% static 'package/css/swiper.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/styles1007.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles1018.css' %}">
     <script
             src="https://kit.fontawesome.com/7541329784.js"
             crossorigin="anonymous"
@@ -32,89 +32,120 @@
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
     />
-    <link rel="stylesheet" href="{% static 'css/index_land0717.css' %}" />
     <link rel="stylesheet" href="{% static 'css/index_header1006.css' %}" />
 
 </head>
 <body>
-
-<header>
-    <div class="logo">
-        <a href="entrance">
-            <img src="{% static './resources/logo.png'%}"/>
+<div class="onDemandwidthControl">
+    <nav style="background-color: rgba(0,0,0,0.7)" class="navbar navbar-expand-md navbar-dark fixed-top">
+        <!-- Brand/logo -->
+        {% if showcontents == 3 %}
+            <a class="navbar-brand" href="main?id=competition">
+        {% elif showcontents == 2 %}
+            <a class="navbar-brand" href="main?id=wstr">
+        {% else %}
+            <a class="navbar-brand" href="main?id=technicalpaper">
+        {% endif %}
+        <img src="{% static './resources/logo.png'%}" width="150px"/>
         </a>
-        <button class="header-toggleBtn"><i class="fa fa-bars"></i></button>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+            <!-- Links -->
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    {% if showcontents == 3 %}
+                        <a class="nav-link" href="main?id=competition" style="color:white; ">Home</a>
+                    {% elif showcontents == 2 %}
+                        <a class="nav-link" href="main?id=wstr" style="color:white; ">Home</a>
+                    {% else %}
+                        <a class="nav-link" href="main?id=technicalpaper" style="color:white; ">Home</a>
+                    {% endif %}
+                </li>
+                <!-- Dropdown -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" style="color: white" href="#" id="navbardrop" data-toggle="dropdown">
+                        Entrance
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="main?id=technicalpaper">Technical Talks</a>
+                        <a class="dropdown-item" href="main?id=wstr">Workshops and Tutorials</a>
+                        <a class="dropdown-item" href="main?id=competition">Robot Competition</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="mylist?id={{ showcontents }}" onClick="this.href=this.href+'&'+new Date().getTime()" style="color:white;">My Lists</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="logout" style="color:white;">Logout</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav">
+                <form class="form-inline navbar-right">
+                    <input type="text" id="search_bar" value="" class="searchBar" onkeydown="if(event.keyCode === 13) {event.preventDefault(); document.getElementById('searchBtn').click()}"/>
+                    <d onclick="if(search_bar.value.length > 0)search()">
+                        <a id = "keywordDelivery" href="javascript: void(0)">
+                            <i id="searchBtn" class="fa fa-search" style="color:white;margin-left: 100%;font-size: 18px"></i>
+                        </a>
+                    </d>
+                </form>
+            </ul>
+
+        </div>
+    </nav>
+
+    <div style="width:95%; margin:0 auto; padding-top: 100px;" align="justify">
+        <h3 class="pavtitle">&nbsp;&nbsp;Search Results : Not Found </h3>
+        <p>&nbsp;</p>
+        <center>
+            <h3 class="pavtitle">&nbsp;&nbsp;Your Search for "{{ inputKeyword }}" does not have any matches </h3>
+            <h3 class="pavtitle">&nbsp;&nbsp;Try different keywords </h3>
+        </center>
+
+
+        <script src="{% static 'package/js/swiper.min.js' %}"></script>
+        <script>
+            function search(){
+                const query = document.getElementById("search_bar").value;
+                document.getElementById("keywordDelivery").href = "searchresult?id2={{ showcontents }}&id="+query;
+            }
+
+        </script>
+        <!-- Initialize Swiper -->
+
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+        {#<script>#}
+        {#    $(document).ready(function(){#}
+        {#        var nowPlaying = "none";#}
+        {##}
+        {#        $('div').hover(function(){#}
+        {#            nowPlaying = $(this).find('iframe').attr('src');#}
+        {#            $(this).find('iframe').attr('src',nowPlaying+'&autoplay=1');#}
+        {#        }, function(){#}
+        {#            $(this).find('iframe').attr('src',nowPlaying);#}
+        {#        });#}
+        {#    });#}
+        {#</script>#}
+        <script>
+            $(document).ready(function() {
+
+                var vid = $("video").get(0);
+
+                $("video").on("mouseenter",function(){
+                    vid.play();
+                });
+
+                $("video").on("mouseleave",function(){
+                    vid.pause();
+                });
+
+            });
+        </script>
+
     </div>
-
-    <ul class="categories">
-        <li class="category category1"><a href="entrance" style="color:white; text-decoration: none;">Home</a></li>
-        <li class="category category2"><a href="mylist?" onClick="this.href=this.href.split('?')[0]+'?'+new Date().getTime()" style="color:white; text-decoration: none;">My Lists</a></li>
-        <li class="category category3"><a href="logout" style="color:white; text-decoration: none;">Logout</a></li>
-    </ul>
-
-    <ul class="search_notice_info">
-        <form>
-            <input type="text" id="search_bar" value="" class="searchBar" onkeydown="if(event.keyCode === 13) {event.preventDefault(); document.getElementById('searchBtn').click()}"/>
-            <d onclick="search()">
-                <a id = "keywordDelivery" href="">
-                    <i id="searchBtn" class="fa fa-search" style="color:white;"></i>
-                </a>
-            </d>
-        </form>
-    </ul>
-</header>
-
-<div style="width:95%; margin:0 auto; padding-top: 12%;" align="justify">
-    <h3>&nbsp;&nbsp;Search Results : Not Found </h3>
-    <p>&nbsp;</p>
-
-    <h3>&nbsp;&nbsp;Your Search for "{{ inputKeyword }}" did not have any matches </h3>
-    <h3>&nbsp;&nbsp;Try different keywords </h3>
-
-
-
-<script src="{% static 'js/index_header.js' %}"></script>
-<script src="{% static 'package/js/swiper.min.js' %}"></script>
-<script>
-    function search(){
-        const query = document.getElementById("search_bar").value;
-        document.getElementById("keywordDelivery").href = "searchresult?id="+query;
-    }
-
-</script>
-<!-- Initialize Swiper -->
-
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
-{#<script>#}
-{#    $(document).ready(function(){#}
-{#        var nowPlaying = "none";#}
-{##}
-{#        $('div').hover(function(){#}
-{#            nowPlaying = $(this).find('iframe').attr('src');#}
-{#            $(this).find('iframe').attr('src',nowPlaying+'&autoplay=1');#}
-{#        }, function(){#}
-{#            $(this).find('iframe').attr('src',nowPlaying);#}
-{#        });#}
-{#    });#}
-{#</script>#}
-<script>
-    $(document).ready(function() {
-
-        var vid = $("video").get(0);
-
-        $("video").on("mouseenter",function(){
-            vid.play();
-        });
-
-        $("video").on("mouseleave",function(){
-            vid.pause();
-        });
-
-    });
-</script>
-
 </div>
 </body>
 </html>

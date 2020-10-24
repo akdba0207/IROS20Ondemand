@@ -44,11 +44,11 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'session_security.middleware.SessionSecurityMiddleware',
@@ -153,10 +153,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # EMAIL_HOST_PASSWORD = 'dasldrchubo1325'
 # EMAIL_USE_TLS = True
 
-# SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True
-# SESSION_EXPIRE_SECONDS = 5 # 30 Seconds
-# SESSION_TIMEOUT_REDIRECT = 'logout'
-
 SESSION_SECURITY_EXPIRE_AFTER=10
 SESSION_SECURITY_WARN_AFTER=5
 SESSION_EXPIRE_AT_BROWSER_CLOSE=True
+

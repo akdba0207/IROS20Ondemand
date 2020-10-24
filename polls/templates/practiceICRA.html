@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>IROS 2020 On-Demand</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <!-- Link Swiper's CSS -->
+    <link rel="stylesheet" href="{% static 'package/css/swiper.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles0717-2.css' %}">
+    <script
+            src="https://kit.fontawesome.com/7541329784.js"
+            crossorigin="anonymous"
+    ></script>
+    <link
+            href="https://fonts.googleapis.com/css?family=Source+Sans+Pro&display=swap"
+            rel="stylesheet"
+    />
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link rel="stylesheet" href="{% static 'css/index_land0717.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/index_header0717.css' %}" />
+
+</head>
+<body>
+
+<header>
+    <div class="logo">
+        <a href="./">
+            <img src="{% static './resources/logo.png'%}"/>
+        </a>
+        <button class="header-toggleBtn"><i class="fa fa-bars"></i></button>
+    </div>
+
+    <ul class="categories">
+
+        <li class="category category1"><a href="./" style="color:white; text-decoration: none;">Home</a></li>
+        <li class="category category2">My Lists</li>
+        <li class="category category3">Recently Added</li>
+    </ul>
+
+    <ul class="search_notice_info">
+        <form>
+            <input type="text" id="search_bar" value="" class="searchBar" onkeydown="if(event.keyCode === 13) {event.preventDefault(); document.getElementById('searchBtn').click()}"/>
+            <d onclick="search()">
+                <a id = "keywordDelivery" href="">
+                    <i id="searchBtn" class="fa fa-search" style="color:white;"></i>
+                </a>
+            </d>
+        </form>
+        <li class="info"><i class="fa fa-user"></i></li>
+    </ul>
+</header>
+
+<div style="width:95%; margin:0 auto;" align="justify">
+
+    <div class = "videopage">
+        <div class="videocover">
+            <div class="onvid-caption">
+                <p style="margin:auto">PLATINUM SPONSOR VIDEO example</p>
+                <p id="platinumSponsor" style="margin:auto"></p>
+                <p style="margin:auto;">Company info goes here</p>
+                <div style="width: 50%; text-align: left; font-size: 150%">
+                    <button style="background-color: transparent;border: none; margin:auto; outline: none;color: red;" class="UnmuteBtn"  onclick="disbleMute()" type="button">
+                        <i class="fas fa-volume-up" style="font-size: 50%"></i>
+                    </button>
+                    <button style="background-color: transparent;border: none;margin:auto;outline: none; color: red;" class="MuteBtn" onclick="enableMute()" type="button">
+                        <i class="fas fa-volume-mute" style="font-size: 50%"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="videobox">
+            <video playsinline muted>
+            </video>
+        </div>
+    </div>
+
+    <div style="transform: translate(0px, 0px)">
+        <div class="netflix-slider">
+            <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{Pavilion.0}}</h3>
+            <div class="swiper-container">
+                <div class="swiper-wrapper">
+                    {% for j in Aerial %}
+                        <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.0 }}&id3={{ Pavilion.index.0 }}" style="color:white; text-decoration: none;">
+
+                            <img src="{% static 'img'%}/pavilion{{ Pavilion.index.0|add:1 }}/{{ j }}.jpg">
+                            <div class="onimg-caption">{{ j }}
+                            </div>
+                        </a>
+                        </div>
+                    {% endfor %}
+                </div>
+                <!-- Add Pagination -->
+                {#      <div class="swiper-pagination"></div>#}
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+            </div>
+        </div>
+        <div class="netflix-slider">
+            <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp{{Pavilion.1}}</h3>
+            <div class="swiper-container">
+                <div class="swiper-wrapper">
+                    {% for j in Humanoid %}
+                        <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.1 }}&id3={{ Pavilion.index.1 }}" style="color:white; text-decoration: none;">
+
+                            <img src="{% static 'img'%}/pavilion{{ Pavilion.index.1|add:1 }}/{{ j }}.jpg">
+                            <div class="onimg-caption">{{ j }}
+                            </div>
+                        </a>
+                        </div>
+                    {% endfor %}
+                </div>
+                {#                <!-- Add Pagination -->#}
+                {#          <div class="swiper-pagination"></div>#}
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+            </div>
+        </div>
+
+        <div class="netflix-slider">
+            <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp{{Pavilion.2}}</h3>
+            <div class="swiper-container">
+                <div class="swiper-wrapper">
+                    {% for j in Medical %}
+                        <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.2 }}&id3={{ Pavilion.index.2 }}" style="color:white; text-decoration: none;">
+
+                            <img src="{% static 'img'%}/pavilion{{ Pavilion.index.2|add:1 }}/{{ j }}.jpg">
+                            <div class="onimg-caption">{{ j }}
+                            </div>
+                        </a>
+                        </div>
+                    {% endfor %}
+                </div>
+                {#                <!-- Add Pagination -->#}
+                {#          <div class="swiper-pagination"></div>#}
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+            </div>
+        </div>
+
+        <div class="netflix-slider">
+            <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp{{Pavilion.3}}</h3>
+            <div class="swiper-container">
+                <div class="swiper-wrapper">
+                    {% for j in Driverless %}
+                        <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.3 }}&id3={{ Pavilion.index.3 }}" style="color:white; text-decoration: none;">
+
+                            <img src="{% static 'img'%}/pavilion{{ Pavilion.index.3|add:1 }}/{{ j }}.jpg">
+                            <div class="onimg-caption">{{ j }}
+                            </div>
+                        </a>
+                        </div>
+                    {% endfor %}
+                </div>
+                {#                <!-- Add Pagination -->#}
+                {#          <div class="swiper-pagination"></div>#}
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+            </div>
+        </div>
+
+        <div class="netflix-slider">
+            <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp{{Pavilion.4}}</h3>
+            <div class="swiper-container">
+                <div class="swiper-wrapper">
+                    {% for j in EndEffector %}
+                        <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.4 }}&id3={{ Pavilion.index.4 }}" style="color:white; text-decoration: none;">
+
+                            <img src="{% static 'img'%}/pavilion{{ Pavilion.index.4|add:1 }}/{{ j }}.jpg">
+                            <div class="onimg-caption">{{ j }}
+                            </div>
+                        </a>
+                        </div>
+                    {% endfor %}
+                </div>
+                {#                <!-- Add Pagination -->#}
+                {#          <div class="swiper-pagination"></div>#}
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+            </div>
+        </div>
+        <p>&nbsp;</p>
+        {#    <div class="netflix-slider">#}
+        {#        <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp{{Pavilion.5}}</h3>#}
+        {#        <div class="swiper-container">#}
+        {#        <div class="swiper-wrapper">#}
+        {#            {% for j in Aerial %}#}
+        {#        <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.5 }}">{{ j }}<img src="{% static 'img'%}/pavilion6/{{ forloop.counter0 }}.jpg">#}
+        {#                <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.0 }}">{{ j }}<img src="{% static './resources/logo.png'%}">#}
+        {##}
+        {#                </a></img>#}
+        {#                </div>#}
+        {#            {% endfor %}#}
+        {#        </div>#}
+        {#        <!-- Add Pagination -->#}
+        {#      <div class="swiper-pagination"></div>#}
+        {#            <div class="swiper-button-next"></div>#}
+        {#            <div class="swiper-button-prev"></div>#}
+        {#        </div>#}
+        {#    </div>#}
+        {#    <p>&nbsp;</p>#}
+        {#    <div class="netflix-slider">#}
+        {#        <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp{{Pavilion.6}}</h3>#}
+        {#        <div class="swiper-container">#}
+        {#        <div class="swiper-wrapper">#}
+        {#            {% for j in Aerial %}#}
+        {#        <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.6 }}">{{ j }}<img src="{% static 'img'%}/pavilion7/{{ forloop.counter0 }}.jpg">#}
+        {#                <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.0 }}">{{ j }}<img src="{% static './resources/logo.png'%}">#}
+        {##}
+        {#                </a></img>#}
+        {#                </div>#}
+        {#            {% endfor %}#}
+        {#        </div>#}
+        {#        <!-- Add Pagination -->#}
+        {#      <div class="swiper-pagination"></div>#}
+        {#            <div class="swiper-button-next"></div>#}
+        {#            <div class="swiper-button-prev"></div>#}
+        {#        </div>#}
+        {#    </div>#}
+        {#    <p>&nbsp;</p>#}
+        {#    <div class="netflix-slider">#}
+        {#        <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp{{Pavilion.7}}</h3>#}
+        {#        <div class="swiper-container">#}
+        {#        <div class="swiper-wrapper">#}
+        {#            {% for j in Aerial %}#}
+        {#        <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.7 }}">{{ j }}<img src="{% static 'img'%}/pavilion8/{{ forloop.counter0 }}.jpg">#}
+        {#                <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.0 }}">{{ j }}<img src="{% static './resources/logo.png'%}">#}
+        {##}
+        {#                </a></img>#}
+        {#                </div>#}
+        {#            {% endfor %}#}
+        {#        </div>#}
+        {#        <!-- Add Pagination -->#}
+        {#      <div class="swiper-pagination"></div>#}
+        {#            <div class="swiper-button-next"></div>#}
+        {#            <div class="swiper-button-prev"></div>#}
+        {#        </div>#}
+        {#    </div>#}
+        {#    <p>&nbsp;</p>#}
+        {#    <div class="netflix-slider">#}
+        {#        <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp{{Pavilion.8}}</h3>#}
+        {#        <div class="swiper-container">#}
+        {#        <div class="swiper-wrapper">#}
+        {#            {% for j in Aerial %}#}
+        {#        <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.8 }}">{{ j }}<img src="{% static 'img'%}/pavilion9/{{ forloop.counter0 }}.jpg">#}
+        {#                <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.0 }}">{{ j }}<img src="{% static './resources/logo.png'%}">#}
+        {##}
+        {#                </a></img>#}
+        {#                </div>#}
+        {#            {% endfor %}#}
+        {#        </div>#}
+        {#        <!-- Add Pagination -->#}
+        {#      <div class="swiper-pagination"></div>#}
+        {#            <div class="swiper-button-next"></div>#}
+        {#            <div class="swiper-button-prev"></div>#}
+        {#        </div>#}
+        {#    </div>#}
+        {#    <p>&nbsp;</p>#}
+        {#    <div class="netflix-slider">#}
+        {#        <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp{{Pavilion.9}}</h3>#}
+        {#        <div class="swiper-container">#}
+        {#        <div class="swiper-wrapper">#}
+        {#            {% for j in Aerial %}#}
+        {#        <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.9 }}">{{ j }}<img src="{% static 'img'%}/pavilion10/{{ forloop.counter0 }}.jpg">#}
+        {#                <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.0 }}">{{ j }}<img src="{% static './resources/logo.png'%}">#}
+        {##}
+        {#                </a></img>#}
+        {#                </div>#}
+        {#            {% endfor %}#}
+        {#        </div>#}
+        {#        <!-- Add Pagination -->#}
+        {#      <div class="swiper-pagination"></div>#}
+        {#            <div class="swiper-button-next"></div>#}
+        {#            <div class="swiper-button-prev"></div>#}
+        {#        </div>#}
+        {#    </div>#}
+        {##}
+        {#    <p>&nbsp;</p>#}
+        {#    <div class="netflix-slider">#}
+        {#        <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp{{Pavilion.10}}</h3>#}
+        {#        <div class="swiper-container">#}
+        {#        <div class="swiper-wrapper">#}
+        {#            {% for j in Aerial %}#}
+        {#        <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.10 }}">{{ j }}<img src="{% static 'img'%}/pavilion11/{{ forloop.counter0 }}.jpg">#}
+        {#                <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.0 }}">{{ j }}<img src="{% static './resources/logo.png'%}">#}
+        {##}
+        {#                </a></img>#}
+        {#                </div>#}
+        {#            {% endfor %}#}
+        {#        </div>#}
+        {#        <!-- Add Pagination -->#}
+        {#      <div class="swiper-pagination"></div>#}
+        {#            <div class="swiper-button-next"></div>#}
+        {#            <div class="swiper-button-prev"></div>#}
+        {#        </div>#}
+        {#    </div>#}
+        {#    <p>&nbsp;</p>#}
+        {##}
+        {#    <div class="netflix-slider">#}
+        {#        <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp{{Pavilion.11}}</h3>#}
+        {#        <div class="swiper-container">#}
+        {#        <div class="swiper-wrapper">#}
+        {#            {% for j in Aerial %}#}
+        {#        <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.11 }}">{{ j }}<img src="{% static 'img'%}/pavilion12/{{ forloop.counter0 }}.jpg">#}
+        {#                <div class="swiper-slide"><a href="tvshow?id={{j}}&id2={{ Pavilion.0 }}">{{ j }}<img src="{% static './resources/logo.png'%}">#}
+        {##}
+        {#                </a></img>#}
+        {#                </div>#}
+        {#            {% endfor %}#}
+        {#        </div>#}
+        {#        <!-- Add Pagination -->#}
+        {#      <div class="swiper-pagination"></div>#}
+        {#            <div class="swiper-button-next"></div>#}
+        {#            <div class="swiper-button-prev"></div>#}
+        {#        </div>#}
+    </div>
+</div>
+</div>
+
+
+<script src="{% static 'js/index_header.js' %}"></script>
+<script src="{% static 'package/js/swiper.min.js' %}"></script>
+<!-- Initialize Swiper -->
+<script>
+    unmuteButton.addEventListener('click', function() {
+        video.muted = false;
+    });
+</script>
+<script>
+    function search(){
+        const query = document.getElementById("search_bar").value;
+        document.getElementById("keywordDelivery").href = "searchresult?id="+query;
+    }
+
+</script>
+<script>
+    var swiper = new Swiper('.swiper-container', {
+        {#slidesPerView: 7,#}
+        {#spaceBetween: 10,#}
+        slidesPerGroup: 2,
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+        },
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+        breakpoints: {
+            // when window width is >= 320px
+            200: {
+                slidesPerView: 4,
+                slidesPerColumnFill:'row',
+                spaceBetween: 4
+            },
+            // when window width is >= 480px
+            600: {
+                slidesPerView: 5,
+                spaceBetween: 5
+            },
+            // when window width is >= 640px
+            900: {
+                slidesPerView: 6,
+                spaceBetween: 6
+            }
+        }
+    });
+</script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+<script>
+
+    function enableMute() {
+
+        video.muted = true;
+    }
+    function disbleMute() {
+
+        video.muted = false;
+    }
+</script>
+<script>
+    $(document).ready(function() {
+
+        var vid = $("video").get(0);
+        vid.play();
+    });
+</script>
+<script>
+    var videoStorage = [
+            "{% static 'video/1' %}",
+            "{% static 'video/2' %}",
+            "{% static 'video/3' %}",
+        ],
+        video = document.querySelector('video'),
+        activeVideoUrl = videoStorage[Math.round(Math.random() * (videoStorage.length - 1))];
+
+    video.setAttribute('src', activeVideoUrl + '.mp4');
+
+    if (activeVideoUrl=="{% static 'video/1' %}"){
+        document.getElementById("platinumSponsor").innerHTML = "(e.g Waymo)";
+    }
+    else if  (activeVideoUrl=="{% static 'video/2' %}"){
+        document.getElementById("platinumSponsor").innerHTML = "(e.g Google)";
+    }
+    else {
+        document.getElementById("platinumSponsor").innerHTML = "(e.g Amazon)";
+    }
+</script>
+
+</div>
+</body>
+</html>

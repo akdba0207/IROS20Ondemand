@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>IROS 2020 On-Demand : Episodes</title>
+    <title>IROS 2020 On-Demand : WS/TR Episodes</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
 
     <script src="https://s3-us-west-2.amazonaws.com/ieeeshutpages/gdpr/settings.js"></script>
@@ -19,7 +19,9 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <!-- Link Swiper's CSS -->
     <link rel="stylesheet" href="{% static 'package/css/swiper.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/styles1007.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles1018.css' %}">
+    <link rel="stylesheet" href="{% static 'css/paperimg0930.css' %}">
+    <link rel="stylesheet" href="{% static 'css/episodeStyle1009.css' %}">
     <script
             src="https://kit.fontawesome.com/7541329784.js"
             crossorigin="anonymous"
@@ -33,6 +35,11 @@
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
     />
     <link rel="stylesheet" href="{% static 'css/index_header1006.css' %}" />
+    <style>
+        .morecontent span {
+            display: none;
+        }
+    </style>
     <script>
         function hitCounter(titleNumber){
             var mainHitcount = document.getElementById("mainHitCount");
@@ -43,7 +50,7 @@
                 dataType:'json',
                 success: function(json) {
                     {#alert("Title Hit Success")#}
-                    mainHitcount.innerHTML = json['hitCount'] + ' views';
+                    {#mainHitcount.innerHTML = json['hitCount'] + ' views';#}
                 },
                 error: function(err) {
                     alert("Failed to Retrieve JSON file from Server");
@@ -52,303 +59,466 @@
         }
     </script>
 </head>
-<body onload="hitCounter({{ SelectedPaperNumber }})">
-<nav style="background-color: rgba(0,0,0,0.7)" class="navbar navbar-expand-md navbar-dark fixed-top">
-    <!-- Brand/logo -->
-    <a class="navbar-brand" href="entrance">
-        <img src="{% static './resources/logo.png'%}" width="150px"/>
-    </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="collapsibleNavbar">
-        <!-- Links -->
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="entrance" style="color:white; ">Home</a>
-            </li>
-            <!-- Dropdown -->
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" style="color: white" href="#" id="navbardrop" data-toggle="dropdown">
-                    Entrance
-                </a>
-                <div class="dropdown-menu">
-                    <a class="dropdown-item" href="main?id=technicalpaper">Technical Talks</a>
-                    <a class="dropdown-item" href="main?id=wstr">Workshops and Tutorials</a>
-                    <a class="dropdown-item" href="main?id=competition">Robot Competition</a>
-                </div>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="mylist?" onClick="this.href=this.href+new Date().getTime()" style="color:white;">My Lists</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="logout" style="color:white;">Logout</a>
-            </li>
-        </ul>
-        <ul class="navbar-nav">
-            <form class="form-inline navbar-right">
-                <input type="text" id="search_bar" value="" class="searchBar" onkeydown="if(event.keyCode === 13) {event.preventDefault(); document.getElementById('searchBtn').click()}"/>
-                <d onclick="if(search_bar.value.length > 0)search()">
-                    <a id = "keywordDelivery" href="javascript: void(0)">
-                        <i id="searchBtn" class="fa fa-search" style="color:white;margin-left: 100%;font-size: 18px"></i>
+<body onload="hitCounter({{ selectedWorkshopEpisodeNumber }})">
+<div class="onDemandwidthControl">
+
+    <nav style="background-color: rgba(0,0,0,0.7)" class="navbar navbar-expand-md navbar-dark fixed-top">
+        <!-- Brand/logo -->
+        <a class="navbar-brand" href="main?id=wstr">
+            <img src="{% static './resources/logo.png'%}" width="150px"/>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+            <!-- Links -->
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="main?id=wstr" style="color:white; ">Home</a>
+                </li>
+                <!-- Dropdown -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" style="color: white" href="#" id="navbardrop" data-toggle="dropdown">
+                        Entrance
                     </a>
-                </d>
-            </form>
-        </ul>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="main?id=technicalpaper">Technical Talks</a>
+                        <a class="dropdown-item" href="main?id=wstr">Workshops and Tutorials</a>
+                        <a class="dropdown-item" href="main?id=competition">Robot Competition</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="mylist?id=2" onClick="this.href=this.href+'&'+new Date().getTime()" style="color:white;">My Lists</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="logout" style="color:white;">Logout</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav">
+                <form class="form-inline navbar-right">
+                    <input type="text" id="search_bar" value="" class="searchBar" onkeydown="if(event.keyCode === 13) {event.preventDefault(); document.getElementById('searchBtn').click()}"/>
+                    <d onclick="if(search_bar.value.length > 0)search()">
+                        <a id = "keywordDelivery" href="javascript: void(0)">
+                            <i id="searchBtn" class="fa fa-search" style="color:white;margin-left: 100%;font-size: 18px"></i>
+                        </a>
+                    </d>
+                </form>
+            </ul>
 
-    </div>
-</nav>
-<div style="width:95%; margin:0 auto; padding-top: 50px;" align="justify">
+        </div>
+    </nav>
+    <div style="width:95%; margin:0 auto; padding-top: 50px;" align="justify">
 
-    <p>&nbsp;</p>
-    {#    <video style="display:block; margin: 0 auto; width: 40%; height: auto" controls autoplay>#}
-    {#        <source src="https://ras.papercept.net/proceedings/ICRA20/{{ VideoList.0 }}" type="video/mp4">#}
-    {#    </video>#}
-
-    <table style="width: 100%;">
-        <tr>
-            <td style="width: 60%;">
-                <p align="center">
-                    <iframe allow="autoplay; fullscreen" width="800px" height="400px" style="display:block;"
-                            src="{{ workshopsVideo.0}}">
-                    </iframe>
-                </p>
-            </td>
-            <td style="width: 40%; vertical-align: center;">
-                {% csrf_token %}
-                {% include './comment_list_beta.html' %}
-            </td>
-        </tr>
-    </table>
-    <h3 class="episodeTitle">Title : {{ workshopsTalkTitle.0 }}</h3>
-    <span id="mainHitCount" style="color: white;font-size: 18px"></span>
-    <p>&nbsp;</p>
-
-
-    <center>
-        <table border="0" cellpadding="0" cellspacing="0"style="background-color: #1F1F1F; text-align: center;color: white;">
+        <p>&nbsp;</p>
+        <button class="gobackButton" onclick="goBack()"><< Go Back</button>
+        <span class="episodeDiv">
+        <div class="episodeVid">
+        <div id="videoSizeReader">
+                <video id="vid" style="display:block; margin: 0 auto; width: 100%;" controls autoplay playsinline>
+                    <source src="https://ras.papercept.net/proceedings/IROS20/{{ workshopsVideo }}" type="video/mp4">
+                </video>
+        </div>
+                    <h3 class="episodeTitle">Title : {{workshopsTalkTitle}}</h3>
+        <center>
+        <table class="episodeBtn" order="0" cellpadding="0" cellspacing="0">
             <tr>
-                <td class="gobackButton"><button onclick="goBack()">Go Back</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <td style="width: 30%">
+                    <scan id="mainHitCount" class="listHitCount" style="color: yellow;">{{ selectedWorkshopHitCount }} views</scan>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 </td>
-                <td>
-                    <scan id="mainHitCount" style="color: yellow; font-size: 18px"></scan>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                </td>
-                <td>
+                <td style="width: 30%">
                     {% csrf_token %}
                     {% if selectedWorkshopLikeButtonColor == 1 %}
-                        <button class="likeButton" type="submit" style="margin: auto;" onclick="updateLike({{ SelectedPaperNumber }})">
-                            <i id="thumbs{{SelectedPaperNumber}}" class="fa fa-thumbs-up" style="color:yellow; font-size: 30px"></i>
-                            <input type="text" id="{{ SelectedPaperNumber }}" value="{{ selectedWorkshopLikeCount }}" class="thumbsuptext" name="likeCount" readonly/>
-                            <input type="hidden" name="paperNumber" value="{{ SelectedPaperNumber }}">
+                        <button class="likeButton" type="submit" style="margin: auto;" onclick="updateLike({{ selectedWorkshopEpisodeNumber|floatformat:"0" }})">
+                            <i id="thumbs{{selectedWorkshopEpisodeNumber|floatformat:"0"}}" class="fa fa-thumbs-up" style="color:yellow;"></i>
+                            <input type="text" id="{{ selectedWorkshopEpisodeNumber|floatformat:"0" }}" value="{{ selectedWorkshopLikeCount }}" class="thumbsuptext" name="likeCount" readonly/>
+                            <input type="hidden" name="paperNumber" value="{{ selectedWorkshopEpisodeNumber|floatformat:"0" }}">
                         </button>
                     {% else %}
-                        <button class="likeButton" type="submit" style="padding: 0%" onclick="updateLike({{ SelectedPaperNumber }})">
-                            <i id="thumbs{{SelectedPaperNumber}}" class="fa fa-thumbs-up" style="color:grey; font-size: 30px"></i>
-                            <input type="text" id="{{ SelectedPaperNumber }}" value="{{ selectedWorkshopLikeCount }}" class="thumbsuptext" name="likeCount" readonly/>
-                            <input type="hidden" name="paperNumber" value="{{ SelectedPaperNumber }}">
+                        <button class="likeButton" type="submit" style="padding: 0%" onclick="updateLike({{ selectedWorkshopEpisodeNumber|floatformat:"0" }})">
+                            <i id="thumbs{{selectedWorkshopEpisodeNumber|floatformat:"0"}}" class="fa fa-thumbs-up" style="color:grey;"></i>
+                            <input type="text" id="{{ selectedWorkshopEpisodeNumber|floatformat:"0" }}" value="{{ selectedWorkshopLikeCount }}" class="thumbsuptext" name="likeCount" readonly/>
+                            <input type="hidden" name="paperNumber" value="{{ selectedWorkshopEpisodeNumber|floatformat:"0" }}">
                         </button>
                     {% endif %}
                 </td>
-                <td class="savePapers" style="color: white">
+                <td class="savePapers" style="color: white;width: 40%">
                     {% csrf_token %}
                     {% if selectedWorkshopSaveButtonStatus == 1 %}
-                        <button class="saveButton" type="submit" style="margin: auto;" onclick="updateSave({{ SelectedPaperNumber }})">
-                            <i id="savebutton{{SelectedPaperNumber}}" class="fa fa-check-circle"  aria-hidden="true" style="color:white; font-size: 30px"></i>
-                            <input type="hidden" name="paperNumber" value="{{ SelectedPaperNumber }}">
+                        <button class="saveButton" type="submit" style="margin: auto;background-color:transparent ;" onclick="updateSave({{ selectedWorkshopEpisodeNumber|floatformat:"0" }})">
+                            <i id="savebutton{{selectedWorkshopEpisodeNumber|floatformat:"0"}}" class="fa fa-check-circle"  aria-hidden="true" style="color:white;vertical-align: top"></i>
+                            <font id="buttonMessage{{selectedWorkshopEpisodeNumber|floatformat:"0"}}" style="color: white;">&nbsp;&nbsp;&nbsp;Added to my list</font>
+                            <input type="hidden" name="paperNumber" value="{{ selectedWorkshopEpisodeNumber|floatformat:"0" }}">
                         </button>
-                        <p>My List</p>
                     {% else %}
-                        <button class="saveButton" type="submit" style="padding: 0%;" onclick="updateSave({{ SelectedPaperNumber }})">
-                            <i id="savebutton{{SelectedPaperNumber}}" class="fa fa-plus"  aria-hidden="true" style="color:white; font-size: 30px"></i>
-                            <input type="hidden" name="paperNumber" value="{{ SelectedPaperNumber }}">
+                        <button class="saveButton" type="submit" style="padding: 0% ;background-color: transparent;" onclick="updateSave({{ selectedWorkshopEpisodeNumber|floatformat:"0" }})">
+                            <i id="savebutton{{selectedWorkshopEpisodeNumber|floatformat:"0"}}" class="fa fa-plus"  aria-hidden="true" style="color:white;vertical-align: top"></i>
+                            <font id="buttonMessage{{selectedWorkshopEpisodeNumber|floatformat:"0"}}" style="color: white;">&nbsp;&nbsp;&nbsp;Add to my List</font>
+                            <input type="hidden" name="paperNumber" value="{{ selectedWorkshopEpisodeNumber|floatformat:"0" }}">
                         </button>
-                        <p>My List</p>
                     {% endif %}
                 </td>
             </tr>
         </table>
-    </center>
-
-    <h3 style="padding-bottom: 2%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; More Talks in this workshops : </h3>
-
-    {% for Speaker, Institution, TalkTitle, workshopEpisodeNumber, workshopLikeButtonColor, workshopLikeCount, workshopSaveButtonStatus, workshopHitCount in WorkshopsContext %}
-        {% if Speaker == 'missing' %}
-            &nbsp;
+        </center>
+        </div>
+           <div class="episodeCmt">
+                {% csrf_token %}
+                {% include './comment_list_beta.html' %}
+            </div>
+    </span>
+        <p>&nbsp;</p>
+        {% if WSorTR == 1 %}
+            <h3 style="padding-bottom: 2%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; More Talks in this workshops : </h3>
         {% else %}
-            {% if workshopEpisodeNumber == SelectedPaperNumber %}
-            {% else %}
-                <div class="epilisttable" style="width: 80%; height: auto; text-align: center; margin-left: 10%; background-color: transparent; margin-bottom:1%">
-                    <table border="0" cellpadding="0" cellspacing="0" style="background-color: #323232;" >
-                        <tr>
-                            <td style="width: 30%">
-                                <a href="workshopsepisode?id={{Speaker}}&id2={{selectedWorkshops}}&id3={{ selectedGenre }}&id4={{ forloop.counter0|add:1 }}" onClick="this.href=this.href+'&'+new Date().getTime()">
-                                    <img src="{% static './resources/playlogo.png'%}"></a>
-                            </td>
-                            <td valign="top" align="left" style="padding-left: 5%; padding-top: 3%;word-break: keep-all">
-                                <p class="papertitle" style="color: white;">Title : {{ TalkTitle }}</p>
-                                <table class="paperInfo" border="0" cellpadding="0" cellspacing="0" width="100% "style="background-color: #323232; text-align: left;color: white;">
-                                    <tbody>
-                                    <tr>
-                                        <td style="width: 20%;">Speaker</td>
-                                        <td>{{ Speaker }}</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td style="width: 20%">Institution</td>
-                                        <td>{{ Institution }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>&nbsp;</td>
-                                        <td>&nbsp;</td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                                {% if workshopLikeButtonColor == 1 %}
-                                    <button class="likeButton" type="submit" style="margin: auto;background-color: #323232 ;" onclick="updateLike({{ workshopEpisodeNumber }})">
-                                        <i id="thumbs{{workshopEpisodeNumber}}" class="fa fa-thumbs-up" style="color:yellow; font-size: 30px"></i>
-                                        <input type="text" id="{{ workshopEpisodeNumber }}" value="{{ workshopLikeCount }}" class="thumbsuptext" name="likeCount" readonly/>
-                                        <input type="hidden" name="paperNumber" value="{{ workshopEpisodeNumber }}">
-                                    </button>
-                                {% else %}
-                                    <button class="likeButton" type="submit" style="padding: 0% ;background-color: #323232;" onclick="updateLike({{ workshopEpisodeNumber }})">
-                                        <i id="thumbs{{workshopEpisodeNumber}}" class="fa fa-thumbs-up" style="color:grey; font-size: 30px"></i>
-                                        <input type="text" id="{{ workshopEpisodeNumber }}" value="{{ workshopLikeCount }}" class="thumbsuptext" name="likeCount" readonly/>
-                                        <input type="hidden" name="paperNumber" value="{{ workshopEpisodeNumber }}">
-                                    </button>
-                                {% endif %}
-                                <span class="listHitCount" style="color: white;font-size: 18px">{{ workshopHitCount }} views</span>
-                            </td>
-                            <td class="savePapers" style="width: 5%; color: white">
-                                {% csrf_token %}
-                                {% if workshopSaveButtonStatus == 1 %}
-                                    <button class="saveButton" type="submit" style="margin: auto;background-color: #323232 ;" onclick="updateSave({{ workshopEpisodeNumber }})">
-                                        <i id="savebutton{{workshopEpisodeNumber}}" class="fa fa-check-circle"  aria-hidden="true" style="color:white; font-size: 30px"></i>
-                                        <input type="hidden" name="paperNumber" value="{{ workshopEpisodeNumber }}">
-                                    </button>
-                                    <p>My List</p>
-                                {% else %}
-                                    <button class="saveButton" type="submit" style="padding: 0% ;background-color: #323232;" onclick="updateSave({{ workshopEpisodeNumber }})">
-                                        <i id="savebutton{{workshopEpisodeNumber}}" class="fa fa-plus"  aria-hidden="true" style="color:white; font-size: 30px"></i>
-                                        <input type="hidden" name="paperNumber" value="{{ workshopEpisodeNumber }}">
-                                    </button>
-                                    <p>My List</p>
-                                {% endif %}
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-            {% endif %}
+            <h3 style="padding-bottom: 2%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; More Talks in this tutorials : </h3>
         {% endif %}
-    {% endfor %}
 
-    <script src="{% static 'package/js/swiper.min.js' %}"></script>
+        {% for Speaker, Institution, TalkTitle, workshopEpisodeNumber, workshopLikeButtonColor, workshopLikeCount, workshopSaveButtonStatus, workshopHitCount, workshopsVideo, Abstract, Dummy in WorkshopsContext %}
+            {% if TalkTitle == workshopsTalkTitle %}
+            {% else %}
+                {% if workshopsVideo == 'missing' %}
+                {% else %}
+                    <div class="epilisttable" style="width: 80%; height: auto; text-align: center; margin-left: 10%; background-color: #323232; margin-bottom:1%">
+                        <table border="0" cellpadding="0" cellspacing="0" style="background-color: transparent;" >
+                            <tr>
+                                <td class="epilisttableleft">
+                                    <img width="100%" onError="this.onerror=null;this.src='{% static './resources/logo2.png' %}';" src="{% static './resources/logo2.png'%}">
+                                </td>
+                                <td valign="top" align="left" class="epilisttableright">
+                                    <p class="papertitle" style="color: white;">{{ TalkTitle }}</p>
+                                    <table class="paperInfo" border="0" cellpadding="0" cellspacing="0" width="100% "style="background-color: #323232; text-align: left;color: white;">
+                                        <tbody>
+                                        <tr>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width: 20%;word-break: break-word">Speaker / Organizer</td>
+                                            <td style="width: 60%;">{{ Speaker }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Affiliation</td>
+                                            <td>{{ Institution }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>&nbsp;</td>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                        {% if Abstract == 'missing' %}
+                                        {% else %}
+                                            <tr>
+                                                <td>Abstract</td>
+                                                <td><div class="more">{{ Abstract }}</div></td>
+                                            </tr>
+                                        {% endif %}
+                                        </tbody>
+                                    </table>
+                                    <br>
+                                    {% if Dummy != 1 %}
+                                        <div style="color: white;">
+                                            {% csrf_token %}
+                                            {% if workshopSaveButtonStatus == 1 %}
+                                                <button class="saveButton" type="submit" style="margin: auto;background-color: #323232; color: white" onclick="updateSave({{ workshopEpisodeNumber|floatformat:"0" }})">
+                                                    <i id="savebutton{{workshopEpisodeNumber|floatformat:"0"}}" class="fa fa-check-circle"  aria-hidden="true" style="color:white;vertical-align: top"></i>
+                                                    <font id="buttonMessage{{workshopEpisodeNumber|floatformat:"0"}}" style="color: white;">&nbsp;&nbsp;&nbsp;Added to my list</font>
+                                                    <input type="hidden" name="paperNumber" value="{{ workshopEpisodeNumber|floatformat:"0" }}">
+                                                </button>
+                                            {% else %}
+                                                <button class="saveButton" type="submit" style="padding: 0% ;background-color: #323232;" onclick="updateSave({{ workshopEpisodeNumber|floatformat:"0" }})">
+                                                    <i id="savebutton{{workshopEpisodeNumber|floatformat:"0"}}" class="fa fa-plus"  aria-hidden="true" style="color:white;vertical-align: top"></i>
+                                                    <font id="buttonMessage{{workshopEpisodeNumber|floatformat:"0"}}" style="color: white;">&nbsp;&nbsp;&nbsp;Add to my List</font>
+                                                    <input type="hidden" name="paperNumber" value="{{ workshopEpisodeNumber|floatformat:"0" }}">
+                                                </button>
+                                            {% endif %}
+                                        </div>
+                                    {% endif %}
+                                    <br>
+                                    <div>
+                                        {% if Dummy == 1 %}
+                                            <div class="videoPlayButton">
+                                                <div class="videoPlayButtonText">Expected to be released
+                                                </div>
+                                            </div>
+                                        {% else %}
+                                            <a style="text-decoration: none" href="workshopsepisode?id={{workshopEpisodeNumber|floatformat:"0"}}&id2={{selectedWorkshopsNumber}}" onClick="this.href=this.href+'&'+new Date().getTime()">
+                                                <div class="videoPlayButton">
+                                                    <div class="videoPlayButtonIcon">
+                                                        <i class="fa fa-play-circle" style="vertical-align: middle;"></i>
+                                                    </div>
+                                                    <div class="videoPlayButtonText">Watch Now
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        {% endif %}
+                                    </div>
+                                    <br>
+                                    {% if Dummy != 1 %}
+                                        <div class="paperlikeviewcountdiv">
+                                            {% if workshopLikeButtonColor == 1 %}
+                                                <button class="likeButton" type="submit" style="margin: auto;background-color: #323232 ;" onclick="updateLike({{ workshopEpisodeNumber|floatformat:"0" }})">
+                                                    <i id="thumbs{{workshopEpisodeNumber|floatformat:"0"}}" class="fa fa-thumbs-up" style="color:yellow;"></i>
+                                                    <input type="text" id="{{ workshopEpisodeNumber|floatformat:"0" }}" value="{{ workshopLikeCount }}" class="thumbsuptext" name="likeCount" readonly/>
+                                                    <input type="hidden" name="paperNumber" value="{{ workshopEpisodeNumber|floatformat:"0" }}">
+                                                </button>
+                                            {% else %}
+                                                <button class="likeButton" type="submit" style="padding: 0% ;background-color: #323232;" onclick="updateLike({{ workshopEpisodeNumber|floatformat:"0" }})">
+                                                    <i id="thumbs{{workshopEpisodeNumber|floatformat:"0"}}" class="fa fa-thumbs-up" style="color:grey;"></i>
+                                                    <input type="text" id="{{ workshopEpisodeNumber|floatformat:"0" }}" value="{{ workshopLikeCount }}" class="thumbsuptext" name="likeCount" readonly/>
+                                                    <input type="hidden" name="paperNumber" value="{{ workshopEpisodeNumber|floatformat:"0" }}">
+                                                </button>
+                                            {% endif %}
+                                            <span class="listHitCount">{{ workshopHitCount }} views</span>
+                                        </div>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
 
-    <script>
-        function search(){
-            const query = document.getElementById("search_bar").value;
-            document.getElementById("keywordDelivery").href = "searchresult?id="+query;
-        }
+        <script src="{% static 'package/js/swiper.min.js' %}"></script>
 
-    </script>
-    <!-- Initialize Swiper -->
-    <script>
-        var swiper = new Swiper('.swiper-container', {
-            {#slidesPerView: 7,#}
-            {#spaceBetween: 10,#}
-            slidesPerGroup: 2,
-            pagination: {
-                el: '.swiper-pagination',
-                clickable: true,
-            },
-            navigation: {
-                nextEl: '.swiper-button-next',
-                prevEl: '.swiper-button-prev',
-            },
-            breakpoints: {
-                // when window width is >= 320px
-                200: {
-                    slidesPerView: 4,
-                    slidesPerColumnFill:'row',
-                    spaceBetween: 4
-                },
-                // when window width is >= 480px
-                600: {
-                    slidesPerView: 5,
-                    spaceBetween: 5
-                },
-                // when window width is >= 640px
-                900: {
-                    slidesPerView: 6,
-                    spaceBetween: 6
-                }
+        <script>
+            function search(){
+                const query = document.getElementById("search_bar").value;
+                document.getElementById("keywordDelivery").href = "searchresult?id2=2&id="+query;
             }
-        });
-    </script>
-    <script>
-        function goBack() {
-            {#window.history.back();#}
-            var oldURL = document.referrer;
-            var newURL = oldURL.substr(0, oldURL.length-new Date().getTime().toString().length);
-            location.href=newURL+new Date().getTime();
-        }
-    </script>
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
-    <script>
-        function updateLike(titleNumber){
-            $.ajax({
-                url:'post_like',
-                type:'POST',
-                data:{'paperNumber':titleNumber},
-                dataType:'json',
-                success: function(json) {
-                    $('#'+titleNumber)[0].value =  json['likeCount'];
-                    $('#thumbs'+titleNumber)[0].style.color =  json['likeButtonColor'];
-                },
-                error: function(err) {
-                    alert("Failed to Retrieve JSON file from Server");
+        </script>
+        <script>
+            function goBack() {
+                location.href=document.referrer;
+            }
+        </script>
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+        <script>
+            function updateLike(titleNumber){
+                var currLikeCount= parseInt($('#'+titleNumber)[0].value,10);
+                var currLikeColor =$('#thumbs'+titleNumber)[0].style.color;
+
+                if(currLikeColor == 'yellow'){
+                    $('#'+titleNumber)[0].value = currLikeCount -1;
+                    $('#thumbs'+titleNumber)[0].style.color =  'grey';
+                }else{
+
+                    $('#'+titleNumber)[0].value = currLikeCount + 1;
+                    $('#thumbs'+titleNumber)[0].style.color =  'yellow';
                 }
-            });
-        }
-    </script>
-    <script>
-        function updateSave(titleNumber){
-            var savebuttonClass = document.getElementById("savebutton"+titleNumber).className;
-            $.ajax({
-                url:'post_save',
-                type:'POST',
-                data:{'paperNumber':titleNumber},
-                dataType:'json',
-                success: function(json) {
+                $.ajax({
+                    url:'post_like',
+                    type:'POST',
+                    data:{'paperNumber':titleNumber},
+                    dataType:'json',
+                    success: function(json) {
+                        {#$('#'+titleNumber)[0].value =  json['likeCount'];#}
+                        {#$('#thumbs'+titleNumber)[0].style.color =  json['likeButtonColor'];#}
+                    },
+                    error: function(err) {
+                        alert("Failed to Retrieve JSON file from Server(Like)");
+                    }
+                });
+            }
+        </script>
+        <script>
+            function updateSave(titleNumber){
+                var savebuttonClass = document.getElementById("savebutton"+titleNumber).className;
+                if(savebuttonClass == 'fa fa-plus'){
                     $('#savebutton'+titleNumber).removeClass(savebuttonClass);
-                    $('#savebutton'+titleNumber).addClass(json['paperSaveButtonStatus']);
-                },
-                error: function(err) {
-                    alert("Failed to Retrieve JSON file from Server");
+                    $('#savebutton'+titleNumber).addClass('fa fa-check-circle');
+                    $('#buttonMessage'+titleNumber).html('&nbsp;&nbsp;&nbsp;Added to my list')
+                }else{
+                    $('#savebutton'+titleNumber).removeClass(savebuttonClass);
+                    $('#savebutton'+titleNumber).addClass('fa fa-plus');
+                    $('#buttonMessage'+titleNumber).html('&nbsp;&nbsp;&nbsp;Add to my list')
+                }
+                $.ajax({
+                    url:'post_save',
+                    type:'POST',
+                    data:{'paperNumber':titleNumber},
+                    dataType:'json',
+                    success: function(json) {
+                        {#$('#savebutton'+titleNumber).removeClass(savebuttonClass);#}
+                        {#$('#savebutton'+titleNumber).addClass(json['paperSaveButtonStatus']);#}
+                        {#$('#buttonMessage'+titleNumber).html('&nbsp;&nbsp;&nbsp;'+json['buttonMessage'])#}
+                    },
+                    error: function(err) {
+                        alert("Failed to Retrieve JSON file from Server(Save)");
+                    }
+                });
+            }
+        </script>
+        <script>
+            function addComment(titleNumber, comment){
+                $.ajax({
+                    url:'add_comment',
+                    type:'POST',
+                    data:{'paperNumber':titleNumber, 'comment':comment},
+                    dataType:'json',
+                    success: function(json) {
+                        $('#comment_input')[0].value = '';
+                        {#$('#commentList').replaceWith($("#commentList", json['arrayComments']))#}
+                        commentIndex = json['lengthComments'];
+                        commentAdded = json['commentAdded'];
+                        $('.commentList').append("<p class=\"comment\" id=\"comment"+commentIndex+"\">"+commentAdded+"</p>");
+                        var autoScroll = $('.commentList')
+                        autoScroll.scrollTop(autoScroll.prop('scrollHeight'));
+                    }
+                });
+            }
+        </script>
+        <script>
+            var vid = document.getElementById("vid");
+
+            var loadStart = 0, loadFinish = 0, loadTime = 0;
+            var timeStarted = -1;
+            var timeStopped = 0;
+            var timePlayed = 0;
+            var loadDone = false;
+
+            function videoStartedPlaying(event){
+                console.log("Started Playing");
+                timeStarted = new Date().getTime();
+            }
+
+            function videoStoppedPlaying(event){
+                console.log("Stopped Playing");
+                if(timeStarted < 0)
+                    return;
+                timeStopped = new Date().getTime();
+                newTime = timeStopped - timeStarted;
+                timePlayed += newTime;
+                console.log("added time: " + newTime + "ms");
+                console.log("total time: " + timePlayed + "ms");
+                timeStarted = -1;
+            }
+
+            function fLoadStart(){
+                console.log("Load Start");
+                loadStart = new Date().getTime();
+            }
+
+            function fLoadFinish(){
+                if(loadDone === true)
+                    return;
+                console.log("Load Finish");
+                loadFinish = new Date().getTime();
+                loadTime = loadFinish - loadStart;
+                console.log("loadTime: " + loadTime + "ms");
+                loadDone = true;
+            }
+
+            vid.addEventListener('loadstart', fLoadStart);
+            vid.addEventListener('canplaythrough', fLoadFinish);
+
+            vid.addEventListener('play', videoStartedPlaying);
+            {#vid.addEventListener('playing', videoStartedPlaying);#}
+
+            vid.addEventListener('ended', videoStoppedPlaying);
+            vid.addEventListener('pause', videoStoppedPlaying);
+
+            function catch_backpress(){
+                console.log("Catching Backpress");
+                if(timeStarted < 0)
+                    return;
+                if(loadTime > 100000)
+                    loadTime = 0;
+                timeStopped = new Date().getTime();
+                newTime = timeStopped - timeStarted - loadTime;
+                timePlayed += newTime;
+                console.log("added time: " + newTime + "ms");
+                console.log("total time: " + timePlayed + "ms");
+                timeStarted = -1;
+            }
+        </script>
+        <script>
+            window.addEventListener( "pageshow", function ( event ) {
+                var historyTraversal = event.persisted ||
+                    ( typeof window.performance != "undefined" &&
+                        window.performance.navigation.type === 2 );
+                if ( historyTraversal ) {
+                    // Handle page restore.
+                    window.location.reload();
+                    {#console.log('save my ass')#}
                 }
             });
-        }
-    </script>
-    <script>
-        function addComment(titleNumber, comment){
-            $.ajax({
-                url:'add_comment',
-                type:'POST',
-                data:{'paperNumber':titleNumber, 'comment':comment},
-                dataType:'json',
-                success: function(json) {
-                    $('#comment_input')[0].value = '';
-                    {#$('#commentList').replaceWith($("#commentList", json['arrayComments']))#}
-                    commentIndex = json['lengthComments'];
-                    commentAdded = json['commentAdded'];
-                    $('.commentList').append("<p class=\"comment\" id=\"comment"+commentIndex+"\">"+commentAdded+"</p>");
-                    var autoScroll = $('.commentList')
-                    autoScroll.scrollTop(autoScroll.prop('scrollHeight'));
-                }
+        </script>
+        <script>
+            function update_playtime(titleNumber) {
+                $.ajax({
+                    url: 'update_playtime',
+                    type: 'POST',
+                    data: {
+                        'paperNumber': titleNumber,
+                        'time': timePlayed,
+                    },
+                    dataType: 'json',
+                    success: function (json) {
+                        console.log("successfully updated video playtime: " + json['total_time'] + " seconds");
+                    },
+                    error: function (err) {
+                        alert("Failed to Retrieve JSON file from Server (Video)");
+                    }
+                });
+            }
+        </script>
+        <script>
+            var v = document.getElementById("vid");
+            var width,height;
+            var episodeComment = document.getElementById("commentbox");
+            v.addEventListener( "loadedmetadata", function (e) {
+                var result = $("#videoSizeReader").css('height');
+                episodeComment.style.height = result;
+                console.log(result);
+            }, false );
+
+        </script>
+        <script>
+            window.addEventListener("beforeunload", function(event){
+                console.log("Updating Vid Playtime"+" {{ selectedWorkshopEpisodeNumber|floatformat:"0" }}");
+                catch_backpress();
+                update_playtime("{{ selectedWorkshopEpisodeNumber|floatformat:"0" }}");
             });
-        }
-    </script>
+        </script>
+        <script>
+            $(document).ready(function() {
+                // Configure/customize these variables.
+                var showChar = 100;  // How many characters are shown by default
+                var ellipsestext = "...";
+                var moretext = "Show more";
+                var lesstext = "Show less";
+
+                $('.more').each(function() {
+                    var content = $(this).html();
+
+                    if(content.length > showChar) {
+                        var c = content.substr(0, showChar);
+                        var h = content.substr(showChar-1, content.length - showChar);
+                        {#console.log(h)#}
+                        var html = c + '<span class="moreellipses">' + ellipsestext+ '&nbsp;</span><span class="morecontent"><span>' + h + '</span>&nbsp;&nbsp;<a href="" class="morelink">' + moretext + '</a></span>';
+                        $(this).html(html);
+                    }
+                });
+
+                $(".morelink").click(function(){
+                    if($(this).hasClass("less")) {
+                        $(this).removeClass("less");
+                        $(this).html(moretext);
+                    } else {
+                        $(this).addClass("less");
+                        $(this).html(lesstext);
+                    }
+                    $(this).parent().prev().toggle();
+                    $(this).prev().toggle();
+                    return false;
+                });
+            });
+        </script>
+    </div>
 </div>
 </body>
 </html>
