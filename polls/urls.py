@@ -1,5 +1,5 @@
 from django.conf.urls import url
-from django.urls import path, re_path
+from django.urls import path, re_path,include
 from polls import views
 
 urlpatterns = [
@@ -28,6 +28,13 @@ urlpatterns = [
 
     path('update_playtime', views.update_playtime, name='update_playtime'),
     path('competition', views.competition),
+    path('about',views.about),
+    path('faqhelp',views.faqhelp),
+    path('partners',views.partners),
+    path('partnerspage',views.partnerspage),
+    path('placeyourads',views.placeyourads),
+    url(r'session_security/', include('session_security.urls')),
+    path('save_last_activity', views.save_last_activity, name='save_last_activity'),
     # path('post_like', views.post_like, name='post_like'),
     # path('add_comment', views.add_comment, name='add_comment'),
     # path('post_save', views.post_save, name='post_save'),

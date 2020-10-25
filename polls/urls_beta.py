@@ -1,5 +1,5 @@
 from django.conf.urls import url
-from django.urls import path, re_path
+from django.urls import path, re_path, include
 from polls import views_beta
 
 from . import views_beta
@@ -25,9 +25,17 @@ urlpatterns = [
     path('resendactivation', views_beta.resendactivation, name='resendactivation'),
     path('update_playtime', views_beta.update_playtime, name='update_playtime'),
     path('competition',views_beta.competition),
+    path('about',views_beta.about),
+    path('faqhelp',views_beta.faqhelp),
+    path('partners',views_beta.partners),
+    path('partnerspage',views_beta.partnerspage),
+    path('placeyourads',views_beta.placeyourads),
 
     re_path(r'^account_activation_sent/$', views_beta.account_activation_sent, name='account_activation_sent'),
     re_path(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
             views_beta.activate, name='activate'),
     # path('activate/<str:uid64>/<str:token>/',views_beta.activate, name='activate'),
+
+    url(r'session_security/', include('session_security.urls')),
+    path('save_last_activity', views_beta.save_last_activity, name='save_last_activity'),
 ]

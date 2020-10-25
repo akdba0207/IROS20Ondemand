@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
+    'session_security',
 ]
 
 MIDDLEWARE = [
@@ -51,6 +51,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'session_security.middleware.SessionSecurityMiddleware',
 ]
 
 ROOT_URLCONF = 'mysite.urls'
@@ -151,3 +152,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # EMAIL_HOST_USER = 'ondemandinfo@iros2020.org'
 # EMAIL_HOST_PASSWORD = 'dasldrchubo1325'
 # EMAIL_USE_TLS = True
+
+SESSION_SECURITY_EXPIRE_AFTER=10
+SESSION_SECURITY_WARN_AFTER=5
+SESSION_EXPIRE_AT_BROWSER_CLOSE=True

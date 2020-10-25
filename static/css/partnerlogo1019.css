@@ -1,0 +1,96 @@
+.partnerLogoOranizer{
+    width: 100%;
+    display: inline-flex;
+    text-align: center;
+    background-color: white;
+}
+.partnerlogo{
+    display: inline-block;
+    width: 25%;
+}
+.partnerlogo img{
+    width: 100%;
+}
+.partnerlogo2{
+    display: inline-block;
+    width: 25%;
+}
+.partnerlogo2 img{
+    width: 100%;
+}
+.partnerTitleOrganizer{
+    width: 100%;
+    display: inline-flex;
+    text-align: center;
+    background-color: white;
+    display: block;padding-bottom: 30px; padding-top: 30px;
+    margin-top: 150px;
+}
+.parterbanner1{
+    font-size: 36px;
+    color: rgb(200,0,0);
+    margin: 0 auto;
+    /*text-shadow: 0px 0px 5px white;*/
+    font-family: "Roboto", sans-serif;
+}
+
+@media only screen and (max-width: 400px){
+    .partnerLogoOranizer{
+        display: block;
+        text-align: center;
+        width: 100%;
+    }
+    .partnerlogo{
+        display: inline-block;
+        text-align: center;
+        width: 70%;
+    }
+    .partnerlogo img{
+        width: 100%;
+    }
+    .partnerlogo2{
+        display: inline-block;
+        text-align: center;
+        width: 70%;
+    }
+    .partnerlogo2 img{
+        width: 100%;
+    }
+    .partnerTitleOrganizer{
+        width: 100%;
+    }
+    .parterbanner1{
+        font-size:150%;
+    }
+}
+
+@media only screen and (max-width: 960px) and (min-width: 401px) {
+    .partnerLogoOranizer{
+        display: inline-block;
+        text-align: center;
+        width: 100%;
+    }
+    .partnerlogo{
+        display: inline-block;
+        width: 48%;
+    }
+    .partnerlogo img{
+        width: 100%;
+    }
+    .partnerlogo2{
+        display: inline-block;
+        width: 48%;
+    }
+    .partnerlogo2 img{
+        width: 100%;
+    }
+    .partnerTitleOrganizer{
+        width: 100%;
+    }
+    .parterbanner1{
+        font-size:200%;
+    }
+}
+@media only screen and (max-width: 1200px) and (min-width: 961px) {
+
+}

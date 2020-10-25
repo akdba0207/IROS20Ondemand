@@ -62,7 +62,7 @@ body {
     color: yellow;
     text-align: left;
     line-height: 1.0;
-    word-break: break-all;
+    word-break: break-word;
 }
 .carousel-p3{
     font-size: 20px;margin-top:0px;text-align: center;
@@ -156,6 +156,7 @@ body {
     background-color: rgba(0, 0, 0, 0.7);
     width: 100%;
     bottom: 0%;
+    line-height: 1.2;
 }
 
 h1 {
@@ -222,6 +223,7 @@ h3 {
 }
 .landingtabletopLeft{
     width: 50%;
+    background-color: black;
 }
 
 .landingtabletopLeft div{
@@ -241,6 +243,18 @@ h3 {
 }
 .landingtablebottomleft{
     padding-left:10%;
+    width: 20%;
+    color: sandybrown;
+    text-align: left
+}
+.landingtablebottomleft2{
+    padding-left:4%;
+    width: 20%;
+    color: sandybrown;
+    text-align: left
+}
+.landingtablebottomleft3{
+    padding-left:3%;
     width: 20%;
     color: sandybrown;
     text-align: left
@@ -425,6 +439,7 @@ h3 {
     }
     .onimg-caption{
         font-size: 65%;
+        line-height: 1.1;
     }
     .keynoteimg {
         padding: 70px 0px;
@@ -495,8 +510,16 @@ h3 {
         padding-left:3%;
         width: 20%;
     }
+    .landingtablebottomleft2{
+        padding-left:3%;
+        width: 20%;
+    }
+    .landingtablebottomleft3{
+        padding-left:0%;
+        width: 25%;
+    }
     .landingtablebottomright{
-        width: 72%;
+        width: 75%;
         margin-left: 3%;
         text-align: left
     }
@@ -634,6 +657,7 @@ h3 {
     }
     .onimg-caption{
         font-size: 70%;
+        line-height: 1.1;
     }
     .keynoteimg {
         padding: 60px 0px;
@@ -702,6 +726,14 @@ h3 {
     }
     .landingtablebottomleft{
         padding-left:3%;
+        width: 20%;
+    }
+    .landingtablebottomleft2{
+        padding-left:3%;
+        width: 20%;
+    }
+    .landingtablebottomleft3{
+        padding-left:1%;
         width: 20%;
     }
     .landingtablebottomright{
@@ -827,6 +859,14 @@ h3 {
         padding-left:3%;
         width: 20%;
     }
+    .landingtablebottomleft2{
+        padding-left:3%;
+        width: 20%;
+    }
+    .landingtablebottomleft3{
+        padding-left:1%;
+        width: 20%;
+    }
     .landingtablebottomright{
         width: 72%;
         margin-left: 3%;
@@ -865,7 +905,7 @@ h3 {
         font-size: 95%;
     }
 }
-@media only screen and (min-width: 601px) and (max-width: 900px){
+@media only screen and (min-width: 601px) and (max-width: 970px){
     .carousel-covers{
         border-radius: 10px;
         text-align: center;
@@ -913,6 +953,7 @@ h3 {
     }
     .onimg-caption{
         font-size: 70%;
+        line-height: 1.2;
     }
     .keynoteimg {
         padding: 50px 0px;
@@ -973,7 +1014,7 @@ h3 {
         margin-top: 30%;
     }
 }
-@media only screen and (min-width: 901px) and (max-width: 1200px){
+@media only screen and (min-width: 971px) and (max-width: 1380px){
     .carousel-video{
         transform: scale(1.05);
     }
@@ -1003,6 +1044,7 @@ h3 {
     }
     .onimg-caption{
         font-size: 70%;
+        /*line-height: 1.1;*/
     }
     .keynoteimg {
         padding: 5px 0px;

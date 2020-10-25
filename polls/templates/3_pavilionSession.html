@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+{% include 'beta/session_security/all.html' %}
 {% load static %}
 <html lang="en">
 
@@ -18,7 +20,7 @@
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <!-- Link Swiper's CSS -->
-    <link rel="stylesheet" href="{% static 'package/css/swiper.min.css' %}">
+    <link rel="stylesheet" href="{% static 'package/css/swiper.css' %}">
     <link rel="stylesheet" href="{% static 'css/styles1018.css' %}">
     <link rel="stylesheet" href="{% static 'css/paperimg0930.css' %}">
     <script
@@ -40,7 +42,7 @@
 <body>
 <div class="onDemandwidthControl">
 
-    <nav style="background-color: rgba(0,0,0,0.7)" class="navbar navbar-expand-md navbar-dark fixed-top">
+    <nav style="background-color: rgba(0,0,0,0.7)" class="navbar navbar-expand-lg navbar-dark fixed-top">
         <!-- Brand/logo -->
         <a class="navbar-brand" href="main?id=technicalpaper">
             <img src="{% static './resources/logo.png'%}" width="150px"/>
@@ -73,6 +75,18 @@
                 </li>
             </ul>
             <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="placeyourads?id=1"  onClick="this.href=this.href+'&'+new Date().getTime()" style="color:white;">Place your Ad</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="partners?id=1" onClick="this.href=this.href+'&'+new Date().getTime()" style="color:white;">Partners</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="about?id=1" onClick="this.href=this.href+'&'+new Date().getTime()" style="color:white;">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="faqhelp?id=1" onClick="this.href=this.href+'&'+new Date().getTime()" style="color:white;">FAQ/Help</a>
+                </li>
                 <form class="form-inline navbar-right">
                     <input type="text" id="search_bar" value="" class="searchBar" onkeydown="if(event.keyCode === 13) {event.preventDefault(); document.getElementById('searchBtn').click()}"/>
                     <d onclick="if(search_bar.value.length > 0)search()">
@@ -114,37 +128,38 @@
                 {% else %}
                     <tr>
                         <td class="gsTableLeft">
-                            {% if partnerVideoType.0 == 'YouTube'%}
-                                <div style="position: relative;overflow: hidden;text-align: center">
-                                    <iframe class="gsGoldpartnerVid2" src="https://www.youtube.com/embed/{{ partnerVideoLink.0 }}" frameborder="0"
-                                            allow="accelerometer; fullscreen;autoplay; encrypted-media; gyroscope; picture-in-picture"></iframe>
-                                </div>
-                            {% else %}
-                                <div style="position: relative;overflow: hidden;">
-                                    <video id="videoGoldSponsor" width="100%" autoplay loop playsinline>
-                                        <source src="{% static './video'%}/Gold Partner/{{ partnerVideo.0 }}.mp4" type="video/mp4">
-                                    </video>
-                                </div>
-                                <div class="gsVidCaptionBtn">
-                                    <button style="background-color: transparent;border: none; margin:auto; outline: none;color: red;" class="UnmuteBtn"  onclick="disbleMute('videoGoldSponsor')" type="button">
-                                        <i id="muteBtn" class="fas fa-volume-up"></i>
-                                    </button>
-                                </div>
-                            {% endif %}
+                            <div style="position: relative;overflow: hidden;transform: scale(1.02);">
+                                <video id="videoGoldSponsor" width="100%" autoplay loop playsinline>
+                                    <source src="{% static './video'%}/Gold/{{ partnerVideo.0 }}.mp4" type="video/mp4">
+                                </video>
+                            </div>
+                            <div class="gsVidCaptionBtn">
+                                <button style="background-color: transparent;border: none; margin:auto; outline: none;color: red;" class="UnmuteBtn"  onclick="disbleMute('videoGoldSponsor')" type="button">
+                                    <i id="muteBtn" class="fas fa-volume-up"></i>
+                                </button>
+                            </div>
                         </td>
                         <td style="background-color: rgba(0,0,0,.8)">
                             <div style="position: relative;overflow: hidden">
                                 <div class="gsVidCaption">
                                     <div style="width: 100%;text-align: center;">
                                         <img id="psponsorImg3" src="{% static 'img/Partners/Gold'%}/{{ partnerName.0 }}.png" width="90%">
-                                        <p class="gsVidCaption-p1">IROS {{ partnerCartegory.0 }} Partner</p>
+                                        {% if partnerName.0 == 'IROS2021' %}
+                                            <p class="gsVidCaption-p1">IROS 2021 in Prague, Czech Republic</p>
+                                        {% else %}
+                                            <p class="gsVidCaption-p1">IROS {{ partnerCartegory.0 }} Partner</p>
+                                        {% endif %}
                                         {% if partnerAbstract|length == 0 %}
                                             <p class="gsVidCaption-p2">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam a dolor vitae metus tincidunt sollicitudin.
                                                 Nulla molestie eget turpis nec fermentum. Curabitur quis bibendum justo.</p>
                                         {% else %}
-                                            <p class="gsVidCaption-p2">{{ partnerAbstract.0 }}</p>
+                                            <p class="gsVidCaption-p2" style="word-break: break-word">{{ partnerAbstract.0 }}</p>
                                         {% endif %}
-                                        <p class="gsVidCaption-p3"><a id="psponsorLink3" target="_blank" style="color: coral;" href="{{ partenerWebpage.0}}">Click : {{ partenerWebpage.0}}</a></p>
+                                        {% if partnerName.0 == 'Amazon' %}
+                                             <p class="gsVidCaption-p3"><a id="psponsorLink3" target="_blank" style="color: coral;" href="{{ partenerWebpage.0}}">Connect with us at iros2020@amazon.com!</p>
+                                        {% else %}
+                                            <p class="gsVidCaption-p3"><a id="psponsorLink3" target="_blank" style="color: coral;" href="{{ partenerWebpage.0}}">Click for more information</a></p>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
@@ -395,7 +410,7 @@
                         {#$('#thumbs'+titleNumber)[0].style.color =  json['likeButtonColor'];#}
                     },
                     error: function(err) {
-                        alert("Failed to Retrieve JSON file from Server");
+                        {#alert("Failed to Retrieve JSON file from Server");#}
                     }
                 });
             }
@@ -423,7 +438,7 @@
                         {#$('#buttonMessage'+titleNumber).html('&nbsp;&nbsp;&nbsp;'+json['buttonMessage'])#}
                     },
                     error: function(err) {
-                        alert("Failed to Retrieve JSON file from Server");
+                        {#alert("Failed to Retrieve JSON file from Server");#}
                     }
                 });
             }
@@ -451,20 +466,20 @@
                 },
                 breakpoints: {
                     // when window width is >= 320px
-                    200: {
+                    100: {
                         slidesPerView: 4,
                         slidesPerColumnFill:'row',
-                        spaceBetween: 4
+                        spaceBetween: 7
                     },
-                    // when window width is >= 480px
-                    600: {
+                    // when window width is >= 600px
+                    500: {
                         slidesPerView: 5,
-                        spaceBetween: 5
+                        spaceBetween: 8
                     },
-                    // when window width is >= 640px
-                    900: {
-                        slidesPerView: 6,
-                        spaceBetween: 6
+                    // when window width is >= 900px
+                    800: {
+                        slidesPerView: 5,
+                        spaceBetween: 10
                     }
                 }
             });
@@ -540,6 +555,43 @@
                 $('#muteBtn').removeClass(mutebuttonClass);
                 $('#muteBtn').addClass('fas fa-volume-mute');
             }
+        </script>
+        <script>
+            $(document).ready(function(){
+                $('#videoGoldSponsor').bind('contextmenu',function() { return false; });
+            });
+        </script>
+        <script>
+            function hitCounter(titleNumber){
+                {#console.log(titleNumber);#}
+                if(titleNumber === undefined){
+                    return;
+                }
+                var current = Date.now();
+                var targettime = current + 2000;
+
+                var timer = setInterval(function () {
+                    var now = Date.now();
+                    if(targettime <= now) {
+                        var mainHitcount = document.getElementById("mainHitCount");
+                        $.ajax({
+                            url: 'post_hitcount',
+                            type: 'POST',
+                            data: {'paperNumber': titleNumber},
+                            dataType: 'json',
+                            success: function (json) {
+                                {#alert("Title Hit Success");#}
+                                clearInterval(timer);
+                                {#mainHitcount.innerHTML = json['hitCount'] + ' views';#}
+                            },
+                            error: function (err) {
+                                {#alert("Failed to Retrieve JSON file from Server");#}
+                            }
+                        });
+                    }
+                },2500);
+            }
+            hitCounter({{ partnerNumber.0}})
         </script>
     </div>
 </div>

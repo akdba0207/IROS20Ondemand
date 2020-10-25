@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+{% include 'beta/session_security/all.html' %}
 {% load static %}
 <html lang="en">
 
@@ -35,34 +37,17 @@
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
     />
     <link rel="stylesheet" href="{% static 'css/index_header1006.css' %}" />
-    <script>
-        function hitCounter(titleNumber){
-            var mainHitcount = document.getElementById("mainHitCount");
-            $.ajax({
-                url:'post_hitcount',
-                type:'POST',
-                data:{'paperNumber':titleNumber},
-                dataType:'json',
-                success: function(json) {
-                    {#alert("Title Hit Success")#}
-                    {#mainHitcount.innerHTML = json['hitCount'] + ' views';#}
-                },
-                error: function(err) {
-                    alert("Failed to Retrieve JSON file from Server");
-                }
-            });
-        }
-    </script>
+
     <style>
         .morecontent span {
             display: none;
         }
     </style>
 </head>
-<body onload="hitCounter({{ SelectedPaperNumber }})">
+<body>
 <div class="onDemandwidthControl">
 
-    <nav style="background-color: rgba(0,0,0,0.7)" class="navbar navbar-expand-md navbar-dark fixed-top">
+    <nav style="background-color: rgba(0,0,0,0.7)" class="navbar navbar-expand-lg navbar-dark fixed-top">
         <!-- Brand/logo -->
         <a class="navbar-brand" href="main?id=technicalpaper">
             <img src="{% static './resources/logo.png'%}" width="150px"/>
@@ -95,6 +80,18 @@
                 </li>
             </ul>
             <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="placeyourads?id=1"  onClick="this.href=this.href+'&'+new Date().getTime()" style="color:white;">Place your Ad</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="partners?id=1" onClick="this.href=this.href+'&'+new Date().getTime()" style="color:white;">Partners</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="about?id=1" onClick="this.href=this.href+'&'+new Date().getTime()" style="color:white;">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="faqhelp?id=1" onClick="this.href=this.href+'&'+new Date().getTime()" style="color:white;">FAQ/Help</a>
+                </li>
                 <form class="form-inline navbar-right">
                     <input type="text" id="search_bar" value="" class="searchBar" onkeydown="if(event.keyCode === 13) {event.preventDefault(); document.getElementById('searchBtn').click()}"/>
                     <d onclick="if(search_bar.value.length > 0)search()">
@@ -114,7 +111,7 @@
         <span class="episodeDiv">
         <div class="episodeVid">
                 <div id="videoSizeReader">
-                <video id="vid" style="display:block; margin: 0 auto; width: 100%;" controls autoplay playsinline>
+                <video id="vid" style="display:block; margin: 0 auto; width: 100%;" controls autoplay playsinline controlsList="nodownload">
                     <source src="https://ras.papercept.net/proceedings/IROS20/{{ specialVideo }}" type="video/mp4">
                 </video>
         </div>
@@ -167,7 +164,34 @@
             </div>
         </span>
         <p>&nbsp;</p>
-
+        {% if specialSupplement == 1 %}
+            <p>&nbsp;</p>
+            <div class="netflix-slider">
+                <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Supplemental Videos : </h3>
+                <div class="swiper-container">
+                    <div class="swiper-wrapper">
+                        {% for j in specialSupplementTitle %}
+                            {% for i in specialSupplementNr %}
+                                {% if forloop.counter == forloop.parentloop.counter %}
+                                    <div class="swiper-slide"><a href="specialsepisode?id={{i|floatformat:"0"}}&id2={{selectedSpecial}}" onClick="this.href=this.href+'&'+new Date().getTime()" style="color:white; text-decoration: none;">
+                                        <img class="netflix-slider-img" onError="this.onerror=null;this.src='{% static './resources/logo2.png' %}';" src="{% static 'img/Specials/speciallogo.png'%}">
+                                        <div class="onimg-caption">{{ j }}
+                                        </div>
+                                    </a>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        {% endfor %}
+                    </div>
+                    <!-- Add Pagination -->
+                    {#      <div class="swiper-pagination"></div>#}
+                    <div class="swiper-button-next"></div>
+                    <div class="swiper-button-prev"></div>
+                </div>
+            </div>
+            <p>&nbsp;</p>
+            <p>&nbsp;</p>
+        {% endif %}
 
         <h3 style="padding-bottom: 2%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; More {{ selectedSpecial }} : </h3>
 
@@ -288,6 +312,45 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
         <script>
+            var swiper = new Swiper('.swiper-container', {
+                {#slidesPerView: 7,#}
+                {#spaceBetween: 10,#}
+                slidesPerGroup: 1,
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true,
+                },
+                navigation: {
+                    nextEl: '.swiper-button-next',
+                    prevEl: '.swiper-button-prev',
+                },
+                breakpoints: {
+                    // when window width is >= 200px
+                    100: {
+                        {% if showcontents == 2 %}
+                            slidesPerView: 4,
+                            slidesPerColumnFill:'row',
+                            spaceBetween: 7
+                        {% else %}
+                            slidesPerView: 4,
+                            slidesPerColumnFill:'row',
+                            spaceBetween: 7
+                        {% endif %}
+                    },
+                    // when window width is >= 600px
+                    500: {
+                        slidesPerView: 5,
+                        spaceBetween: 8
+                    },
+                    // when window width is >= 900px
+                    800: {
+                        slidesPerView: 5,
+                        spaceBetween: 10
+                    }
+                }
+            });
+        </script>
+        <script>
             function search(){
                 const query = document.getElementById("search_bar").value;
                 document.getElementById("keywordDelivery").href = "searchresult?id2=1&id="+query;
@@ -322,7 +385,7 @@
 
                     if(content.length > showChar) {
                         var c = content.substr(0, showChar);
-                        var h = content.substr(showChar-1, content.length - showChar);
+                        var h = content.substr(showChar, content.length - showChar);
                         {#console.log(h)#}
                         var html = c + '<span class="moreellipses">' + ellipsestext+ '&nbsp;</span><span class="morecontent"><span>' + h + '</span>&nbsp;&nbsp;<a href="" class="morelink">' + moretext + '</a></span>';
                         $(this).html(html);
@@ -416,70 +479,70 @@
                 });
             }
         </script>
-        <script>
-            var vid = document.getElementById("vid");
-
-            var loadStart = 0, loadFinish = 0, loadTime = 0;
-            var timeStarted = -1;
-            var timeStopped = 0;
-            var timePlayed = 0;
-            var loadDone = false;
-
-            function videoStartedPlaying(event){
-                console.log("Started Playing");
-                timeStarted = new Date().getTime();
-            }
-
-            function videoStoppedPlaying(event){
-                console.log("Stopped Playing");
-                if(timeStarted < 0)
-                    return;
-                timeStopped = new Date().getTime();
-                newTime = timeStopped - timeStarted;
-                timePlayed += newTime;
-                console.log("added time: " + newTime + "ms");
-                console.log("total time: " + timePlayed + "ms");
-                timeStarted = -1;
-            }
-
-            function fLoadStart(){
-                console.log("Load Start");
-                loadStart = new Date().getTime();
-            }
-
-            function fLoadFinish(){
-                if(loadDone === true)
-                    return;
-                console.log("Load Finish");
-                loadFinish = new Date().getTime();
-                loadTime = loadFinish - loadStart;
-                console.log("loadTime: " + loadTime + "ms");
-                loadDone = true;
-            }
-
-            vid.addEventListener('loadstart', fLoadStart);
-            vid.addEventListener('canplaythrough', fLoadFinish);
-
-            vid.addEventListener('play', videoStartedPlaying);
-            {#vid.addEventListener('playing', videoStartedPlaying);#}
-
-            vid.addEventListener('ended', videoStoppedPlaying);
-            vid.addEventListener('pause', videoStoppedPlaying);
-
-            function catch_backpress(){
-                console.log("Catching Backpress");
-                if(timeStarted < 0)
-                    return;
-                if(loadTime > 100000)
-                    loadTime = 0;
-                timeStopped = new Date().getTime();
-                newTime = timeStopped - timeStarted - loadTime;
-                timePlayed += newTime;
-                console.log("added time: " + newTime + "ms");
-                console.log("total time: " + timePlayed + "ms");
-                timeStarted = -1;
-            }
-        </script>
+        {#        <script>#}
+        {#            var vid = document.getElementById("vid");#}
+        {##}
+        {#            var loadStart = 0, loadFinish = 0, loadTime = 0;#}
+        {#            var timeStarted = -1;#}
+        {#            var timeStopped = 0;#}
+        {#            var timePlayed = 0;#}
+        {#            var loadDone = false;#}
+        {##}
+        {#            function videoStartedPlaying(event){#}
+        {#                console.log("Started Playing");#}
+        {#                timeStarted = new Date().getTime();#}
+        {#            }#}
+        {##}
+        {#            function videoStoppedPlaying(event){#}
+        {#                console.log("Stopped Playing");#}
+        {#                if(timeStarted < 0)#}
+        {#                    return;#}
+        {#                timeStopped = new Date().getTime();#}
+        {#                newTime = timeStopped - timeStarted;#}
+        {#                timePlayed += newTime;#}
+        {#                console.log("added time: " + newTime + "ms");#}
+        {#                console.log("total time: " + timePlayed + "ms");#}
+        {#                timeStarted = -1;#}
+        {#            }#}
+        {##}
+        {#            function fLoadStart(){#}
+        {#                console.log("Load Start");#}
+        {#                loadStart = new Date().getTime();#}
+        {#            }#}
+        {##}
+        {#            function fLoadFinish(){#}
+        {#                if(loadDone === true)#}
+        {#                    return;#}
+        {#                console.log("Load Finish");#}
+        {#                loadFinish = new Date().getTime();#}
+        {#                loadTime = loadFinish - loadStart;#}
+        {#                console.log("loadTime: " + loadTime + "ms");#}
+        {#                loadDone = true;#}
+        {#            }#}
+        {##}
+        {#            vid.addEventListener('loadstart', fLoadStart);#}
+        {#            vid.addEventListener('canplaythrough', fLoadFinish);#}
+        {##}
+        {#            vid.addEventListener('play', videoStartedPlaying);#}
+        {#vid.addEventListener('playing', videoStartedPlaying);#}
+        {##}
+        {#            vid.addEventListener('ended', videoStoppedPlaying);#}
+        {#            vid.addEventListener('pause', videoStoppedPlaying);#}
+        {##}
+        {#            function catch_backpress(){#}
+        {#                console.log("Catching Backpress");#}
+        {#                if(timeStarted < 0)#}
+        {#                    return;#}
+        {#                if(loadTime > 100000)#}
+        {#                    loadTime = 0;#}
+        {#                timeStopped = new Date().getTime();#}
+        {#                newTime = timeStopped - timeStarted - loadTime;#}
+        {#                timePlayed += newTime;#}
+        {#                console.log("added time: " + newTime + "ms");#}
+        {#                console.log("total time: " + timePlayed + "ms");#}
+        {#                timeStarted = -1;#}
+        {#            }#}
+        {#        </script>#}
         <script>
             window.addEventListener( "pageshow", function ( event ) {
                 var historyTraversal = event.persisted ||
@@ -492,31 +555,67 @@
                 }
             });
         </script>
+        {#        <script>#}
+        {#            function update_playtime(titleNumber) {#}
+        {#                $.ajax({#}
+        {#                    url: 'update_playtime',#}
+        {#                    type: 'POST',#}
+        {#                    data: {#}
+        {#                        'paperNumber': titleNumber,#}
+        {#                        'time': timePlayed,#}
+        {#                    },#}
+        {#                    dataType: 'json',#}
+        {#                    success: function (json) {#}
+        {#                        console.log("successfully updated video playtime: " + json['total_time'] + " seconds");#}
+        {#                    },#}
+        {#                    error: function (err) {#}
+        {#                        alert("Failed to Retrieve JSON file from Server (Video)");#}
+        {#                    }#}
+        {#                });#}
+        {#            }#}
+        {#        </script>#}
+        {#        <script>#}
+        {#            window.addEventListener("beforeunload", function(event){#}
+        {#                console.log("Updating Vid Playtime"+" {{ SelectedPaperNumber|floatformat:"0" }}");#}
+        {#                catch_backpress();#}
+        {#                update_playtime("{{ SelectedPaperNumber|floatformat:"0" }}");#}
+        {#            });#}
+        {#        </script>#}
         <script>
-            function update_playtime(titleNumber) {
-                $.ajax({
-                    url: 'update_playtime',
-                    type: 'POST',
-                    data: {
-                        'paperNumber': titleNumber,
-                        'time': timePlayed,
-                    },
-                    dataType: 'json',
-                    success: function (json) {
-                        console.log("successfully updated video playtime: " + json['total_time'] + " seconds");
-                    },
-                    error: function (err) {
-                        alert("Failed to Retrieve JSON file from Server (Video)");
-                    }
-                });
-            }
+            $(document).ready(function(){
+                $('#vid').bind('contextmenu',function() { return false; });
+            });
         </script>
         <script>
-            window.addEventListener("beforeunload", function(event){
-                console.log("Updating Vid Playtime"+" {{ SelectedPaperNumber|floatformat:"0" }}");
-                catch_backpress();
-                update_playtime("{{ SelectedPaperNumber|floatformat:"0" }}");
-            });
+            function hitCounter(titleNumber){
+                if(titleNumber === undefined){
+                    return;
+                }
+                var current = Date.now();
+                var targettime = current + 10000;
+
+                var timer = setInterval(function () {
+                    var now = Date.now();
+                    if(targettime <= now) {
+                        var mainHitcount = document.getElementById("mainHitCount");
+                        $.ajax({
+                            url: 'post_hitcount',
+                            type: 'POST',
+                            data: {'paperNumber': titleNumber},
+                            dataType: 'json',
+                            success: function (json) {
+                                {#alert("Title Hit Success");#}
+                                clearInterval(timer);
+                                {#mainHitcount.innerHTML = json['hitCount'] + ' views';#}
+                            },
+                            error: function (err) {
+                                alert("Failed to Retrieve JSON file from Server");
+                            }
+                        });
+                    }
+                },11000);
+            }
+            hitCounter({{ SelectedPaperNumber }})
         </script>
     </div>
 </div>

@@ -150,7 +150,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--swiper-navigation-color, var(--swiper-theme-color));
+  /*color: var(--swiper-navigation-color, var(--swiper-theme-color));*/
 }
 .swiper-button-prev.swiper-button-disabled,
 .swiper-button-next.swiper-button-disabled {
@@ -166,6 +166,8 @@
   letter-spacing: 0;
   text-transform: none;
   font-variant: initial;
+  color: red;
+  font-weight: bold;
 }
 .swiper-button-prev,
 .swiper-container-rtl .swiper-button-next {

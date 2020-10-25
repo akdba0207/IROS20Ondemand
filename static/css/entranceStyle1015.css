@@ -27,7 +27,7 @@ body {
 }
 .entranceOrganizer{
     display: inline-flex;
-    margin-top: 10%;
+    margin-top: 3%;
 }
 .entranceSponsorImgOrganizer{
     display: inline-flex;
@@ -44,19 +44,7 @@ body {
     width: 100%;
     vertical-align: top;
 }
-.entrancePlatSponsorImgOrganizer{
-    display: inline-flex;
-    margin-top: 10%;
-    width: 100%;
-    text-align: center;
-}
-.entrancePlatSponsorImg{
-    display: inline-block;
-    width: 50%;
-}
-.entrancePlatSponsorImg img{
-    width: 100%;
-}
+
 /* ===== media query ===== */
 @media only screen and (max-width: 400px){
     .entranceToggle {
@@ -79,19 +67,13 @@ body {
         margin-right: 0px;
         margin-left: 0px;
         vertical-align: middle;
+        width: 60%;
     }
     .entranceSponsorImg img{
         width: 100%;
     }
     .entranceSponsorImgOrganizer{
         display: inline-block;
-    }
-    .entrancePlatSponsorImgOrganizer{
-        display: inline-block;
-    }
-    .entrancePlatSponsorImg{
-        display: block;
-        width: 100%;
     }
 }
 
@@ -115,6 +97,7 @@ body {
         display: block;
         margin-right: 0px;
         margin-left: 0px;
+        width: 50%;
     }
     .entranceSponsorImg img{
         width: 100%;
@@ -122,16 +105,8 @@ body {
     .entranceSponsorImgOrganizer{
         display: inline-block;
     }
-    .entrancePlatSponsorImgOrganizer{
-        display: inline-block;
 
-    }
-    .entrancePlatSponsorImg{
-        display: block;
-        width: 100%;
-    }
 }
-
 @media only screen and (max-width: 1200px) and (min-width: 961px) {
     .entranceToggle {
         margin-left: 20px;
@@ -140,5 +115,4 @@ body {
     .entranceOrganizer{
         display: inline-flex;
     }
-
 }

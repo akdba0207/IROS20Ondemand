@@ -17,6 +17,8 @@ class Profile(models.Model):
     member = models.CharField(max_length=50)
     email_confirmed = models.BooleanField(default=False)
     ip = models.CharField(max_length=50, null=True)
+    last_logout = models.DateTimeField(null=True, blank=True)
+    last_activity = models.DateTimeField(null=True, blank=True)
 
     @receiver(post_save, sender=User)
     def update_user_profile(sender, instance, created, **kwargs):
@@ -64,3 +66,15 @@ class Comments(models.Model):
 class VideoTimers(models.Model):
     paper_id = models.PositiveIntegerField()
     seconds = models.PositiveIntegerField(default=0)
+
+class OverallActivity(models.Model):
+    name = models.CharField(max_length=10, default="overall")
+    active_time_in_seconds = models.PositiveIntegerField(default=0)
+    average_active_time = models.PositiveIntegerField(default=0)
+
+
+class ActivityRecords(models.Model):
+    day = models.PositiveIntegerField()
+    active_user_count = models.PositiveIntegerField(default=0)
+    active_time_in_seconds = models.PositiveIntegerField(default=0)
+    average_active_time = models.PositiveIntegerField(default=0)

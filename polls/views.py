@@ -3,18 +3,19 @@
 # # Create your views here.
 import json
 
+import session_security
 from django.contrib import messages
 from django.forms import forms
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
-from polls.models import Papers, Comments, Users, Profile, VideoTimers
+from polls.models import Papers, Comments, Users, Profile, VideoTimers, OverallActivity, ActivityRecords
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth import login as auth_login, authenticate
 from django.contrib.auth import logout as auth_logout
 
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, AnonymousUser
 from django.contrib.sites.shortcuts import get_current_site
 from django.shortcuts import render, redirect
 from django.utils.encoding import force_bytes, force_text
@@ -30,7 +31,7 @@ import pytz, datetime
 
 from polls.forms_beta import SignUpForm
 
-from polls.search import searchByKeyword, findSimilarTopic
+from polls.search import searchByKeyword, findSimilarTopic, searchWSByKeyword
 
 pre = os.path.dirname(os.path.realpath(__file__))
 
@@ -71,6 +72,18 @@ excel_file7 = 'IROS20_Competition.xlsx'
 path7 = os.path.join(pre,excel_file7)
 iros_competition = pd.read_excel(path7,sheet_name=0)
 iros_competition = iros_competition.fillna('missing')
+
+# Call About
+excel_file8 = 'IROS20_About.xlsx'
+path8 = os.path.join(pre,excel_file8)
+iros_about = pd.read_excel(path8,sheet_name=0)
+iros_about = iros_about.fillna('missing')
+
+# Call FAQ/Help
+excel_file9 = 'IROS20_FAQHelp.xlsx'
+path9 = os.path.join(pre,excel_file9)
+iros_faqhelp = pd.read_excel(path9,sheet_name=0)
+iros_faqhelp = iros_faqhelp.fillna('missing')
 
 iros_sessiontitle = iros2020_raw['Theme']
 totalGenre = sorted(list(set(iros2020_raw['Theme'])))
@@ -141,26 +154,9 @@ PavilionWSTR = ['Workshops', 'More Workshops','Tutorials', 'More Tutorials']
 #########################################################################################################
 #########################################################################################################
 # Login !
+
 @csrf_exempt
 def login(request):
-    if request.user.is_authenticated:
-        timezone = pytz.utc
-        currenttime = datetime.datetime.utcnow()
-        crrenttimeUTC = timezone.localize(currenttime)
-        target = datetime.datetime(2020, 10, 19, 6, 45)
-        targetUTC = timezone.localize(target)
-        secoundcounter = (targetUTC.timestamp() - crrenttimeUTC.timestamp())
-
-        if secoundcounter <= 0:
-            if request.user.is_superuser is True:
-                return redirect('entrance_main')
-            else:
-                messages.info(request, 'Sorry, you do not have access')
-                return redirect('login_main')
-        else:
-            auth_logout(request)
-            messages.info(request, 'Please visit again IROS On-Demand when it opens on October 25th, 2020 (PST)')
-            return redirect('login_main')
 
     # print("not_authenticated")
     if request.method == 'POST':
@@ -176,35 +172,228 @@ def login(request):
             timezone = pytz.utc
             currenttime = datetime.datetime.utcnow()
             crrenttimeUTC = timezone.localize(currenttime)
-            target = datetime.datetime(2020, 10, 19, 6, 45)
+            target = datetime.datetime(2020, 10, 25, 6, 45)
             targetUTC = timezone.localize(target)
-            secoundcounter = (targetUTC.timestamp() - crrenttimeUTC.timestamp())
+            targetPST = targetUTC - datetime.timedelta(hours=7)
+            currentPST = crrenttimeUTC - datetime.timedelta(hours=7)
 
+            secoundcounter = (targetUTC.timestamp() - crrenttimeUTC.timestamp())
+            print(secoundcounter)
 
             if secoundcounter <= 0:
+                if login_user[0].last_login is not None:
+                    profile = Profile.objects.filter(user_id=login_user_id)
+                    if profile[0].last_logout is None:
+                        sub = 0
+                    else:
+                        sub = (profile[0].last_logout - login_user[0].last_login).total_seconds()
+
+                    if (profile[0].last_logout is None or sub < 0) and profile[0].last_activity is not None:
+                        record_active_time(login_user, profile)
+
+
+                record_active_count(login_user, currentPST, targetPST)
+                auth_login(request, login_form.get_user())
+                return redirect('entrance_main')
+            else:
                 if login_user[0].is_superuser is True:
+                    if login_user[0].last_login is not None:
+                        profile = Profile.objects.filter(user_id=login_user_id)
+                        if profile[0].last_logout is None:
+                            sub = 0
+                        else:
+                            sub = (profile[0].last_logout - login_user[0].last_login).total_seconds()
+
+                        if (profile[0].last_logout is None or sub < 0) and profile[0].last_activity is not None:
+                            record_active_time(login_user, profile)
+
+                    record_active_count(login_user, currentPST, targetPST)
                     auth_login(request, login_form.get_user())
                     return redirect('entrance_main')
                 else:
-                    messages.info(request, 'Sorry, you do not have access')
+                    messages.info(request, 'Please visit again IROS On-Demand when it opens on October 25th, 2020 (PST)')
                     return redirect('login_main')
-            else:
-                messages.info(request, 'Please visit again IROS On-Demand when it opens on October 25th, 2020 (PST)')
-                return redirect('login_main')
-
         else:
             # print("not_valid")
             messages.info(request, 'Please enter a correct username.')
             return redirect('login_main')
+    else:
+        if request.user.is_authenticated:
+            return redirect('entrance_main')
 
     return render(request, './1_login.html')
+
+@csrf_exempt
+def record_active_time(login_user, profile):
+
+    last_activity_pst = profile[0].last_activity - datetime.timedelta(hours=7)
+    last_login_pst = login_user[0].last_login - datetime.timedelta(hours=7)
+    expirationTime = 4200 # 2hours time out
+    active_time_in_seconds = (last_activity_pst - last_login_pst).seconds
+
+    print("TIMEOUT LOGOUT DETECTED")
+    print(last_activity_pst)
+    print(last_login_pst)
+    record_metrics(last_login_pst, last_activity_pst)
+
+    profile.update(last_logout=profile[0].last_activity)
+
+    return
+
+
+@csrf_exempt
+def record_active_count(login_user, current_pst, target_pst):
+    # Calculating Day# from the DDay
+    dday = current_pst - target_pst
+    day = dday.days
+    print("***********"+str(day))
+    if day < 0:
+        day = 0
+
+    # Checking last login time
+    # If None or difference is more than 0, delta is 1,
+    # Otherwise, delta is 0 which means no need to increment daily active user count
+    last_login = login_user[0].last_login
+    print(last_login)
+    delta = 0
+    if last_login is None:
+        delta = 1
+    else:
+        user_last = last_login - datetime.timedelta(hours=7)
+        diff = user_last - target_pst
+        dif = diff.days
+
+        if dif < 0:
+            dif = 0
+
+        if dif != day:
+            delta = 1
+
+    print(delta)
+    # print(diff.days)
+    print(day)
+    # Create Day object if does not exist
+    if ActivityRecords.objects.filter(day=day).count() == 0:
+        ActivityRecords(day=day).save()
+
+    # If last login is over one day, update daily active user count
+    if delta == 1:
+        active_day = ActivityRecords.objects.filter(day=day)
+        active_count = active_day[0].active_user_count
+        new_active_count = active_count + 1
+        ActivityRecords.objects.filter(day=day).update(active_user_count=new_active_count)
+    # Daily Active User Implementation Done
+
+
+@csrf_exempt
+def save_last_activity(request):
+    print(request.user)
+    print(datetime.datetime.utcnow())
+    Profile.objects.filter(user_id=request.user.id).update(last_activity=datetime.datetime.utcnow())
+    return
+
+
+def record_metrics(login, logout):
+    timezone = pytz.utc
+    target = datetime.datetime(2020, 10, 25, 6, 45)
+    targetUTC = timezone.localize(target)
+    targetPST = targetUTC - datetime.timedelta(hours=7)
+    expirationTime = 4200  # 2hours time out
+    dday = login - targetPST
+    dday = dday.days
+    if dday < 0:
+        dday = 0
+
+    if ActivityRecords.objects.filter(day=dday).count() == 0:
+        ActivityRecords.objects.create(day=dday)
+
+    if login.day == logout.day:
+        active_time = logout - login
+        active_time_in_seconds = active_time.seconds
+        print("active time: ", active_time_in_seconds)
+        total_active_time = active_time_in_seconds
+        record = ActivityRecords.objects.filter(day=dday)
+        number = record[0].active_user_count
+        if number == 0:
+            number = 1
+        time = record[0].active_time_in_seconds
+        summation = time + total_active_time
+        record.update(active_time_in_seconds=summation, average_active_time=summation / number)
+
+        print("current active time: ", time)
+        print("new active time: ", total_active_time)
+        print("summation: ", summation)
+    else:
+
+        target1 = datetime.datetime(logout.year, logout.month, logout.day, 23, 59, 59)
+        target1_PST = timezone.localize(target1) - datetime.timedelta(hours=7)
+        first_time = target1_PST - login
+        first_time_in_seconds = first_time.seconds
+
+        first_day = dday - 1
+        if first_day < 0:
+            first_day = 0
+
+        print("first time: ", first_time_in_seconds)
+        record = ActivityRecords.objects.filter(day=first_day)
+        number = record[0].active_user_count
+        if number == 0:
+            number = 1
+        time = record[0].active_time_in_seconds
+        summation = time + first_time_in_seconds
+        record.update(active_time_in_seconds=summation, average_active_time=summation / number)
+        target2 = datetime.datetime(login.year, login.month, login.day, 0, 0)
+        target2_PST = timezone.localize(target2) - datetime.timedelta(hours=7)
+        second_time = logout - target2_PST
+        second_time_in_seconds = second_time.seconds
+        print("second time: ", second_time_in_seconds)
+
+        record = ActivityRecords.objects.filter(day=dday)
+        number = record[0].active_user_count
+        if number == 0:
+            number = 1
+        time = record[0].active_time_in_seconds
+        summation = time + second_time_in_seconds
+        print("second summation", summation)
+        record.update(active_time_in_seconds=summation, average_active_time=summation / number)
+
+        total_active_time = first_time_in_seconds + second_time_in_seconds
+
+    print("total active time: ", total_active_time)
+
+    if OverallActivity.objects.filter(name="overall").count() == 0:
+        OverallActivity.objects.create(name="overall")
+
+    overall = OverallActivity.objects.filter(name="overall")
+    overall_time = overall[0].active_time_in_seconds + total_active_time
+    number = User.objects.count()
+    print(number)
+    overall.update(active_time_in_seconds=overall_time, average_active_time=overall_time / number)
+    return
 
 
 # Logout
 def logout(request):
+    if request.user.is_anonymous:
+        return redirect('login_main')
+
+    timezone = pytz.utc
+    currentTime = datetime.datetime.utcnow()
+    ct = timezone.localize(currentTime) - datetime.timedelta(hours=7)
+
+    last_login = request.user.last_login - datetime.timedelta(hours=7)
+    print("current time in PST:", ct)
+    print("last login in PST:", last_login)
+    print("subtraction:", ct-last_login)
+
+    print("current day: ", ct.day)
+    print("last login day: ", last_login.day)
+
+    record_metrics(last_login, ct)
+    Profile.objects.filter(user_id=request.user.id).update(last_logout=currentTime)
+
     auth_logout(request)
     return redirect('login_main')
-
 
 # Login Authentication
 @login_required()
@@ -239,6 +428,20 @@ def main(request):
 
     global clickToggleName
 
+    platinumPartners = iros_partners[(iros_partners['Cartegory']=='Platinum')].reset_index()
+    partnersName = sorted(list(set(platinumPartners['Name'])))
+    partnersWebpage = []
+    partnersAbstract = []
+    partnersVideo = []
+    for i in partnersName:
+        findPartners = platinumPartners[(platinumPartners['Name'] == i )].reset_index()
+        partnersWebpage.append(findPartners['Webpage Link'].iloc[0])
+        partnersAbstract.append(findPartners['Abstract'].iloc[0])
+        partnersVideo.append(findPartners['Video Name'].iloc[0])
+
+
+    platinumPartnersZip = zip(partnersName,partnersWebpage,partnersAbstract,partnersVideo)
+
     if request.method == 'GET' and 'id' in request.GET:
         clickToggleName = request.GET['id']
     # print(request.GET)
@@ -264,9 +467,9 @@ def main(request):
     specialKNNumber = []
     for i in organizedGenre:
         partner1 = iros_partners[(iros_partners['Theme'] == i)]
-        keynotes = iros_specials[(iros_specials['Location'] == i)].reset_index()
+        keynotes = iros_specials[(iros_specials['Location']== i)].reset_index()
         if partner1.empty is True:
-            partnerName2 = 'missing'
+            partnerName2 ='missing'
             partnerLevel2 = 'missing'
         else:
             partnerName1 = partner1['Name'].reset_index()
@@ -291,18 +494,17 @@ def main(request):
 
     SpecialPavilion = 'IROS Specials'
 
-    Sessions = [Sessions1, Sessions2, Sessions3, Sessions4, Sessions5, Sessions6, Sessions7,
-                Sessions8, Sessions9, Sessions10, Sessions11, Sessions12, Sessions13]
+    Sessions = [Sessions1,Sessions2,Sessions3,Sessions4,Sessions5,Sessions6,Sessions7,
+                Sessions8,Sessions9,Sessions10,Sessions11,Sessions12, Sessions13]
 
-    PavSessions = zip(organizedGenre, Sessions, partnerName, partnerLevel, specialKeynoteSpeaker, specialKNTitle,
-                      specialKNNumber)
+    PavSessions = zip(organizedGenre, Sessions, partnerName, partnerLevel, specialKeynoteSpeaker,specialKNTitle,specialKNNumber)
 
     ##WS/TR
 
-    WSSundayNumber = []
-    WSThursdayNumber = []
-    TRSundaySNumber = []
-    TRThursdayNumber = []
+    WSSundayNumber =[]
+    WSThursdayNumber=[]
+    TRSundaySNumber=[]
+    TRThursdayNumber=[]
 
     for i in range(len(WSSundaySession)):
         Workshopslist = WorkshopsSunday[(WorkshopsSunday['Workshop Title'] == WSSundaySession[i])].reset_index()
@@ -317,14 +519,16 @@ def main(request):
         Workshopslist = TutorialsThursday[(TutorialsThursday['Workshop Title'] == TRThursdaySession[l])].reset_index()
         TRThursdayNumber.append(Workshopslist['WS/TR Nr'].iloc[0])
 
-    SessionWSTRName = [WSSundaySession, WSThursdaySession, TRSundaySession, TRThursdaySession]
-    SessionWSTRNumber = [WSSundayNumber, WSThursdayNumber, TRSundaySNumber, TRThursdayNumber]
-    PavWSTR = zip(PavilionWSTR, SessionWSTRName, SessionWSTRNumber)
+    SessionWSTRName = [WSSundaySession,WSThursdaySession,TRSundaySession,TRThursdaySession]
+    SessionWSTRNumber = [WSSundayNumber, WSThursdayNumber,TRSundaySNumber,TRThursdayNumber]
+    PavWSTR =zip(PavilionWSTR,SessionWSTRName, SessionWSTRNumber)
 
     # Competition
     competitionNumber = iros_competition['Nr'].reset_index()
     competitionTitle = iros_competition['Title'].reset_index()
     PavCompetition = zip(competitionNumber['Nr'], competitionTitle['Title'])
+
+    partnerHitNumber = 20015
 
     return render(request, './2_2main.html',
                   {'PavSessions':PavSessions,
@@ -335,14 +539,15 @@ def main(request):
                    'allowWSContents': allowWSContents,
                    'showcontents': showcontents,
                    'PavCompetition':PavCompetition,
+                   'platinumPartnersZip':platinumPartnersZip,
+                   'partnerHitNumber':partnerHitNumber,
                    })
-
 
 #########################################################################################################
 #########################################################################################################
 #########################################################################################################
 # Sessions : Pavilion, Specials, Workshops
-@login_required
+# @login_required
 def tvshow(request):
     if request.user.is_authenticated == False:
         return render(request, './1-1_loginError.html')
@@ -386,13 +591,12 @@ def tvshow(request):
         selectedSessionList = []
 
     if selectedPavilion == organizedGenre[0]:
-        AwardList = iros2020_award[(iros2020_award['Session title'] == selectedSession)]
+        AwardList = iros2020_award[(iros2020_award['Session title']==selectedSession)]
         AwardTitleList = AwardList['Title'].reset_index()
-        findPaperinRaw = iros2020_raw[(iros2020_raw['Title']) == AwardTitleList['Title'].iloc[0]]
+        findPaperinRaw= iros2020_raw[(iros2020_raw['Title'])==AwardTitleList['Title'].iloc[0]]
 
-        for awardListNum in range(1, len(AwardTitleList)):
-            sorting = findPaperinRaw.append(
-                iros2020_raw[(iros2020_raw['Title']) == AwardTitleList['Title'].iloc[awardListNum]])
+        for awardListNum in range(1,len(AwardTitleList)):
+            sorting = findPaperinRaw.append(iros2020_raw[(iros2020_raw['Title'])==AwardTitleList['Title'].iloc[awardListNum]])
             findPaperinRaw = sorting
         EpisodeList = findPaperinRaw
         TitleList = EpisodeList['Title'].reset_index()
@@ -441,10 +645,12 @@ def tvshow(request):
     partnerVideoLink = partnerSession['Video Link'].reset_index()
     partnerCartegory = partnerSession['Cartegory'].reset_index()
     partnerAbstract = partnerSession['Abstract'].reset_index()
+    partnerNumber = partnerSession['Nr'].reset_index()
+    print(partnerNumber)
 
-    # Session Chair and Co-Chairs
-    findSession = iros20_sessionChairs[(iros20_sessionChairs['Session title'] == selectedSession)].reset_index()
-    findChair = findSession[(findSession['Role'] == 'Chair')].reset_index()
+    #Session Chair and Co-Chairs
+    findSession = iros20_sessionChairs[(iros20_sessionChairs['Session title']==selectedSession)].reset_index()
+    findChair = findSession[(findSession['Role']=='Chair')].reset_index()
     findCoChair = findSession[(findSession['Role'] == 'Co-chair')].reset_index()
     ChairName = findChair['FirstName'].iloc[0] + findChair['LastName'].iloc[0]
     ChairAffiliation = findChair['Affiliation'].iloc[0]
@@ -489,27 +695,28 @@ def tvshow(request):
                              AffiliationList5['Affiliation5'],
                              TitleList['Title'],
                              PDFList['FN'], titleNumber['Nr'], paperLikeCount, paperLikeButtonColor,
-                             paperSaveButtonStatus, paperHitCount, awardeeCount, awardNameCount, Video['VID'])
+                             paperSaveButtonStatus, paperHitCount, awardeeCount, awardNameCount,Video['VID'])
         return render(request, './3_pavilionSession.html', {'Pavilion': selectedPavilion,
-                                                            'PavilionNum': selectedPavilionNum,
-                                                            'SessionList': selectedSessionList,
-                                                            'Session': selectedSession,
-                                                            'EpisodeContext': EpisodeContext,
-                                                            'partnerCartegory':partnerCartegory['Cartegory'],
-                                                            'partnerName': partnerName['Name'],
-                                                            'partnerVideo': partnerVideo['Video Name'],
-                                                            'partnerSession': partnerSession[
-                                                                'Location'],
-                                                            'partenerWebpage': partenerWebpage['Webpage Link'],
-                                                            'partnerVideoType':partnerVideoType['Type'],
-                                                            'partnerVideoLink':partnerVideoLink['Video Link'],
-                                                            'partnerAbstract':partnerAbstract['Abstract'],
-                                                            'Overview':Overview,
-                                                            'ChairName':ChairName,
-                                                            'coChairName':coChairName,
-                                                            'ChairAffiliation':ChairAffiliation,
-                                                            'coChairAffiliation':coChairAffiliation
-                                                            })
+                                                                      'PavilionNum': selectedPavilionNum,
+                                                                      'SessionList': selectedSessionList,
+                                                                      'Session': selectedSession,
+                                                                      'EpisodeContext': EpisodeContext,
+                                                                      'partnerCartegory':partnerCartegory['Cartegory'],
+                                                                      'partnerName': partnerName['Name'],
+                                                                      'partnerVideo': partnerVideo['Video Name'],
+                                                                      'partnerSession': partnerSession[
+                                                                          'Location'],
+                                                                      'partenerWebpage': partenerWebpage['Webpage Link'],
+                                                                      'partnerVideoType':partnerVideoType['Type'],
+                                                                      'partnerVideoLink':partnerVideoLink['Video Link'],
+                                                                      'partnerAbstract':partnerAbstract['Abstract'],
+                                                                      'Overview':Overview,
+                                                                      'ChairName':ChairName,
+                                                                      'coChairName':coChairName,
+                                                                      'ChairAffiliation':ChairAffiliation,
+                                                                      'coChairAffiliation':coChairAffiliation,
+                                                                      'partnerNumber':partnerNumber['Nr'],
+                                                                      })
 
 
 def specials(request):
@@ -556,14 +763,13 @@ def specials(request):
                                 speakerBiography['Bio'],
                                 specialEpisodeAbstract['Abstract'],
                                 specialEpisodeNumber['Nr'], specialLikeCount, specialLikeButtonColor,
-                                specialSaveButtonStatus, specialHitCount, specialEpisodeTitle['Title'],
-                                speakerAffiliation['Affiliation'],speakerVideo['Video']
+                                specialSaveButtonStatus, specialHitCount,specialEpisodeTitle['Title'],speakerAffiliation['Affiliation'],speakerVideo['Video']
                                 )
 
     return render(request, './3-1_plenariesSession.html', {'selectedSpecial': selectedSpecial,
-                                                           'specialEpisodeContext': specialEpisodeContext,
-                                                           'SpecialsSession': SpecialsSession,
-                                                           })
+                                                                     'specialEpisodeContext': specialEpisodeContext,
+                                                                     'SpecialsSession': SpecialsSession,
+                                                                     })
 
 
 def workshops(request):
@@ -601,13 +807,13 @@ def workshops(request):
     WorkshopsTitle = workshopsEpisodeList['Workshop Title'].iloc[0]
     workshopsHomepage = workshopsEpisodeList['Webpage'].iloc[0]
     workshopAbstract = workshopsEpisodeList['Workshop Abstract'].iloc[0]
-    workshopOrganizers = []
+    workshopOrganizers =[]
     workshopOrganizersAfilliation = []
-    for i in range(1, 11):
-        workshopOrganizers.append(workshopsEpisodeList['Organizer' + str(i)].iloc[0])
-        workshopOrganizersAfilliation.append(workshopsEpisodeList['Organizer' + str(i) + 'Affil'].iloc[0])
+    for i in range(1,11):
+        workshopOrganizers.append(workshopsEpisodeList['Organizer'+str(i)].iloc[0])
+        workshopOrganizersAfilliation.append(workshopsEpisodeList['Organizer'+str(i)+'Affil'].iloc[0])
 
-    workshopOrganizersInfo = zip(workshopOrganizers, workshopOrganizersAfilliation)
+    workshopOrganizersInfo=zip(workshopOrganizers,workshopOrganizersAfilliation)
 
     workshopNumber = workshopsEpisodeList['Nr'].reset_index()
     Speaker = workshopsEpisodeList['Speaker'].reset_index()
@@ -638,10 +844,8 @@ def workshops(request):
         workshopHitCount.append(paper.paper_hitcount)
 
     # print(workshopLikeButtonColor)
-    WorkshopsContext = zip(Speaker['Speaker'], Institution['Institution'], Talktitle['Title'], workshopNumber['Nr'],
-                           workshopLikeButtonColor,
-                           workshopLikeCount, workshopSaveButtonStatus, workshopHitCount, Video['Video'],
-                           Abstract['Presentation Abstract'], Dummy['Dummy'])
+    WorkshopsContext = zip(Speaker['Speaker'], Institution['Institution'], Talktitle['Title'], workshopNumber['Nr'], workshopLikeButtonColor,
+                           workshopLikeCount, workshopSaveButtonStatus, workshopHitCount,Video['Video'], Abstract['Presentation Abstract'],Dummy['Dummy'])
 
     count = 0
     for k in range(len(Video['Video'])):
@@ -653,16 +857,16 @@ def workshops(request):
             noShowContents = 0
 
     return render(request, './3-2_workshopsSession.html', {'selectedWorkshopsNumber': selectedWorkshopsNumber,
-                                                           'selectedWorkshopsTitle':WorkshopsTitle,
-                                                           'workshopAbstract':workshopAbstract,
-                                                           'selectedGenre': selectedGenre,
-                                                           'WorkshopsContext': WorkshopsContext,
-                                                           'WorkshopsSession': WorkshopsSession,
-                                                           'workshopSessionNumbers':workshopSessionNumbers,
-                                                           'workshopsHomepage': workshopsHomepage,
-                                                           'workshopOrganizersInfo':workshopOrganizersInfo,
-                                                           'noShowContents':noShowContents
-                                                           })
+                                                                     'selectedWorkshopsTitle':WorkshopsTitle,
+                                                                     'workshopAbstract':workshopAbstract,
+                                                                     'selectedGenre': selectedGenre,
+                                                                     'WorkshopsContext': WorkshopsContext,
+                                                                     'WorkshopsSession': WorkshopsSession,
+                                                                     'workshopSessionNumbers':workshopSessionNumbers,
+                                                                     'workshopsHomepage': workshopsHomepage,
+                                                                     'workshopOrganizersInfo':workshopOrganizersInfo,
+                                                                     'noShowContents':noShowContents
+                                                                     })
 
 def competition(request):
     if request.user.is_authenticated == False:
@@ -682,6 +886,8 @@ def competition(request):
     CompetitionDate = findCompetition['Date'].iloc[0]
     CompetitionDescription = findCompetition['Description'].iloc[0]
     CompetitionVideo = findCompetition['Video'].iloc[0]
+    CompetitionCorrOrganizer = findCompetition['Corresponding Organizer'].iloc[0]
+    CompetitionCorrOrganizerEmail = findCompetition['Email'].iloc[0]
     CompetitionOrganizers = []
     CompetitionOrganizersAfilliation = []
     for i in range(1, 8):
@@ -695,7 +901,7 @@ def competition(request):
     competitionTitle = iros_competition['Title'].reset_index()
     PavCompetition = zip(competitionNumber['Nr'], competitionTitle['Title'])
 
-    return render(request,'./beta/3-3_competitionSession_beta.html',{'selectedCompetitionNumber':selectedCompetitionNumber,
+    return render(request,'./3-3_competitionSession.html',{'selectedCompetitionNumber':selectedCompetitionNumber,
                                                                      'CompetitionTitle':CompetitionTitle,
                                                                      'CompetitionHomepage':CompetitionHomepage,
                                                                      'CompetitionLive':CompetitionLive,
@@ -704,6 +910,8 @@ def competition(request):
                                                                      'CompetitionVideo':CompetitionVideo,
                                                                      'CompetitionOrganizersInfo':CompetitionOrganizersInfo,
                                                                      'PavCompetition':PavCompetition,
+                                                                     'CompetitionCorrOrganizer':CompetitionCorrOrganizer,
+                                                                     'CompetitionCorrOrganizerEmail':CompetitionCorrOrganizerEmail,
                                                                      })
 #########################################################################################################
 #########################################################################################################
@@ -763,6 +971,7 @@ def episode(request):
         awardNameCount.append(awardName)
         awardeeCount.append(awardConut)
 
+
     # Comments load area
     lengthComments = Comments.objects.filter(paper_id=int(selectedNumber)).count()
     arrayComments = []
@@ -788,7 +997,7 @@ def episode(request):
         else:
             selectedPaperbuttonStatus = 0
 
-        selectedpaperHitCount = int(selectedPaper.paper_hitcount) + 1
+        selectedpaperHitCount = int(selectedPaper.paper_hitcount)
 
         for titleNr in titleNumber['Nr']:
             paper = get_object_or_404(Papers, paper_id=titleNr)
@@ -819,23 +1028,23 @@ def episode(request):
                          AffiliationList5['Affiliation5'],
                          TitleList['Title'],
                          PDFList['FN'], titleNumber['Nr'], paperLikeCount, paperLikeButtonColor,
-                         SessionTitle['Session title'], paperSaveButtonStatus, paperHitCount, awardeeCount,
-                         awardNameCount, Video['VID'])
+                         SessionTitle['Session title'], paperSaveButtonStatus, paperHitCount,awardeeCount,awardNameCount,Video['VID'])
+
         return render(request, './4_pavilionSessionEpisode.html', {'VideoList': VideoList['VID'],
-                                                                   'Title': selectedTitle['Title'],
-                                                                   'Session': selectedSession,
-                                                                   'EpisodeContext': resultList,
-                                                                   'SelectedPaperNumber':
-                                                                       selectedNumber,
-                                                                   'selectedpaperHitCount':selectedpaperHitCount,
-                                                                   'selectedPaperLikeButtonColor': selectedPaperLikeButtonColor,
-                                                                   'selectedPaperLikeCount': selectedPaperLikeCount,
-                                                                   'selectedPaperbuttonStatus': selectedPaperbuttonStatus,
-                                                                   'arrayComments': arrayComments,
-                                                                   'lengthComments': lengthComments
-                                                                   })
+                                                                             'Title': selectedTitle['Title'],
+                                                                             'Session': selectedSession,
+                                                                             'EpisodeContext': resultList,
+                                                                             'SelectedPaperNumber':
+                                                                                 selectedNumber,
+                                                                             'selectedpaperHitCount':selectedpaperHitCount,
+                                                                             'selectedPaperLikeButtonColor': selectedPaperLikeButtonColor,
+                                                                             'selectedPaperLikeCount': selectedPaperLikeCount,
+                                                                             'selectedPaperbuttonStatus': selectedPaperbuttonStatus,
+                                                                             'arrayComments': arrayComments,
+                                                                             'lengthComments': lengthComments
+                                                                             })
 
-
+@csrf_exempt
 def specialsepisode(request):
     if request.user.is_authenticated == False:
         return render(request, './1-1_loginError.html')
@@ -851,6 +1060,18 @@ def specialsepisode(request):
     selectedSpeaker = findspeaker['Speaker'].iloc[0]
     selectedTitle = findspeaker['Title'].iloc[0]
     specialVideo = findspeaker['Video'].iloc[0]
+    specialSupplement = findspeaker['Supplement'].iloc[0]
+
+    specialSupplementEpisode = []
+    specialSupplementTitle = []
+    specialSupplementVideo = []
+    specialSupplementNr = []
+    if int(specialSupplement) == 1:
+        specialSupplementEpisode = iros_specials[(iros_specials['Genre']=='Addition') &
+                                                 (iros_specials['Speaker']==selectedSpeaker)].reset_index()
+        specialSupplementTitle = specialSupplementEpisode['Title']
+        specialSupplementVideo = specialSupplementEpisode['Video']
+        specialSupplementNr = specialSupplementEpisode['Nr']
 
     # Other Specials
     specialEpisodeList = iros_specials[(iros_specials['Genre'] == selectedSpecial)]
@@ -910,23 +1131,27 @@ def specialsepisode(request):
                                     speakerBiography['Bio'],
                                     specialEpisodeAbstract['Abstract'],
                                     specialEpisodeNumber['Nr'], specialLikeCount, specialLikeButtonColor,
-                                    specialSaveButtonStatus, specialHitCount, specialEpisodeTitle['Title'],
-                                    specialEpisodeAffiliation['Affiliation']
+                                    specialSaveButtonStatus, specialHitCount,specialEpisodeTitle['Title'],specialEpisodeAffiliation['Affiliation']
                                     )
 
-    return render(request, './4-1_plenariesSessionEpisode.html', {'specialVideo': specialVideo,
-                                                                  'selectedSpecial': selectedSpecial,
-                                                                  'selectedTitle':selectedTitle,
-                                                                  'specialEpisodeContext': specialEpisodeContext,
-                                                                  'selectedSpecialLikeCount': selectedSpecialLikeCount,
-                                                                  'selectedSpecialLikeButtonColor': selectedSpecialLikeButtonColor,
-                                                                  'selectedSpecialSaveButtonStatus': selectedSpecialSaveButtonStatus,
-                                                                  'SelectedPaperNumber':
-                                                                      selectedSpecialNr,
-                                                                  'arrayComments': arrayComments,
-                                                                  'lengthComments': lengthComments,
-                                                                  'selectedSpecialHitCount':selectedSpecialHitCount,
-                                                                  })
+        return render(request, './4-1_plenariesSessionEpisode.html', {'specialVideo': specialVideo,
+                                                                                'selectedSpeaker':selectedSpeaker,
+                                                                                'selectedSpecial': selectedSpecial,
+                                                                                'selectedTitle':selectedTitle,
+                                                                                'specialEpisodeContext': specialEpisodeContext,
+                                                                                'selectedSpecialLikeCount': selectedSpecialLikeCount,
+                                                                                'selectedSpecialLikeButtonColor': selectedSpecialLikeButtonColor,
+                                                                                'selectedSpecialSaveButtonStatus': selectedSpecialSaveButtonStatus,
+                                                                                'SelectedPaperNumber':
+                                                                                    selectedSpecialNr,
+                                                                                'arrayComments': arrayComments,
+                                                                                'lengthComments': lengthComments,
+                                                                                'selectedSpecialHitCount':selectedSpecialHitCount,
+                                                                                'specialSupplement':int(specialSupplement),
+                                                                                'specialSupplementTitle':specialSupplementTitle,
+                                                                                'specialSupplementVideo':specialSupplementVideo,
+                                                                                'specialSupplementNr':specialSupplementNr
+                                                                                })
 
 
 def workshopsepisode(request):
@@ -1006,16 +1231,14 @@ def workshopsepisode(request):
 
             workshopHitCount.append(paper.paper_hitcount)
 
-        WorkshopsContext = zip(workshopSpeaker['Speaker'], workshopInstitution['Institution'], workshopTitle['Title'],
-                               workshopNumber['Nr'], workshopLikeButtonColor,
-                               workshopLikeCount, workshopSaveButtonStatus, workshopHitCount, workshopsVideo['Video'],
-                               workshopAbstract['Presentation Abstract'], workshopDummy['Dummy'])
+        WorkshopsContext = zip(workshopSpeaker['Speaker'], workshopInstitution['Institution'], workshopTitle['Title'], workshopNumber['Nr'], workshopLikeButtonColor,
+                               workshopLikeCount, workshopSaveButtonStatus, workshopHitCount, workshopsVideo['Video'], workshopAbstract['Presentation Abstract'],workshopDummy['Dummy'])
 
         return render(request, './4-2_workshopsSessionEpisode.html',
                       {'workshopsVideo': selectedWorkshopVideo,
                        'workshopsTalkTitle': selectedWorkshopTalkTitle,
                        'selectedWorkshops': selectedWorkshopTitle,
-                       'selectedWorkshopsNumber': selectedWorkshopsNumber,
+                       'selectedWorkshopsNumber':selectedWorkshopsNumber,
                        'WorkshopsContext': WorkshopsContext,
                        'selectedWorkshopEpisodeNumber': selectedTitleNumber,
                        'selectedWorkshopLikeButtonColor': selectedWorkshopLikeButtonColor,
@@ -1023,8 +1246,8 @@ def workshopsepisode(request):
                        'selectedWorkshopSaveButtonStatus': selectedWorkshopSaveButtonStatus,
                        'arrayComments': arrayComments,
                        'lengthComments': lengthComments,
-                       'selectedWorkshopHitCount': selectedWorkshopHitCount,
-                       'WSorTR': WSorTR
+                       'selectedWorkshopHitCount':selectedWorkshopHitCount,
+                       'WSorTR':WSorTR
                        })
 
 
@@ -1042,112 +1265,176 @@ def searchresult(request):
 
     inputKeyword = request.GET['id']
     showcontents = request.GET['id2']
-    resultNumber = searchByKeyword(inputKeyword)
+    if int(showcontents) == 2:
+        resultNumber = searchWSByKeyword(inputKeyword)
+    else :
+        resultNumber = searchByKeyword(inputKeyword)
 
-    # Filter workshop, tutorials, and finalists
-    # filterOnlySession = []
-    # for rawNumber in resultNumber:
-    #     if rawNumber < 3140:
-    #         filterOnlySession.append(rawNumber)
-    # resultNumber = filterOnlySession
     resultNumberlength = len(resultNumber)
 
     if not resultNumber:
-        return render(request, './beta/6_searchResultError_beta.html', {'inputKeyword': inputKeyword,
-                                                                        'showcontents': int(showcontents)})
+        return render(request, './6_searchResultError.html', {'inputKeyword': inputKeyword,
+                                                                        'showcontents':int(showcontents)})
     else:
-        searchTitle = iros2020_raw[(iros2020_raw['Nr'] == int(resultNumber[0]))]
+        if int(showcontents) == 2 :
+            searchTitle = iros_wstr[(iros_wstr['Nr'] == int(resultNumber[0]))]
 
-        for i in range(1, resultNumberlength):
-            main2 = searchTitle.append(iros2020_raw[(iros2020_raw['Nr'] == int(resultNumber[i]))])
-            searchTitle = main2
+            for i in range(1, resultNumberlength):
+                main2 = searchTitle.append(iros_wstr[(iros_wstr['Nr'] == int(resultNumber[i]))])
+                searchTitle = main2
 
-        pavilionNumMatch = dict()
-        for i in range(len(organizedGenre) - 1):
-            pavilionNumMatch[organizedGenre[i + 1]] = i + 1
+            # print(searchTitle)
+            WorkshopTitle = searchTitle['Workshop Title'].reset_index()
+            WorkshopNr = searchTitle['WS/TR Nr'].reset_index()
+            Speaker = searchTitle['Speaker'].reset_index()
+            Institution = searchTitle['Institution'].reset_index()
+            Talktitle = searchTitle['Title'].reset_index()
+            titleNumber = searchTitle['Nr'].reset_index()
+            Abstract = searchTitle['Presentation Abstract'].reset_index()
+            VideoList = searchTitle['Video'].reset_index()
+            Dummy = searchTitle['Dummy'].reset_index()
+            SessionDate = searchTitle['Date'].reset_index()
+            getPav = zip(SessionDate['Date'], WorkshopNr['WS/TR Nr'])
 
-        # print(searchTitle)
-        SessionList = searchTitle['Session title'].reset_index()
-        AuthorList1 = searchTitle['Author1'].reset_index()
-        AuthorList2 = searchTitle['Author2'].reset_index()
-        AuthorList3 = searchTitle['Author3'].reset_index()
-        AuthorList4 = searchTitle['Author4'].reset_index()
-        AuthorList5 = searchTitle['Author5'].reset_index()
-        AuthorList6 = searchTitle['Author6'].reset_index()
-        AffiliationList1 = searchTitle['Affiliation1'].reset_index()
-        AffiliationList2 = searchTitle['Affiliation2'].reset_index()
-        AffiliationList3 = searchTitle['Affiliation3'].reset_index()
-        AffiliationList4 = searchTitle['Affiliation4'].reset_index()
-        AffiliationList5 = searchTitle['Affiliation5'].reset_index()
-        TitleList = searchTitle['Title'].reset_index()
-        PDFList = searchTitle['FN'].reset_index()
-        titleNumber = searchTitle['Nr'].reset_index()
-        pavilionList = searchTitle['Theme'].reset_index()
-        VideoList = searchTitle['VID'].reset_index()
-
-        pavilionNumList = []
-        for i in pavilionList['Theme']:
-            pavilionNumList.append(pavilionNumMatch[i])
-
-        awardeeCount = []
-        awardNameCount = []
-        for titles in TitleList['Title']:
-            titleMatch = iros2020_award[(iros2020_award['Title'] == titles)]
-            if titleMatch.empty is True:
-                awardConut = 0
-                awardName = ''
-            else:
-                awardConut = 1
-                awardName1 = titleMatch['Session title'].reset_index()
-                awardName = awardName1['Session title'].iloc[0]
-            awardNameCount.append(awardName)
-            awardeeCount.append(awardConut)
-
-        paperLikeCount = []
-        paperLikeButtonColor = []
-        paperSaveButtonStatus = []
-        paperHitCount = []
-
-        if request.method == "GET":
-
-            for titleNr in titleNumber['Nr']:
-                paper = get_object_or_404(Papers, paper_id=int(titleNr))
-
-                if current_account in paper.like_users.all():
-                    buttonColor = 1
+            # 'Workshops', 'More Workshops', 'Tutorials', 'More Tutorials'
+            pavilionWSTRList = []
+            for SessionCode, WorkshopNumber in getPav:
+                if WorkshopNumber[0] == 'W':
+                    if SessionCode[0] == 'S':
+                        pavilionWSTRName = 'Workshops'
+                    else:
+                        pavilionWSTRName = 'More Workshops'
                 else:
-                    buttonColor = 0
+                    if SessionCode[0] == 'S':
+                        pavilionWSTRName = 'Tutorials'
+                    else:
+                        pavilionWSTRName = 'More Tutorials'
+                pavilionWSTRList.append(pavilionWSTRName)
+            # print(pavilionWSTRList)
 
-                paperLikeButtonColor.append(buttonColor)
-                paperLikeCount.append(paper.like_users.count())
+            paperLikeCount = []
+            paperLikeButtonColor = []
+            paperSaveButtonStatus = []
+            paperHitCount = []
+            if request.method == "GET":
+                for titleNr in titleNumber['Nr']:
+                    paper = get_object_or_404(Papers, paper_id=int(titleNr))
 
-                if current_account in paper.save_users.all():
-                    buttonStatus = 1
+                    if current_account in paper.like_users.all():
+                        buttonColor = 1
+                    else:
+                        buttonColor = 0
+
+                    paperLikeButtonColor.append(buttonColor)
+                    paperLikeCount.append(paper.like_users.count())
+
+                    if current_account in paper.save_users.all():
+                        buttonStatus = 1
+                    else:
+                        buttonStatus = 0
+
+                    paperSaveButtonStatus.append(buttonStatus)
+                    paperHitCount.append(paper.paper_hitcount)
+
+                resultList = zip(WorkshopTitle['Workshop Title'],
+                                 WorkshopNr['WS/TR Nr'],
+                                 Speaker['Speaker'],
+                                 Institution['Institution'],
+                                 Talktitle['Title'], titleNumber['Nr'],
+                                 paperLikeCount, paperLikeButtonColor,
+                                 paperSaveButtonStatus,
+                                 paperHitCount, VideoList['Video'],Abstract['Presentation Abstract'],Dummy['Dummy'], pavilionWSTRList)
+        else:
+            searchTitle = iros2020_raw[(iros2020_raw['Nr'] == int(resultNumber[0]))]
+
+            for i in range(1, resultNumberlength):
+                main2 = searchTitle.append(iros2020_raw[(iros2020_raw['Nr'] == int(resultNumber[i]))])
+                searchTitle = main2
+
+            pavilionNumMatch = dict()
+            for i in range(len(organizedGenre)-1):
+                pavilionNumMatch[organizedGenre[i+1]] = i + 1
+
+            # print(searchTitle)
+            SessionList = searchTitle['Session title'].reset_index()
+            AuthorList1 = searchTitle['Author1'].reset_index()
+            AuthorList2 = searchTitle['Author2'].reset_index()
+            AuthorList3 = searchTitle['Author3'].reset_index()
+            AuthorList4 = searchTitle['Author4'].reset_index()
+            AuthorList5 = searchTitle['Author5'].reset_index()
+            AuthorList6 = searchTitle['Author6'].reset_index()
+            AffiliationList1 = searchTitle['Affiliation1'].reset_index()
+            AffiliationList2 = searchTitle['Affiliation2'].reset_index()
+            AffiliationList3 = searchTitle['Affiliation3'].reset_index()
+            AffiliationList4 = searchTitle['Affiliation4'].reset_index()
+            AffiliationList5 = searchTitle['Affiliation5'].reset_index()
+            TitleList = searchTitle['Title'].reset_index()
+            PDFList = searchTitle['FN'].reset_index()
+            titleNumber = searchTitle['Nr'].reset_index()
+            pavilionList = searchTitle['Theme'].reset_index()
+            VideoList = searchTitle['VID'].reset_index()
+
+            pavilionNumList = []
+            for i in pavilionList['Theme']:
+                pavilionNumList.append(pavilionNumMatch[i])
+
+            awardeeCount = []
+            awardNameCount = []
+            for titles in TitleList['Title']:
+                titleMatch = iros2020_award[(iros2020_award['Title'] == titles)]
+                if titleMatch.empty is True:
+                    awardConut = 0
+                    awardName = ''
                 else:
-                    buttonStatus = 0
+                    awardConut = 1
+                    awardName1 = titleMatch['Session title'].reset_index()
+                    awardName = awardName1['Session title'].iloc[0]
+                awardNameCount.append(awardName)
+                awardeeCount.append(awardConut)
 
-                paperSaveButtonStatus.append(buttonStatus)
+            paperLikeCount = []
+            paperLikeButtonColor = []
+            paperSaveButtonStatus = []
+            paperHitCount = []
+            if request.method == "GET":
 
-                paperHitCount.append(paper.paper_hitcount)
+                for titleNr in titleNumber['Nr']:
+                    paper = get_object_or_404(Papers, paper_id=int(titleNr))
 
-            resultList = zip(AuthorList1['Author1'], AuthorList2['Author2'],
-                             AuthorList3['Author3'],
-                             AuthorList4['Author4'],
-                             AuthorList5['Author5'],
-                             AuthorList6['Author6'],
-                             AffiliationList1['Affiliation1'],
-                             AffiliationList2['Affiliation2'],
-                             AffiliationList3['Affiliation3'],
-                             AffiliationList4['Affiliation4'],
-                             AffiliationList5['Affiliation5'],
-                             TitleList['Title'],
-                             PDFList['FN'], titleNumber['Nr'], paperLikeCount, paperLikeButtonColor,
-                             paperSaveButtonStatus, SessionList['Session title'], paperHitCount, awardeeCount,
-                             awardNameCount, pavilionList['Theme'], pavilionNumList, VideoList['VID'])
+                    if current_account in paper.like_users.all():
+                        buttonColor = 1
+                    else:
+                        buttonColor = 0
+
+                    paperLikeButtonColor.append(buttonColor)
+                    paperLikeCount.append(paper.like_users.count())
+
+                    if current_account in paper.save_users.all():
+                        buttonStatus = 1
+                    else:
+                        buttonStatus = 0
+
+                    paperSaveButtonStatus.append(buttonStatus)
+
+                    paperHitCount.append(paper.paper_hitcount)
+
+                resultList = zip(AuthorList1['Author1'], AuthorList2['Author2'],
+                                 AuthorList3['Author3'],
+                                 AuthorList4['Author4'],
+                                 AuthorList5['Author5'],
+                                 AuthorList6['Author6'],
+                                 AffiliationList1['Affiliation1'],
+                                 AffiliationList2['Affiliation2'],
+                                 AffiliationList3['Affiliation3'],
+                                 AffiliationList4['Affiliation4'],
+                                 AffiliationList5['Affiliation5'],
+                                 TitleList['Title'],
+                                 PDFList['FN'], titleNumber['Nr'], paperLikeCount, paperLikeButtonColor,
+                                 paperSaveButtonStatus, SessionList['Session title'], paperHitCount, awardeeCount, awardNameCount, pavilionList['Theme'],pavilionNumList,VideoList['VID'])
 
         return render(request, './5_searchResult.html', {'EpisodeContext': resultList,
-                                                         'showcontents': int(showcontents)
-                                                         })
+                                                                   'showcontents': int(showcontents)
+                                                                   })
 
 
 #########################################################################################################
@@ -1189,7 +1476,7 @@ def mylist(request):
             mylistEpisodeSession.append(mylistEpisode['Session title'].iloc[0])
             mylistEpisodeTitle.append(mylistEpisode['Title'].iloc[0])
 
-        mylistEpisodeContext = zip(mylistEpisodeTitle, mylistEpisodeSession, mylistEpisodeNumber)
+        mylistEpisodeContext = zip(mylistEpisodeTitle, mylistEpisodeSession,mylistEpisodeNumber)
     else:
         mylistEpisodeContext = []
 
@@ -1205,7 +1492,7 @@ def mylist(request):
             mylistSpecialSpecial.append(mylistSpecial['Genre'].iloc[0])
             mylistSpecialTitle.append(mylistSpecial['Title'].iloc[0])
 
-        mylistSpecialContext = zip(mylistSpecialSpeaker, mylistSpecialSpecial, mylistSpecialNumber, mylistSpecialTitle)
+        mylistSpecialContext = zip(mylistSpecialSpeaker, mylistSpecialSpecial,  mylistSpecialNumber, mylistSpecialTitle)
     else:
         mylistSpecialContext = []
 
@@ -1221,9 +1508,24 @@ def mylist(request):
             mylistWorkshopsTalkNr.append(mylistWorkshops['Nr'].iloc[0])
             mylistWorkshopsTitle.append(mylistWorkshops['Title'].iloc[0])
 
-        mylistWorkshopsContext = zip(mylistWorkshopsNr, mylistWorkshopsTalkNr, mylistWorkshopsTitle)
+        mylistWorkshopsContext = zip(mylistWorkshopsNr, mylistWorkshopsTalkNr,mylistWorkshopsTitle)
     else:
         mylistWorkshopsContext = []
+
+    #Silver partners
+    silverPartners = iros_partners[(iros_partners['Cartegory'] == 'Silver')].reset_index()
+    partnersName = sorted(list(set(silverPartners['Name'])))
+    partnersWebpage = []
+    partnersAbstract = []
+    partnersVideo = []
+    for i in partnersName:
+        findPartners = silverPartners[(silverPartners['Name'] == i)].reset_index()
+        partnersWebpage.append(findPartners['Webpage Link'].iloc[0])
+        partnersAbstract.append(findPartners['Abstract'].iloc[0])
+        partnersVideo.append(findPartners['Video Name'].iloc[0])
+
+    silverPartnersZip = zip(partnersName, partnersWebpage, partnersAbstract, partnersVideo)
+    partnerVideoNumber = 20016
 
     return render(request, './7_myList.html', {
         'mylistEpisodeNumber': len(mylistEpisodeNumber),
@@ -1232,7 +1534,9 @@ def mylist(request):
         'mylistSpecialContext': mylistSpecialContext,
         'mylistWorkshopsNumber': len(mylistWorkshopsNumber),
         'mylistWorkshopsContext': mylistWorkshopsContext,
-        'showcontents': int(showcontents)
+        'showcontents':int(showcontents),
+        'silverPartnersZip':silverPartnersZip,
+        'partnerVideoNumber':partnerVideoNumber
     })
 
 
@@ -1323,7 +1627,7 @@ def post_save(request):
             buttonMessage = 'Added to my list'
         # print(buttonMessage)
 
-        response = {'paperSaveButtonStatus': buttonStatus, 'buttonMessage': buttonMessage}
+        response = {'paperSaveButtonStatus': buttonStatus,'buttonMessage':buttonMessage}
 
         return HttpResponse(
             json.dumps(response),
@@ -1359,7 +1663,7 @@ def post_hitcount(request):
 @csrf_exempt
 def update_playtime(request):
     if request.user.is_authenticated == False:
-        return render(request, './beta/1-1_loginError_beta.html')
+        return render(request, './1-1_loginError.html')
     else:
         user_verification(request)
 
@@ -1406,27 +1710,108 @@ def update_playtime(request):
 # irosuser3.save()
 # irosuser4.save()
 
-##Paper Database
-# for i in range(1553):
-#     db = Papers(paper_id=icra_example['Nr'][i])
+#Paper Database ICRA 1553, IROS 1445
+# for i in range(1445):
+#     db = Papers(paper_id=iros2020_raw['Nr'][i])
 #     db.save()
-# # print(len(icra_specials['Nr']))
-# for j in range(len(icra_specials['Nr'])):
-#     db1 = Papers(paper_id=icra_specials['Nr'][j])
-#     db1.save()
-# #
-# for k in range(len(icra_workshops['Workshop Number'])):
-#     db2 = Papers(paper_id=icra_workshops['Workshop Number'][k])
+#
+# for k in range(len(iros_wstr['Nr'])):
+#     db2 = Papers(paper_id=iros_wstr['Nr'][k])
 #     db2.save()
+#
+# print(len(iros_specials['Nr']))
+# for j in range(len(iros_specials['Nr'])):
+#     db1 = Papers(paper_id=iros_specials['Nr'][j])
+#     db1.save()
+
 
 # ip, is_routable = get_client_ip(request)
 # print(ip)
 
 # VideoTimers Initialization
-# for i in range(1553):
-#     db = VideoTimers(paper_id=icra_example['Nr'][i])
+#Paper Database ICRA 1553, IROS 1445
+# for i in range(1445):
+#     db = VideoTimers(paper_id=iros2020_raw['Nr'][i])
 #     db.save()
-# print(is_routable)
+#
+# for k in range(len(iros_wstr['Nr'])):
+#     db2 = VideoTimers(paper_id=iros_wstr['Nr'][k])
+#     db2.save()
+#
+# print(len(iros_specials['Nr']))
+# for j in range(len(iros_specials['Nr'])):
+#     db1 = VideoTimers(paper_id=iros_specials['Nr'][j])
+#     db1.save()
+
+
+# # Paper ViewCount Update
+# viewcountResetter = Papers.objects.all()
+# for viewcountID in range(len(viewcountResetter)):
+#     Papers.objects.filter(paper_id=viewcountResetter[viewcountID].paper_id).update(paper_hitcount=0)
+
+# #FYI, paper_like_user, paper_save_users, comments_comment_users can be manually deleted
+
+# # #CVENT Registration
+# excel_file10 = 'IROS Soft Launch - SPC Members.xlsx'
+# path10 = os.path.join(pre, excel_file10)
+# iros_cVentRegist= pd.read_excel(path10, sheet_name=0)
+# iros_cVentRegist = iros_cVentRegist.fillna('missing')
+
+# print(iros_cVentRegist['Registration Type'].iloc[0])
+#
+# duplicatecount = 0
+# for i in range(len(iros_cVentRegist['Email Address'])):
+#     cVentCheck = User.objects.filter(username__iexact=iros_cVentRegist['Email Address'].iloc[i])
+#
+#     if cVentCheck.exists() is True:
+#         duplicatecount +=1
+#         print(iros_cVentRegist['Email Address'].iloc[i])
+#         if cVentCheck[0].is_superuser is False:
+#             User.objects.filter(username__iexact=iros_cVentRegist['Email Address'].iloc[i]).update(is_superuser=True)
+#     else:
+#         newMember = User.objects.create_user(username=iros_cVentRegist['Email Address'].iloc[i], email=iros_cVentRegist['Email Address'].iloc[i], password='a')
+#         newMember.profile.email_confirmed=True
+#         newMember.is_active=True
+#         newMember.is_superuser=True
+#         newMember.profile.primary = 'Yes'
+#         newMember.profile.member = 'Yes'
+#         newMember.profile.affiliation = 'University'
+#         newMember.profile.previous_attendance = 'More than 5 times'
+#         newMember.save()
+
+
+# RegisterType = iros_cVentRegist['Registration Type'].iloc[i]
+# if RegisterType == 'Associate Member':
+#     newMember.profile.primary = 'Yes'
+#     newMember.profile.member = 'Yes'
+# elif RegisterType == 'Graduate Student Member':
+#     newMember.profile.primary = 'Yes'
+#     newMember.profile.member = 'Yes'
+# elif RegisterType == 'IEEE Life Fellow':
+#     newMember.profile.primary = 'Yes'
+#     newMember.profile.member = 'Yes'
+# elif RegisterType == 'IEEE Life Member':
+#     newMember.profile.primary = 'Yes'
+#     newMember.profile.member = 'Yes'
+# elif RegisterType == 'IEEE Life Senior':
+#     newMember.profile.primary = 'Yes'
+#     newMember.profile.member = 'Yes'
+# elif RegisterType == 'IEEE Member':
+#     newMember.profile.primary = 'Yes'
+#     newMember.profile.member = 'Yes'
+# elif RegisterType == 'IEEE Student Member':
+#     newMember.profile.primary = 'Yes'
+#     newMember.profile.member = 'Yes'
+# elif RegisterType == 'Non Member':
+#     newMember.profile.primary = 'Yes'
+#     newMember.profile.member = 'No'
+# elif RegisterType == 'Senior Member':
+#     newMember.profile.primary = 'Yes'
+#     newMember.profile.member = 'Yes'
+# elif RegisterType == 'Student Non-Member':
+#     newMember.profile.primary = 'Yes'
+#     newMember.profile.member = 'No'
+# print(duplicatecount)
 @csrf_exempt
 def signup(request):
     if request.method == 'POST':
@@ -1434,25 +1819,28 @@ def signup(request):
         if form.is_valid():
             if User.objects.filter(username__iexact=form.cleaned_data.get('email')).exists():
                 existed_user = User.objects.filter(username__iexact=form.cleaned_data.get('email'))
-                #IP store
+                # IP store
                 existed_user_id = existed_user[0].id
                 ip, is_routable = get_client_ip(request)
                 Profile.objects.filter(user_id=existed_user_id).update(ip=ip)
 
                 if existed_user[0].is_active is True:
                     messages.info(request,
-                                  'This email is already registered and activated, please try with different email address if this is a new registration')
+                                  'This email is already registered, please try with different email address if this is a new registration')
                     return redirect('signup_main')
                 else:
                     messages.warning(request,'This email is already registered, but not activated. Do you want the activation email to be sent again?')
                     messages.warning(request,'<button class="resendButton" type="submit" '
                                              'onclick="activationResend('+str(existed_user[0].pk)+')">Resend</button>')
+
                     return redirect('signup_main')
 
             user = form.save()
+
+
             user.refresh_from_db()
 
-            ip, is_routable = get_client_ip(request)            # print(str(ip))
+            ip, is_routable = get_client_ip(request)
 
             user.profile.ip = ip
             user.profile.occupation = form.cleaned_data.get('occupation')
@@ -1493,7 +1881,6 @@ def resendactivation(request):
         user_raw = User.objects.filter(pk=int(request.POST['resendEmailAdress']))
         user= user_raw[0]
         current_site = get_current_site(request)
-
         subject = 'Activate Your IROS2020 On-Demand Account'
         message = render_to_string('./0_4_account_activation_email.html', {
             'user': user,
@@ -1517,7 +1904,7 @@ def activate(request, uidb64, token):
         uid = force_text(urlsafe_base64_decode(uidb64))
         a = User.objects.filter(pk=uid)
         if len(a) == 0:
-            return render(request, './beta/0_3_account_activate_invalid.html',status=500)
+            return render(request, './0_3_account_activate_invalid.html', status=500)
 
         user = User.objects.get(pk=uid)
     except (TypeError, ValueError, OverflowError, User.DoesNotExist):
@@ -1545,3 +1932,111 @@ def activate(request, uidb64, token):
         return render(request,'./0_5_account_activation_success.html',{'user':user})
     else:
         return render(request, './0_3_account_activate_invalid.html')
+
+@csrf_exempt
+def about(request):
+    if request.user.is_authenticated == False:
+        return render(request, './1-1_loginError.html')
+    else:
+        user_verification(request)
+
+    showcontents = request.GET['id']
+
+    SPC = iros_about[(iros_about['Title']=='Senior Program Committee')].reset_index()
+    SPCmember = SPC['Name']
+
+    CPRB = iros_about[(iros_about['Title']=='Editors')].reset_index()
+    CPRBMember = CPRB['Name']
+    CPRBInstitution = CPRB['Institution']
+
+    CPRBzip = zip(CPRBMember,CPRBInstitution)
+
+    AE = iros_about[(iros_about['Title']=='Associate Editors')].reset_index()
+    AEMember = AE['Name']
+
+    Reviewer = iros_about[(iros_about['Title']=='Reviewers')].reset_index()
+    ReviewerName = Reviewer['Name']
+
+    return render(request,'./8_about.html',{'showcontents':int(showcontents),
+                                                      'SPCmember':SPCmember,
+                                                      'CPRBzip':CPRBzip,
+                                                      'AEMember':AEMember,
+                                                      'ReviewerName':ReviewerName,
+                                                      })
+
+@csrf_exempt
+def faqhelp(request):
+    if request.user.is_authenticated == False:
+        return render(request, './1-1_loginError.html')
+    else:
+        user_verification(request)
+
+    showcontents = request.GET['id']
+
+    Question = iros_faqhelp['Question']
+    Answer = iros_faqhelp['Answer']
+
+    FAQ = zip(Question,Answer)
+
+    return render(request,'./9_FAQHelp.html',{'showcontents':int(showcontents),
+                                                        'FAQ':FAQ
+                                                        })
+@csrf_exempt
+def partners(request):
+    if request.user.is_authenticated == False:
+        return render(request, './1-1_loginError.html')
+    else:
+        user_verification(request)
+
+    showcontents = request.GET['id']
+    platinum = iros_partners[(iros_partners['Cartegory']=='Platinum')].reset_index()
+    gold = iros_partners[(iros_partners['Cartegory'] == 'Gold')].reset_index()
+    silver = iros_partners[(iros_partners['Cartegory'] == 'Silver')].reset_index()
+    bronze = iros_partners[(iros_partners['Cartegory'] == 'Bronze')].reset_index()
+
+    platinumPartner = sorted(list(set(platinum['Name'])))
+    goldPartner = sorted(list(set(gold['Name'])))
+    silverPartner = sorted(list(set(silver['Name'])))
+    bronzePartner = sorted(list(set(bronze['Name'])))
+
+    partnershipName = ['Platinum', 'Gold', 'Silver', 'Bronze']
+    partnerSessions = [platinumPartner,goldPartner, silverPartner,bronzePartner]
+    Partners = zip(partnershipName, partnerSessions)
+    return render(request,'./10_partners.html',{'showcontents':int(showcontents),
+                                                          'Partners':Partners})
+
+@csrf_exempt
+def partnerspage(request):
+    if request.user.is_authenticated == False:
+        return render(request, './1-1_loginError.html')
+    else:
+        user_verification(request)
+
+    showcontents = request.GET['id']
+    selectedPartner = request.GET['id2']
+    findPartner = iros_partners[(iros_partners['Name']==selectedPartner)].reset_index()
+    partnerLevel = findPartner['Cartegory'].iloc[0]
+    partnerAbstract = findPartner['Abstract'].iloc[0]
+    partnerHyperlink = findPartner['Webpage Link'].iloc[0]
+    partnerVideo = findPartner['Video Name'].iloc[0]
+    partnerVideoNumber = findPartner['Nr'].iloc[0]
+
+    return render(request,'./10-1_partnerPage.html',{'showcontents':int(showcontents),
+                                                               'selectedPartner':selectedPartner,
+                                                               'partnerLevel':partnerLevel,
+                                                               'partnerAbstract':partnerAbstract,
+                                                               'partnerHyperlink':partnerHyperlink,
+                                                               'partnerVideo':partnerVideo,
+                                                               'partnerVideoNumber':partnerVideoNumber
+                                                               })
+
+def placeyourads(request):
+    if request.user.is_authenticated == False:
+        return render(request, './1-1_loginError.html')
+    else:
+        user_verification(request)
+
+    showcontents = request.GET['id']
+
+    return render(request, './11_Placeyourads.html', {'showcontents': int(showcontents),
+                                                                })

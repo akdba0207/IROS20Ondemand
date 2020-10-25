@@ -3,18 +3,19 @@
 # # Create your views here.
 import json
 
+import session_security
 from django.contrib import messages
 from django.forms import forms
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
-from polls.models import Papers, Comments, Users, Profile, VideoTimers
+from polls.models import Papers, Comments, Users, Profile, VideoTimers, OverallActivity, ActivityRecords
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth import login as auth_login, authenticate
 from django.contrib.auth import logout as auth_logout
 
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, AnonymousUser
 from django.contrib.sites.shortcuts import get_current_site
 from django.shortcuts import render, redirect
 from django.utils.encoding import force_bytes, force_text
@@ -71,6 +72,18 @@ excel_file7 = 'IROS20_Competition.xlsx'
 path7 = os.path.join(pre,excel_file7)
 iros_competition = pd.read_excel(path7,sheet_name=0)
 iros_competition = iros_competition.fillna('missing')
+
+# Call About
+excel_file8 = 'IROS20_About.xlsx'
+path8 = os.path.join(pre,excel_file8)
+iros_about = pd.read_excel(path8,sheet_name=0)
+iros_about = iros_about.fillna('missing')
+
+# Call FAQ/Help
+excel_file9 = 'IROS20_FAQHelp.xlsx'
+path9 = os.path.join(pre,excel_file9)
+iros_faqhelp = pd.read_excel(path9,sheet_name=0)
+iros_faqhelp = iros_faqhelp.fillna('missing')
 
 iros_sessiontitle = iros2020_raw['Theme']
 totalGenre = sorted(list(set(iros2020_raw['Theme'])))
@@ -141,10 +154,10 @@ PavilionWSTR = ['Workshops', 'More Workshops','Tutorials', 'More Tutorials']
 #########################################################################################################
 #########################################################################################################
 # Login !
+
 @csrf_exempt
 def login(request):
-    if request.user.is_authenticated:
-        return redirect('entrance')
+
     # print("not_authenticated")
     if request.method == 'POST':
         login_form = AuthenticationForm(request, request.POST)
@@ -159,33 +172,228 @@ def login(request):
             timezone = pytz.utc
             currenttime = datetime.datetime.utcnow()
             crrenttimeUTC = timezone.localize(currenttime)
-            target = datetime.datetime(2020, 10, 18, 23, 12)
+            target = datetime.datetime(2020, 10, 24, 6, 45)
             targetUTC = timezone.localize(target)
+            targetPST = targetUTC - datetime.timedelta(hours=7)
+            currentPST = crrenttimeUTC - datetime.timedelta(hours=7)
+
             secoundcounter = (targetUTC.timestamp() - crrenttimeUTC.timestamp())
+
 
             if secoundcounter <= 0:
                 if login_user[0].is_superuser is True:
+                    if login_user[0].last_login is not None:
+                        profile = Profile.objects.filter(user_id=login_user_id)
+                        if profile[0].last_logout is None:
+                            sub = 0
+                        else:
+                            sub = (profile[0].last_logout - login_user[0].last_login).total_seconds()
+
+                        if (profile[0].last_logout is None or sub < 0) and profile[0].last_activity is not None:
+                            record_active_time(login_user, profile)
+
+                    record_active_count(login_user, currentPST, targetPST)
                     auth_login(request, login_form.get_user())
                     return redirect('entrance')
                 else:
-                    messages.info(request, 'Sorry, you do not have access to the beta page')
+                    messages.info(request,
+                                  'You do not have access to the beta page')
                     return redirect('login')
             else:
-                messages.info(request, 'Please visit again IROS On-Demand when it opens on October 25th, 2020 (PST)')
-                return redirect('login')
+                if login_user[0].is_superuser is True:
+                    if login_user[0].last_login is not None:
+                        profile = Profile.objects.filter(user_id=login_user_id)
+                        if profile[0].last_logout is None:
+                            sub = 0
+                        else:
+                            sub = (profile[0].last_logout - login_user[0].last_login).total_seconds()
+
+                        if (profile[0].last_logout is None or sub < 0) and profile[0].last_activity is not None:
+                            record_active_time(login_user, profile)
+
+                    record_active_count(login_user, currentPST, targetPST)
+                    auth_login(request, login_form.get_user())
+                    return redirect('entrance')
+                else:
+                    messages.info(request, 'You do not have access to the beta page')
+                    return redirect('login')
         else:
             # print("not_valid")
             messages.info(request, 'Please enter a correct username.')
             return redirect('login')
+    else:
+        if request.user.is_authenticated:
+            return redirect('entrance')
 
     return render(request, './beta/1_login_beta.html')
+
+@csrf_exempt
+def record_active_time(login_user, profile):
+
+    last_activity_pst = profile[0].last_activity - datetime.timedelta(hours=7)
+    last_login_pst = login_user[0].last_login - datetime.timedelta(hours=7)
+    expirationTime = 4200 # 2hours time out
+    active_time_in_seconds = (last_activity_pst - last_login_pst).seconds
+
+    print("TIMEOUT LOGOUT DETECTED")
+    print(last_activity_pst)
+    print(last_login_pst)
+    record_metrics(last_login_pst, last_activity_pst)
+
+    profile.update(last_logout=profile[0].last_activity)
+
+    return
+
+
+@csrf_exempt
+def record_active_count(login_user, current_pst, target_pst):
+    # Calculating Day# from the DDay
+    dday = current_pst - target_pst
+    day = dday.days
+    print("***********"+str(day))
+    if day < 0:
+        day = 0
+
+    # Checking last login time
+    # If None or difference is more than 0, delta is 1,
+    # Otherwise, delta is 0 which means no need to increment daily active user count
+    last_login = login_user[0].last_login
+    print(last_login)
+    delta = 0
+    if last_login is None:
+        delta = 1
+    else:
+        user_last = last_login - datetime.timedelta(hours=7)
+        diff = user_last - target_pst
+
+        if diff.days != day:
+            delta = 1
+
+    print(delta)
+    # print(diff.days)
+    print(day)
+    # Create Day object if does not exist
+    if ActivityRecords.objects.filter(day=day).count() == 0:
+        ActivityRecords(day=day).save()
+
+    # If last login is over one day, update daily active user count
+    if delta == 1:
+        active_day = ActivityRecords.objects.filter(day=day)
+        active_count = active_day[0].active_user_count
+        new_active_count = active_count + 1
+        ActivityRecords.objects.filter(day=day).update(active_user_count=new_active_count)
+    # Daily Active User Implementation Done
+
+
+@csrf_exempt
+def save_last_activity(request):
+    print(request.user)
+    print(datetime.datetime.utcnow())
+    Profile.objects.filter(user_id=request.user.id).update(last_activity=datetime.datetime.utcnow())
+    return
+
+
+def record_metrics(login, logout):
+    timezone = pytz.utc
+    target = datetime.datetime(2020, 10, 24, 6, 45)
+    targetUTC = timezone.localize(target)
+    targetPST = targetUTC - datetime.timedelta(hours=7)
+    expirationTime = 4200  # 2hours time out
+    dday = login - targetPST
+    dday = dday.days
+    if dday < 0:
+        dday = 0
+
+    if ActivityRecords.objects.filter(day=dday).count() == 0:
+        ActivityRecords.objects.create(day=dday)
+
+    if login.day == logout.day:
+        active_time = logout - login
+        active_time_in_seconds = active_time.seconds
+        print("active time: ", active_time_in_seconds)
+        total_active_time = active_time_in_seconds
+        record = ActivityRecords.objects.filter(day=dday)
+        number = record[0].active_user_count
+        if number == 0:
+            number = 1
+        time = record[0].active_time_in_seconds
+        summation = time + total_active_time
+        record.update(active_time_in_seconds=summation, average_active_time=summation / number)
+
+        print("current active time: ", time)
+        print("new active time: ", total_active_time)
+        print("summation: ", summation)
+    else:
+
+        target1 = datetime.datetime(logout.year, logout.month, logout.day, 23, 59, 59)
+        target1_PST = timezone.localize(target1) - datetime.timedelta(hours=7)
+        first_time = target1_PST - login
+        first_time_in_seconds = first_time.seconds
+
+        first_day = dday - 1
+        if first_day < 0:
+            first_day = 0
+
+        print("first time: ", first_time_in_seconds)
+        record = ActivityRecords.objects.filter(day=first_day)
+        number = record[0].active_user_count
+        if number == 0:
+            number = 1
+        time = record[0].active_time_in_seconds
+        summation = time + first_time_in_seconds
+        record.update(active_time_in_seconds=summation, average_active_time=summation / number)
+        target2 = datetime.datetime(login.year, login.month, login.day, 0, 0)
+        target2_PST = timezone.localize(target2) - datetime.timedelta(hours=7)
+        second_time = logout - target2_PST
+        second_time_in_seconds = second_time.seconds
+        print("second time: ", second_time_in_seconds)
+
+        record = ActivityRecords.objects.filter(day=dday)
+        number = record[0].active_user_count
+        if number == 0:
+            number = 1
+        time = record[0].active_time_in_seconds
+        summation = time + second_time_in_seconds
+        print("second summation", summation)
+        record.update(active_time_in_seconds=summation, average_active_time=summation / number)
+
+        total_active_time = first_time_in_seconds + second_time_in_seconds
+
+    print("total active time: ", total_active_time)
+
+    if OverallActivity.objects.filter(name="overall").count() == 0:
+        OverallActivity.objects.create(name="overall")
+
+    overall = OverallActivity.objects.filter(name="overall")
+    overall_time = overall[0].active_time_in_seconds + total_active_time
+    number = User.objects.count()
+    print(number)
+    overall.update(active_time_in_seconds=overall_time, average_active_time=overall_time / number)
+    return
 
 
 # Logout
 def logout(request):
+    if request.user.is_anonymous:
+        return redirect('login')
+
+    timezone = pytz.utc
+    currentTime = datetime.datetime.utcnow()
+    ct = timezone.localize(currentTime) - datetime.timedelta(hours=7)
+
+    last_login = request.user.last_login - datetime.timedelta(hours=7)
+    print("current time in PST:", ct)
+    print("last login in PST:", last_login)
+    print("subtraction:", ct-last_login)
+
+    print("current day: ", ct.day)
+    print("last login day: ", last_login.day)
+
+    record_metrics(last_login, ct)
+    Profile.objects.filter(user_id=request.user.id).update(last_logout=currentTime)
+
     auth_logout(request)
     return redirect('login')
-
 
 # Login Authentication
 @login_required()
@@ -219,6 +427,20 @@ def main(request):
     current_account = get_object_or_404(User, username=current_user)
 
     global clickToggleName
+
+    platinumPartners = iros_partners[(iros_partners['Cartegory']=='Platinum')].reset_index()
+    partnersName = sorted(list(set(platinumPartners['Name'])))
+    partnersWebpage = []
+    partnersAbstract = []
+    partnersVideo = []
+    for i in partnersName:
+        findPartners = platinumPartners[(platinumPartners['Name'] == i )].reset_index()
+        partnersWebpage.append(findPartners['Webpage Link'].iloc[0])
+        partnersAbstract.append(findPartners['Abstract'].iloc[0])
+        partnersVideo.append(findPartners['Video Name'].iloc[0])
+
+
+    platinumPartnersZip = zip(partnersName,partnersWebpage,partnersAbstract,partnersVideo)
 
     if request.method == 'GET' and 'id' in request.GET:
         clickToggleName = request.GET['id']
@@ -306,6 +528,8 @@ def main(request):
     competitionTitle = iros_competition['Title'].reset_index()
     PavCompetition = zip(competitionNumber['Nr'], competitionTitle['Title'])
 
+    partnerHitNumber = 20015
+
     return render(request, './beta/2_2main_beta.html',
                   {'PavSessions':PavSessions,
                    'SpecialPavilion': SpecialPavilion,
@@ -315,6 +539,8 @@ def main(request):
                    'allowWSContents': allowWSContents,
                    'showcontents': showcontents,
                    'PavCompetition':PavCompetition,
+                   'platinumPartnersZip':platinumPartnersZip,
+                   'partnerHitNumber':partnerHitNumber,
                    })
 
 #########################################################################################################
@@ -419,6 +645,8 @@ def tvshow(request):
     partnerVideoLink = partnerSession['Video Link'].reset_index()
     partnerCartegory = partnerSession['Cartegory'].reset_index()
     partnerAbstract = partnerSession['Abstract'].reset_index()
+    partnerNumber = partnerSession['Nr'].reset_index()
+    print(partnerNumber)
 
     #Session Chair and Co-Chairs
     findSession = iros20_sessionChairs[(iros20_sessionChairs['Session title']==selectedSession)].reset_index()
@@ -486,7 +714,8 @@ def tvshow(request):
                                                                       'ChairName':ChairName,
                                                                       'coChairName':coChairName,
                                                                       'ChairAffiliation':ChairAffiliation,
-                                                                      'coChairAffiliation':coChairAffiliation
+                                                                      'coChairAffiliation':coChairAffiliation,
+                                                                      'partnerNumber':partnerNumber['Nr'],
                                                                       })
 
 
@@ -657,6 +886,8 @@ def competition(request):
     CompetitionDate = findCompetition['Date'].iloc[0]
     CompetitionDescription = findCompetition['Description'].iloc[0]
     CompetitionVideo = findCompetition['Video'].iloc[0]
+    CompetitionCorrOrganizer = findCompetition['Corresponding Organizer'].iloc[0]
+    CompetitionCorrOrganizerEmail = findCompetition['Email'].iloc[0]
     CompetitionOrganizers = []
     CompetitionOrganizersAfilliation = []
     for i in range(1, 8):
@@ -679,6 +910,8 @@ def competition(request):
                                                                      'CompetitionVideo':CompetitionVideo,
                                                                      'CompetitionOrganizersInfo':CompetitionOrganizersInfo,
                                                                      'PavCompetition':PavCompetition,
+                                                                     'CompetitionCorrOrganizer':CompetitionCorrOrganizer,
+                                                                     'CompetitionCorrOrganizerEmail':CompetitionCorrOrganizerEmail,
                                                                      })
 #########################################################################################################
 #########################################################################################################
@@ -764,7 +997,7 @@ def episode(request):
         else:
             selectedPaperbuttonStatus = 0
 
-        selectedpaperHitCount = int(selectedPaper.paper_hitcount) + 1
+        selectedpaperHitCount = int(selectedPaper.paper_hitcount)
 
         for titleNr in titleNumber['Nr']:
             paper = get_object_or_404(Papers, paper_id=titleNr)
@@ -811,7 +1044,7 @@ def episode(request):
                                                                              'lengthComments': lengthComments
                                                                              })
 
-
+@csrf_exempt
 def specialsepisode(request):
     if request.user.is_authenticated == False:
         return render(request, './beta/1-1_loginError_beta.html')
@@ -827,6 +1060,18 @@ def specialsepisode(request):
     selectedSpeaker = findspeaker['Speaker'].iloc[0]
     selectedTitle = findspeaker['Title'].iloc[0]
     specialVideo = findspeaker['Video'].iloc[0]
+    specialSupplement = findspeaker['Supplement'].iloc[0]
+
+    specialSupplementEpisode = []
+    specialSupplementTitle = []
+    specialSupplementVideo = []
+    specialSupplementNr = []
+    if int(specialSupplement) == 1:
+        specialSupplementEpisode = iros_specials[(iros_specials['Genre']=='Addition') &
+                                                 (iros_specials['Speaker']==selectedSpeaker)].reset_index()
+        specialSupplementTitle = specialSupplementEpisode['Title']
+        specialSupplementVideo = specialSupplementEpisode['Video']
+        specialSupplementNr = specialSupplementEpisode['Nr']
 
     # Other Specials
     specialEpisodeList = iros_specials[(iros_specials['Genre'] == selectedSpecial)]
@@ -890,6 +1135,7 @@ def specialsepisode(request):
                                     )
 
         return render(request, './beta/4-1_plenariesSessionEpisode_beta.html', {'specialVideo': specialVideo,
+                                                                                'selectedSpeaker':selectedSpeaker,
                                                                                 'selectedSpecial': selectedSpecial,
                                                                                 'selectedTitle':selectedTitle,
                                                                                 'specialEpisodeContext': specialEpisodeContext,
@@ -901,6 +1147,10 @@ def specialsepisode(request):
                                                                                 'arrayComments': arrayComments,
                                                                                 'lengthComments': lengthComments,
                                                                                 'selectedSpecialHitCount':selectedSpecialHitCount,
+                                                                                'specialSupplement':int(specialSupplement),
+                                                                                'specialSupplementTitle':specialSupplementTitle,
+                                                                                'specialSupplementVideo':specialSupplementVideo,
+                                                                                'specialSupplementNr':specialSupplementNr
                                                                                 })
 
 
@@ -1262,6 +1512,21 @@ def mylist(request):
     else:
         mylistWorkshopsContext = []
 
+    #Silver partners
+    silverPartners = iros_partners[(iros_partners['Cartegory'] == 'Silver')].reset_index()
+    partnersName = sorted(list(set(silverPartners['Name'])))
+    partnersWebpage = []
+    partnersAbstract = []
+    partnersVideo = []
+    for i in partnersName:
+        findPartners = silverPartners[(silverPartners['Name'] == i)].reset_index()
+        partnersWebpage.append(findPartners['Webpage Link'].iloc[0])
+        partnersAbstract.append(findPartners['Abstract'].iloc[0])
+        partnersVideo.append(findPartners['Video Name'].iloc[0])
+
+    silverPartnersZip = zip(partnersName, partnersWebpage, partnersAbstract, partnersVideo)
+    partnerVideoNumber = 20016
+
     return render(request, './beta/7_myList_beta.html', {
         'mylistEpisodeNumber': len(mylistEpisodeNumber),
         'mylistEpisodeContext': mylistEpisodeContext,
@@ -1269,7 +1534,9 @@ def mylist(request):
         'mylistSpecialContext': mylistSpecialContext,
         'mylistWorkshopsNumber': len(mylistWorkshopsNumber),
         'mylistWorkshopsContext': mylistWorkshopsContext,
-        'showcontents':int(showcontents)
+        'showcontents':int(showcontents),
+        'silverPartnersZip':silverPartnersZip,
+        'partnerVideoNumber':partnerVideoNumber
     })
 
 
@@ -1513,37 +1780,37 @@ def update_playtime(request):
 #         newMember.save()
 
 
-        # RegisterType = iros_cVentRegist['Registration Type'].iloc[i]
-        # if RegisterType == 'Associate Member':
-        #     newMember.profile.primary = 'Yes'
-        #     newMember.profile.member = 'Yes'
-        # elif RegisterType == 'Graduate Student Member':
-        #     newMember.profile.primary = 'Yes'
-        #     newMember.profile.member = 'Yes'
-        # elif RegisterType == 'IEEE Life Fellow':
-        #     newMember.profile.primary = 'Yes'
-        #     newMember.profile.member = 'Yes'
-        # elif RegisterType == 'IEEE Life Member':
-        #     newMember.profile.primary = 'Yes'
-        #     newMember.profile.member = 'Yes'
-        # elif RegisterType == 'IEEE Life Senior':
-        #     newMember.profile.primary = 'Yes'
-        #     newMember.profile.member = 'Yes'
-        # elif RegisterType == 'IEEE Member':
-        #     newMember.profile.primary = 'Yes'
-        #     newMember.profile.member = 'Yes'
-        # elif RegisterType == 'IEEE Student Member':
-        #     newMember.profile.primary = 'Yes'
-        #     newMember.profile.member = 'Yes'
-        # elif RegisterType == 'Non Member':
-        #     newMember.profile.primary = 'Yes'
-        #     newMember.profile.member = 'No'
-        # elif RegisterType == 'Senior Member':
-        #     newMember.profile.primary = 'Yes'
-        #     newMember.profile.member = 'Yes'
-        # elif RegisterType == 'Student Non-Member':
-        #     newMember.profile.primary = 'Yes'
-        #     newMember.profile.member = 'No'
+# RegisterType = iros_cVentRegist['Registration Type'].iloc[i]
+# if RegisterType == 'Associate Member':
+#     newMember.profile.primary = 'Yes'
+#     newMember.profile.member = 'Yes'
+# elif RegisterType == 'Graduate Student Member':
+#     newMember.profile.primary = 'Yes'
+#     newMember.profile.member = 'Yes'
+# elif RegisterType == 'IEEE Life Fellow':
+#     newMember.profile.primary = 'Yes'
+#     newMember.profile.member = 'Yes'
+# elif RegisterType == 'IEEE Life Member':
+#     newMember.profile.primary = 'Yes'
+#     newMember.profile.member = 'Yes'
+# elif RegisterType == 'IEEE Life Senior':
+#     newMember.profile.primary = 'Yes'
+#     newMember.profile.member = 'Yes'
+# elif RegisterType == 'IEEE Member':
+#     newMember.profile.primary = 'Yes'
+#     newMember.profile.member = 'Yes'
+# elif RegisterType == 'IEEE Student Member':
+#     newMember.profile.primary = 'Yes'
+#     newMember.profile.member = 'Yes'
+# elif RegisterType == 'Non Member':
+#     newMember.profile.primary = 'Yes'
+#     newMember.profile.member = 'No'
+# elif RegisterType == 'Senior Member':
+#     newMember.profile.primary = 'Yes'
+#     newMember.profile.member = 'Yes'
+# elif RegisterType == 'Student Non-Member':
+#     newMember.profile.primary = 'Yes'
+#     newMember.profile.member = 'No'
 # print(duplicatecount)
 @csrf_exempt
 def signup(request):
@@ -1665,3 +1932,111 @@ def activate(request, uidb64, token):
         return render(request,'./beta/0_5_account_activation_success.html',{'user':user})
     else:
         return render(request, './beta/0_3_account_activate_invalid.html')
+
+@csrf_exempt
+def about(request):
+    if request.user.is_authenticated == False:
+        return render(request, './beta/1-1_loginError_beta.html')
+    else:
+        user_verification(request)
+
+    showcontents = request.GET['id']
+
+    SPC = iros_about[(iros_about['Title']=='Senior Program Committee')].reset_index()
+    SPCmember = SPC['Name']
+
+    CPRB = iros_about[(iros_about['Title']=='Editors')].reset_index()
+    CPRBMember = CPRB['Name']
+    CPRBInstitution = CPRB['Institution']
+
+    CPRBzip = zip(CPRBMember,CPRBInstitution)
+
+    AE = iros_about[(iros_about['Title']=='Associate Editors')].reset_index()
+    AEMember = AE['Name']
+
+    Reviewer = iros_about[(iros_about['Title']=='Reviewers')].reset_index()
+    ReviewerName = Reviewer['Name']
+
+    return render(request,'./beta/8_about_beta.html',{'showcontents':int(showcontents),
+                                                      'SPCmember':SPCmember,
+                                                      'CPRBzip':CPRBzip,
+                                                      'AEMember':AEMember,
+                                                      'ReviewerName':ReviewerName,
+                                                      })
+
+@csrf_exempt
+def faqhelp(request):
+    if request.user.is_authenticated == False:
+        return render(request, './beta/1-1_loginError_beta.html')
+    else:
+        user_verification(request)
+
+    showcontents = request.GET['id']
+
+    Question = iros_faqhelp['Question']
+    Answer = iros_faqhelp['Answer']
+
+    FAQ = zip(Question,Answer)
+
+    return render(request,'./beta/9_FAQHelp_beta.html',{'showcontents':int(showcontents),
+                                                        'FAQ':FAQ
+                                                        })
+@csrf_exempt
+def partners(request):
+    if request.user.is_authenticated == False:
+        return render(request, './beta/1-1_loginError_beta.html')
+    else:
+        user_verification(request)
+
+    showcontents = request.GET['id']
+    platinum = iros_partners[(iros_partners['Cartegory']=='Platinum')].reset_index()
+    gold = iros_partners[(iros_partners['Cartegory'] == 'Gold')].reset_index()
+    silver = iros_partners[(iros_partners['Cartegory'] == 'Silver')].reset_index()
+    bronze = iros_partners[(iros_partners['Cartegory'] == 'Bronze')].reset_index()
+
+    platinumPartner = sorted(list(set(platinum['Name'])))
+    goldPartner = sorted(list(set(gold['Name'])))
+    silverPartner = sorted(list(set(silver['Name'])))
+    bronzePartner = sorted(list(set(bronze['Name'])))
+
+    partnershipName = ['Platinum', 'Gold', 'Silver', 'Bronze']
+    partnerSessions = [platinumPartner,goldPartner, silverPartner,bronzePartner]
+    Partners = zip(partnershipName, partnerSessions)
+    return render(request,'./beta/10_partners_beta.html',{'showcontents':int(showcontents),
+                                                          'Partners':Partners})
+
+@csrf_exempt
+def partnerspage(request):
+    if request.user.is_authenticated == False:
+        return render(request, './beta/1-1_loginError_beta.html')
+    else:
+        user_verification(request)
+
+    showcontents = request.GET['id']
+    selectedPartner = request.GET['id2']
+    findPartner = iros_partners[(iros_partners['Name']==selectedPartner)].reset_index()
+    partnerLevel = findPartner['Cartegory'].iloc[0]
+    partnerAbstract = findPartner['Abstract'].iloc[0]
+    partnerHyperlink = findPartner['Webpage Link'].iloc[0]
+    partnerVideo = findPartner['Video Name'].iloc[0]
+    partnerVideoNumber = findPartner['Nr'].iloc[0]
+
+    return render(request,'./beta/10-1_partnerPage_beta.html',{'showcontents':int(showcontents),
+                                                               'selectedPartner':selectedPartner,
+                                                               'partnerLevel':partnerLevel,
+                                                               'partnerAbstract':partnerAbstract,
+                                                               'partnerHyperlink':partnerHyperlink,
+                                                               'partnerVideo':partnerVideo,
+                                                               'partnerVideoNumber':partnerVideoNumber
+                                                               })
+
+def placeyourads(request):
+    if request.user.is_authenticated == False:
+        return render(request, './beta/1-1_loginError_beta.html')
+    else:
+        user_verification(request)
+
+    showcontents = request.GET['id']
+
+    return render(request, './beta/11_Placeyourads_beta.html', {'showcontents': int(showcontents),
+                                                                })
