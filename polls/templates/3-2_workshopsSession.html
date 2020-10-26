@@ -17,6 +17,15 @@
             window.cookieconsent.initialise(json)
         });
     </script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8QZDWZH3X6"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-8QZDWZH3X6');
+    </script>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <!-- Link Swiper's CSS -->
@@ -130,20 +139,20 @@
                 </tr>
                 <tr>
                     <td colspan="2">
-                    {% if  workshopsHomepage != 'missing'%}
-                        <div class="landingtablebottom">
-                            <div class="landingtablebottomleft2">
-                                <p style="display: inline">Webpage</p>
+                        {% if  workshopsHomepage != 'missing'%}
+                            <div class="landingtablebottom">
+                                <div class="landingtablebottomleft2">
+                                    <p style="display: inline">Webpage</p>
+                                </div>
+                                <div class="landingtablebottomright">
+                                    {% if selectedGenre == 'Workshops' or selectedGenre == 'More Workshops'%}
+                                        <a href="{{ workshopsHomepage }}" target="_blank" style="color: white;"> {{ workshopsHomepage }}</a>
+                                    {% else %}
+                                        <a href="{{ workshopsHomepage }}" target="_blank" style="color: white;"> {{ workshopsHomepage }}</a>
+                                    {% endif %}
+                                </div>
                             </div>
-                            <div class="landingtablebottomright">
-                                {% if selectedGenre == 'Workshops' or selectedGenre == 'More Workshops'%}
-                                    <a href="{{ workshopsHomepage }}" target="_blank" style="color: white;"> {{ workshopsHomepage }}</a>
-                                {% else %}
-                                    <a href="{{ workshopsHomepage }}" target="_blank" style="color: white;"> {{ workshopsHomepage }}</a>
-                                {% endif %}
-                            </div>
-                        </div>
-                    {% endif %}
+                        {% endif %}
                         <div class="landingtablebottom">
                             <div class="landingtablebottomleft2">
                                 <p style="display: inline">Organizers</p>

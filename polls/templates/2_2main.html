@@ -21,6 +21,15 @@
             window.cookieconsent.initialise(json)
         });
     </script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8QZDWZH3X6"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-8QZDWZH3X6');
+    </script>
 
     <script
             src="https://kit.fontawesome.com/7541329784.js"
@@ -435,6 +444,11 @@
     </span>
         {##}
         <span class="partnerLogoOranizer"style="border-bottom-left-radius: 30px; border-bottom-right-radius: 30px">
+            <div class="partnerlogo">
+                <a target="_blank" href="https://www.ydlidar.com/">
+                    <img src="{% static 'img/Banner/Bronze/EAI Technology.png'%}">
+                </a>
+            </div>
             <div class="partnerlogo">
                 <a target="_blank" href="https://www.independentrobotics.com/">
                     <img src="{% static 'img/Banner/Bronze/Independent Robotics.png'%}">

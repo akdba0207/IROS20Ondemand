@@ -17,6 +17,15 @@
             window.cookieconsent.initialise(json)
         });
     </script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8QZDWZH3X6"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-8QZDWZH3X6');
+    </script>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <!-- Link Swiper's CSS -->
@@ -367,70 +376,70 @@
                 });
             }
         </script>
-{#        <script>#}
-{#            var vid = document.getElementById("vid");#}
-{##}
-{#            var loadStart = 0, loadFinish = 0, loadTime = 0;#}
-{#            var timeStarted = -1;#}
-{#            var timeStopped = 0;#}
-{#            var timePlayed = 0;#}
-{#            var loadDone = false;#}
-{##}
-{#            function videoStartedPlaying(event){#}
-{#                console.log("Started Playing");#}
-{#                timeStarted = new Date().getTime();#}
-{#            }#}
-{##}
-{#            function videoStoppedPlaying(event){#}
-{#                console.log("Stopped Playing");#}
-{#                if(timeStarted < 0)#}
-{#                    return;#}
-{#                timeStopped = new Date().getTime();#}
-{#                newTime = timeStopped - timeStarted;#}
-{#                timePlayed += newTime;#}
-{#                console.log("added time: " + newTime + "ms");#}
-{#                console.log("total time: " + timePlayed + "ms");#}
-{#                timeStarted = -1;#}
-{#            }#}
-{##}
-{#            function fLoadStart(){#}
-{#                console.log("Load Start");#}
-{#                loadStart = new Date().getTime();#}
-{#            }#}
-{##}
-{#            function fLoadFinish(){#}
-{#                if(loadDone === true)#}
-{#                    return;#}
-{#                console.log("Load Finish");#}
-{#                loadFinish = new Date().getTime();#}
-{#                loadTime = loadFinish - loadStart;#}
-{#                console.log("loadTime: " + loadTime + "ms");#}
-{#                loadDone = true;#}
-{#            }#}
-{##}
-{#            vid.addEventListener('loadstart', fLoadStart);#}
-{#            vid.addEventListener('canplaythrough', fLoadFinish);#}
-{##}
-{#            vid.addEventListener('play', videoStartedPlaying);#}
-            {#vid.addEventListener('playing', videoStartedPlaying);#}
-{##}
-{#            vid.addEventListener('ended', videoStoppedPlaying);#}
-{#            vid.addEventListener('pause', videoStoppedPlaying);#}
-{##}
-{#            function catch_backpress(){#}
-{#                console.log("Catching Backpress");#}
-{#                if(timeStarted < 0)#}
-{#                    return;#}
-{#                if(loadTime > 100000)#}
-{#                    loadTime = 0;#}
-{#                timeStopped = new Date().getTime();#}
-{#                newTime = timeStopped - timeStarted - loadTime;#}
-{#                timePlayed += newTime;#}
-{#                console.log("added time: " + newTime + "ms");#}
-{#                console.log("total time: " + timePlayed + "ms");#}
-{#                timeStarted = -1;#}
-{#            }#}
-{#        </script>#}
+        {#        <script>#}
+        {#            var vid = document.getElementById("vid");#}
+        {##}
+        {#            var loadStart = 0, loadFinish = 0, loadTime = 0;#}
+        {#            var timeStarted = -1;#}
+        {#            var timeStopped = 0;#}
+        {#            var timePlayed = 0;#}
+        {#            var loadDone = false;#}
+        {##}
+        {#            function videoStartedPlaying(event){#}
+        {#                console.log("Started Playing");#}
+        {#                timeStarted = new Date().getTime();#}
+        {#            }#}
+        {##}
+        {#            function videoStoppedPlaying(event){#}
+        {#                console.log("Stopped Playing");#}
+        {#                if(timeStarted < 0)#}
+        {#                    return;#}
+        {#                timeStopped = new Date().getTime();#}
+        {#                newTime = timeStopped - timeStarted;#}
+        {#                timePlayed += newTime;#}
+        {#                console.log("added time: " + newTime + "ms");#}
+        {#                console.log("total time: " + timePlayed + "ms");#}
+        {#                timeStarted = -1;#}
+        {#            }#}
+        {##}
+        {#            function fLoadStart(){#}
+        {#                console.log("Load Start");#}
+        {#                loadStart = new Date().getTime();#}
+        {#            }#}
+        {##}
+        {#            function fLoadFinish(){#}
+        {#                if(loadDone === true)#}
+        {#                    return;#}
+        {#                console.log("Load Finish");#}
+        {#                loadFinish = new Date().getTime();#}
+        {#                loadTime = loadFinish - loadStart;#}
+        {#                console.log("loadTime: " + loadTime + "ms");#}
+        {#                loadDone = true;#}
+        {#            }#}
+        {##}
+        {#            vid.addEventListener('loadstart', fLoadStart);#}
+        {#            vid.addEventListener('canplaythrough', fLoadFinish);#}
+        {##}
+        {#            vid.addEventListener('play', videoStartedPlaying);#}
+        {#vid.addEventListener('playing', videoStartedPlaying);#}
+        {##}
+        {#            vid.addEventListener('ended', videoStoppedPlaying);#}
+        {#            vid.addEventListener('pause', videoStoppedPlaying);#}
+        {##}
+        {#            function catch_backpress(){#}
+        {#                console.log("Catching Backpress");#}
+        {#                if(timeStarted < 0)#}
+        {#                    return;#}
+        {#                if(loadTime > 100000)#}
+        {#                    loadTime = 0;#}
+        {#                timeStopped = new Date().getTime();#}
+        {#                newTime = timeStopped - timeStarted - loadTime;#}
+        {#                timePlayed += newTime;#}
+        {#                console.log("added time: " + newTime + "ms");#}
+        {#                console.log("total time: " + timePlayed + "ms");#}
+        {#                timeStarted = -1;#}
+        {#            }#}
+        {#        </script>#}
         <script>
             window.addEventListener( "pageshow", function ( event ) {
                 var historyTraversal = event.persisted ||
@@ -443,25 +452,25 @@
                 }
             });
         </script>
-{#        <script>#}
-{#            function update_playtime(titleNumber) {#}
-{#                $.ajax({#}
-{#                    url: 'update_playtime',#}
-{#                    type: 'POST',#}
-{#                    data: {#}
-{#                        'paperNumber': titleNumber,#}
-{#                        'time': timePlayed,#}
-{#                    },#}
-{#                    dataType: 'json',#}
-{#                    success: function (json) {#}
-{#                        console.log("successfully updated video playtime: " + json['total_time'] + " seconds");#}
-{#                    },#}
-{#                    error: function (err) {#}
-{#                        alert("Failed to Retrieve JSON file from Server (Video)");#}
-{#                    }#}
-{#                });#}
-{#            }#}
-{#        </script>#}
+        {#        <script>#}
+        {#            function update_playtime(titleNumber) {#}
+        {#                $.ajax({#}
+        {#                    url: 'update_playtime',#}
+        {#                    type: 'POST',#}
+        {#                    data: {#}
+        {#                        'paperNumber': titleNumber,#}
+        {#                        'time': timePlayed,#}
+        {#                    },#}
+        {#                    dataType: 'json',#}
+        {#                    success: function (json) {#}
+        {#                        console.log("successfully updated video playtime: " + json['total_time'] + " seconds");#}
+        {#                    },#}
+        {#                    error: function (err) {#}
+        {#                        alert("Failed to Retrieve JSON file from Server (Video)");#}
+        {#                    }#}
+        {#                });#}
+        {#            }#}
+        {#        </script>#}
         <script>
             var v = document.getElementById("vid");
             var width,height;
@@ -473,13 +482,13 @@
             }, false );
 
         </script>
-{#        <script>#}
-{#            window.addEventListener("beforeunload", function(event){#}
-{#                console.log("Updating Vid Playtime"+" {{ selectedWorkshopEpisodeNumber|floatformat:"0" }}");#}
-{#                catch_backpress();#}
-{#                update_playtime("{{ selectedWorkshopEpisodeNumber|floatformat:"0" }}");#}
-{#            });#}
-{#        </script>#}
+        {#        <script>#}
+        {#            window.addEventListener("beforeunload", function(event){#}
+        {#                console.log("Updating Vid Playtime"+" {{ selectedWorkshopEpisodeNumber|floatformat:"0" }}");#}
+        {#                catch_backpress();#}
+        {#                update_playtime("{{ selectedWorkshopEpisodeNumber|floatformat:"0" }}");#}
+        {#            });#}
+        {#        </script>#}
         <script>
             $(document).ready(function() {
                 // Configure/customize these variables.

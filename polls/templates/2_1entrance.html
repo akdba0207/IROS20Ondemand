@@ -20,6 +20,15 @@
             window.cookieconsent.initialise(json)
         });
     </script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8QZDWZH3X6"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-8QZDWZH3X6');
+    </script>
     <script
             src="https://kit.fontawesome.com/7541329784.js"
             crossorigin="anonymous"
@@ -111,7 +120,7 @@
                         </div>
                         <div class="carousel-caption1" style="width: 60%;">
                             <div class="carousel-pbox">
-                                <span>
+                                <span style="display: inline-block;vertical-align: middle;line-height: normal;">
 {#                                <img id="psponsorImg2" width="100%">#}
                                 <p class="carousel-p1" style="width: 100%;word-break: keep-all">IROS Specials</p>
                                 <p class="carousel-p2" id="psponsorAbstract2" style="text-align: center"><a id="psponsorLink2" style="color: yellow">Click to Watch Now</a></p>
@@ -133,7 +142,7 @@
                         </div>
                         <div class="carousel-caption1" style="width: 60%;">
                             <div class="carousel-pbox">
-                                <span>
+                                <span style="display: inline-block;vertical-align: middle;line-height: normal;">
 {#                                <img id="psponsorImg3" width="100%">#}
                                 <p class="carousel-p1" style="width: 100%;word-break: keep-all">IROS Specials</p>
                                 <p class="carousel-p2" id="psponsorAbstract3" style="text-align: center"><a id="psponsorLink3" style="color: yellow">Click to Watch Now</a></p>
@@ -248,6 +257,11 @@
     </span>
     {##}
     <span class="partnerLogoOranizer"style="border-bottom-left-radius: 30px; border-bottom-right-radius: 30px">
+        <div class="partnerlogo">
+                <a target="_blank" href="https://www.ydlidar.com/">
+                    <img src="{% static 'img/Banner/Bronze/EAI Technology.png'%}">
+                </a>
+            </div>
             <div class="partnerlogo">
                 <a target="_blank" href="https://www.independentrobotics.com/">
                     <img src="{% static 'img/Banner/Bronze/Independent Robotics.png'%}">

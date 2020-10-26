@@ -17,6 +17,15 @@
             window.cookieconsent.initialise(json)
         });
     </script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8QZDWZH3X6"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-8QZDWZH3X6');
+    </script>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <!-- Link Swiper's CSS -->
@@ -156,7 +165,7 @@
                                             <p class="gsVidCaption-p2" style="word-break: break-word">{{ partnerAbstract.0 }}</p>
                                         {% endif %}
                                         {% if partnerName.0 == 'Amazon' %}
-                                             <p class="gsVidCaption-p3"><a id="psponsorLink3" target="_blank" style="color: coral;" href="{{ partenerWebpage.0}}">Connect with us at iros2020@amazon.com!</p>
+                                            <p class="gsVidCaption-p3"><a id="psponsorLink3" target="_blank" style="color: coral;" href="{{ partenerWebpage.0}}">Connect with us at iros2020@amazon.com!</p>
                                         {% else %}
                                             <p class="gsVidCaption-p3"><a id="psponsorLink3" target="_blank" style="color: coral;" href="{{ partenerWebpage.0}}">Click for more information</a></p>
                                         {% endif %}
