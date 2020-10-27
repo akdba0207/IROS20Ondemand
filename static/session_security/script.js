@@ -1,10 +1,10 @@
-console.log("Starting Security")
+// console.log("Starting Security")
 if (window.yourlabs === undefined){
-    console.log("Undefined")
+    // console.log("Undefined")
     window.yourlabs = {};
 }
 else{
-    console.log("Defined")
+    // console.log("Defined")
 }
 
 
@@ -56,9 +56,9 @@ yourlabs.SessionSecurity.prototype = {
         $('.session_security_modal').focus();
         $.ajax({
             url:'save_last_activity',
-            type:'GET',
-            data:{},
-            dataType:'json',
+            // type:'GET',
+            // data:{},
+            // dataType:'json',
         });
     },
 

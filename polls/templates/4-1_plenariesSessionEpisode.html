@@ -489,12 +489,14 @@
         </script>
         <script>
             function addComment(titleNumber, comment){
+                $('.commentInputBtn').prop('disabled',true);
                 $.ajax({
                     url:'add_comment',
                     type:'POST',
                     data:{'paperNumber':titleNumber, 'comment':comment},
                     dataType:'json',
                     success: function(json) {
+                         {#alert("Failed to Retrieve JSON file from Server");#}
                         $('#comment_input')[0].value = '';
                         {#$('#commentList').replaceWith($("#commentList", json['arrayComments']))#}
                         commentIndex = json['lengthComments'];
@@ -502,6 +504,10 @@
                         $('.commentList').append("<p class=\"comment\" id=\"comment"+commentIndex+"\">"+commentAdded+"</p>");
                         var autoScroll = $('.commentList')
                         autoScroll.scrollTop(autoScroll.prop('scrollHeight'));
+                        $('.commentInputBtn').prop('disabled',false);
+                    },
+                    error: function (err) {
+                        {#alert("Failed to Retrieve JSON file from Server");#}
                     }
                 });
             }

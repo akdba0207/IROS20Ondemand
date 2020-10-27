@@ -266,7 +266,11 @@
                                                     {% if PavilionWSTR == 'Workshops' or PavilionWSTR == 'More Workshops'%}
                                                         <img class="netflix-slider-img" onError="this.onerror=null;this.src='{% static './resources/logo2.png' %}';" src="{% static 'img/Workshops' %}/{{SessionWSTRNumber}}.jpg">
                                                     {% else %}
-                                                        <img class="netflix-slider-img" onError="this.onerror=null;this.src='{% static './resources/logo2.png' %}';" src="{% static 'img/Tutorials' %}/{{SessionWSTRNumber}}.jpg">
+                                                        {% if PavilionWSTR != 'Forums' %}
+                                                            <img class="netflix-slider-img" onError="this.onerror=null;this.src='{% static './resources/logo2.png' %}';" src="{% static 'img/Tutorials' %}/{{SessionWSTRNumber}}.jpg">
+                                                        {% else %}
+                                                            <img class="netflix-slider-img" onError="this.onerror=null;this.src='{% static './resources/logo2.png' %}';" src="{% static 'img/Forums' %}/{{SessionWSTRNumber}}.jpg">
+                                                        {% endif %}
                                                     {% endif %}
                                                     {% if SessionWSTRNumber == 'WS-2419' or SessionWSTRNumber == 'WS-3145' or SessionWSTRNumber == 'WS-3191' or SessionWSTRNumber == 'TS-77D2' %}
                                                         <div class="onimg-caption"> {{SessionWSTRName}}<br><font style="color: red"><b>Premiers Nov. 2</b></font>

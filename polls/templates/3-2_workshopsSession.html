@@ -123,7 +123,11 @@
                         {% if selectedGenre == 'Workshops' or selectedGenre == 'More Workshops'%}
                             <img width="100%" onError="this.onerror=null;this.src='{% static './resources/logo2.png' %}';" src="{% static 'img/Workshops' %}/{{selectedWorkshopsNumber}}.jpg">
                         {% else %}
-                            <img width="100%" onError="this.onerror=null;this.src='{% static './resources/logo2.png' %}';" src="{% static 'img/Tutorials' %}/{{selectedWorkshopsNumber}}.jpg">
+                            {% if selectedGenre != 'Forums' %}
+                                <img class="netflix-slider-img" onError="this.onerror=null;this.src='{% static './resources/logo2.png' %}';" src="{% static 'img/Tutorials' %}/{{selectedWorkshopsNumber}}.jpg">
+                            {% else %}
+                                <img class="netflix-slider-img" onError="this.onerror=null;this.src='{% static './resources/logo2.png' %}';" src="{% static 'img/Forums' %}/{{selectedWorkshopsNumber}}.jpg">
+                            {% endif %}
                         {% endif %}
                         <div></div>
                     </td>
@@ -131,7 +135,11 @@
                         {% if selectedGenre == 'Workshops' or selectedGenre == 'More Workshops'%}
                             <p style="color: powderblue; margin:0"><i>Welcome to workshop : </i></p>
                         {% else %}
-                            <p style="color: powderblue; margin:0"><i>Welcome to tutorial : </i></p>
+                            {% if selectedGenre != 'Forums' %}
+                                <p style="color: powderblue; margin:0"><i>Welcome to tutorial : </i></p>
+                            {% else %}
+                                <p style="color: powderblue; margin:0"><i>Welcome to forums : </i></p>
+                            {% endif %}
                         {% endif %}
                         <p style="color: powderblue; margin:0"><i>{{ selectedWorkshopsTitle }}</i></p>
                         <p style="color: powderblue; margin:0">&nbsp;</p>
@@ -305,8 +313,11 @@
                                     {% if selectedGenre == 'Workshops' or selectedGenre == 'More Workshops'%}
                                         <img class="netflix-slider-img" onError="this.onerror=null;this.src='{% static './resources/logo2.png' %}';" src="{% static 'img/Workshops' %}/{{SessionWSTRNumber}}.jpg">
                                     {% else %}
-                                        <img class="netflix-slider-img" onError="this.onerror=null;this.src='{% static './resources/logo2.png' %}';" src="{% static 'img/Tutorials' %}/{{SessionWSTRNumber}}.jpg">
-                                    {% endif %}
+                                        {% if selectedGenre != 'Forums' %}
+                                            <img class="netflix-slider-img" onError="this.onerror=null;this.src='{% static './resources/logo2.png' %}';" src="{% static 'img/Tutorials' %}/{{SessionWSTRNumber}}.jpg">
+                                        {% else %}
+                                            <img class="netflix-slider-img" onError="this.onerror=null;this.src='{% static './resources/logo2.png' %}';" src="{% static 'img/Forums' %}/{{SessionWSTRNumber}}.jpg">
+                                        {% endif %}                                    {% endif %}
                                     <div class="onimg-caption">{{ SessionWSTRName }}
                                     </div>
                                 </a>

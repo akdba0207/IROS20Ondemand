@@ -79,25 +79,25 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 #
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'iros2020_ondemand',
-#         'USER': 'iros2020dbk',
-#         'PASSWORD': 'dasldrchubo1325',
-#         'HOST': 'iros2020ondemand.iros2020.org',
-#         'PORT': '',
-#         'TEST': {
-#             'NAME': 'iros2020_ondemand',
-#         },
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 #     }
 # }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'iros2020_ondemand',
+        'USER': 'iros2020dbk',
+        'PASSWORD': 'dasldrchubo1325',
+        'HOST': 'iros2020ondemand.iros2020.org',
+        'PORT': '',
+        'TEST': {
+            'NAME': 'iros2020_ondemand',
+        },
+    }
+}
 
 
 # Password validation
@@ -156,3 +156,4 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # SESSION_SECURITY_EXPIRE_AFTER=10
 # SESSION_SECURITY_WARN_AFTER=5
 SESSION_EXPIRE_AT_BROWSER_CLOSE=True
+SESSION_SECURITY_PASSIVE_URL_NAMES = ['save_last_activity']

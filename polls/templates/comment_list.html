@@ -7,6 +7,6 @@
     <span>
         <input id="comment_input" type="text"
                name="text" class="commentInputbox" onkeydown="if(event.keyCode === 13) {event.preventDefault(); document.getElementById('comment_submit_btn').click()}"/>
-        <input class="commentInputBtn" id="comment_submit_btn" type="submit" value="Comment" onclick="addComment({{ SelectedPaperNumber }}, document.getElementById('comment_input').value)">
+        <input class="commentInputBtn" id="comment_submit_btn" type="submit" value="Comment" onclick="if(comment_input.value.trim().length > 0 )addComment({{ SelectedPaperNumber|floatformat:"0" }}, document.getElementById('comment_input').value)"/>
     </span>
 </div>

@@ -119,7 +119,7 @@
         <span class="episodeDiv">
         <div class="episodeVid">
         <div id="videoSizeReader">
-                <video id="vid" style="display:block; margin: 0 auto; width: 100%;" controls autoplay playsinline>{# controlsList="nodownload" #}
+                <video id="vid" style="display:block; margin: 0 auto; width: 100%;" controls autoplay playsinline controlsList="nodownload">{# controlsList="nodownload" #}
                     <source src="https://ras.papercept.net/proceedings/IROS20/{{ workshopsVideo }}" type="video/mp4">
                 </video>
         </div>
@@ -359,12 +359,14 @@
         </script>
         <script>
             function addComment(titleNumber, comment){
+                $('.commentInputBtn').prop('disabled',true);
                 $.ajax({
                     url:'add_comment',
                     type:'POST',
                     data:{'paperNumber':titleNumber, 'comment':comment},
                     dataType:'json',
                     success: function(json) {
+                         {#alert("Failed to Retrieve JSON file from Server");#}
                         $('#comment_input')[0].value = '';
                         {#$('#commentList').replaceWith($("#commentList", json['arrayComments']))#}
                         commentIndex = json['lengthComments'];
@@ -372,6 +374,10 @@
                         $('.commentList').append("<p class=\"comment\" id=\"comment"+commentIndex+"\">"+commentAdded+"</p>");
                         var autoScroll = $('.commentList')
                         autoScroll.scrollTop(autoScroll.prop('scrollHeight'));
+                        $('.commentInputBtn').prop('disabled',false);
+                    },
+                    error: function (err) {
+                        {#alert("Failed to Retrieve JSON file from Server");#}
                     }
                 });
             }

@@ -137,6 +137,8 @@ SpecialsSession = ['Plenaries', 'Keynotes', 'IROS Original Series', 'Award Winne
 Workshops = iros_wstr[(iros_wstr['Type'] == 'Workshop Paper')]
 Tutorials = iros_wstr[(iros_wstr['Type'] == 'Tutorial Paper')]
 
+Forums = iros_wstr[(iros_wstr['Type'] == 'Forum Paper')]
+
 WorkshopsSunday = Workshops[(Workshops['Date'].str[0]=='S') & (Workshops['Date'].str[1]=='u')]
 WorkshopsThursday = Workshops[(Workshops['Date'].str[0]=='T') & (Workshops['Date'].str[1]=='h')]
 
@@ -149,7 +151,9 @@ WSThursdaySession = sorted(list(set(WorkshopsThursday['Workshop Title'])))
 TRSundaySession = sorted(list(set(TutorialsSunday['Workshop Title'])))
 TRThursdaySession = sorted(list(set(TutorialsThursday['Workshop Title'])))
 
-PavilionWSTR = ['Workshops', 'More Workshops','Tutorials', 'More Tutorials']
+ForumSession = sorted(list(set(Forums['Workshop Title'])))
+
+PavilionWSTR = ['Workshops', 'More Workshops','Tutorials', 'More Tutorials', 'Forums']
 #########################################################################################################
 #########################################################################################################
 #########################################################################################################
@@ -290,7 +294,7 @@ def save_last_activity(request):
     print(request.user)
     print(datetime.datetime.utcnow())
     Profile.objects.filter(user_id=request.user.id).update(last_activity=datetime.datetime.utcnow())
-    return
+    return HttpResponse('')
 
 
 def record_metrics(login, logout):
@@ -505,6 +509,7 @@ def main(request):
     WSThursdayNumber=[]
     TRSundaySNumber=[]
     TRThursdayNumber=[]
+    ForumNumber=[]
 
     for i in range(len(WSSundaySession)):
         Workshopslist = WorkshopsSunday[(WorkshopsSunday['Workshop Title'] == WSSundaySession[i])].reset_index()
@@ -518,9 +523,12 @@ def main(request):
     for l in range(len(TRThursdaySession)):
         Workshopslist = TutorialsThursday[(TutorialsThursday['Workshop Title'] == TRThursdaySession[l])].reset_index()
         TRThursdayNumber.append(Workshopslist['WS/TR Nr'].iloc[0])
+    for m in range(len(ForumSession)):
+        Workshopslist = Forums[(Forums['Workshop Title'] == ForumSession[m])].reset_index()
+        ForumNumber.append(Workshopslist['WS/TR Nr'].iloc[0])
 
-    SessionWSTRName = [WSSundaySession,WSThursdaySession,TRSundaySession,TRThursdaySession]
-    SessionWSTRNumber = [WSSundayNumber, WSThursdayNumber,TRSundaySNumber,TRThursdayNumber]
+    SessionWSTRName = [WSSundaySession,WSThursdaySession,TRSundaySession,TRThursdaySession,ForumSession]
+    SessionWSTRNumber = [WSSundayNumber, WSThursdayNumber,TRSundaySNumber,TRThursdayNumber,ForumNumber]
     PavWSTR =zip(PavilionWSTR,SessionWSTRName, SessionWSTRNumber)
 
     # Competition
@@ -795,6 +803,9 @@ def workshops(request):
     elif selectedGenre == PavilionWSTR[3]:
         WorkshopsSession = TRThursdaySession
         WorkshopDate = TutorialsThursday
+    elif selectedGenre == PavilionWSTR[4]:
+        WorkshopsSession = ForumSession
+        WorkshopDate = Forums
     else:
         WorkshopsSession = []
 
@@ -1233,7 +1244,7 @@ def workshopsepisode(request):
 
         WorkshopsContext = zip(workshopSpeaker['Speaker'], workshopInstitution['Institution'], workshopTitle['Title'], workshopNumber['Nr'], workshopLikeButtonColor,
                                workshopLikeCount, workshopSaveButtonStatus, workshopHitCount, workshopsVideo['Video'], workshopAbstract['Presentation Abstract'],workshopDummy['Dummy'])
-
+        # print(selectedTitleNumber)
         return render(request, './4-2_workshopsSessionEpisode.html',
                       {'workshopsVideo': selectedWorkshopVideo,
                        'workshopsTalkTitle': selectedWorkshopTalkTitle,
@@ -1241,6 +1252,7 @@ def workshopsepisode(request):
                        'selectedWorkshopsNumber':selectedWorkshopsNumber,
                        'WorkshopsContext': WorkshopsContext,
                        'selectedWorkshopEpisodeNumber': selectedTitleNumber,
+                       'SelectedPaperNumber':selectedTitleNumber,
                        'selectedWorkshopLikeButtonColor': selectedWorkshopLikeButtonColor,
                        'selectedWorkshopLikeCount': selectedWorkshopLikeCount,
                        'selectedWorkshopSaveButtonStatus': selectedWorkshopSaveButtonStatus,
@@ -1585,7 +1597,6 @@ def add_comment(request):
     current_user = request.user.username
     current_account = get_object_or_404(User, username=current_user)
 
-    # print(current_account)
     # Comments load area
     if request.is_ajax:
         clickedPaperNumber = int(request.POST['paperNumber'])
@@ -1594,7 +1605,6 @@ def add_comment(request):
         c1.comment_users.add(current_account)
 
         lengthComments = Comments.objects.filter(paper_id=clickedPaperNumber).count()
-
         response = {'commentAdded': str(lengthComments) + " : " + request.POST['comment'],
                     'lengthComments': lengthComments}
 
@@ -1752,13 +1762,13 @@ def update_playtime(request):
 # #FYI, paper_like_user, paper_save_users, comments_comment_users can be manually deleted
 
 # # #CVENT Registration
-# excel_file10 = 'IROS Soft Launch - SPC Members.xlsx'
+# excel_file10 = 'IROS20_CVentRegistration.xlsx'
 # path10 = os.path.join(pre, excel_file10)
 # iros_cVentRegist= pd.read_excel(path10, sheet_name=0)
 # iros_cVentRegist = iros_cVentRegist.fillna('missing')
-
-# print(iros_cVentRegist['Registration Type'].iloc[0])
 #
+# # print(iros_cVentRegist['Registration Type'].iloc[0])
+# #
 # duplicatecount = 0
 # for i in range(len(iros_cVentRegist['Email Address'])):
 #     cVentCheck = User.objects.filter(username__iexact=iros_cVentRegist['Email Address'].iloc[i])
@@ -1766,52 +1776,19 @@ def update_playtime(request):
 #     if cVentCheck.exists() is True:
 #         duplicatecount +=1
 #         print(iros_cVentRegist['Email Address'].iloc[i])
-#         if cVentCheck[0].is_superuser is False:
-#             User.objects.filter(username__iexact=iros_cVentRegist['Email Address'].iloc[i]).update(is_superuser=True)
+#         if cVentCheck[0].is_superuser is True:
+#             User.objects.filter(username__iexact=iros_cVentRegist['Email Address'].iloc[i]).update(is_superuser=False)
 #     else:
 #         newMember = User.objects.create_user(username=iros_cVentRegist['Email Address'].iloc[i], email=iros_cVentRegist['Email Address'].iloc[i], password='a')
 #         newMember.profile.email_confirmed=True
 #         newMember.is_active=True
-#         newMember.is_superuser=True
 #         newMember.profile.primary = 'Yes'
 #         newMember.profile.member = 'Yes'
-#         newMember.profile.affiliation = 'University'
-#         newMember.profile.previous_attendance = 'More than 5 times'
+#         newMember.profile.affiliation = 'Industry'
+#         newMember.profile.previous_attendance = 'First time'
 #         newMember.save()
+print(duplicatecount)
 
-
-# RegisterType = iros_cVentRegist['Registration Type'].iloc[i]
-# if RegisterType == 'Associate Member':
-#     newMember.profile.primary = 'Yes'
-#     newMember.profile.member = 'Yes'
-# elif RegisterType == 'Graduate Student Member':
-#     newMember.profile.primary = 'Yes'
-#     newMember.profile.member = 'Yes'
-# elif RegisterType == 'IEEE Life Fellow':
-#     newMember.profile.primary = 'Yes'
-#     newMember.profile.member = 'Yes'
-# elif RegisterType == 'IEEE Life Member':
-#     newMember.profile.primary = 'Yes'
-#     newMember.profile.member = 'Yes'
-# elif RegisterType == 'IEEE Life Senior':
-#     newMember.profile.primary = 'Yes'
-#     newMember.profile.member = 'Yes'
-# elif RegisterType == 'IEEE Member':
-#     newMember.profile.primary = 'Yes'
-#     newMember.profile.member = 'Yes'
-# elif RegisterType == 'IEEE Student Member':
-#     newMember.profile.primary = 'Yes'
-#     newMember.profile.member = 'Yes'
-# elif RegisterType == 'Non Member':
-#     newMember.profile.primary = 'Yes'
-#     newMember.profile.member = 'No'
-# elif RegisterType == 'Senior Member':
-#     newMember.profile.primary = 'Yes'
-#     newMember.profile.member = 'Yes'
-# elif RegisterType == 'Student Non-Member':
-#     newMember.profile.primary = 'Yes'
-#     newMember.profile.member = 'No'
-# print(duplicatecount)
 @csrf_exempt
 def signup(request):
     if request.method == 'POST':
