@@ -22,8 +22,8 @@ body {
     /*margin-right: 45px;*/
 }
 .entranceToggleContainer{
-    width: 200px;
-    height: 200px;
+    width: 190px;
+    height: 190px;
 }
 .entranceOrganizer{
     display: inline-flex;
@@ -55,8 +55,8 @@ body {
         margin-bottom: 50%;
     }
     .entranceToggleContainer{
-        width: 120px;
-        height: 120px;
+        width: 110px;
+        height: 110px;
     }
     .entranceOrganizer{
         display: inline-block;
@@ -86,8 +86,8 @@ body {
         margin-bottom: 50%;
     }
     .entranceToggleContainer{
-        width: 120px;
-        height: 120px;
+        width: 110px;
+        height: 110px;
     }
     .entranceOrganizer{
         display: inline-block;

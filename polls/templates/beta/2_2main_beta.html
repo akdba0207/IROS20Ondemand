@@ -21,6 +21,15 @@
             window.cookieconsent.initialise(json)
         });
     </script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8QZDWZH3X6"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-8QZDWZH3X6');
+    </script>
 
     <script
             src="https://kit.fontawesome.com/7541329784.js"
@@ -86,6 +95,9 @@
                 </li>
             </ul>
             <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="jobs?id={{ showcontents }}" onClick="this.href=this.href+'&'+new Date().getTime()" style="color:yellow;">Jobs</a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="placeyourads?id={{ showcontents }}" onClick="this.href=this.href+'&'+new Date().getTime()" style="color:white;">Place your Ad</a>
                 </li>
@@ -210,6 +222,28 @@
                         </div>
                     </div>
                 </div>
+                <div class="carousel-item">
+                    <div class="carousel-covers">
+                        <div class="carousel-video" id="carousel-video-reader">
+                            <video id="video5" loop playsinline controlsList="nodownload">
+                            </video>
+                        </div>
+                        <div class="carousel-caption1">
+                            <div class="carousel-pbox">
+                                <span>
+                                <img id="psponsorImg5" width="100%">
+                                <p class="carousel-p1">IROS Platinum Partner</p>
+                                <p class="carousel-p2" id="psponsorAbstract5"></p>
+                                <p class="carousel-p3"><a target="_blank" style="color: coral;" id="psponsorLink5"></a></p>
+                                <div class="pltVolumeBtn">
+                                    <button style="background-color: transparent;border: none; margin:0 auto; outline: none;color: red;" class="UnmuteBtn"  onclick="disbleMute('muteBtn5')" type="button">
+                                        <i id="muteBtn5" class="fas fa-volume-up"></i>
+                                    </button>
+                                </div></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -257,7 +291,11 @@
                                                     {% if PavilionWSTR == 'Workshops' or PavilionWSTR == 'More Workshops'%}
                                                         <img class="netflix-slider-img" onError="this.onerror=null;this.src='{% static './resources/logo2.png' %}';" src="{% static 'img/Workshops' %}/{{SessionWSTRNumber}}.jpg">
                                                     {% else %}
-                                                        <img class="netflix-slider-img" onError="this.onerror=null;this.src='{% static './resources/logo2.png' %}';" src="{% static 'img/Tutorials' %}/{{SessionWSTRNumber}}.jpg">
+                                                        {% if PavilionWSTR != 'Forums' %}
+                                                            <img class="netflix-slider-img" onError="this.onerror=null;this.src='{% static './resources/logo2.png' %}';" src="{% static 'img/Tutorials' %}/{{SessionWSTRNumber}}.jpg">
+                                                        {% else %}
+                                                            <img class="netflix-slider-img" onError="this.onerror=null;this.src='{% static './resources/logo2.png' %}';" src="{% static 'img/Forums' %}/{{SessionWSTRNumber}}.jpg">
+                                                        {% endif %}
                                                     {% endif %}
                                                     {% if SessionWSTRNumber == 'WS-2419' or SessionWSTRNumber == 'WS-3145' or SessionWSTRNumber == 'WS-3191' or SessionWSTRNumber == 'TS-77D2' %}
                                                         <div class="onimg-caption"> {{SessionWSTRName}}<br><font style="color: red"><b>Premiers Nov. 2</b></font>
@@ -380,6 +418,11 @@
                </a>
             </div>
             <div class="partnerlogo">
+                <a target="_blank" href="https://ai.facebook.com/">
+                <img src="{% static 'img/Banner/Platinum/Facebook AI.png'%}">
+            </a>
+            </div>
+            <div class="partnerlogo">
                 <a target="_blank" href="https://www.kuka.com/en-us">
                 <img src="{% static 'img/Banner/Platinum/KUKA.png'%}">
             </a>
@@ -436,6 +479,11 @@
         {##}
         <span class="partnerLogoOranizer"style="border-bottom-left-radius: 30px; border-bottom-right-radius: 30px">
             <div class="partnerlogo">
+                <a target="_blank" href="https://www.ydlidar.com/">
+                    <img src="{% static 'img/Banner/Bronze/EAI Technology.png'%}">
+                </a>
+            </div>
+            <div class="partnerlogo">
                 <a target="_blank" href="https://www.independentrobotics.com/">
                     <img src="{% static 'img/Banner/Bronze/Independent Robotics.png'%}">
                 </a>
@@ -457,6 +505,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
     <script>
+        function search(){
+            const query = document.getElementById("search_bar").value;
+            document.getElementById("keywordDelivery").href = "searchresult?id2={{ showcontents }}&id="+query;
+        }
+
+    </script>
+    <script>
         $(document).ready(function() {
             $('#carouselExampleIndicators').carousel({
                 interval:10000,
@@ -474,13 +529,7 @@
     {#        video.muted = false;#}
     {#    });#}
     {#</script>#}
-    <script>
-        function search(){
-            const query = document.getElementById("search_bar").value;
-            document.getElementById("keywordDelivery").href = "searchresult?id2={{ showcontents }}&id="+query;
-        }
 
-    </script>
     <script>
         var swiper = new Swiper('.swiper-container', {
             {#slidesPerView: 7,#}
@@ -567,6 +616,7 @@
         videoMap.set(videoList[1], htmlList[1]);
         videoMap.set(videoList[2], htmlList[2]);
         videoMap.set(videoList[3], htmlList[3]);
+        videoMap.set(videoList[4], htmlList[4]);
 
 
         imgMap = new Map();
@@ -574,6 +624,7 @@
         imgMap.set(videoList[1],imgList[1]);
         imgMap.set(videoList[2],imgList[2]);
         imgMap.set(videoList[3],imgList[3]);
+        imgMap.set(videoList[4],imgList[4]);
 
 
         abstractMap = new Map();
@@ -581,6 +632,7 @@
         abstractMap.set(videoList[1],abstractList[1]);
         abstractMap.set(videoList[2],abstractList[2]);
         abstractMap.set(videoList[3],abstractList[3]);
+        abstractMap.set(videoList[4],abstractList[4]);
 
 
         htmlwordMap = new Map();
@@ -588,6 +640,7 @@
         htmlwordMap.set(videoList[1],htmlwordList[1]);
         htmlwordMap.set(videoList[2],htmlwordList[2]);
         htmlwordMap.set(videoList[3],htmlwordList[3]);
+        htmlwordMap.set(videoList[4],htmlwordList[4]);
 
 
         maxIndex = videoList.length - 1;
@@ -630,6 +683,13 @@
         document.getElementById('psponsorLink4').href = videoMap.get(videoList[3]);
         document.getElementById('psponsorImg4').src = imgMap.get(videoList[3]);
         document.getElementById('psponsorAbstract4').innerHTML = abstractMap.get(videoList[3]);
+
+        document.getElementById('video5').setAttribute('src', videoList[4]+'.mp4');
+        document.getElementById('video5').load();
+        document.getElementById('psponsorLink5').innerHTML = "Click for more information";
+        document.getElementById('psponsorLink5').href = videoMap.get(videoList[4]);
+        document.getElementById('psponsorImg5').src = imgMap.get(videoList[4]);
+        document.getElementById('psponsorAbstract5').innerHTML = abstractMap.get(videoList[4]);
     </script>
     <script>
         function disbleMute(mutebtn) {
@@ -639,10 +699,12 @@
             var mutebuttonClass2 = document.getElementById('muteBtn2').className;
             var mutebuttonClass3 = document.getElementById('muteBtn3').className;
             var mutebuttonClass4 = document.getElementById('muteBtn4').className;
+            var mutebuttonClass5 = document.getElementById('muteBtn5').className;
             var vid1 = document.getElementById('video1')
             var vid2 = document.getElementById('video2')
             var vid3 = document.getElementById('video3')
             var vid4 = document.getElementById('video4')
+            var vid5 = document.getElementById('video5')
             if(mutebuttonClass == 'fas fa-volume-up'){
                 $('#muteBtn1').removeClass(mutebuttonClass1);
                 $('#muteBtn1').addClass('fas fa-volume-mute');
@@ -652,10 +714,13 @@
                 $('#muteBtn3').addClass('fas fa-volume-mute');
                 $('#muteBtn4').removeClass(mutebuttonClass4);
                 $('#muteBtn4').addClass('fas fa-volume-mute');
+                $('#muteBtn5').removeClass(mutebuttonClass5);
+                $('#muteBtn5').addClass('fas fa-volume-mute');
                 vid1.muted=true;
                 vid2.muted=true;
                 vid3.muted=true;
                 vid4.muted=true;
+                vid5.muted=true;
             }else{
                 $('#muteBtn1').removeClass(mutebuttonClass1);
                 $('#muteBtn1').addClass('fas fa-volume-up');
@@ -665,10 +730,13 @@
                 $('#muteBtn3').addClass('fas fa-volume-up');
                 $('#muteBtn4').removeClass(mutebuttonClass4);
                 $('#muteBtn4').addClass('fas fa-volume-up');
+                $('#muteBtn5').removeClass(mutebuttonClass5);
+                $('#muteBtn5').addClass('fas fa-volume-up');
                 vid1.muted=false;
                 vid2.muted=false;
                 vid3.muted=false;
                 vid4.muted=false;
+                vid5.muted=false;
             }
         }
     </script>
@@ -679,10 +747,12 @@
             var mutebuttonClass2 = document.getElementById('muteBtn2').className;
             var mutebuttonClass3 = document.getElementById('muteBtn3').className;
             var mutebuttonClass4 = document.getElementById('muteBtn4').className;
+            var mutebuttonClass5 = document.getElementById('muteBtn5').className;
             var vid1 = document.getElementById('video1')
             var vid2 = document.getElementById('video2')
             var vid3 = document.getElementById('video3')
             var vid4 = document.getElementById('video4')
+            var vid5 = document.getElementById('video5')
             $('#muteBtn1').removeClass(mutebuttonClass1);
             $('#muteBtn1').addClass('fas fa-volume-mute');
             $('#muteBtn2').removeClass(mutebuttonClass2);
@@ -691,10 +761,13 @@
             $('#muteBtn3').addClass('fas fa-volume-mute');
             $('#muteBtn4').removeClass(mutebuttonClass4);
             $('#muteBtn4').addClass('fas fa-volume-mute');
+            $('#muteBtn5').removeClass(mutebuttonClass5);
+            $('#muteBtn5').addClass('fas fa-volume-mute');
             vid1.muted=true;
             vid2.muted=true;
             vid3.muted=true;
             vid4.muted=true;
+            vid5.muted=true;
         }else{
             document.write("not mobile");
         }
@@ -707,10 +780,12 @@
             var mutebuttonClass2 = document.getElementById('muteBtn2').className;
             var mutebuttonClass3 = document.getElementById('muteBtn3').className;
             var mutebuttonClass4 = document.getElementById('muteBtn4').className;
+            var mutebuttonClass5 = document.getElementById('muteBtn5').className;
             var vid1 = document.getElementById('video1')
             var vid2 = document.getElementById('video2')
             var vid3 = document.getElementById('video3')
             var vid4 = document.getElementById('video4')
+            var vid5 = document.getElementById('video5')
             $('#muteBtn1').removeClass(mutebuttonClass1);
             $('#muteBtn1').addClass('fas fa-volume-mute');
             $('#muteBtn2').removeClass(mutebuttonClass2);
@@ -719,10 +794,13 @@
             $('#muteBtn3').addClass('fas fa-volume-mute');
             $('#muteBtn4').removeClass(mutebuttonClass4);
             $('#muteBtn4').addClass('fas fa-volume-mute');
+            $('#muteBtn5').removeClass(mutebuttonClass5);
+            $('#muteBtn5').addClass('fas fa-volume-mute');
             vid1.muted=true;
             vid2.muted=true;
             vid3.muted=true;
             vid4.muted=true;
+            vid5.muted=true;
         }
     </script>
     <script>
@@ -731,6 +809,7 @@
             $('#video2').bind('contextmenu',function() { return false; });
             $('#video3').bind('contextmenu',function() { return false; });
             $('#video4').bind('contextmenu',function() { return false; });
+            $('#video5').bind('contextmenu',function() { return false; });
         });
     </script>
     <script>
@@ -753,7 +832,7 @@
                             {#mainHitcount.innerHTML = json['hitCount'] + ' views';#}
                         },
                         error: function (err) {
-                            alert("Failed to Retrieve JSON file from Server");
+                            {#alert("Failed to Retrieve JSON file from Server");#}
                         }
                     });
                 }

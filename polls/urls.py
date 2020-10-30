@@ -35,6 +35,7 @@ urlpatterns = [
     path('placeyourads',views.placeyourads),
     url(r'session_security/', include('session_security.urls')),
     path('save_last_activity', views.save_last_activity, name='save_last_activity'),
+
     # path('post_like', views.post_like, name='post_like'),
     # path('add_comment', views.add_comment, name='add_comment'),
     # path('post_save', views.post_save, name='post_save'),

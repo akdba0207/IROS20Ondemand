@@ -16,6 +16,15 @@
             window.cookieconsent.initialise(json)
         });
     </script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8QZDWZH3X6"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-8QZDWZH3X6');
+    </script>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <!-- Link Swiper's CSS -->
@@ -75,6 +84,9 @@
                 </li>
             </ul>
             <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="jobs?id=1" onClick="this.href=this.href+'&'+new Date().getTime()" style="color:yellow;">Jobs</a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="placeyourads?id=1"  onClick="this.href=this.href+'&'+new Date().getTime()" style="color:white;">Place your Ad</a>
                 </li>
@@ -355,7 +367,7 @@
                         {#$('#thumbs'+titleNumber)[0].style.color =  json['likeButtonColor'];#}
                     },
                     error: function(err) {
-                        alert("Failed to Retrieve JSON file from Server");
+                        {#alert("Failed to Retrieve JSON file from Server");#}
                     }
                 });
             }
@@ -383,19 +395,21 @@
                         {#$('#buttonMessage'+titleNumber).html('&nbsp;&nbsp;&nbsp;'+json['buttonMessage'])#}
                     },
                     error: function(err) {
-                        alert("Failed to Retrieve JSON file from Server");
+                        {#alert("Failed to Retrieve JSON file from Server");#}
                     }
                 });
             }
         </script>
         <script>
             function addComment(titleNumber, comment){
+                $('.commentInputBtn').prop('disabled',true);
                 $.ajax({
                     url:'add_comment',
                     type:'POST',
                     data:{'paperNumber':titleNumber, 'comment':comment},
                     dataType:'json',
                     success: function(json) {
+                         {#alert("Failed to Retrieve JSON file from Server");#}
                         $('#comment_input')[0].value = '';
                         {#$('#commentList').replaceWith($("#commentList", json['arrayComments']))#}
                         commentIndex = json['lengthComments'];
@@ -403,6 +417,10 @@
                         $('.commentList').append("<p class=\"comment\" id=\"comment"+commentIndex+"\">"+commentAdded+"</p>");
                         var autoScroll = $('.commentList')
                         autoScroll.scrollTop(autoScroll.prop('scrollHeight'));
+                        $('.commentInputBtn').prop('disabled',false);
+                    },
+                    error: function (err) {
+                        {#alert("Failed to Retrieve JSON file from Server");#}
                     }
                 });
             }
@@ -571,7 +589,7 @@
                                 {#mainHitcount.innerHTML = json['hitCount'] + ' views';#}
                             },
                             error: function (err) {
-                                alert("Failed to Retrieve JSON file from Server");
+                                {#alert("Failed to Retrieve JSON file from Server");#}
                             }
                         });
                     }

@@ -22,6 +22,20 @@
     background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
 
 }
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    /*background-color: rgb(0,0,0); !* Fallback color *!*/
+    background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+
+}
 
 /* Modal Content (image) */
 .modal-content {
@@ -34,6 +48,17 @@
 
 /* Caption of Modal Image */
 #caption {
+    margin: auto;
+    display: block;
+    width: 80%;
+    max-width: 700px;
+    text-align: center;
+    color: #ccc;
+    padding: 10px 0;
+    height: 150px;
+    font-size: 25px;
+}
+#caption2 {
     margin: auto;
     display: block;
     width: 80%;
@@ -62,7 +87,9 @@
     from {transform:scale(0)}
     to {transform:scale(1)}
 }
-
+#highlightModalVideo{
+    width: 70%;
+}
 .videoPlayButton{
     width: 30%;
     text-align: center;
@@ -120,6 +147,9 @@
     .pdfopenButton{
         font-size: 100%
     }
+    #highlightModalVideo{
+        width: 100%;
+    }
 }
 
 @media only screen and (max-width: 600px) and (min-width: 401px){
@@ -143,6 +173,9 @@
     }
     .pdfopenButton{
         font-size: 100%
+    }
+    #highlightModalVideo{
+        width: 100%;
     }
 }
 

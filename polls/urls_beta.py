@@ -30,6 +30,7 @@ urlpatterns = [
     path('partners',views_beta.partners),
     path('partnerspage',views_beta.partnerspage),
     path('placeyourads',views_beta.placeyourads),
+    path('jobs',views_beta.jobs),
 
     re_path(r'^account_activation_sent/$', views_beta.account_activation_sent, name='account_activation_sent'),
     re_path(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',

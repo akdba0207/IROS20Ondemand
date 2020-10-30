@@ -17,6 +17,15 @@
             window.cookieconsent.initialise(json)
         });
     </script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8QZDWZH3X6"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-8QZDWZH3X6');
+    </script>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <!-- Link Swiper's CSS -->
@@ -75,6 +84,9 @@
                 </li>
             </ul>
             <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="jobs?id=1" onClick="this.href=this.href+'&'+new Date().getTime()" style="color:yellow;">Jobs</a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="placeyourads?id=1"  onClick="this.href=this.href+'&'+new Date().getTime()" style="color:white;">Place your Ad</a>
                 </li>
@@ -156,7 +168,7 @@
                                             <p class="gsVidCaption-p2" style="word-break: break-word">{{ partnerAbstract.0 }}</p>
                                         {% endif %}
                                         {% if partnerName.0 == 'Amazon' %}
-                                             <p class="gsVidCaption-p3"><a id="psponsorLink3" target="_blank" style="color: coral;" href="{{ partenerWebpage.0}}">Connect with us at iros2020@amazon.com!</p>
+                                            <p class="gsVidCaption-p3"><a id="psponsorLink3" target="_blank" style="color: coral;" href="{{ partenerWebpage.0}}">Connect with us at iros2020@amazon.com!</p>
                                         {% else %}
                                             <p class="gsVidCaption-p3"><a id="psponsorLink3" target="_blank" style="color: coral;" href="{{ partenerWebpage.0}}">Click for more information</a></p>
                                         {% endif %}
@@ -202,13 +214,17 @@
                 </tr>
             </table>
         </div>
-
         <div id="highlightModal" class="modal">
             <span class="closeModal">&times;</span>
             <img class="modal-content" id="highlightModalImage">
             <div id="caption"></div>
         </div>
-
+{#        <div id="highlightModal2" class="modal">#}
+{#            <span class="closeModal">&times;</span>#}
+{#            <video id="highlightModalVideo" style="display:block; margin: 0 auto;" controls playsinline controlsList="nodownload">#}
+{#            </video>#}
+{#            <div id="caption2"></div>#}
+{#        </div>#}
         {% for AuthorList1, AuthorList2, AuthorList3, AuthorList4,AuthorList5,AuthorList6,AffiliationList1,AffiliationList2,AffiliationList3,AffiliationList4,AffiliationList5,TitleList, PDFList, titleNumber, paperLikeCount, paperLikeButtonColor, paperSaveButtonStatus, paperHitCount, awardeeCount, awardNameCount, Video in EpisodeContext %}
             <div class="epilisttable">
                 <table border="0" cellpadding="0" cellspacing="0" style="background-color: #323232;border-radius: 10px" >
@@ -231,6 +247,7 @@
                             {% else %}
                             {% endif %}
                             <p class="papertitle" style="color: white;">{{ TitleList }}</p>
+{#                            <a onclick="videohighlightClicked('{{ SupplementVideo}}')"> Happy!</a>#}
                             <table class="paperInfo" border="0" cellpadding="0" cellspacing="0" width="100% "style="background-color: #323232; text-align: left;color: white;">
                                 <tbody>
                                 <tr>
@@ -410,7 +427,7 @@
                         {#$('#thumbs'+titleNumber)[0].style.color =  json['likeButtonColor'];#}
                     },
                     error: function(err) {
-                        alert("Failed to Retrieve JSON file from Server");
+                        {#alert("Failed to Retrieve JSON file from Server");#}
                     }
                 });
             }
@@ -438,7 +455,7 @@
                         {#$('#buttonMessage'+titleNumber).html('&nbsp;&nbsp;&nbsp;'+json['buttonMessage'])#}
                     },
                     error: function(err) {
-                        alert("Failed to Retrieve JSON file from Server");
+                        {#alert("Failed to Retrieve JSON file from Server");#}
                     }
                 });
             }
@@ -502,24 +519,40 @@
         <script>
             // Get the modal
             var modal = document.getElementById("highlightModal");
+            {#var modal2 = document.getElementById("highlightModal2")#}
             var modalImg = document.getElementById("highlightModalImage");
+            {#var modalVideo = document.getElementById("highlightModalVideo");#}
             var captionText = document.getElementById("caption");
-
+            {#var captionText2 = document.getElementById("caption2");#}
+            {#var modalVideosource = document.createElement('source');#}
             var span = document.getElementsByClassName("closeModal")[0];
 
             // When the user clicks on <span> (x), close the modal
             modalImg.onclick = function() {
                 modal.style.display = "none";
             }
-
         </script>
         <script>
-            function highlightClicked(src){
+            function highlightClicked(src) {
                 modal.style.display = "block";
                 modalImg.src = src;
                 captionText.innerHTML = "Tap on the image to close";
             }
         </script>
+{#        <script>#}
+{#            function videohighlightClicked(src){#}
+{#                modal2.style.display = "block"#}
+{#                modalVideosource.setAttribute('src','https://ras.papercept.net/proceedings/IROS20/'+src);#}
+{#                modalVideo.appendChild(modalVideosource);#}
+{#                modalVideo.load();#}
+{#                modalVideo.play();#}
+{#                captionText2.innerText = "Tap to close";#}
+{#            }#}
+{#            captionText2.onclick = function(){#}
+{#                modal2.style.display = "none";#}
+{#                modalVideo.pause();#}
+{#            }#}
+{#        </script>#}
         <script>
             window.addEventListener( "pageshow", function ( event ) {
                 var historyTraversal = event.persisted ||
@@ -585,7 +618,7 @@
                                 {#mainHitcount.innerHTML = json['hitCount'] + ' views';#}
                             },
                             error: function (err) {
-                                alert("Failed to Retrieve JSON file from Server");
+                                {#alert("Failed to Retrieve JSON file from Server");#}
                             }
                         });
                     }

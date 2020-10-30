@@ -161,7 +161,7 @@ PavilionWSTR = ['Workshops', 'More Workshops','Tutorials', 'More Tutorials', 'Fo
 
 @csrf_exempt
 def login(request):
-
+    TotalCount = User.objects.all().count()
     # print("not_authenticated")
     if request.method == 'POST':
         login_form = AuthenticationForm(request, request.POST)
@@ -225,7 +225,7 @@ def login(request):
         if request.user.is_authenticated:
             return redirect('entrance_main')
 
-    return render(request, './1_login.html')
+    return render(request, './1_login.html',{'TotalCount':TotalCount})
 
 @csrf_exempt
 def record_active_time(login_user, profile):
@@ -705,26 +705,26 @@ def tvshow(request):
                              PDFList['FN'], titleNumber['Nr'], paperLikeCount, paperLikeButtonColor,
                              paperSaveButtonStatus, paperHitCount, awardeeCount, awardNameCount,Video['VID'])
         return render(request, './3_pavilionSession.html', {'Pavilion': selectedPavilion,
-                                                                      'PavilionNum': selectedPavilionNum,
-                                                                      'SessionList': selectedSessionList,
-                                                                      'Session': selectedSession,
-                                                                      'EpisodeContext': EpisodeContext,
-                                                                      'partnerCartegory':partnerCartegory['Cartegory'],
-                                                                      'partnerName': partnerName['Name'],
-                                                                      'partnerVideo': partnerVideo['Video Name'],
-                                                                      'partnerSession': partnerSession[
-                                                                          'Location'],
-                                                                      'partenerWebpage': partenerWebpage['Webpage Link'],
-                                                                      'partnerVideoType':partnerVideoType['Type'],
-                                                                      'partnerVideoLink':partnerVideoLink['Video Link'],
-                                                                      'partnerAbstract':partnerAbstract['Abstract'],
-                                                                      'Overview':Overview,
-                                                                      'ChairName':ChairName,
-                                                                      'coChairName':coChairName,
-                                                                      'ChairAffiliation':ChairAffiliation,
-                                                                      'coChairAffiliation':coChairAffiliation,
-                                                                      'partnerNumber':partnerNumber['Nr'],
-                                                                      })
+                                                            'PavilionNum': selectedPavilionNum,
+                                                            'SessionList': selectedSessionList,
+                                                            'Session': selectedSession,
+                                                            'EpisodeContext': EpisodeContext,
+                                                            'partnerCartegory':partnerCartegory['Cartegory'],
+                                                            'partnerName': partnerName['Name'],
+                                                            'partnerVideo': partnerVideo['Video Name'],
+                                                            'partnerSession': partnerSession[
+                                                                'Location'],
+                                                            'partenerWebpage': partenerWebpage['Webpage Link'],
+                                                            'partnerVideoType':partnerVideoType['Type'],
+                                                            'partnerVideoLink':partnerVideoLink['Video Link'],
+                                                            'partnerAbstract':partnerAbstract['Abstract'],
+                                                            'Overview':Overview,
+                                                            'ChairName':ChairName,
+                                                            'coChairName':coChairName,
+                                                            'ChairAffiliation':ChairAffiliation,
+                                                            'coChairAffiliation':coChairAffiliation,
+                                                            'partnerNumber':partnerNumber['Nr'],
+                                                            })
 
 
 def specials(request):
@@ -775,9 +775,9 @@ def specials(request):
                                 )
 
     return render(request, './3-1_plenariesSession.html', {'selectedSpecial': selectedSpecial,
-                                                                     'specialEpisodeContext': specialEpisodeContext,
-                                                                     'SpecialsSession': SpecialsSession,
-                                                                     })
+                                                           'specialEpisodeContext': specialEpisodeContext,
+                                                           'SpecialsSession': SpecialsSession,
+                                                           })
 
 
 def workshops(request):
@@ -868,16 +868,16 @@ def workshops(request):
             noShowContents = 0
 
     return render(request, './3-2_workshopsSession.html', {'selectedWorkshopsNumber': selectedWorkshopsNumber,
-                                                                     'selectedWorkshopsTitle':WorkshopsTitle,
-                                                                     'workshopAbstract':workshopAbstract,
-                                                                     'selectedGenre': selectedGenre,
-                                                                     'WorkshopsContext': WorkshopsContext,
-                                                                     'WorkshopsSession': WorkshopsSession,
-                                                                     'workshopSessionNumbers':workshopSessionNumbers,
-                                                                     'workshopsHomepage': workshopsHomepage,
-                                                                     'workshopOrganizersInfo':workshopOrganizersInfo,
-                                                                     'noShowContents':noShowContents
-                                                                     })
+                                                           'selectedWorkshopsTitle':WorkshopsTitle,
+                                                           'workshopAbstract':workshopAbstract,
+                                                           'selectedGenre': selectedGenre,
+                                                           'WorkshopsContext': WorkshopsContext,
+                                                           'WorkshopsSession': WorkshopsSession,
+                                                           'workshopSessionNumbers':workshopSessionNumbers,
+                                                           'workshopsHomepage': workshopsHomepage,
+                                                           'workshopOrganizersInfo':workshopOrganizersInfo,
+                                                           'noShowContents':noShowContents
+                                                           })
 
 def competition(request):
     if request.user.is_authenticated == False:
@@ -913,17 +913,17 @@ def competition(request):
     PavCompetition = zip(competitionNumber['Nr'], competitionTitle['Title'])
 
     return render(request,'./3-3_competitionSession.html',{'selectedCompetitionNumber':selectedCompetitionNumber,
-                                                                     'CompetitionTitle':CompetitionTitle,
-                                                                     'CompetitionHomepage':CompetitionHomepage,
-                                                                     'CompetitionLive':CompetitionLive,
-                                                                     'CompetitionDate':CompetitionDate,
-                                                                     'CompetitionDescription':CompetitionDescription,
-                                                                     'CompetitionVideo':CompetitionVideo,
-                                                                     'CompetitionOrganizersInfo':CompetitionOrganizersInfo,
-                                                                     'PavCompetition':PavCompetition,
-                                                                     'CompetitionCorrOrganizer':CompetitionCorrOrganizer,
-                                                                     'CompetitionCorrOrganizerEmail':CompetitionCorrOrganizerEmail,
-                                                                     })
+                                                           'CompetitionTitle':CompetitionTitle,
+                                                           'CompetitionHomepage':CompetitionHomepage,
+                                                           'CompetitionLive':CompetitionLive,
+                                                           'CompetitionDate':CompetitionDate,
+                                                           'CompetitionDescription':CompetitionDescription,
+                                                           'CompetitionVideo':CompetitionVideo,
+                                                           'CompetitionOrganizersInfo':CompetitionOrganizersInfo,
+                                                           'PavCompetition':PavCompetition,
+                                                           'CompetitionCorrOrganizer':CompetitionCorrOrganizer,
+                                                           'CompetitionCorrOrganizerEmail':CompetitionCorrOrganizerEmail,
+                                                           })
 #########################################################################################################
 #########################################################################################################
 #########################################################################################################
@@ -1042,18 +1042,18 @@ def episode(request):
                          SessionTitle['Session title'], paperSaveButtonStatus, paperHitCount,awardeeCount,awardNameCount,Video['VID'])
 
         return render(request, './4_pavilionSessionEpisode.html', {'VideoList': VideoList['VID'],
-                                                                             'Title': selectedTitle['Title'],
-                                                                             'Session': selectedSession,
-                                                                             'EpisodeContext': resultList,
-                                                                             'SelectedPaperNumber':
-                                                                                 selectedNumber,
-                                                                             'selectedpaperHitCount':selectedpaperHitCount,
-                                                                             'selectedPaperLikeButtonColor': selectedPaperLikeButtonColor,
-                                                                             'selectedPaperLikeCount': selectedPaperLikeCount,
-                                                                             'selectedPaperbuttonStatus': selectedPaperbuttonStatus,
-                                                                             'arrayComments': arrayComments,
-                                                                             'lengthComments': lengthComments
-                                                                             })
+                                                                   'Title': selectedTitle['Title'],
+                                                                   'Session': selectedSession,
+                                                                   'EpisodeContext': resultList,
+                                                                   'SelectedPaperNumber':
+                                                                       selectedNumber,
+                                                                   'selectedpaperHitCount':selectedpaperHitCount,
+                                                                   'selectedPaperLikeButtonColor': selectedPaperLikeButtonColor,
+                                                                   'selectedPaperLikeCount': selectedPaperLikeCount,
+                                                                   'selectedPaperbuttonStatus': selectedPaperbuttonStatus,
+                                                                   'arrayComments': arrayComments,
+                                                                   'lengthComments': lengthComments
+                                                                   })
 
 @csrf_exempt
 def specialsepisode(request):
@@ -1146,23 +1146,23 @@ def specialsepisode(request):
                                     )
 
         return render(request, './4-1_plenariesSessionEpisode.html', {'specialVideo': specialVideo,
-                                                                                'selectedSpeaker':selectedSpeaker,
-                                                                                'selectedSpecial': selectedSpecial,
-                                                                                'selectedTitle':selectedTitle,
-                                                                                'specialEpisodeContext': specialEpisodeContext,
-                                                                                'selectedSpecialLikeCount': selectedSpecialLikeCount,
-                                                                                'selectedSpecialLikeButtonColor': selectedSpecialLikeButtonColor,
-                                                                                'selectedSpecialSaveButtonStatus': selectedSpecialSaveButtonStatus,
-                                                                                'SelectedPaperNumber':
-                                                                                    selectedSpecialNr,
-                                                                                'arrayComments': arrayComments,
-                                                                                'lengthComments': lengthComments,
-                                                                                'selectedSpecialHitCount':selectedSpecialHitCount,
-                                                                                'specialSupplement':int(specialSupplement),
-                                                                                'specialSupplementTitle':specialSupplementTitle,
-                                                                                'specialSupplementVideo':specialSupplementVideo,
-                                                                                'specialSupplementNr':specialSupplementNr
-                                                                                })
+                                                                      'selectedSpeaker':selectedSpeaker,
+                                                                      'selectedSpecial': selectedSpecial,
+                                                                      'selectedTitle':selectedTitle,
+                                                                      'specialEpisodeContext': specialEpisodeContext,
+                                                                      'selectedSpecialLikeCount': selectedSpecialLikeCount,
+                                                                      'selectedSpecialLikeButtonColor': selectedSpecialLikeButtonColor,
+                                                                      'selectedSpecialSaveButtonStatus': selectedSpecialSaveButtonStatus,
+                                                                      'SelectedPaperNumber':
+                                                                          selectedSpecialNr,
+                                                                      'arrayComments': arrayComments,
+                                                                      'lengthComments': lengthComments,
+                                                                      'selectedSpecialHitCount':selectedSpecialHitCount,
+                                                                      'specialSupplement':int(specialSupplement),
+                                                                      'specialSupplementTitle':specialSupplementTitle,
+                                                                      'specialSupplementVideo':specialSupplementVideo,
+                                                                      'specialSupplementNr':specialSupplementNr
+                                                                      })
 
 
 def workshopsepisode(request):
@@ -1286,7 +1286,7 @@ def searchresult(request):
 
     if not resultNumber:
         return render(request, './6_searchResultError.html', {'inputKeyword': inputKeyword,
-                                                                        'showcontents':int(showcontents)})
+                                                              'showcontents':int(showcontents)})
     else:
         if int(showcontents) == 2 :
             searchTitle = iros_wstr[(iros_wstr['Nr'] == int(resultNumber[0]))]
@@ -1445,8 +1445,8 @@ def searchresult(request):
                                  paperSaveButtonStatus, SessionList['Session title'], paperHitCount, awardeeCount, awardNameCount, pavilionList['Theme'],pavilionNumList,VideoList['VID'])
 
         return render(request, './5_searchResult.html', {'EpisodeContext': resultList,
-                                                                   'showcontents': int(showcontents)
-                                                                   })
+                                                         'showcontents': int(showcontents)
+                                                         })
 
 
 #########################################################################################################
@@ -1787,7 +1787,7 @@ def update_playtime(request):
 #         newMember.profile.affiliation = 'Industry'
 #         newMember.profile.previous_attendance = 'First time'
 #         newMember.save()
-print(duplicatecount)
+# print(duplicatecount)
 
 @csrf_exempt
 def signup(request):
@@ -1935,11 +1935,11 @@ def about(request):
     ReviewerName = Reviewer['Name']
 
     return render(request,'./8_about.html',{'showcontents':int(showcontents),
-                                                      'SPCmember':SPCmember,
-                                                      'CPRBzip':CPRBzip,
-                                                      'AEMember':AEMember,
-                                                      'ReviewerName':ReviewerName,
-                                                      })
+                                            'SPCmember':SPCmember,
+                                            'CPRBzip':CPRBzip,
+                                            'AEMember':AEMember,
+                                            'ReviewerName':ReviewerName,
+                                            })
 
 @csrf_exempt
 def faqhelp(request):
@@ -1956,8 +1956,8 @@ def faqhelp(request):
     FAQ = zip(Question,Answer)
 
     return render(request,'./9_FAQHelp.html',{'showcontents':int(showcontents),
-                                                        'FAQ':FAQ
-                                                        })
+                                              'FAQ':FAQ
+                                              })
 @csrf_exempt
 def partners(request):
     if request.user.is_authenticated == False:
@@ -1980,7 +1980,7 @@ def partners(request):
     partnerSessions = [platinumPartner,goldPartner, silverPartner,bronzePartner]
     Partners = zip(partnershipName, partnerSessions)
     return render(request,'./10_partners.html',{'showcontents':int(showcontents),
-                                                          'Partners':Partners})
+                                                'Partners':Partners})
 
 @csrf_exempt
 def partnerspage(request):
@@ -1999,13 +1999,13 @@ def partnerspage(request):
     partnerVideoNumber = findPartner['Nr'].iloc[0]
 
     return render(request,'./10-1_partnerPage.html',{'showcontents':int(showcontents),
-                                                               'selectedPartner':selectedPartner,
-                                                               'partnerLevel':partnerLevel,
-                                                               'partnerAbstract':partnerAbstract,
-                                                               'partnerHyperlink':partnerHyperlink,
-                                                               'partnerVideo':partnerVideo,
-                                                               'partnerVideoNumber':partnerVideoNumber
-                                                               })
+                                                     'selectedPartner':selectedPartner,
+                                                     'partnerLevel':partnerLevel,
+                                                     'partnerAbstract':partnerAbstract,
+                                                     'partnerHyperlink':partnerHyperlink,
+                                                     'partnerVideo':partnerVideo,
+                                                     'partnerVideoNumber':partnerVideoNumber
+                                                     })
 
 def placeyourads(request):
     if request.user.is_authenticated == False:
@@ -2016,4 +2016,5 @@ def placeyourads(request):
     showcontents = request.GET['id']
 
     return render(request, './11_Placeyourads.html', {'showcontents': int(showcontents),
-                                                                })
+                                                      })
+

@@ -24,8 +24,16 @@
 
         gtag('config', 'G-8QZDWZH3X6');
     </script>
-
-
+    <style>
+        .loginRibbon{
+            font-size: 24px;
+        }
+        @media only screen and (max-width: 400px){
+            .loginRibbon{
+                font-size: 100%;
+            }
+        }
+    </style>
 </head>
 
 <body bgcolor="#1F1F1F">
@@ -34,7 +42,10 @@
 </div>
 
 <div class="login-page">
-
+    <p class="loginRibbon" id="currentregistercount1" style="color: white;text-align: center;">Welcome to IROS On-Demand</p>
+    <p class="loginRibbon" id="currentregistercount2" style="color: white;text-align: center;margin: 0 auto"></p>
+    <p class="loginRibbon" id="currentregistercount3" style="color: coral;text-align: center;margin: 0 auto">{{ TotalCount }} Registrations !</p>
+    <p class="loginRibbon" style="color: coral;text-align: center;margin: 0 auto">&nbsp;</p>
     <div class="form">
         <form id="login_action" onsubmit="login()" method="post">
             {#            <input type="text" placeholder="username"/>#}
@@ -80,6 +91,35 @@
         inputID.value = inputID.value.toLowerCase();
         document.getElementById("login_action").action = "";
     }
+</script>
+<script>
+    var timeOffset = new Date().getTimezoneOffset()/60;
+    console.log(timeOffset)
+    var PSToffset = 7;
+    var registercount2 = document.getElementById("currentregistercount2");
+    const monthNames = ["Jan", "Feb", "March", "April", "May", "June",
+        "July", "August", "Sep", "Oct", "Nov", "Dec"
+    ];
+    var x = setInterval(function () {
+        var now = new Date()
+        now.setHours(now.getHours() + (timeOffset - PSToffset));
+
+        if (now.getHours() < 10){
+            hour = '0' + now.getHours().toString();
+        }
+        else{
+            hour =now.getHours();
+        }
+        if (now.getMinutes() < 10){
+            minutes = '0' + now.getMinutes().toString();
+        }
+        else{
+            minutes =now.getMinutes();
+        }
+        registercount2.innerHTML = 'As of '+monthNames[now.getMonth()] + ' '+now.getDate()+' '+
+            now.getFullYear() + ' '+ hour +':'+minutes+' PST:'
+
+    }, 1000);
 </script>
 
 </body>
