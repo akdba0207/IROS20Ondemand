@@ -1,3 +1,7 @@
+# * Copyright (C) Dongbin Kim - All Rights Reserved
+# * Unauthorized copying of this file, via any medium is strictly prohibited
+# * Proprietary and confidential
+# * Written by Dongbin Kim <akdba0207@gmail.com>, September, 2020
 from django.conf.urls import url
 from django.urls import path, re_path, include
 from polls import views_beta
