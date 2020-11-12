@@ -736,47 +736,120 @@ def specials(request):
     current_account = get_object_or_404(User, username=current_user)
 
     selectedSpecial = request.GET['id']
-    specialEpisodeList = iros_specials[(iros_specials['Genre'] == selectedSpecial)]
-    speakerName = specialEpisodeList['Speaker'].reset_index()
-    speakerBiography = specialEpisodeList['Bio'].reset_index()
-    specialEpisodeAbstract = specialEpisodeList['Abstract'].reset_index()
-    specialEpisodeNumber = specialEpisodeList['Nr'].reset_index()
-    specialEpisodeTitle = specialEpisodeList['Title'].reset_index()
-    speakerAffiliation = specialEpisodeList['Affiliation'].reset_index()
-    speakerVideo = specialEpisodeList['Video'].reset_index()
+    if selectedSpecial != 'Award Winners':
+        specialAward = 0
+        specialEpisodeList = iros_specials[(iros_specials['Genre'] == selectedSpecial)]
+        speakerName = specialEpisodeList['Speaker'].reset_index()
+        speakerBiography = specialEpisodeList['Bio'].reset_index()
+        specialEpisodeAbstract = specialEpisodeList['Abstract'].reset_index()
+        specialEpisodeNumber = specialEpisodeList['Nr'].reset_index()
+        specialEpisodeTitle = specialEpisodeList['Title'].reset_index()
+        speakerAffiliation = specialEpisodeList['Affiliation'].reset_index()
+        speakerVideo = specialEpisodeList['Video'].reset_index()
 
-    specialLikeCount = []
-    specialLikeButtonColor = []
-    specialSaveButtonStatus = []
-    specialHitCount = []
+        specialLikeCount = []
+        specialLikeButtonColor = []
+        specialSaveButtonStatus = []
+        specialHitCount = []
 
-    for specialNr in specialEpisodeNumber['Nr']:
-        paper = get_object_or_404(Papers, paper_id=specialNr)
-        if current_account in paper.like_users.all():
-            buttonColor = 1
-        else:
-            buttonColor = 0
-        specialLikeButtonColor.append(buttonColor)
-        specialLikeCount.append(paper.like_users.count())
+        for specialNr in specialEpisodeNumber['Nr']:
+            paper = get_object_or_404(Papers, paper_id=specialNr)
+            if current_account in paper.like_users.all():
+                buttonColor = 1
+            else:
+                buttonColor = 0
+            specialLikeButtonColor.append(buttonColor)
+            specialLikeCount.append(paper.like_users.count())
 
-        if current_account in paper.save_users.all():
-            buttonStatus = 1
-        else:
-            buttonStatus = 0
-        specialSaveButtonStatus.append(buttonStatus)
+            if current_account in paper.save_users.all():
+                buttonStatus = 1
+            else:
+                buttonStatus = 0
+            specialSaveButtonStatus.append(buttonStatus)
 
-        specialHitCount.append(paper.paper_hitcount)
+            specialHitCount.append(paper.paper_hitcount)
 
-    specialEpisodeContext = zip(speakerName['Speaker'],
-                                speakerBiography['Bio'],
-                                specialEpisodeAbstract['Abstract'],
-                                specialEpisodeNumber['Nr'], specialLikeCount, specialLikeButtonColor,
-                                specialSaveButtonStatus, specialHitCount,specialEpisodeTitle['Title'],speakerAffiliation['Affiliation'],speakerVideo['Video']
-                                )
+        specialEpisodeContext = zip(speakerName['Speaker'],
+                                    speakerBiography['Bio'],
+                                    specialEpisodeAbstract['Abstract'],
+                                    specialEpisodeNumber['Nr'], specialLikeCount, specialLikeButtonColor,
+                                    specialSaveButtonStatus, specialHitCount, specialEpisodeTitle['Title'],
+                                    speakerAffiliation['Affiliation'], speakerVideo['Video']
+                                    )
+    else:
+        specialAward = 1
+        specialEpisodeList = iros_specials[(iros_specials['Genre'] == selectedSpecial)].reset_index()
+        specialEpisodeNr = specialEpisodeList['Nr'].reset_index()
+        awardName = specialEpisodeList['Award Title'].reset_index()
+        print(specialEpisodeNr)
+        findPaperinRaw = iros2020_raw[(iros2020_raw['Nr']) == specialEpisodeNr['Nr'].iloc[0]]
+
+        for awardListNum in range(1, len(specialEpisodeNr)):
+            sorting = findPaperinRaw.append(
+                iros2020_raw[(iros2020_raw['Nr']) == specialEpisodeNr['Nr'].iloc[awardListNum]])
+            findPaperinRaw = sorting
+        EpisodeList = findPaperinRaw
+        print(EpisodeList)
+        TitleList = EpisodeList['Title'].reset_index()
+        PDFList = EpisodeList['FN'].reset_index()
+        titleNumber = EpisodeList['Nr'].reset_index()
+
+        AuthorList1 = EpisodeList['Author1'].reset_index()
+        AuthorList2 = EpisodeList['Author2'].reset_index()
+        AuthorList3 = EpisodeList['Author3'].reset_index()
+        AuthorList4 = EpisodeList['Author4'].reset_index()
+        AuthorList5 = EpisodeList['Author5'].reset_index()
+        AuthorList6 = EpisodeList['Author6'].reset_index()
+        AffiliationList1 = EpisodeList['Affiliation1'].reset_index()
+        AffiliationList2 = EpisodeList['Affiliation2'].reset_index()
+        AffiliationList3 = EpisodeList['Affiliation3'].reset_index()
+        AffiliationList4 = EpisodeList['Affiliation4'].reset_index()
+        AffiliationList5 = EpisodeList['Affiliation5'].reset_index()
+        Video = EpisodeList['VID'].reset_index()
+
+        paperLikeCount = []
+        paperLikeButtonColor = []
+        paperSaveButtonStatus = []
+        paperHitCount = []
+        for titleNr in titleNumber['Nr']:
+            paper = get_object_or_404(Papers, paper_id=titleNr)
+            # print(2)
+            if current_account in paper.like_users.all():
+                buttonColor = 1
+            else:
+                buttonColor = 0
+
+            paperLikeButtonColor.append(buttonColor)
+            paperLikeCount.append(paper.like_users.count())
+
+            if current_account in paper.save_users.all():
+                buttonStatus = 1
+            else:
+                buttonStatus = 0
+
+            paperSaveButtonStatus.append(buttonStatus)
+
+            paperHitCount.append(paper.paper_hitcount)
+
+        specialEpisodeContext = zip(AuthorList1['Author1'], AuthorList2['Author2'],
+                                    AuthorList3['Author3'],
+                                    AuthorList4['Author4'],
+                                    AuthorList5['Author5'],
+                                    AuthorList6['Author6'],
+                                    AffiliationList1['Affiliation1'],
+                                    AffiliationList2['Affiliation2'],
+                                    AffiliationList3['Affiliation3'],
+                                    AffiliationList4['Affiliation4'],
+                                    AffiliationList5['Affiliation5'],
+                                    TitleList['Title'],
+                                    PDFList['FN'], titleNumber['Nr'], paperLikeCount, paperLikeButtonColor,
+                                    paperSaveButtonStatus, paperHitCount, awardName['Award Title'], Video['VID'])
+
 
     return render(request, './3-1_plenariesSession.html', {'selectedSpecial': selectedSpecial,
                                                            'specialEpisodeContext': specialEpisodeContext,
                                                            'SpecialsSession': SpecialsSession,
+                                                           'specialAward': specialAward,
                                                            })
 
 
@@ -1064,42 +1137,136 @@ def specialsepisode(request):
     current_user = request.user.username
     current_account = get_object_or_404(User, username=current_user)
 
-    # Selected Specials
     selectedSpecialNr = request.GET['id']
     selectedSpecial = request.GET['id2']
-    findspeaker = iros_specials[(iros_specials['Nr'] == int(selectedSpecialNr))].reset_index()
-    selectedSpeaker = findspeaker['Speaker'].iloc[0]
-    selectedTitle = findspeaker['Title'].iloc[0]
-    specialVideo = findspeaker['Video'].iloc[0]
-    specialSupplement = findspeaker['Supplement'].iloc[0]
+    if selectedSpecial != 'Award Winners':
+        specialAward = 0
+        findspeaker = iros_specials[(iros_specials['Nr'] == int(selectedSpecialNr))].reset_index()
+        selectedSpeaker = findspeaker['Speaker'].iloc[0]
+        selectedTitle = findspeaker['Title'].iloc[0]
+        specialVideo = findspeaker['Video'].iloc[0]
+        specialSupplement = findspeaker['Supplement'].iloc[0]
 
-    specialSupplementEpisode = []
-    specialSupplementTitle = []
-    specialSupplementVideo = []
-    specialSupplementNr = []
-    if int(specialSupplement) == 1:
-        specialSupplementEpisode = iros_specials[(iros_specials['Genre']=='Addition') &
-                                                 (iros_specials['Speaker']==selectedSpeaker)].reset_index()
-        specialSupplementTitle = specialSupplementEpisode['Title']
-        specialSupplementVideo = specialSupplementEpisode['Video']
-        specialSupplementNr = specialSupplementEpisode['Nr']
+        specialSupplementEpisode = []
+        specialSupplementTitle = []
+        specialSupplementVideo = []
+        specialSupplementNr = []
+        if int(specialSupplement) == 1:
+            specialSupplementEpisode = iros_specials[(iros_specials['Genre'] == 'Addition') &
+                                                     (iros_specials['Speaker'] == selectedSpeaker)].reset_index()
+            specialSupplementTitle = specialSupplementEpisode['Title']
+            specialSupplementVideo = specialSupplementEpisode['Video']
+            specialSupplementNr = specialSupplementEpisode['Nr']
 
-    # Other Specials
-    specialEpisodeList = iros_specials[(iros_specials['Genre'] == selectedSpecial)]
-    speakerName = specialEpisodeList['Speaker'].reset_index()
-    speakerBiography = specialEpisodeList['Bio'].reset_index()
-    specialEpisodeAbstract = specialEpisodeList['Abstract'].reset_index()
-    specialEpisodeNumber = specialEpisodeList['Nr'].reset_index()
-    specialEpisodeTitle = specialEpisodeList['Title'].reset_index()
-    specialEpisodeAffiliation = specialEpisodeList['Affiliation'].reset_index()
+        # Other Specials
+        specialEpisodeList = iros_specials[(iros_specials['Genre'] == selectedSpecial)]
+        speakerName = specialEpisodeList['Speaker'].reset_index()
+        speakerBiography = specialEpisodeList['Bio'].reset_index()
+        specialEpisodeAbstract = specialEpisodeList['Abstract'].reset_index()
+        specialEpisodeNumber = specialEpisodeList['Nr'].reset_index()
+        specialEpisodeTitle = specialEpisodeList['Title'].reset_index()
+        specialEpisodeAffiliation = specialEpisodeList['Affiliation'].reset_index()
 
-    # Comments load area
-    lengthComments = Comments.objects.filter(paper_id=int(selectedSpecialNr)).count()
-    arrayComments = []
-    for ac in range(lengthComments):
-        arrayComments.append(Comments.objects.filter(paper_id=int(selectedSpecialNr))[ac].comment)
+        # Comments load area
+        lengthComments = Comments.objects.filter(paper_id=int(selectedSpecialNr)).count()
+        arrayComments = []
+        for ac in range(lengthComments):
+            arrayComments.append(Comments.objects.filter(paper_id=int(selectedSpecialNr))[ac].comment)
 
-    if request.method == "GET":
+        if request.method == "GET":
+            selectedSpecialLike = get_object_or_404(Papers, paper_id=int(selectedSpecialNr))
+
+            selectedSpecialHitCount = int(selectedSpecialLike.paper_hitcount) + 1
+            # Selected Sepcial Like
+            if current_account in selectedSpecialLike.like_users.all():
+                selectedSpecialLikeButtonColor = 1
+            else:
+                selectedSpecialLikeButtonColor = 0
+            selectedSpecialLikeCount = selectedSpecialLike.like_users.count()
+
+            if current_account in selectedSpecialLike.save_users.all():
+                selectedSpecialSaveButtonStatus = 1
+            else:
+                selectedSpecialSaveButtonStatus = 0
+
+            # Other Sepcial Like
+            specialLikeCount = []
+            specialLikeButtonColor = []
+            specialSaveButtonStatus = []
+            specialHitCount = []
+
+            for specialNr in specialEpisodeNumber['Nr']:
+                paper = get_object_or_404(Papers, paper_id=specialNr)
+                if current_account in paper.like_users.all():
+                    buttonColor = 1
+                else:
+                    buttonColor = 0
+                specialLikeButtonColor.append(buttonColor)
+                specialLikeCount.append(paper.like_users.count())
+
+                if current_account in paper.save_users.all():
+                    buttonStatus = 1
+                else:
+                    buttonStatus = 0
+                specialSaveButtonStatus.append(buttonStatus)
+
+                specialHitCount.append(paper.paper_hitcount)
+
+            specialEpisodeContext = zip(speakerName['Speaker'],
+                                        speakerBiography['Bio'],
+                                        specialEpisodeAbstract['Abstract'],
+                                        specialEpisodeNumber['Nr'], specialLikeCount, specialLikeButtonColor,
+                                        specialSaveButtonStatus, specialHitCount, specialEpisodeTitle['Title'],
+                                        specialEpisodeAffiliation['Affiliation']
+                                        )
+    else:
+        specialAward = 1
+        findspeaker = iros2020_raw[(iros2020_raw['Nr'] == int(selectedSpecialNr))].reset_index()
+        print(findspeaker)
+        selectedSpeaker = 'missing'
+        selectedTitle = findspeaker['Title'].iloc[0]
+        specialVideo = findspeaker['VID'].iloc[0]
+        specialSupplement = 0
+        specialSupplementEpisode = []
+        specialSupplementTitle = []
+        specialSupplementVideo = []
+        specialSupplementNr = []
+
+        specialEpisodeList = iros_specials[(iros_specials['Genre'] == selectedSpecial)].reset_index()
+        specialEpisodeNr = specialEpisodeList['Nr'].reset_index()
+        awardName = specialEpisodeList['Award Title'].reset_index()
+        print(specialEpisodeNr)
+        findPaperinRaw = iros2020_raw[(iros2020_raw['Nr']) == specialEpisodeNr['Nr'].iloc[0]]
+
+        for awardListNum in range(1, len(specialEpisodeNr)):
+            sorting = findPaperinRaw.append(
+                iros2020_raw[(iros2020_raw['Nr']) == specialEpisodeNr['Nr'].iloc[awardListNum]])
+            findPaperinRaw = sorting
+        EpisodeList = findPaperinRaw
+        print(EpisodeList)
+        TitleList = EpisodeList['Title'].reset_index()
+        PDFList = EpisodeList['FN'].reset_index()
+        titleNumber = EpisodeList['Nr'].reset_index()
+
+        AuthorList1 = EpisodeList['Author1'].reset_index()
+        AuthorList2 = EpisodeList['Author2'].reset_index()
+        AuthorList3 = EpisodeList['Author3'].reset_index()
+        AuthorList4 = EpisodeList['Author4'].reset_index()
+        AuthorList5 = EpisodeList['Author5'].reset_index()
+        AuthorList6 = EpisodeList['Author6'].reset_index()
+        AffiliationList1 = EpisodeList['Affiliation1'].reset_index()
+        AffiliationList2 = EpisodeList['Affiliation2'].reset_index()
+        AffiliationList3 = EpisodeList['Affiliation3'].reset_index()
+        AffiliationList4 = EpisodeList['Affiliation4'].reset_index()
+        AffiliationList5 = EpisodeList['Affiliation5'].reset_index()
+        Video = EpisodeList['VID'].reset_index()
+
+        # Comments load area
+        lengthComments = Comments.objects.filter(paper_id=int(selectedSpecialNr)).count()
+        arrayComments = []
+        for ac in range(lengthComments):
+            arrayComments.append(Comments.objects.filter(paper_id=int(selectedSpecialNr))[ac].comment)
+
         selectedSpecialLike = get_object_or_404(Papers, paper_id=int(selectedSpecialNr))
 
         selectedSpecialHitCount = int(selectedSpecialLike.paper_hitcount) + 1
@@ -1115,54 +1282,63 @@ def specialsepisode(request):
         else:
             selectedSpecialSaveButtonStatus = 0
 
-        # Other Sepcial Like
-        specialLikeCount = []
-        specialLikeButtonColor = []
-        specialSaveButtonStatus = []
-        specialHitCount = []
-
-        for specialNr in specialEpisodeNumber['Nr']:
-            paper = get_object_or_404(Papers, paper_id=specialNr)
+        paperLikeCount = []
+        paperLikeButtonColor = []
+        paperSaveButtonStatus = []
+        paperHitCount = []
+        for titleNr in titleNumber['Nr']:
+            paper = get_object_or_404(Papers, paper_id=titleNr)
+            # print(2)
             if current_account in paper.like_users.all():
                 buttonColor = 1
             else:
                 buttonColor = 0
-            specialLikeButtonColor.append(buttonColor)
-            specialLikeCount.append(paper.like_users.count())
+
+            paperLikeButtonColor.append(buttonColor)
+            paperLikeCount.append(paper.like_users.count())
 
             if current_account in paper.save_users.all():
                 buttonStatus = 1
             else:
                 buttonStatus = 0
-            specialSaveButtonStatus.append(buttonStatus)
 
-            specialHitCount.append(paper.paper_hitcount)
+            paperSaveButtonStatus.append(buttonStatus)
 
-        specialEpisodeContext = zip(speakerName['Speaker'],
-                                    speakerBiography['Bio'],
-                                    specialEpisodeAbstract['Abstract'],
-                                    specialEpisodeNumber['Nr'], specialLikeCount, specialLikeButtonColor,
-                                    specialSaveButtonStatus, specialHitCount,specialEpisodeTitle['Title'],specialEpisodeAffiliation['Affiliation']
-                                    )
+            paperHitCount.append(paper.paper_hitcount)
 
-        return render(request, './4-1_plenariesSessionEpisode.html', {'specialVideo': specialVideo,
-                                                                      'selectedSpeaker':selectedSpeaker,
-                                                                      'selectedSpecial': selectedSpecial,
-                                                                      'selectedTitle':selectedTitle,
-                                                                      'specialEpisodeContext': specialEpisodeContext,
-                                                                      'selectedSpecialLikeCount': selectedSpecialLikeCount,
-                                                                      'selectedSpecialLikeButtonColor': selectedSpecialLikeButtonColor,
-                                                                      'selectedSpecialSaveButtonStatus': selectedSpecialSaveButtonStatus,
-                                                                      'SelectedPaperNumber':
-                                                                          selectedSpecialNr,
-                                                                      'arrayComments': arrayComments,
-                                                                      'lengthComments': lengthComments,
-                                                                      'selectedSpecialHitCount':selectedSpecialHitCount,
-                                                                      'specialSupplement':int(specialSupplement),
-                                                                      'specialSupplementTitle':specialSupplementTitle,
-                                                                      'specialSupplementVideo':specialSupplementVideo,
-                                                                      'specialSupplementNr':specialSupplementNr
-                                                                      })
+        specialEpisodeContext = zip(AuthorList1['Author1'], AuthorList2['Author2'],
+                                    AuthorList3['Author3'],
+                                    AuthorList4['Author4'],
+                                    AuthorList5['Author5'],
+                                    AuthorList6['Author6'],
+                                    AffiliationList1['Affiliation1'],
+                                    AffiliationList2['Affiliation2'],
+                                    AffiliationList3['Affiliation3'],
+                                    AffiliationList4['Affiliation4'],
+                                    AffiliationList5['Affiliation5'],
+                                    TitleList['Title'],
+                                    PDFList['FN'], titleNumber['Nr'], paperLikeCount, paperLikeButtonColor,
+                                    paperSaveButtonStatus, paperHitCount, awardName['Award Title'], Video['VID'])
+
+    return render(request, './4-1_plenariesSessionEpisode.html', {'specialVideo': specialVideo,
+                                                                            'selectedSpeaker': selectedSpeaker,
+                                                                            'selectedSpecial': selectedSpecial,
+                                                                            'selectedTitle': selectedTitle,
+                                                                            'specialEpisodeContext': specialEpisodeContext,
+                                                                            'selectedSpecialLikeCount': selectedSpecialLikeCount,
+                                                                            'selectedSpecialLikeButtonColor': selectedSpecialLikeButtonColor,
+                                                                            'selectedSpecialSaveButtonStatus': selectedSpecialSaveButtonStatus,
+                                                                            'SelectedPaperNumber':
+                                                                                selectedSpecialNr,
+                                                                            'arrayComments': arrayComments,
+                                                                            'lengthComments': lengthComments,
+                                                                            'selectedSpecialHitCount': selectedSpecialHitCount,
+                                                                            'specialSupplement': int(specialSupplement),
+                                                                            'specialSupplementTitle': specialSupplementTitle,
+                                                                            'specialSupplementVideo': specialSupplementVideo,
+                                                                            'specialSupplementNr': specialSupplementNr,
+                                                                            'specialAward': specialAward
+                                                                            })
 
 
 def workshopsepisode(request):
@@ -1279,16 +1455,16 @@ def searchresult(request):
     showcontents = request.GET['id2']
     if int(showcontents) == 2:
         resultNumber = searchWSByKeyword(inputKeyword)
-    else :
+    else:
         resultNumber = searchByKeyword(inputKeyword)
 
     resultNumberlength = len(resultNumber)
 
     if not resultNumber:
         return render(request, './6_searchResultError.html', {'inputKeyword': inputKeyword,
-                                                              'showcontents':int(showcontents)})
+                                                                        'showcontents': int(showcontents)})
     else:
-        if int(showcontents) == 2 :
+        if int(showcontents) == 2:
             searchTitle = iros_wstr[(iros_wstr['Nr'] == int(resultNumber[0]))]
 
             for i in range(1, resultNumberlength):
@@ -1355,7 +1531,8 @@ def searchresult(request):
                                  Talktitle['Title'], titleNumber['Nr'],
                                  paperLikeCount, paperLikeButtonColor,
                                  paperSaveButtonStatus,
-                                 paperHitCount, VideoList['Video'],Abstract['Presentation Abstract'],Dummy['Dummy'], pavilionWSTRList)
+                                 paperHitCount, VideoList['Video'], Abstract['Presentation Abstract'], Dummy['Dummy'],
+                                 pavilionWSTRList)
         else:
             searchTitle = iros2020_raw[(iros2020_raw['Nr'] == int(resultNumber[0]))]
 
@@ -1364,8 +1541,8 @@ def searchresult(request):
                 searchTitle = main2
 
             pavilionNumMatch = dict()
-            for i in range(len(organizedGenre)-1):
-                pavilionNumMatch[organizedGenre[i+1]] = i + 1
+            for i in range(len(organizedGenre) - 1):
+                pavilionNumMatch[organizedGenre[i + 1]] = i + 1
 
             # print(searchTitle)
             SessionList = searchTitle['Session title'].reset_index()
@@ -1390,19 +1567,31 @@ def searchresult(request):
             for i in pavilionList['Theme']:
                 pavilionNumList.append(pavilionNumMatch[i])
 
+            awardcheckup = zip(titleNumber['Nr'], TitleList['Title'])
             awardeeCount = []
             awardNameCount = []
-            for titles in TitleList['Title']:
+            awardwinnerNrCount = []
+            for Nr, titles in awardcheckup:
                 titleMatch = iros2020_award[(iros2020_award['Title'] == titles)]
                 if titleMatch.empty is True:
                     awardConut = 0
                     awardName = ''
+                    awardwinnerNr = 0
                 else:
                     awardConut = 1
                     awardName1 = titleMatch['Session title'].reset_index()
-                    awardName = awardName1['Session title'].iloc[0]
+                    awardwinner = iros_specials[(iros_specials['Nr'] == Nr)]
+                    if awardwinner.empty is True:
+                        awardwinnerNr = 0
+                        awardName = awardName1['Session title'].iloc[0]
+                    else:
+                        awardwinnerNr = 1
+                        awardName1 = awardwinner['Award Title'].reset_index()
+                        awardName = awardName1['Award Title'].iloc[0]
+
                 awardNameCount.append(awardName)
                 awardeeCount.append(awardConut)
+                awardwinnerNrCount.append(awardwinnerNr)
 
             paperLikeCount = []
             paperLikeButtonColor = []
@@ -1442,13 +1631,13 @@ def searchresult(request):
                                  AffiliationList5['Affiliation5'],
                                  TitleList['Title'],
                                  PDFList['FN'], titleNumber['Nr'], paperLikeCount, paperLikeButtonColor,
-                                 paperSaveButtonStatus, SessionList['Session title'], paperHitCount, awardeeCount, awardNameCount, pavilionList['Theme'],pavilionNumList,VideoList['VID'])
+                                 paperSaveButtonStatus, SessionList['Session title'], paperHitCount, awardeeCount,
+                                 awardNameCount, pavilionList['Theme'], pavilionNumList, VideoList['VID'],
+                                 awardwinnerNrCount)
 
         return render(request, './5_searchResult.html', {'EpisodeContext': resultList,
-                                                         'showcontents': int(showcontents)
-                                                         })
-
-
+                                                                   'showcontents': int(showcontents)
+                                                                   })
 #########################################################################################################
 #########################################################################################################
 #########################################################################################################

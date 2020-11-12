@@ -200,63 +200,61 @@
             <p>&nbsp;</p>
             <p>&nbsp;</p>
         {% endif %}
+        {% if specialAward != 1 %}
+            <h3 style="padding-bottom: 2%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; More {{ selectedSpecial }} : </h3>
 
-        <h3 style="padding-bottom: 2%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; More {{ selectedSpecial }} : </h3>
-
-        {% for speakerName, speakerBiography, specialEpisodeAbstract, specialEpisodeNumber, specialLikeCount, specialLikeButtonColor, specialSaveButtonStatus, specialHitCount, TitleList,Affiliation in specialEpisodeContext %}
-            {% if specialEpisodeNumber|floatformat:"0" == SelectedPaperNumber %}
-            {% else %}
-                <div class="epilisttable">
-                    <table border="0" cellpadding="0" cellspacing="0" style="background-color: transparent;" >
-                        <tr>
-                            <td class="epilisttableleft">
-                                <img width="100%" onError="this.onerror=null;this.src='{% static './resources/logo2.png' %}';" src="{% static 'img'%}/Specials/{{selectedSpecial}}/{{ speakerName }}.png">
-                            </td>
-                            <td valign="top" align="left" class="epilisttableright">
-                                {% if  specialEpisodeTitle != 'missing' %}
-                                    <p class="papertitle" style="color: white;">{{ TitleList }}</p>
-                                {% endif %}
-                                <table class="paperInfo" border="0" cellpadding="0" cellspacing="0" width="100% "style="background-color: #323232; text-align: left;color: white;">
-                                    <tbody>
-                                    <tr>
-                                        <td>&nbsp;</td>
-                                        <td>&nbsp;</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="width: 20%;"><u>Speaker</u></td>
-                                        <td style="width: 70%"><u>{{ speakerName }}</u></td>
-                                    </tr>
-                                    <tr>
-                                        <td>&nbsp;</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Affiliation</td>
-                                        <td>{{ Affiliation }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>&nbsp;</td>
-                                    </tr>
-                                    {% if speakerBiography != 'missing' %}
-                                        <tr>
-                                            <td style="width: 20%">Biography</td>
-                                            <td style="width: 70%"><div class="more">{{ speakerBiography}}</div></td>
-                                        </tr>
+            {% for speakerName, speakerBiography, specialEpisodeAbstract, specialEpisodeNumber, specialLikeCount, specialLikeButtonColor, specialSaveButtonStatus, specialHitCount, TitleList,Affiliation in specialEpisodeContext %}
+                {% if specialEpisodeNumber|floatformat:"0" == SelectedPaperNumber %}
+                {% else %}
+                    <div class="epilisttable">
+                        <table border="0" cellpadding="0" cellspacing="0" style="background-color: transparent;" >
+                            <tr>
+                                <td class="epilisttableleft">
+                                    <img width="100%" onError="this.onerror=null;this.src='{% static './resources/logo2.png' %}';" src="{% static 'img'%}/Specials/{{selectedSpecial}}/{{ speakerName }}.png">
+                                </td>
+                                <td valign="top" align="left" class="epilisttableright">
+                                    {% if  specialEpisodeTitle != 'missing' %}
+                                        <p class="papertitle" style="color: white;">{{ TitleList }}</p>
                                     {% endif %}
-                                    {% if specialEpisodeAbstract != 'missing' %}
+                                    <table class="paperInfo" border="0" cellpadding="0" cellspacing="0" width="100% "style="background-color: #323232; text-align: left;color: white;">
+                                        <tbody>
                                         <tr>
                                             <td>&nbsp;</td>
                                             <td>&nbsp;</td>
                                         </tr>
                                         <tr>
-                                            <td style="width: 20%">Abstract</td>
-                                            <td style="width: 70%"><div class="more">{{ specialEpisodeAbstract }}</div></td>
+                                            <td style="width: 20%;"><u>Speaker</u></td>
+                                            <td style="width: 70%"><u>{{ speakerName }}</u></td>
                                         </tr>
-                                    {% endif %}
-                                    </tbody>
-                                </table>
-                                <br>
-                                {% if speakerName == 'Ashish Deshpande' or speakerName == 'Anya Petrovskaya' %}
-                                {% else %}
+                                        <tr>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Affiliation</td>
+                                            <td>{{ Affiliation }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                        {% if speakerBiography != 'missing' %}
+                                            <tr>
+                                                <td style="width: 20%">Biography</td>
+                                                <td style="width: 70%"><div class="more">{{ speakerBiography}}</div></td>
+                                            </tr>
+                                        {% endif %}
+                                        {% if specialEpisodeAbstract != 'missing' %}
+                                            <tr>
+                                                <td>&nbsp;</td>
+                                                <td>&nbsp;</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width: 20%">Abstract</td>
+                                                <td style="width: 70%"><div class="more">{{ specialEpisodeAbstract }}</div></td>
+                                            </tr>
+                                        {% endif %}
+                                        </tbody>
+                                    </table>
+                                    <br>
                                     <div style="color: white;">
                                         {% csrf_token %}
                                         {% if specialSaveButtonStatus == 1 %}
@@ -273,21 +271,8 @@
                                             </button>
                                         {% endif %}
                                     </div>
-                                {% endif %}
-                                <br>
-                                <div>
-                                    {% if speakerName == 'Ashish Deshpande' or speakerName == 'Anya Petrovskaya' %}
-                                        <div class="videoPlayButton" style="background-color: darkgrey">
-                                            <div class="videoPlayButtonIcon">
-                                                <i class="fa fa-play-circle" style="vertical-align: middle;"></i>
-                                            </div>
-                                            <div class="videoPlayButtonText">Watch Now
-                                            </div>
-                                        </div>
-                                        <div class="pdfopenButton">
-                                            <p style="color: yellow; font-size: 120%" ><b>Premiers Nov. 2</b></p>
-                                        </div>
-                                    {% else %}
+                                    <br>
+                                    <div>
                                         <a style="text-decoration: none" href="specialsepisode?id={{specialEpisodeNumber|floatformat:"0"}}&id2={{selectedSpecial}}" onClick="this.href=this.href+'&'+new Date().getTime()">
                                             <div class="videoPlayButton">
                                                 <div class="videoPlayButtonIcon">
@@ -297,18 +282,13 @@
                                                 </div>
                                             </div>
                                         </a>
-                                    {% endif %}
-                                    {#                                <div class="pdfopenButton">#}
-                                    {#                                    {% if PDFList == 'missing' %}#}
-                                    {#                                        <p style="color: lawngreen;">No PDF files</p>#}
-                                    {#                                    {% else %}#}
-                                    {#                                        <p><a href="https://ras.papercept.net/proceedings/IROS20/{{ PDFList }}" target="_blank" style="color: lawngreen;"> Open PDF files</a></p>#}
-                                    {#                                    {% endif %}#}
-                                    {#                                </div>#}
-                                </div>
-                                <br>
-                                {% if speakerName == 'Ashish Deshpande' or speakerName == 'Anya Petrovskaya' %}
-                                {% else %}
+                                        {% if speakerName == 'Ashish Deshpande' or speakerName == 'Anya Petrovskaya' %}
+                                            <div class="pdfopenButton">
+                                                <p style="color: yellow;">Newly Released &#9733;</p>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <br>
                                     <div class="paperlikeviewcountdiv">
                                         {% if specialLikeButtonColor == 1 %}
                                             <button class="likeButton" type="submit" style="margin: auto;background-color: #323232 ;" onclick="updateLike({{ specialEpisodeNumber|floatformat:"0" }})">
@@ -325,13 +305,166 @@
                                         {% endif %}
                                         <span class="listHitCount">{{ specialHitCount }} views</span>
                                     </div>
-                                {% endif %}
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-            {% endif %}
-        {% endfor %}
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            <h3 style="padding-bottom: 2%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; More {{ selectedSpecial }} : </h3>
+            <div id="highlightModal" class="modal">
+                <span class="closeModal">&times;</span>
+                <img class="modal-content" id="highlightModalImage">
+                <div id="caption"></div>
+            </div>
+            {% for AuthorList1, AuthorList2, AuthorList3, AuthorList4,AuthorList5,AuthorList6,AffiliationList1,AffiliationList2,AffiliationList3,AffiliationList4,AffiliationList5,TitleList, PDFList, titleNumber, paperLikeCount, paperLikeButtonColor, paperSaveButtonStatus, paperHitCount, awardName, Video in specialEpisodeContext %}
+                {% if titleNumber|floatformat:"0" != SelectedPaperNumber %}
+                    <div class="epilisttable">
+                        <table border="0" cellpadding="0" cellspacing="0" style="background-color: #323232;border-radius: 10px" >
+                            <tr>
+                                <td class="epilisttableleft">
+                                    <img id="paperHighlight" onError="this.onerror=null;this.src='{% static './resources/playlogo.png' %}';" src="{% static 'img/Specials/Award Winners' %}/{{ titleNumber|floatformat:"0" }}.JPG" onclick="highlightClicked(this.src)">
+                                    {#                        </a>#}
+                                    Click image to zoom-in &nbsp;&nbsp;&nbsp;<i class="fa fa-search-plus" style="vertical-align: middle"></i>
+                                </td>
+                                <td valign="top" align="left" class="epilisttableright">
+                                    <p class="awardpapertitle"style="color: yellow">{{ awardName }} &#127942;</p>
+                                    <p class="papertitle" style="color: white;">{{ TitleList }}</p>
+                                    <table class="paperInfo" border="0" cellpadding="0" cellspacing="0" width="100% "style="background-color: #323232; text-align: left;color: white;">
+                                        <tbody>
+                                        <tr>
+                                            <td style="width: 40%;"><u>Author</u></td>
+                                            <td><u>Affiliation</u></th>
+                                        </tr>
+                                        {% if AuthorList1 == 'missing' %}
+                                            &nbsp;
+                                        {% else %}
+                                            <tr>
+                                                <td style="width: 40%">{{ AuthorList1 }}</td>
+                                                <td>{{ AffiliationList1 }}</td>
+                                            </tr>
+                                        {% endif %}
+                                        {% if AuthorList2 == 'missing' %}
+                                            &nbsp;
+                                        {% else %}
+                                            <tr>
+                                                <td style="width: 40%">{{ AuthorList2 }}</td>
+                                                <td>{{ AffiliationList2 }}</td>
+                                            </tr>
+                                        {% endif %}
+                                        {% if AuthorList3 == 'missing' %}
+                                            &nbsp;
+                                        {% else %}
+                                            <tr>
+                                                <td style="width: 40%">{{ AuthorList3 }}</td>
+                                                <td>{{ AffiliationList3 }}</td>
+                                            </tr>
+                                        {% endif %}
+                                        {% if AuthorList4 == 'missing' %}
+                                            &nbsp;
+                                        {% else %}
+                                            <tr>
+
+                                                <td style="width: 40%">{{ AuthorList4|default_if_none:"" }}</td>
+                                                <td>{{ AffiliationList4|default_if_none:"" }}</td>
+                                            </tr>
+                                        {% endif %}
+                                        {% if AuthorList5 == 'missing' %}
+                                            &nbsp;
+                                        {% else %}
+                                            <tr>
+                                                <td style="width: 40%">{{ AuthorList5 }}</td>
+                                                <td>{{ AffiliationList5 }}</td>
+                                            </tr>
+                                        {% endif %}
+                                        {% if AuthorList6 == 'missing' %}
+                                            &nbsp;
+                                        {% else %}
+                                            <tr>
+                                                <td style="width: 40%"><i style="font-size: 100%">Et al</i></td>
+                                                <td>&nbsp;</td>
+                                            </tr>
+                                        {% endif %}
+                                        </tbody>
+                                    </table>
+                                    <br>
+                                    {% if Video != 'missing'%}
+                                        <div style="color: white;">
+                                            {% csrf_token %}
+                                            {% if paperSaveButtonStatus == 1 %}
+                                                <button class="saveButton" type="submit" style="margin: auto;background-color: #323232; color: white" onclick="updateSave({{ titleNumber|floatformat:"0" }})">
+                                                    <i id="savebutton{{titleNumber|floatformat:"0"}}" class="fa fa-check-circle"  aria-hidden="true" style="color:white;vertical-align: top"></i>
+                                                    <font id="buttonMessage{{titleNumber|floatformat:"0"}}" style="color: white;">&nbsp;&nbsp;&nbsp;Added to my list</font>
+                                                    <input type="hidden" name="paperNumber" value="{{ titleNumber|floatformat:"0" }}">
+                                                </button>
+                                            {% else %}
+                                                <button class="saveButton" type="submit" style="padding: 0% ;background-color: #323232;" onclick="updateSave({{ titleNumber|floatformat:"0" }})">
+                                                    <i id="savebutton{{titleNumber|floatformat:"0"}}" class="fa fa-plus"  aria-hidden="true" style="color:white;vertical-align: top"></i>
+                                                    <font id="buttonMessage{{titleNumber|floatformat:"0"}}" style="color: white;">&nbsp;&nbsp;&nbsp;Add to my List</font>
+                                                    <input type="hidden" name="paperNumber" value="{{ titleNumber|floatformat:"0" }}">
+                                                </button>
+                                            {% endif %}
+                                        </div>
+                                    {% endif %}
+                                    <br>
+                                    <div>
+                                        {% if Video == 'missing'%}
+                                            <div class="videoPlayButton">
+                                                <div class="videoPlayButtonText">No Video Available
+                                                </div>
+                                            </div>
+                                        {% else %}
+                                            <a style="text-decoration: none" href="specialsepisode?id={{ titleNumber|floatformat:"0" }}&id2={{ selectedSpecial }}" onClick="this.href=this.href+'&'+new Date().getTime()">
+                                                <div class="videoPlayButton">
+                                                    <div class="videoPlayButtonIcon">
+                                                        <i class="fa fa-play-circle" style="vertical-align: middle;"></i>
+                                                    </div>
+                                                    <div class="videoPlayButtonText">Watch Now
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        {% endif %}
+                                        <div class="pdfopenButton">
+                                            {% if PDFList == 'missing' %}
+                                                <p style="color: lawngreen;">No PDF files</p>
+                                            {% else %}
+                                                {% if titleNumber < 100 %}
+                                                    <p><a href="https://ras.papercept.net/proceedings/IROS20/{{ PDFList }}" target="_blank" style="color: lawngreen;"> Open PDF files</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="{% static './img/IROS20_Digest' %}/00{{ titleNumber|floatformat:"0" }}_PPT.JPG" target="_blank" style="color: lightgreen;"> View Digest Slide</a></p>
+                                                {% elif titleNumber >= 100 and titleNumber < 1000 %}
+                                                    <p><a href="https://ras.papercept.net/proceedings/IROS20/{{ PDFList }}" target="_blank" style="color: lawngreen;"> Open PDF files</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="{% static './img/IROS20_Digest' %}/0{{ titleNumber|floatformat:"0" }}_PPT.JPG" target="_blank" style="color: lightgreen;"> View Digest Slide</a></p>
+                                                {% elif titleNumber >= 1000 %}
+                                                    <p><a href="https://ras.papercept.net/proceedings/IROS20/{{ PDFList }}" target="_blank" style="color: lawngreen;"> Open PDF files</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="{% static './img/IROS20_Digest' %}/{{ titleNumber|floatformat:"0" }}_PPT.JPG" target="_blank" style="color: lightgreen;"> View Digest Slide</a></p>
+                                                {% endif %}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <br>
+                                    {% if Video != 'missing'%}
+                                        <div class="paperlikeviewcountdiv">
+                                            {% if paperLikeButtonColor == 1 %}
+                                                <button class="likeButton" type="submit" style="margin: auto;background-color: #323232 ;" onclick="updateLike({{ titleNumber|floatformat:"0" }})">
+                                                    <i id="thumbs{{titleNumber|floatformat:"0"}}" class="fa fa-thumbs-up" style="color:yellow;"></i>
+                                                    <input type="text" id="{{ titleNumber|floatformat:"0" }}" value="{{ paperLikeCount }}" class="thumbsuptext" name="likeCount" readonly/>
+                                                    <input type="hidden" name="paperNumber" value="{{ titleNumber|floatformat:"0" }}">
+                                                </button>
+                                            {% else %}
+                                                <button class="likeButton" type="submit" style="padding: 0% ;background-color: #323232;" onclick="updateLike({{ titleNumber|floatformat:"0" }})">
+                                                    <i id="thumbs{{titleNumber|floatformat:"0"}}" class="fa fa-thumbs-up" style="color:grey;"></i>
+                                                    <input type="text" id="{{ titleNumber|floatformat:"0" }}" value="{{ paperLikeCount }}" class="thumbsuptext" name="likeCount" readonly/>
+                                                    <input type="hidden" name="paperNumber" value="{{ titleNumber|floatformat:"0" }}">
+                                                </button>
+                                            {% endif %}
+                                            <span class="listHitCount">{{ paperHitCount }} views</span>
+                                        </div>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
 
         <script src="{% static 'package/js/swiper.min.js' %}"></script>
 
@@ -496,7 +629,7 @@
                     data:{'paperNumber':titleNumber, 'comment':comment},
                     dataType:'json',
                     success: function(json) {
-                         {#alert("Failed to Retrieve JSON file from Server");#}
+                        {#alert("Failed to Retrieve JSON file from Server");#}
                         $('#comment_input')[0].value = '';
                         {#$('#commentList').replaceWith($("#commentList", json['arrayComments']))#}
                         commentIndex = json['lengthComments'];
@@ -512,70 +645,70 @@
                 });
             }
         </script>
-{#        <script>#}
-{#            var vid = document.getElementById("vid");#}
-{##}
-{#            var loadStart = 0, loadFinish = 0, loadTime = 0;#}
-{#            var timeStarted = -1;#}
-{#            var timeStopped = 0;#}
-{#            var timePlayed = 0;#}
-{#            var loadDone = false;#}
-{##}
-{#            function videoStartedPlaying(event){#}
-{#                console.log("Started Playing");#}
-{#                timeStarted = new Date().getTime();#}
-{#            }#}
-{##}
-{#            function videoStoppedPlaying(event){#}
-{#                console.log("Stopped Playing");#}
-{#                if(timeStarted < 0)#}
-{#                    return;#}
-{#                timeStopped = new Date().getTime();#}
-{#                newTime = timeStopped - timeStarted;#}
-{#                timePlayed += newTime;#}
-{#                console.log("added time: " + newTime + "ms");#}
-{#                console.log("total time: " + timePlayed + "ms");#}
-{#                timeStarted = -1;#}
-{#            }#}
-{##}
-{#            function fLoadStart(){#}
-{#                console.log("Load Start");#}
-{#                loadStart = new Date().getTime();#}
-{#            }#}
-{##}
-{#            function fLoadFinish(){#}
-{#                if(loadDone === true)#}
-{#                    return;#}
-{#                console.log("Load Finish");#}
-{#                loadFinish = new Date().getTime();#}
-{#                loadTime = loadFinish - loadStart;#}
-{#                console.log("loadTime: " + loadTime + "ms");#}
-{#                loadDone = true;#}
-{#            }#}
-{##}
-{#            vid.addEventListener('loadstart', fLoadStart);#}
-{#            vid.addEventListener('canplaythrough', fLoadFinish);#}
-{##}
-{#            vid.addEventListener('play', videoStartedPlaying);#}
-{#            vid.addEventListener('playing', videoStartedPlaying);#}
-{##}
-{#            vid.addEventListener('ended', videoStoppedPlaying);#}
-{#            vid.addEventListener('pause', videoStoppedPlaying);#}
-{##}
-{#            function catch_backpress(){#}
-{#                console.log("Catching Backpress");#}
-{#                if(timeStarted < 0)#}
-{#                    return;#}
-{#                if(loadTime > 100000)#}
-{#                    loadTime = 0;#}
-{#                timeStopped = new Date().getTime();#}
-{#                newTime = timeStopped - timeStarted - loadTime;#}
-{#                timePlayed += newTime;#}
-{#                console.log("added time: " + newTime + "ms");#}
-{#                console.log("total time: " + timePlayed + "ms");#}
-{#                timeStarted = -1;#}
-{#            }#}
-{#        </script>#}
+        {#        <script>#}
+        {#            var vid = document.getElementById("vid");#}
+        {##}
+        {#            var loadStart = 0, loadFinish = 0, loadTime = 0;#}
+        {#            var timeStarted = -1;#}
+        {#            var timeStopped = 0;#}
+        {#            var timePlayed = 0;#}
+        {#            var loadDone = false;#}
+        {##}
+        {#            function videoStartedPlaying(event){#}
+        {#                console.log("Started Playing");#}
+        {#                timeStarted = new Date().getTime();#}
+        {#            }#}
+        {##}
+        {#            function videoStoppedPlaying(event){#}
+        {#                console.log("Stopped Playing");#}
+        {#                if(timeStarted < 0)#}
+        {#                    return;#}
+        {#                timeStopped = new Date().getTime();#}
+        {#                newTime = timeStopped - timeStarted;#}
+        {#                timePlayed += newTime;#}
+        {#                console.log("added time: " + newTime + "ms");#}
+        {#                console.log("total time: " + timePlayed + "ms");#}
+        {#                timeStarted = -1;#}
+        {#            }#}
+        {##}
+        {#            function fLoadStart(){#}
+        {#                console.log("Load Start");#}
+        {#                loadStart = new Date().getTime();#}
+        {#            }#}
+        {##}
+        {#            function fLoadFinish(){#}
+        {#                if(loadDone === true)#}
+        {#                    return;#}
+        {#                console.log("Load Finish");#}
+        {#                loadFinish = new Date().getTime();#}
+        {#                loadTime = loadFinish - loadStart;#}
+        {#                console.log("loadTime: " + loadTime + "ms");#}
+        {#                loadDone = true;#}
+        {#            }#}
+        {##}
+        {#            vid.addEventListener('loadstart', fLoadStart);#}
+        {#            vid.addEventListener('canplaythrough', fLoadFinish);#}
+        {##}
+        {#            vid.addEventListener('play', videoStartedPlaying);#}
+        {#            vid.addEventListener('playing', videoStartedPlaying);#}
+        {##}
+        {#            vid.addEventListener('ended', videoStoppedPlaying);#}
+        {#            vid.addEventListener('pause', videoStoppedPlaying);#}
+        {##}
+        {#            function catch_backpress(){#}
+        {#                console.log("Catching Backpress");#}
+        {#                if(timeStarted < 0)#}
+        {#                    return;#}
+        {#                if(loadTime > 100000)#}
+        {#                    loadTime = 0;#}
+        {#                timeStopped = new Date().getTime();#}
+        {#                newTime = timeStopped - timeStarted - loadTime;#}
+        {#                timePlayed += newTime;#}
+        {#                console.log("added time: " + newTime + "ms");#}
+        {#                console.log("total time: " + timePlayed + "ms");#}
+        {#                timeStarted = -1;#}
+        {#            }#}
+        {#        </script>#}
         <script>
             window.addEventListener( "pageshow", function ( event ) {
                 var historyTraversal = event.persisted ||
@@ -588,32 +721,32 @@
                 }
             });
         </script>
-{#        <script>#}
-{#            function update_playtime(titleNumber) {#}
-{#                $.ajax({#}
-{#                    url: 'update_playtime',#}
-{#                    type: 'POST',#}
-{#                    data: {#}
-{#                        'paperNumber': titleNumber,#}
-{#                        'time': timePlayed,#}
-{#                    },#}
-{#                    dataType: 'json',#}
-{#                    success: function (json) {#}
-{#                        console.log("successfully updated video playtime: " + json['total_time'] + " seconds");#}
-{#                    },#}
-{#                    error: function (err) {#}
-{#                        alert("Failed to Retrieve JSON file from Server (Video)");#}
-{#                    }#}
-{#                });#}
-{#            }#}
-{#        </script>#}
-{#        <script>#}
-{#            window.addEventListener("beforeunload", function(event){#}
-{#                console.log("Updating Vid Playtime"+" {{ SelectedPaperNumber|floatformat:"0" }}");#}
-{#                catch_backpress();#}
-{#                update_playtime("{{ SelectedPaperNumber|floatformat:"0" }}");#}
-{#            });#}
-{#        </script>#}
+        {#        <script>#}
+        {#            function update_playtime(titleNumber) {#}
+        {#                $.ajax({#}
+        {#                    url: 'update_playtime',#}
+        {#                    type: 'POST',#}
+        {#                    data: {#}
+        {#                        'paperNumber': titleNumber,#}
+        {#                        'time': timePlayed,#}
+        {#                    },#}
+        {#                    dataType: 'json',#}
+        {#                    success: function (json) {#}
+        {#                        console.log("successfully updated video playtime: " + json['total_time'] + " seconds");#}
+        {#                    },#}
+        {#                    error: function (err) {#}
+        {#                        alert("Failed to Retrieve JSON file from Server (Video)");#}
+        {#                    }#}
+        {#                });#}
+        {#            }#}
+        {#        </script>#}
+        {#        <script>#}
+        {#            window.addEventListener("beforeunload", function(event){#}
+        {#                console.log("Updating Vid Playtime"+" {{ SelectedPaperNumber|floatformat:"0" }}");#}
+        {#                catch_backpress();#}
+        {#                update_playtime("{{ SelectedPaperNumber|floatformat:"0" }}");#}
+        {#            });#}
+        {#        </script>#}
         <script>
             $(document).ready(function(){
                 $('#vid').bind('contextmenu',function() { return false; });
@@ -649,6 +782,27 @@
                 },11000);
             }
             hitCounter({{ SelectedPaperNumber }})
+        </script>
+        <script>
+            // Get the modal
+            var modal = document.getElementById("highlightModal");
+            var modalImg = document.getElementById("highlightModalImage");
+            var captionText = document.getElementById("caption");
+
+            var span = document.getElementsByClassName("closeModal")[0];
+
+            // When the user clicks on <span> (x), close the modal
+            modalImg.onclick = function() {
+                modal.style.display = "none";
+            }
+
+        </script>
+        <script>
+            function highlightClicked(src){
+                modal.style.display = "block";
+                modalImg.src = src;
+                captionText.innerHTML = "Tap on the image to close";
+            }
         </script>
     </div>
 </div>

@@ -140,9 +140,8 @@
             </table>
         </div>
 
-
-        {% for speakerName, speakerBiography, specialEpisodeAbstract,specialEpisodeNumber, specialLikeCount, specialLikeButtonColor, specialSaveButtonStatus, specialHitCount, specialEpisodeTitle,Affiliation,speakerVideo in specialEpisodeContext %}
-            {% if speakerName != 'missing' %}
+        {% if specialAward != 1 %}
+            {% for speakerName, speakerBiography, specialEpisodeAbstract,specialEpisodeNumber, specialLikeCount, specialLikeButtonColor, specialSaveButtonStatus, specialHitCount, specialEpisodeTitle,Affiliation,speakerVideo in specialEpisodeContext %}
                 <div class="epilisttable">
                     <table border="0" cellpadding="0" cellspacing="0" style="background-color: transparent;" >
                         <tr>
@@ -193,51 +192,48 @@
                                 </table>
                                 <br>
                                 {% if speakerVideo != 'missing' %}
-                                    {% if speakerName == 'Ashish Deshpande' or speakerName == 'Anya Petrovskaya' %}
-                                    {% else %}
-                                        <div style="color: white;">
-                                            {% csrf_token %}
-                                            {% if specialSaveButtonStatus == 1 %}
-                                                <button class="saveButton" type="submit" style="margin: auto;background-color: #323232; color: white" onclick="updateSave({{ specialEpisodeNumber|floatformat:"0" }})">
-                                                    <i id="savebutton{{specialEpisodeNumber|floatformat:"0"}}" class="fa fa-check-circle"  aria-hidden="true" style="color:white;vertical-align: top"></i>
-                                                    <font id="buttonMessage{{specialEpisodeNumber|floatformat:"0"}}" style="color: white;">&nbsp;&nbsp;&nbsp;Added to my list</font>
-                                                    <input type="hidden" name="paperNumber" value="{{ specialEpisodeNumber|floatformat:"0" }}">
-                                                </button>
-                                            {% else %}
-                                                <button class="saveButton" type="submit" style="padding: 0% ;background-color: #323232;" onclick="updateSave({{ specialEpisodeNumber|floatformat:"0" }})">
-                                                    <i id="savebutton{{specialEpisodeNumber|floatformat:"0"}}" class="fa fa-plus"  aria-hidden="true" style="color:white;vertical-align: top"></i>
-                                                    <font id="buttonMessage{{specialEpisodeNumber|floatformat:"0"}}" style="color: white;">&nbsp;&nbsp;&nbsp;Add to my List</font>
-                                                    <input type="hidden" name="paperNumber" value="{{ specialEpisodeNumber|floatformat:"0" }}">
-                                                </button>
-                                            {% endif %}
-                                        </div>
-                                    {% endif %}
+                                    <div style="color: white;">
+                                        {% csrf_token %}
+                                        {% if specialSaveButtonStatus == 1 %}
+                                            <button class="saveButton" type="submit" style="margin: auto;background-color: #323232; color: white" onclick="updateSave({{ specialEpisodeNumber|floatformat:"0" }})">
+                                                <i id="savebutton{{specialEpisodeNumber|floatformat:"0"}}" class="fa fa-check-circle"  aria-hidden="true" style="color:white;vertical-align: top"></i>
+                                                <font id="buttonMessage{{specialEpisodeNumber|floatformat:"0"}}" style="color: white;">&nbsp;&nbsp;&nbsp;Added to my list</font>
+                                                <input type="hidden" name="paperNumber" value="{{ specialEpisodeNumber|floatformat:"0" }}">
+                                            </button>
+                                        {% else %}
+                                            <button class="saveButton" type="submit" style="padding: 0% ;background-color: #323232;" onclick="updateSave({{ specialEpisodeNumber|floatformat:"0" }})">
+                                                <i id="savebutton{{specialEpisodeNumber|floatformat:"0"}}" class="fa fa-plus"  aria-hidden="true" style="color:white;vertical-align: top"></i>
+                                                <font id="buttonMessage{{specialEpisodeNumber|floatformat:"0"}}" style="color: white;">&nbsp;&nbsp;&nbsp;Add to my List</font>
+                                                <input type="hidden" name="paperNumber" value="{{ specialEpisodeNumber|floatformat:"0" }}">
+                                            </button>
+                                        {% endif %}
+                                    </div>
                                 {% endif %}
                                 <br>
                                 <div>
                                     {% if speakerVideo != 'missing' %}
-                                        {% if speakerName == 'Ashish Deshpande' or speakerName == 'Anya Petrovskaya' %}
-                                            <div class="videoPlayButton" style="background-color: darkgrey">
+                                        {#                                        {% if speakerName == 'Ashish Deshpande' or speakerName == 'Anya Petrovskaya' %}#}
+                                        {#                                            <div class="videoPlayButton" style="background-color: darkgrey">#}
+                                        {#                                                <div class="videoPlayButtonIcon">#}
+                                        {#                                                    <i class="fa fa-play-circle" style="vertical-align: middle;"></i>#}
+                                        {#                                                </div>#}
+                                        {#                                                <div class="videoPlayButtonText">Watch Now#}
+                                        {#                                                </div>#}
+                                        {#                                            </div>#}
+                                        {#                                            <div class="pdfopenButton">#}
+                                        {#                                                <p style="color: yellow; font-size: 120%" ><b>Premiers Nov. 2</b></p>#}
+                                        {#                                            </div>#}
+                                        {#                                        {% else %}#}
+                                        <a style="text-decoration: none" href="specialsepisode?id={{specialEpisodeNumber|floatformat:"0"}}&id2={{selectedSpecial}}" onClick="this.href=this.href+'&'+new Date().getTime()">
+                                            <div class="videoPlayButton">
                                                 <div class="videoPlayButtonIcon">
                                                     <i class="fa fa-play-circle" style="vertical-align: middle;"></i>
                                                 </div>
                                                 <div class="videoPlayButtonText">Watch Now
                                                 </div>
                                             </div>
-                                            <div class="pdfopenButton">
-                                                <p style="color: yellow; font-size: 120%" ><b>Premiers Nov. 2</b></p>
-                                            </div>
-                                        {% else %}
-                                            <a style="text-decoration: none" href="specialsepisode?id={{specialEpisodeNumber|floatformat:"0"}}&id2={{selectedSpecial}}" onClick="this.href=this.href+'&'+new Date().getTime()">
-                                                <div class="videoPlayButton">
-                                                    <div class="videoPlayButtonIcon">
-                                                        <i class="fa fa-play-circle" style="vertical-align: middle;"></i>
-                                                    </div>
-                                                    <div class="videoPlayButtonText">Watch Now
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        {% endif %}
+                                        </a>
+                                        {#                                        {% endif %}#}
                                     {% else %}
                                         <div class="videoPlayButton">
                                             <div class="videoPlayButtonIcon">
@@ -247,42 +243,188 @@
                                             </div>
                                         </div>
                                     {% endif %}
-                                    {#                                <div class="pdfopenButton">#}
-                                    {#                                    {% if PDFList == 'missing' %}#}
-                                    {#                                        <p style="color: lawngreen;">No PDF files</p>#}
-                                    {#                                    {% else %}#}
-                                    {#                                        <p><a href="https://ras.papercept.net/proceedings/IROS20/{{ PDFList }}" target="_blank" style="color: lawngreen;"> Open PDF files</a></p>#}
-                                    {#                                    {% endif %}#}
-                                    {#                                </div>#}
+                                    {% if speakerName == 'Ashish Deshpande' or speakerName == 'Anya Petrovskaya' %}
+                                        <div class="pdfopenButton">
+                                            <p style="color: yellow;">Newly Released &#9733;</p>
+                                        </div>
+                                    {% endif %}
                                 </div>
                                 <br>
                                 {% if speakerVideo != 'missing' %}
-                                    {% if speakerName == 'Ashish Deshpande' or speakerName == 'Anya Petrovskaya' %}
-                                    {% else %}
-                                        <div class="paperlikeviewcountdiv">
-                                            {% if specialLikeButtonColor == 1 %}
-                                                <button class="likeButton" type="submit" style="margin: auto;background-color: #323232 ;" onclick="updateLike({{ specialEpisodeNumber|floatformat:"0" }})">
-                                                    <i id="thumbs{{specialEpisodeNumber|floatformat:"0"}}" class="fa fa-thumbs-up" style="color:yellow;"></i>
-                                                    <input type="text" id="{{ specialEpisodeNumber|floatformat:"0" }}" value="{{ specialLikeCount }}" class="thumbsuptext" name="likeCount" readonly/>
-                                                    <input type="hidden" name="paperNumber" value="{{ specialEpisodeNumber|floatformat:"0" }}">
-                                                </button>
-                                            {% else %}
-                                                <button class="likeButton" type="submit" style="padding: 0% ;background-color: #323232;" onclick="updateLike({{ specialEpisodeNumber|floatformat:"0" }})">
-                                                    <i id="thumbs{{specialEpisodeNumber|floatformat:"0"}}" class="fa fa-thumbs-up" style="color:grey;"></i>
-                                                    <input type="text" id="{{ specialEpisodeNumber|floatformat:"0" }}" value="{{ specialLikeCount }}" class="thumbsuptext" name="likeCount" readonly/>
-                                                    <input type="hidden" name="paperNumber" value="{{ specialEpisodeNumber|floatformat:"0" }}">
-                                                </button>
-                                            {% endif %}
-                                            <span class="listHitCount">{{ specialHitCount }} views</span>
-                                        </div>
-                                    {% endif %}
+                                    <div class="paperlikeviewcountdiv">
+                                        {% if specialLikeButtonColor == 1 %}
+                                            <button class="likeButton" type="submit" style="margin: auto;background-color: #323232 ;" onclick="updateLike({{ specialEpisodeNumber|floatformat:"0" }})">
+                                                <i id="thumbs{{specialEpisodeNumber|floatformat:"0"}}" class="fa fa-thumbs-up" style="color:yellow;"></i>
+                                                <input type="text" id="{{ specialEpisodeNumber|floatformat:"0" }}" value="{{ specialLikeCount }}" class="thumbsuptext" name="likeCount" readonly/>
+                                                <input type="hidden" name="paperNumber" value="{{ specialEpisodeNumber|floatformat:"0" }}">
+                                            </button>
+                                        {% else %}
+                                            <button class="likeButton" type="submit" style="padding: 0% ;background-color: #323232;" onclick="updateLike({{ specialEpisodeNumber|floatformat:"0" }})">
+                                                <i id="thumbs{{specialEpisodeNumber|floatformat:"0"}}" class="fa fa-thumbs-up" style="color:grey;"></i>
+                                                <input type="text" id="{{ specialEpisodeNumber|floatformat:"0" }}" value="{{ specialLikeCount }}" class="thumbsuptext" name="likeCount" readonly/>
+                                                <input type="hidden" name="paperNumber" value="{{ specialEpisodeNumber|floatformat:"0" }}">
+                                            </button>
+                                        {% endif %}
+                                        <span class="listHitCount">{{ specialHitCount }} views</span>
+                                    </div>
                                 {% endif %}
                             </td>
                         </tr>
                     </table>
                 </div>
-            {% endif %}
-        {% endfor %}
+            {% endfor %}
+        {% else %}
+            <div id="highlightModal" class="modal">
+                <span class="closeModal">&times;</span>
+                <img class="modal-content" id="highlightModalImage">
+                <div id="caption"></div>
+            </div>
+            {% for AuthorList1, AuthorList2, AuthorList3, AuthorList4,AuthorList5,AuthorList6,AffiliationList1,AffiliationList2,AffiliationList3,AffiliationList4,AffiliationList5,TitleList, PDFList, titleNumber, paperLikeCount, paperLikeButtonColor, paperSaveButtonStatus, paperHitCount, awardName, Video in specialEpisodeContext %}
+                <div class="epilisttable">
+                    <table border="0" cellpadding="0" cellspacing="0" style="background-color: #323232;border-radius: 10px" >
+                        <tr>
+                            <td class="epilisttableleft">
+                                {#                        <a href="episode?id={{TitleList}}&id2={{ Session }}" onClick="this.href=this.href+'&'+new Date().getTime()">#}
+                                <img id="paperHighlight" onError="this.onerror=null;this.src='{% static './resources/playlogo.png' %}';" src="{% static 'img/Specials/Award Winners' %}/{{ titleNumber|floatformat:"0" }}.JPG" onclick="highlightClicked(this.src)">
+                                {#                        </a>#}
+                                Click image to zoom-in &nbsp;&nbsp;&nbsp;<i class="fa fa-search-plus" style="vertical-align: middle"></i>
+                            </td>
+                            <td valign="top" align="left" class="epilisttableright">
+                                <p class="awardpapertitle"style="color: yellow">{{ awardName }} &#127942;</p>
+                                <p class="papertitle" style="color: white;">{{ TitleList }}</p>
+                                <table class="paperInfo" border="0" cellpadding="0" cellspacing="0" width="100% "style="background-color: #323232; text-align: left;color: white;">
+                                    <tbody>
+                                    <tr>
+                                        <td style="width: 40%;"><u>Author</u></td>
+                                        <td><u>Affiliation</u></th>
+                                    </tr>
+                                    {% if AuthorList1 == 'missing' %}
+                                        &nbsp;
+                                    {% else %}
+                                        <tr>
+                                            <td style="width: 40%">{{ AuthorList1 }}</td>
+                                            <td>{{ AffiliationList1 }}</td>
+                                        </tr>
+                                    {% endif %}
+                                    {% if AuthorList2 == 'missing' %}
+                                        &nbsp;
+                                    {% else %}
+                                        <tr>
+                                            <td style="width: 40%">{{ AuthorList2 }}</td>
+                                            <td>{{ AffiliationList2 }}</td>
+                                        </tr>
+                                    {% endif %}
+                                    {% if AuthorList3 == 'missing' %}
+                                        &nbsp;
+                                    {% else %}
+                                        <tr>
+                                            <td style="width: 40%">{{ AuthorList3 }}</td>
+                                            <td>{{ AffiliationList3 }}</td>
+                                        </tr>
+                                    {% endif %}
+                                    {% if AuthorList4 == 'missing' %}
+                                        &nbsp;
+                                    {% else %}
+                                        <tr>
+
+                                            <td style="width: 40%">{{ AuthorList4|default_if_none:"" }}</td>
+                                            <td>{{ AffiliationList4|default_if_none:"" }}</td>
+                                        </tr>
+                                    {% endif %}
+                                    {% if AuthorList5 == 'missing' %}
+                                        &nbsp;
+                                    {% else %}
+                                        <tr>
+                                            <td style="width: 40%">{{ AuthorList5 }}</td>
+                                            <td>{{ AffiliationList5 }}</td>
+                                        </tr>
+                                    {% endif %}
+                                    {% if AuthorList6 == 'missing' %}
+                                        &nbsp;
+                                    {% else %}
+                                        <tr>
+                                            <td style="width: 40%"><i style="font-size: 100%">Et al</i></td>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                    {% endif %}
+                                    </tbody>
+                                </table>
+                                <br>
+                                {% if Video != 'missing'%}
+                                    <div style="color: white;">
+                                        {% csrf_token %}
+                                        {% if paperSaveButtonStatus == 1 %}
+                                            <button class="saveButton" type="submit" style="margin: auto;background-color: #323232; color: white" onclick="updateSave({{ titleNumber|floatformat:"0" }})">
+                                                <i id="savebutton{{titleNumber|floatformat:"0"}}" class="fa fa-check-circle"  aria-hidden="true" style="color:white;vertical-align: top"></i>
+                                                <font id="buttonMessage{{titleNumber|floatformat:"0"}}" style="color: white;">&nbsp;&nbsp;&nbsp;Added to my list</font>
+                                                <input type="hidden" name="paperNumber" value="{{ titleNumber|floatformat:"0" }}">
+                                            </button>
+                                        {% else %}
+                                            <button class="saveButton" type="submit" style="padding: 0% ;background-color: #323232;" onclick="updateSave({{ titleNumber|floatformat:"0" }})">
+                                                <i id="savebutton{{titleNumber|floatformat:"0"}}" class="fa fa-plus"  aria-hidden="true" style="color:white;vertical-align: top"></i>
+                                                <font id="buttonMessage{{titleNumber|floatformat:"0"}}" style="color: white;">&nbsp;&nbsp;&nbsp;Add to my List</font>
+                                                <input type="hidden" name="paperNumber" value="{{ titleNumber|floatformat:"0" }}">
+                                            </button>
+                                        {% endif %}
+                                    </div>
+                                {% endif %}
+                                <br>
+                                <div>
+                                    {% if Video == 'missing'%}
+                                        <div class="videoPlayButton">
+                                            <div class="videoPlayButtonText">No Video Available
+                                            </div>
+                                        </div>
+                                    {% else %}
+                                        <a style="text-decoration: none" href="specialsepisode?id={{ titleNumber|floatformat:"0" }}&id2={{ selectedSpecial }}" onClick="this.href=this.href+'&'+new Date().getTime()">
+                                            <div class="videoPlayButton">
+                                                <div class="videoPlayButtonIcon">
+                                                    <i class="fa fa-play-circle" style="vertical-align: middle;"></i>
+                                                </div>
+                                                <div class="videoPlayButtonText">Watch Now
+                                                </div>
+                                            </div>
+                                        </a>
+                                    {% endif %}
+                                    <div class="pdfopenButton">
+                                        {% if PDFList == 'missing' %}
+                                            <p style="color: lawngreen;">No PDF files</p>
+                                        {% else %}
+                                            {% if titleNumber < 100 %}
+                                                <p><a href="https://ras.papercept.net/proceedings/IROS20/{{ PDFList }}" target="_blank" style="color: lawngreen;"> Open PDF files</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="{% static './img/IROS20_Digest' %}/00{{ titleNumber|floatformat:"0" }}_PPT.JPG" target="_blank" style="color: lightgreen;"> View Digest Slide</a></p>
+                                            {% elif titleNumber >= 100 and titleNumber < 1000 %}
+                                                <p><a href="https://ras.papercept.net/proceedings/IROS20/{{ PDFList }}" target="_blank" style="color: lawngreen;"> Open PDF files</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="{% static './img/IROS20_Digest' %}/0{{ titleNumber|floatformat:"0" }}_PPT.JPG" target="_blank" style="color: lightgreen;"> View Digest Slide</a></p>
+                                            {% elif titleNumber >= 1000 %}
+                                                <p><a href="https://ras.papercept.net/proceedings/IROS20/{{ PDFList }}" target="_blank" style="color: lawngreen;"> Open PDF files</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="{% static './img/IROS20_Digest' %}/{{ titleNumber|floatformat:"0" }}_PPT.JPG" target="_blank" style="color: lightgreen;"> View Digest Slide</a></p>
+                                            {% endif %}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <br>
+                                {% if Video != 'missing'%}
+                                    <div class="paperlikeviewcountdiv">
+                                        {% if paperLikeButtonColor == 1 %}
+                                            <button class="likeButton" type="submit" style="margin: auto;background-color: #323232 ;" onclick="updateLike({{ titleNumber|floatformat:"0" }})">
+                                                <i id="thumbs{{titleNumber|floatformat:"0"}}" class="fa fa-thumbs-up" style="color:yellow;"></i>
+                                                <input type="text" id="{{ titleNumber|floatformat:"0" }}" value="{{ paperLikeCount }}" class="thumbsuptext" name="likeCount" readonly/>
+                                                <input type="hidden" name="paperNumber" value="{{ titleNumber|floatformat:"0" }}">
+                                            </button>
+                                        {% else %}
+                                            <button class="likeButton" type="submit" style="padding: 0% ;background-color: #323232;" onclick="updateLike({{ titleNumber|floatformat:"0" }})">
+                                                <i id="thumbs{{titleNumber|floatformat:"0"}}" class="fa fa-thumbs-up" style="color:grey;"></i>
+                                                <input type="text" id="{{ titleNumber|floatformat:"0" }}" value="{{ paperLikeCount }}" class="thumbsuptext" name="likeCount" readonly/>
+                                                <input type="hidden" name="paperNumber" value="{{ titleNumber|floatformat:"0" }}">
+                                            </button>
+                                        {% endif %}
+                                        <span class="listHitCount">{{ paperHitCount }} views</span>
+                                    </div>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            {% endfor %}
+        {% endif %}
         <p>&nbsp;</p>
         <div class="netflix-slider">
             <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Other IROS Specials</h3>
@@ -293,10 +435,10 @@
                             <img class="netflix-slider-img" onError="this.onerror=null;this.src='{% static './resources/logo2.png' %}';" src="{% static 'img/Specials/speciallogo.png'%}">
                             {% if j == 'Award Winners' or j == 'BiR-IROS: Black in Robotics IROS 2020' %}
                                 {% if j == 'BiR-IROS: Black in Robotics IROS 2020' %}
-                                    <div class="onimg-caption">{{ j }}<br><font style="color: yellowgreen"><b>Supported generously by TRI</b></font><br><font style="color: red"><b>Premiers Nov. 2</b></font>
+                                    <div class="onimg-caption">{{ j }}<br><font style="color: yellowgreen"><b>Supported generously by TRI</b></font><br><font style="color: red"><b>Premiers Nov. 16</b></font>
                                     </div>
                                 {% else %}
-                                    <div class="onimg-caption">{{ j }}<br><font style="color: red"><b>Premiers Nov. 2</b></font>
+                                    <div class="onimg-caption">{{ j }}<br><font style="color: yellow"><b>New Release</b></font>
                                     </div>
                                 {% endif %}
                             {% else %}
@@ -463,6 +605,27 @@
                     {#console.log('save my ass')#}
                 }
             });
+        </script>
+        <script>
+            // Get the modal
+            var modal = document.getElementById("highlightModal");
+            var modalImg = document.getElementById("highlightModalImage");
+            var captionText = document.getElementById("caption");
+
+            var span = document.getElementsByClassName("closeModal")[0];
+
+            // When the user clicks on <span> (x), close the modal
+            modalImg.onclick = function() {
+                modal.style.display = "none";
+            }
+
+        </script>
+        <script>
+            function highlightClicked(src){
+                modal.style.display = "block";
+                modalImg.src = src;
+                captionText.innerHTML = "Tap on the image to close";
+            }
         </script>
 
     </div>

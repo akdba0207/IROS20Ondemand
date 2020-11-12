@@ -271,13 +271,17 @@
                     <table border="0" cellpadding="0" cellspacing="0" style="border-radius: 10px" >
                         <tr>
                             <td class="epilisttableleft">
-                                {#                        <a href="episode?id={{TitleList}}&id2={{ SessionList }}" onClick="this.href=this.href+'&'+new Date().getTime()">#}
-                                {% if titleNumber < 100 %}
-                                    <img id="paperHighlight" onError="this.onerror=null;this.src='{% static './resources/playlogo.png' %}';" src="{% static './img/IROS20_Digest' %}/00{{ titleNumber|floatformat:"0" }}_PPT.JPG" onclick="highlightClicked(this.src)">
-                                {% elif titleNumber >= 100 and titleNumber < 1000 %}
-                                    <img id="paperHighlight" onError="this.onerror=null;this.src='{% static './resources/playlogo.png' %}';"  src="{% static './img/IROS20_Digest' %}/0{{ titleNumber|floatformat:"0" }}_PPT.JPG" onclick="highlightClicked(this.src)">
-                                {% elif titleNumber >= 1000 %}
-                                    <img id="paperHighlight" onError="this.onerror=null;this.src='{% static './resources/playlogo.png' %}';" src="{% static './img/IROS20_Digest' %}/{{ titleNumber|floatformat:"0" }}_PPT.JPG" onclick="highlightClicked(this.src)">
+                                {% if awardwinnerNrCount == 1 %}
+                                    <img id="paperHighlight" onError="this.onerror=null;this.src='{% static './resources/playlogo.png' %}';" src="{% static 'img/Specials/Award Winners' %}/{{ titleNumber|floatformat:"0" }}.JPG" onclick="highlightClicked(this.src)">
+                                {% else %}
+                                    {#                        <a href="episode?id={{TitleList}}&id2={{ SessionList }}" onClick="this.href=this.href+'&'+new Date().getTime()">#}
+                                    {% if titleNumber < 100 %}
+                                        <img id="paperHighlight" onError="this.onerror=null;this.src='{% static './resources/playlogo.png' %}';" src="{% static './img/IROS20_Digest' %}/00{{ titleNumber|floatformat:"0" }}_PPT.JPG" onclick="highlightClicked(this.src)">
+                                    {% elif titleNumber >= 100 and titleNumber < 1000 %}
+                                        <img id="paperHighlight" onError="this.onerror=null;this.src='{% static './resources/playlogo.png' %}';"  src="{% static './img/IROS20_Digest' %}/0{{ titleNumber|floatformat:"0" }}_PPT.JPG" onclick="highlightClicked(this.src)">
+                                    {% elif titleNumber >= 1000 %}
+                                        <img id="paperHighlight" onError="this.onerror=null;this.src='{% static './resources/playlogo.png' %}';" src="{% static './img/IROS20_Digest' %}/{{ titleNumber|floatformat:"0" }}_PPT.JPG" onclick="highlightClicked(this.src)">
+                                    {% endif %}
                                 {% endif %}
                                 {#                        </a>#}
                                 Click image to zoom-in &nbsp;&nbsp;&nbsp;<i class="fa fa-search-plus" style="vertical-align: middle"></i>
@@ -377,21 +381,43 @@
                                             </div>
                                         </div>
                                     {% else %}
-                                        <a style="text-decoration: none" href="episode?id={{titleNumber|floatformat:"0"}}&id2={{ SessionList }}" onClick="this.href=this.href+'&'+new Date().getTime()">
-                                            <div class="videoPlayButton">
-                                                <div class="videoPlayButtonIcon">
-                                                    <i class="fa fa-play-circle" style="vertical-align: middle;"></i>
+                                        {% if awardwinnerNrCount == 1 %}
+                                            <a style="text-decoration: none" href="specialsepisode?id={{ titleNumber|floatformat:"0" }}&id2=Award Winners" onClick="this.href=this.href+'&'+new Date().getTime()">
+                                                <div class="videoPlayButton">
+                                                    <div class="videoPlayButtonIcon">
+                                                        <i class="fa fa-play-circle" style="vertical-align: middle;"></i>
+                                                    </div>
+                                                    <div class="videoPlayButtonText">Watch Now
+                                                    </div>
                                                 </div>
-                                                <div class="videoPlayButtonText">Watch Now
+                                            </a>
+                                        {% else %}
+                                            <a style="text-decoration: none" href="episode?id={{titleNumber|floatformat:"0"}}&id2={{ SessionList }}" onClick="this.href=this.href+'&'+new Date().getTime()">
+                                                <div class="videoPlayButton">
+                                                    <div class="videoPlayButtonIcon">
+                                                        <i class="fa fa-play-circle" style="vertical-align: middle;"></i>
+                                                    </div>
+                                                    <div class="videoPlayButtonText">Watch Now
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </a>
+                                            </a>
+                                        {% endif %}
                                     {% endif %}
                                     <div class="pdfopenButton">
                                         {% if PDFList == 'missing' %}
                                             <p style="color: lawngreen;">No PDF files</p>
                                         {% else %}
-                                            <p><a href="https://ras.papercept.net/proceedings/IROS20/{{ PDFList }}" target="_blank" style="color: lawngreen;"> Open PDF files</a></p>
+                                            {% if awardwinnerNrCount == 1 %}
+                                                {% if titleNumber < 100 %}
+                                                    <p><a href="https://ras.papercept.net/proceedings/IROS20/{{ PDFList }}" target="_blank" style="color: lawngreen;"> Open PDF files</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="{% static './img/IROS20_Digest' %}/00{{ titleNumber|floatformat:"0" }}_PPT.JPG" target="_blank" style="color: lightgreen;"> View Digest Slide</a></p>
+                                                {% elif titleNumber >= 100 and titleNumber < 1000 %}
+                                                    <p><a href="https://ras.papercept.net/proceedings/IROS20/{{ PDFList }}" target="_blank" style="color: lawngreen;"> Open PDF files</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="{% static './img/IROS20_Digest' %}/0{{ titleNumber|floatformat:"0" }}_PPT.JPG" target="_blank" style="color: lightgreen;"> View Digest Slide</a></p>
+                                                {% elif titleNumber >= 1000 %}
+                                                    <p><a href="https://ras.papercept.net/proceedings/IROS20/{{ PDFList }}" target="_blank" style="color: lawngreen;"> Open PDF files</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="{% static './img/IROS20_Digest' %}/{{ titleNumber|floatformat:"0" }}_PPT.JPG" target="_blank" style="color: lightgreen;"> View Digest Slide</a></p>
+                                                {% endif %}
+                                            {% else %}
+                                                <p><a href="https://ras.papercept.net/proceedings/IROS20/{{ PDFList }}" target="_blank" style="color: lawngreen;"> Open PDF files</a></p>
+                                            {% endif %}
                                         {% endif %}
                                     </div>
                                 </div>
