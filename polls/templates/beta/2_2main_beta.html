@@ -99,9 +99,9 @@
                 </li>
             </ul>
             <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="jobs?id={{ showcontents }}" onClick="this.href=this.href+'&'+new Date().getTime()" style="color:yellow;">Jobs</a>
-                </li>
+                {#                <li class="nav-item">#}
+                {#                    <a class="nav-link" href="jobs?id={{ showcontents }}" onClick="this.href=this.href+'&'+new Date().getTime()" style="color:yellow;">Jobs</a>#}
+                {#                </li>#}
                 <li class="nav-item">
                     <a class="nav-link" href="placeyourads?id={{ showcontents }}" onClick="this.href=this.href+'&'+new Date().getTime()" style="color:white;">Place your Ad</a>
                 </li>
@@ -282,6 +282,27 @@
                 </div>
             {% endif %}
             {% if showcontents == 2 %}
+                <div class="netflix-slider">
+                    <h3 style="margin-left: 3%"><b>{{TrandingPavilion}}</b></h3>
+                    <div style="width: 100%; padding-bottom: 2%; display: inline-flex; flex-wrap: wrap">
+                        <div class="swiper-container" style="display: inline-block; width: 90%;">
+                            <div class="swiper-wrapper">
+                                {% for j in Trendings %}
+                                    <div class="swiper-slide"><a href="trendingnow?id={{j}}&id2={{ showcontents }}" onClick="this.href=this.href+'&'+new Date().getTime()" style="color:white; text-decoration: none;">
+                                        <img class="netflix-slider-img" onError="this.onerror=null;this.src='{% static './resources/logo2.png' %}';" src="{% static 'img/Specials/trendinglogo.png'%}">
+                                        <div class="onimg-caption">{{ j }}
+                                        </div>
+                                    </a>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            {#                <!-- Add Pagination -->#}
+                            {#          <div class="swiper-pagination"></div>#}
+                            <div class="swiper-button-next"></div>
+                            <div class="swiper-button-prev"></div>
+                        </div>
+                    </div>
+                </div>
                 {% for PavilionWSTR, SessionWSTRName, SessionWSTRNumber  in  PavWSTR %}
                     <div class="netflix-slider">
                         <h3 style="margin-left: 3%"><b>{{PavilionWSTR}}</b></h3>
@@ -301,13 +322,13 @@
                                                             <img class="netflix-slider-img" onError="this.onerror=null;this.src='{% static './resources/logo2.png' %}';" src="{% static 'img/Forums' %}/{{SessionWSTRNumber}}.jpg">
                                                         {% endif %}
                                                     {% endif %}
-                                                    {% if SessionWSTRNumber == 'WS-2419' or SessionWSTRNumber == 'WS-3145' or SessionWSTRNumber == 'WS-3191' or SessionWSTRNumber == 'TS-77D2' %}
-                                                        <div class="onimg-caption"> {{SessionWSTRName}}<br><font style="color: red"><b>Premiers Nov. 2</b></font>
-                                                        </div>
-                                                    {% else %}
-                                                        <div class="onimg-caption">{{SessionWSTRName}}
-                                                        </div>
-                                                    {% endif %}
+                                                    {#                                                    {% if SessionWSTRNumber == 'WS-2419' or SessionWSTRNumber == 'WS-3145' or SessionWSTRNumber == 'WS-3191' or SessionWSTRNumber == 'TS-77D2' %}#}
+                                                    {#                                                        <div class="onimg-caption"> {{SessionWSTRName}}<br><font style="color: red"><b>Premiers Nov. 2</b></font>#}
+                                                    {#                                                        </div>#}
+                                                    {#                                                    {% else %}#}
+                                                    <div class="onimg-caption">{{SessionWSTRName}}
+                                                    </div>
+                                                    {#                                                    {% endif %}#}
                                                 </a>
                                                 </div>
                                             {% endif %}
@@ -326,6 +347,27 @@
 
             {% if showcontents == 1 %}
                 <div class="netflix-slider">
+                    <h3 style="margin-left: 3%"><b>{{TrandingPavilion}}</b></h3>
+                    <div style="width: 100%; padding-bottom: 2%; display: inline-flex; flex-wrap: wrap">
+                        <div class="swiper-container" style="display: inline-block; width: 90%;">
+                            <div class="swiper-wrapper">
+                                {% for j in Trendings %}
+                                    <div class="swiper-slide"><a href="trendingnow?id={{j}}&id2={{ showcontents }}" onClick="this.href=this.href+'&'+new Date().getTime()" style="color:white; text-decoration: none;">
+                                        <img class="netflix-slider-img" onError="this.onerror=null;this.src='{% static './resources/logo2.png' %}';" src="{% static 'img/Specials/trendinglogo.png'%}">
+                                        <div class="onimg-caption">{{ j }}
+                                        </div>
+                                    </a>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            {#                <!-- Add Pagination -->#}
+                            {#          <div class="swiper-pagination"></div>#}
+                            <div class="swiper-button-next"></div>
+                            <div class="swiper-button-prev"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="netflix-slider">
                     <h3 style="margin-left: 3%"><b>{{SpecialPavilion}}</b></h3>
                     <div style="width: 100%; padding-bottom: 2%; display: inline-flex; flex-wrap: wrap">
                         <div class="swiper-container" style="display: inline-block; width: 90%;">
@@ -335,10 +377,10 @@
                                         <img class="netflix-slider-img" onError="this.onerror=null;this.src='{% static './resources/logo2.png' %}';" src="{% static 'img/Specials/speciallogo.png'%}">
                                         {% if j == 'Award Winners' or j == 'BiR-IROS: Black in Robotics IROS 2020' %}
                                             {% if j == 'BiR-IROS: Black in Robotics IROS 2020' %}
-                                                <div class="onimg-caption">{{ j }}<br><font style="color: yellowgreen"><b>Supported generously by TRI</b></font><br><font style="color: red"><b>Premiers Nov. 16</b></font>
+                                                <div class="onimg-caption">{{ j }}<br><font style="color: yellowgreen"><b>Supported generously by TRI</b></font><br><font style="color: yellow"><b>New Release</b></font>
                                                 </div>
                                             {% else %}
-                                                <div class="onimg-caption">{{ j }}<br><font style="color: yellow"><b>New Release</b></font></font>
+                                                <div class="onimg-caption">{{ j }}<br><font style="color: yellow"><b>New Release</b></font>
                                                 </div>
                                             {% endif %}
                                         {% else %}
@@ -422,11 +464,6 @@
                </a>
             </div>
             <div class="partnerlogo">
-                <a target="_blank" href="https://ai.facebook.com/">
-                <img src="{% static 'img/Banner/Platinum/Facebook AI.png'%}">
-            </a>
-            </div>
-            <div class="partnerlogo">
                 <a target="_blank" href="https://www.kuka.com/en-us">
                 <img src="{% static 'img/Banner/Platinum/KUKA.png'%}">
             </a>
@@ -441,6 +478,11 @@
             <div class="partnerlogo">
                 <a target="_blank" href="https://www.tri.global/">
                 <img src="{% static 'img/Banner/Platinum/Toyota Research Institute.png'%}">
+            </a>
+            </div>
+        <div class="partnerlogo">
+                <a target="_blank" href="https://www.yaskawa.com/">
+                <img src="{% static 'img/Banner/Platinum/Yaskawa.png'%}">
             </a>
             </div>
     </span>
@@ -482,9 +524,14 @@
     </span>
         {##}
         <span class="partnerLogoOranizer"style="border-bottom-left-radius: 30px; border-bottom-right-radius: 30px">
-            <div class="partnerlogo">
+        <div class="partnerlogo">
                 <a target="_blank" href="https://www.ydlidar.com/">
                     <img src="{% static 'img/Banner/Bronze/EAI Technology.png'%}">
+                </a>
+            </div>
+        <div class="partnerlogo">
+                <a target="_blank" href="https://usa.honda-ri.com/">
+                    <img src="{% static 'img/Banner/Bronze/Honda Research Institute.png'%}">
                 </a>
             </div>
             <div class="partnerlogo">
@@ -502,6 +549,7 @@
                     <img src="{% static 'img/Banner/Bronze/Science Robotics.png'%}">
                 </a>
             </div>
+
     </span>
 
     </center>

@@ -41,12 +41,12 @@ body {
     display: inline-block;
     margin-right: 100px;
     margin-left: 100px;
-    vertical-align: top;
+    vertical-align: bottom;
     width: 40%;
 }
 .entranceSponsorImg img{
     width: 100%;
-    vertical-align: top;
+    /*vertical-align: bottom;*/
 }
 
 /* ===== media query ===== */

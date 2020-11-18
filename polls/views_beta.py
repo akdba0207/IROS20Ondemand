@@ -7,7 +7,7 @@
 #
 # # Create your views here.
 import json
-
+import operator
 import session_security
 from django.contrib import messages
 from django.forms import forms
@@ -137,6 +137,7 @@ Sessions12 = sorted(list(set(Pavilion12['Session title'])))
 Sessions13 = sorted(list(set(Pavilion13['Session title'])))
 
 SpecialsSession = ['Plenaries', 'Keynotes', 'IROS Original Series', 'Award Winners', 'BiR-IROS: Black in Robotics IROS 2020']
+TrendingSession = ['Technical Papers','IROS Specials','Workshops/Tutorials','New Releases']
 
 # Workshops
 Workshops = iros_wstr[(iros_wstr['Type'] == 'Workshop Paper')]
@@ -159,6 +160,7 @@ TRThursdaySession = sorted(list(set(TutorialsThursday['Workshop Title'])))
 ForumSession = sorted(list(set(Forums['Workshop Title'])))
 
 PavilionWSTR = ['Workshops', 'More Workshops','Tutorials', 'More Tutorials', 'Forums']
+
 #########################################################################################################
 #########################################################################################################
 #########################################################################################################
@@ -506,6 +508,7 @@ def main(request):
         specialKNNumber.append(KNNumber)
 
     SpecialPavilion = 'IROS Specials'
+    TrendingPavilion = 'IROS Trending Now'
 
     Sessions = [Sessions1,Sessions2,Sessions3,Sessions4,Sessions5,Sessions6,Sessions7,
                 Sessions8,Sessions9,Sessions10,Sessions11,Sessions12, Sessions13]
@@ -551,6 +554,8 @@ def main(request):
                   {'PavSessions':PavSessions,
                    'SpecialPavilion': SpecialPavilion,
                    'Specials': SpecialsSession,
+                   'TrandingPavilion':TrendingPavilion,
+                   'Trendings':TrendingSession,
                    'PavWSTR': PavWSTR,
                    'UserName': UserName,
                    'allowWSContents': allowWSContents,
@@ -1019,6 +1024,319 @@ def competition(request):
                                                                      'CompetitionCorrOrganizer':CompetitionCorrOrganizer,
                                                                      'CompetitionCorrOrganizerEmail':CompetitionCorrOrganizerEmail,
                                                                      })
+
+def trendingnow(request):
+    if request.user.is_authenticated == False:
+        return render(request, './beta/1-1_loginError_beta.html')
+    else:
+        user_verification(request)
+    current_user = request.user.username
+    current_account = get_object_or_404(User, username=current_user)
+
+    selectedTrending = request.GET['id']
+    showcontents = request.GET['id2']
+    if selectedTrending == 'Technical Papers':
+        selectedContents = 1
+        technicalTopmain = Papers.objects.filter(paper_id__range=['1', '3140']).order_by('-paper_hitcount')
+        technicalTopfilter = technicalTopmain.filter(paper_hitcount__range=['51', '99']).order_by('-paper_hitcount')[:12]
+        technicalTopfinal = sorted(technicalTopfilter, key=operator.attrgetter('paper_hitcount'), reverse=True)
+
+        technicalTopNumber = []
+        for i in range(12):
+            technicalTopNumber.append(technicalTopfinal[i].paper_id)
+        # print(technicalTopNumber)
+        searchTitle = iros2020_raw[(iros2020_raw['Nr'] == int(technicalTopNumber[0]))]
+
+        for i in range(1, 12):
+            main2 = searchTitle.append(iros2020_raw[(iros2020_raw['Nr'] == int(technicalTopNumber[i]))])
+            searchTitle = main2
+
+        pavilionNumMatch = dict()
+        for i in range(len(organizedGenre) - 1):
+            pavilionNumMatch[organizedGenre[i + 1]] = i + 1
+
+        # print(searchTitle)
+        SessionList = searchTitle['Session title'].reset_index()
+        AuthorList1 = searchTitle['Author1'].reset_index()
+        AuthorList2 = searchTitle['Author2'].reset_index()
+        AuthorList3 = searchTitle['Author3'].reset_index()
+        AuthorList4 = searchTitle['Author4'].reset_index()
+        AuthorList5 = searchTitle['Author5'].reset_index()
+        AuthorList6 = searchTitle['Author6'].reset_index()
+        AffiliationList1 = searchTitle['Affiliation1'].reset_index()
+        AffiliationList2 = searchTitle['Affiliation2'].reset_index()
+        AffiliationList3 = searchTitle['Affiliation3'].reset_index()
+        AffiliationList4 = searchTitle['Affiliation4'].reset_index()
+        AffiliationList5 = searchTitle['Affiliation5'].reset_index()
+        TitleList = searchTitle['Title'].reset_index()
+        PDFList = searchTitle['FN'].reset_index()
+        titleNumber = searchTitle['Nr'].reset_index()
+        pavilionList = searchTitle['Theme'].reset_index()
+        VideoList = searchTitle['VID'].reset_index()
+
+        pavilionNumList = []
+        for i in pavilionList['Theme']:
+            pavilionNumList.append(pavilionNumMatch[i])
+
+        awardcheckup = zip(titleNumber['Nr'], TitleList['Title'])
+        awardeeCount = []
+        awardNameCount = []
+        awardwinnerNrCount = []
+        for Nr, titles in awardcheckup:
+            titleMatch = iros2020_award[(iros2020_award['Title'] == titles)]
+            if titleMatch.empty is True:
+                awardConut = 0
+                awardName = ''
+                awardwinnerNr = 0
+            else:
+                awardConut = 1
+                awardName1 = titleMatch['Session title'].reset_index()
+                awardwinner = iros_specials[(iros_specials['Nr'] == Nr)]
+                if awardwinner.empty is True:
+                    awardwinnerNr = 0
+                    awardName = awardName1['Session title'].iloc[0]
+                else:
+                    awardwinnerNr = 1
+                    awardName1 = awardwinner['Award Title'].reset_index()
+                    awardName = awardName1['Award Title'].iloc[0]
+
+            awardNameCount.append(awardName)
+            awardeeCount.append(awardConut)
+            awardwinnerNrCount.append(awardwinnerNr)
+
+        paperLikeCount = []
+        paperLikeButtonColor = []
+        paperSaveButtonStatus = []
+        paperHitCount = []
+        if request.method == "GET":
+
+            for titleNr in titleNumber['Nr']:
+                paper = get_object_or_404(Papers, paper_id=int(titleNr))
+
+                if current_account in paper.like_users.all():
+                    buttonColor = 1
+                else:
+                    buttonColor = 0
+
+                paperLikeButtonColor.append(buttonColor)
+                paperLikeCount.append(paper.like_users.count())
+
+                if current_account in paper.save_users.all():
+                    buttonStatus = 1
+                else:
+                    buttonStatus = 0
+
+                paperSaveButtonStatus.append(buttonStatus)
+
+                paperHitCount.append(paper.paper_hitcount)
+
+            resultList = zip(AuthorList1['Author1'], AuthorList2['Author2'],
+                             AuthorList3['Author3'],
+                             AuthorList4['Author4'],
+                             AuthorList5['Author5'],
+                             AuthorList6['Author6'],
+                             AffiliationList1['Affiliation1'],
+                             AffiliationList2['Affiliation2'],
+                             AffiliationList3['Affiliation3'],
+                             AffiliationList4['Affiliation4'],
+                             AffiliationList5['Affiliation5'],
+                             TitleList['Title'],
+                             PDFList['FN'], titleNumber['Nr'], paperLikeCount, paperLikeButtonColor,
+                             paperSaveButtonStatus, SessionList['Session title'], paperHitCount, awardeeCount,
+                             awardNameCount, pavilionList['Theme'], pavilionNumList, VideoList['VID'],
+                             awardwinnerNrCount)
+
+    elif selectedTrending == 'IROS Specials':
+        selectedContents = 2
+
+        specialsTopmain = Papers.objects.filter(paper_id__range=['10000', '10020']).order_by('-paper_hitcount')
+        # technicalTopfilter = technicalTopmain.filter(paper_hitcount__range=['51', '99']).order_by('-paper_hitcount')
+        specialsTopfinal = sorted(specialsTopmain, key=operator.attrgetter('paper_hitcount'), reverse=True)
+
+        specialsTopNumber = []
+        for i in range(12):
+            specialsTopNumber.append(specialsTopfinal[i].paper_id)
+
+        searchTitle = iros_specials[(iros_specials['Nr'] == int(specialsTopNumber[0]))]
+        for i in range(1, 12):
+            main2 = searchTitle.append(iros_specials[(iros_specials['Nr'] == int(specialsTopNumber[i]))])
+            searchTitle = main2
+
+
+        specialAward = 0
+        speakerName = searchTitle['Speaker'].reset_index()
+        speakerBiography = searchTitle['Bio'].reset_index()
+        specialEpisodeAbstract = searchTitle['Abstract'].reset_index()
+        specialEpisodeNumber = searchTitle['Nr'].reset_index()
+        specialEpisodeTitle = searchTitle['Title'].reset_index()
+        speakerAffiliation = searchTitle['Affiliation'].reset_index()
+        speakerVideo = searchTitle['Video'].reset_index()
+        speakerGenre = searchTitle['Genre'].reset_index()
+        # print(speakerGenre)
+        specialLikeCount = []
+        specialLikeButtonColor = []
+        specialSaveButtonStatus = []
+        specialHitCount = []
+
+        for specialNr in specialEpisodeNumber['Nr']:
+            paper = get_object_or_404(Papers, paper_id=specialNr)
+            if current_account in paper.like_users.all():
+                buttonColor = 1
+            else:
+                buttonColor = 0
+            specialLikeButtonColor.append(buttonColor)
+            specialLikeCount.append(paper.like_users.count())
+
+            if current_account in paper.save_users.all():
+                buttonStatus = 1
+            else:
+                buttonStatus = 0
+            specialSaveButtonStatus.append(buttonStatus)
+
+            specialHitCount.append(paper.paper_hitcount)
+
+        resultList = zip(speakerName['Speaker'],
+                                    speakerBiography['Bio'],
+                                    specialEpisodeAbstract['Abstract'],
+                                    specialEpisodeNumber['Nr'], specialLikeCount, specialLikeButtonColor,
+                                    specialSaveButtonStatus, specialHitCount, specialEpisodeTitle['Title'],
+                                    speakerAffiliation['Affiliation'], speakerVideo['Video'],speakerGenre['Genre']
+                                    )
+    elif selectedTrending == 'Workshops/Tutorials':
+        selectedContents = 3
+
+        WSTRTopmain = Papers.objects.filter(paper_id__range=['3145', '3950']).order_by('-paper_hitcount')
+        # WSTRTopfilter = technicalTopmain.filter(paper_hitcount__range=['51', '99']).order_by('-paper_hitcount')
+        WSTRTopFinal = sorted(WSTRTopmain, key=operator.attrgetter('paper_hitcount'), reverse=True)
+
+        WSTRTopNumber = []
+        for i in range(12):
+            WSTRTopNumber.append(WSTRTopFinal[i].paper_id)
+        searchTitle = iros_wstr[(iros_wstr['Nr'] == int(WSTRTopNumber[0]))]
+
+        for i in range(1, 12):
+            main2 = searchTitle.append(iros_wstr[(iros_wstr['Nr'] == int(WSTRTopNumber[i]))])
+            searchTitle = main2
+
+        # print(searchTitle)
+        WorkshopTitle = searchTitle['Workshop Title'].reset_index()
+        WorkshopNr = searchTitle['WS/TR Nr'].reset_index()
+        Speaker = searchTitle['Speaker'].reset_index()
+        Institution = searchTitle['Institution'].reset_index()
+        Talktitle = searchTitle['Title'].reset_index()
+        titleNumber = searchTitle['Nr'].reset_index()
+        Abstract = searchTitle['Presentation Abstract'].reset_index()
+        VideoList = searchTitle['Video'].reset_index()
+        Dummy = searchTitle['Dummy'].reset_index()
+        SessionDate = searchTitle['Date'].reset_index()
+        getPav = zip(SessionDate['Date'], WorkshopNr['WS/TR Nr'])
+
+        # 'Workshops', 'More Workshops', 'Tutorials', 'More Tutorials'
+        pavilionWSTRList = []
+        for SessionCode, WorkshopNumber in getPav:
+            if WorkshopNumber[0] == 'W':
+                if SessionCode[0] == 'S':
+                    pavilionWSTRName = 'Workshops'
+                else:
+                    pavilionWSTRName = 'More Workshops'
+            else:
+                if SessionCode[0] == 'S':
+                    pavilionWSTRName = 'Tutorials'
+                else:
+                    pavilionWSTRName = 'More Tutorials'
+            pavilionWSTRList.append(pavilionWSTRName)
+        # print(pavilionWSTRList)
+
+        paperLikeCount = []
+        paperLikeButtonColor = []
+        paperSaveButtonStatus = []
+        paperHitCount = []
+        if request.method == "GET":
+            for titleNr in titleNumber['Nr']:
+                paper = get_object_or_404(Papers, paper_id=int(titleNr))
+
+                if current_account in paper.like_users.all():
+                    buttonColor = 1
+                else:
+                    buttonColor = 0
+
+                paperLikeButtonColor.append(buttonColor)
+                paperLikeCount.append(paper.like_users.count())
+
+                if current_account in paper.save_users.all():
+                    buttonStatus = 1
+                else:
+                    buttonStatus = 0
+
+                paperSaveButtonStatus.append(buttonStatus)
+                paperHitCount.append(paper.paper_hitcount)
+
+            resultList = zip(WorkshopTitle['Workshop Title'],
+                             WorkshopNr['WS/TR Nr'],
+                             Speaker['Speaker'],
+                             Institution['Institution'],
+                             Talktitle['Title'], titleNumber['Nr'],
+                             paperLikeCount, paperLikeButtonColor,
+                             paperSaveButtonStatus,
+                             paperHitCount, VideoList['Video'], Abstract['Presentation Abstract'], Dummy['Dummy'],
+                             pavilionWSTRList)
+    elif selectedTrending == 'New Releases':
+        selectedContents = 4
+        newreleaseNumber = ['10009','10010','10018','10019','10020']
+
+        searchTitle = iros_specials[(iros_specials['Nr'] == int(newreleaseNumber[0]))]
+        for i in range(1, len(newreleaseNumber)):
+            main2 = searchTitle.append(iros_specials[(iros_specials['Nr'] == int(newreleaseNumber[i]))])
+            searchTitle = main2
+
+        specialAward = 0
+        speakerName = searchTitle['Speaker'].reset_index()
+        speakerBiography = searchTitle['Bio'].reset_index()
+        specialEpisodeAbstract = searchTitle['Abstract'].reset_index()
+        specialEpisodeNumber = searchTitle['Nr'].reset_index()
+        specialEpisodeTitle = searchTitle['Title'].reset_index()
+        speakerAffiliation = searchTitle['Affiliation'].reset_index()
+        speakerVideo = searchTitle['Video'].reset_index()
+        speakerGenre = searchTitle['Genre'].reset_index()
+
+        specialLikeCount = []
+        specialLikeButtonColor = []
+        specialSaveButtonStatus = []
+        specialHitCount = []
+
+        for specialNr in specialEpisodeNumber['Nr']:
+            paper = get_object_or_404(Papers, paper_id=specialNr)
+            if current_account in paper.like_users.all():
+                buttonColor = 1
+            else:
+                buttonColor = 0
+            specialLikeButtonColor.append(buttonColor)
+            specialLikeCount.append(paper.like_users.count())
+
+            if current_account in paper.save_users.all():
+                buttonStatus = 1
+            else:
+                buttonStatus = 0
+            specialSaveButtonStatus.append(buttonStatus)
+
+            specialHitCount.append(paper.paper_hitcount)
+
+        resultList = zip(speakerName['Speaker'],
+                         speakerBiography['Bio'],
+                         specialEpisodeAbstract['Abstract'],
+                         specialEpisodeNumber['Nr'], specialLikeCount, specialLikeButtonColor,
+                         specialSaveButtonStatus, specialHitCount, specialEpisodeTitle['Title'],
+                         speakerAffiliation['Affiliation'], speakerVideo['Video'], speakerGenre['Genre']
+                         )
+
+    return render(request, './beta/3-4_trending_beta.html', {'EpisodeContext': resultList,
+                                                             'showcontents': int(showcontents),
+                                                             'selectedContents':int(selectedContents),
+                                                             'selectedTrending':selectedTrending,
+                                                             'TrendingSession':TrendingSession
+                                                             })
+
+
 #########################################################################################################
 #########################################################################################################
 #########################################################################################################
@@ -1244,7 +1562,7 @@ def specialsepisode(request):
     else:
         specialAward = 1
         findspeaker = iros2020_raw[(iros2020_raw['Nr'] == int(selectedSpecialNr))].reset_index()
-        print(findspeaker)
+        # print(findspeaker)
         selectedSpeaker = 'missing'
         selectedTitle = findspeaker['Title'].iloc[0]
         specialVideo = findspeaker['VID'].iloc[0]
@@ -1257,7 +1575,7 @@ def specialsepisode(request):
         specialEpisodeList = iros_specials[(iros_specials['Genre'] == selectedSpecial)].reset_index()
         specialEpisodeNr = specialEpisodeList['Nr'].reset_index()
         awardName = specialEpisodeList['Award Title'].reset_index()
-        print(specialEpisodeNr)
+        # print(specialEpisodeNr)
         findPaperinRaw = iros2020_raw[(iros2020_raw['Nr']) == specialEpisodeNr['Nr'].iloc[0]]
 
         for awardListNum in range(1, len(specialEpisodeNr)):
@@ -1265,7 +1583,7 @@ def specialsepisode(request):
                 iros2020_raw[(iros2020_raw['Nr']) == specialEpisodeNr['Nr'].iloc[awardListNum]])
             findPaperinRaw = sorting
         EpisodeList = findPaperinRaw
-        print(EpisodeList)
+        # print(EpisodeList)
         TitleList = EpisodeList['Title'].reset_index()
         PDFList = EpisodeList['FN'].reset_index()
         titleNumber = EpisodeList['Nr'].reset_index()
@@ -2228,27 +2546,27 @@ def placeyourads(request):
     return render(request, './beta/11_Placeyourads_beta.html', {'showcontents': int(showcontents),
                                                                 })
 
-def jobs(request):
-    if request.user.is_authenticated == False:
-        return render(request, './beta/1-1_loginError_beta.html')
-    else:
-        user_verification(request)
-
-    showcontents = request.GET['id']
-    partnerHitNumber = 20018
-
-    # Job Hirings
-    jobhirings = iros_partners[(iros_partners['Cartegory'] == 'Jobhiring')].reset_index()
-    jobhiringsPartner = jobhirings['Name']
-    jobhiringsHyperlink = jobhirings['Webpage Link']
-    jobhiringsAbstract = jobhirings['Abstract']
-    jobhiringsNumber = jobhirings['Nr']
-
-    jobhiringsZip = zip(jobhiringsPartner, jobhiringsHyperlink, jobhiringsAbstract, jobhiringsNumber)
-
-
-    return render(request, './beta/12_Jobhiring_beta.html', {'showcontents': int(showcontents),
-                                                             'partnerHitNumber':int(partnerHitNumber),
-                                                             'jobhiringsZip':jobhiringsZip
-                                                             })
-
+# def jobs(request):
+#     if request.user.is_authenticated == False:
+#         return render(request, './beta/1-1_loginError_beta.html')
+#     else:
+#         user_verification(request)
+#
+#     showcontents = request.GET['id']
+#     partnerHitNumber = 20018
+#
+#     # Job Hirings
+#     jobhirings = iros_partners[(iros_partners['Cartegory'] == 'Jobhiring')].reset_index()
+#     jobhiringsPartner = jobhirings['Name']
+#     jobhiringsHyperlink = jobhirings['Webpage Link']
+#     jobhiringsAbstract = jobhirings['Abstract']
+#     jobhiringsNumber = jobhirings['Nr']
+#
+#     jobhiringsZip = zip(jobhiringsPartner, jobhiringsHyperlink, jobhiringsAbstract, jobhiringsNumber)
+#
+#
+#     return render(request, './beta/12_Jobhiring_beta.html', {'showcontents': int(showcontents),
+#                                                              'partnerHitNumber':int(partnerHitNumber),
+#                                                              'jobhiringsZip':jobhiringsZip
+#                                                              })
+#

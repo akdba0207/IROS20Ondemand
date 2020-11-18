@@ -222,7 +222,7 @@
             <div id="caption"></div>
         </div>
 
-        {% for AuthorList1, AuthorList2, AuthorList3, AuthorList4,AuthorList5,AuthorList6,AffiliationList1,AffiliationList2,AffiliationList3,AffiliationList4,AffiliationList5,TitleList, PDFList, titleNumber, paperLikeCount, paperLikeButtonColor, paperSaveButtonStatus, paperHitCount, awardeeCount, awardNameCount, Video,awardwinnerNrCount in EpisodeContext %}
+        {% for AuthorList1, AuthorList2, AuthorList3, AuthorList4,AuthorList5,AuthorList6,AffiliationList1,AffiliationList2,AffiliationList3,AffiliationList4,AffiliationList5,TitleList, PDFList, titleNumber, paperLikeCount, paperLikeButtonColor, paperSaveButtonStatus, paperHitCount, awardeeCount, awardNameCount, Video in EpisodeContext %}
             <div class="epilisttable">
                 <table border="0" cellpadding="0" cellspacing="0" style="background-color: #323232;border-radius: 10px" >
                     <tr>
@@ -240,11 +240,7 @@
                         </td>
                         <td valign="top" align="left" class="epilisttableright">
                             {% if awardeeCount == 1 %}
-                                {% if awardwinnerNrCount == 1 %}
-                                    <p class="awardpapertitle" style="color: yellow">{{ awardNameCount }} &#127942;</p>
-                                {% else %}
-                                    <p class="awardpapertitle">Nominated to {{ awardNameCount }} &#10030;</p>
-                                {% endif %}
+                                <p class="awardpapertitle">Nominated to {{ awardNameCount }} &#10030;</p>
                             {% else %}
                             {% endif %}
                             <p class="papertitle" style="color: white;">{{ TitleList }}</p>
