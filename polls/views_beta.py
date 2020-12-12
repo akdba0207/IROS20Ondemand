@@ -14,7 +14,7 @@ from django.forms import forms
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
-from polls.models import Papers, Comments, Users, Profile, VideoTimers, OverallActivity, ActivityRecords
+from polls.models import Papers, Comments, Users, Profile, VideoTimers, OverallActivity, ActivityRecords, RealtimeUsers
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth import login as auth_login, authenticate
 from django.contrib.auth import logout as auth_logout
@@ -37,7 +37,9 @@ import pytz, datetime
 from polls.forms_beta import SignUpForm
 
 from polls.search import searchByKeyword, findSimilarTopic, searchWSByKeyword
+from django.contrib.gis.geoip2 import GeoIP2
 
+locationCatcher = GeoIP2()
 pre = os.path.dirname(os.path.realpath(__file__))
 
 # IROS2020 Excel file
@@ -189,7 +191,7 @@ def login(request):
             currentPST = crrenttimeUTC - datetime.timedelta(hours=7)
 
             secoundcounter = (targetUTC.timestamp() - crrenttimeUTC.timestamp())
-            print(secoundcounter)
+            # print(secoundcounter)
 
             if secoundcounter <= 0:
                 if login_user[0].is_superuser is True:
@@ -205,6 +207,8 @@ def login(request):
 
                     record_active_count(login_user, currentPST, targetPST)
                     auth_login(request, login_form.get_user())
+
+                    RealtimeUsers.objects.create(current_user=login_account, current_location=locationCatcher.country_name('174.72.128.168'))
                     return redirect('entrance')
                 else:
                     messages.info(request,
@@ -224,6 +228,8 @@ def login(request):
 
                     record_active_count(login_user, currentPST, targetPST)
                     auth_login(request, login_form.get_user())
+
+                    RealtimeUsers.objects.create(current_user=login_account, current_location=locationCatcher.country_name('174.72.128.168'))
                     return redirect('entrance')
                 else:
                     messages.info(request, 'Please visit again IROS On-Demand when it opens on October 25th, 2020 (PST)')
@@ -391,7 +397,8 @@ def record_metrics(login, logout):
 def logout(request):
     if request.user.is_anonymous:
         return redirect('login')
-
+    if request.method == 'GET':
+        print("loldd")
     timezone = pytz.utc
     currentTime = datetime.datetime.utcnow()
     ct = timezone.localize(currentTime) - datetime.timedelta(hours=7)
@@ -406,7 +413,7 @@ def logout(request):
 
     record_metrics(last_login, ct)
     Profile.objects.filter(user_id=request.user.id).update(last_logout=currentTime)
-
+    RealtimeUsers.objects.filter(current_user=request.user.username).delete()
     auth_logout(request)
     return redirect('login')
 

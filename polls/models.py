@@ -7,7 +7,6 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-
 # Create your models here.
 #
 
@@ -83,3 +82,6 @@ class ActivityRecords(models.Model):
     active_time_in_seconds = models.PositiveIntegerField(default=0)
     average_active_time = models.PositiveIntegerField(default=0)
 
+class RealtimeUsers(models.Model):
+    current_user = models.CharField(max_length=50)
+    current_location = models.CharField(max_length=50)
