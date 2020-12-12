@@ -322,13 +322,13 @@
                                                             <img class="netflix-slider-img" onError="this.onerror=null;this.src='{% static './resources/logo2.png' %}';" src="{% static 'img/Forums' %}/{{SessionWSTRNumber}}.jpg">
                                                         {% endif %}
                                                     {% endif %}
-                                                    {#                                                    {% if SessionWSTRNumber == 'WS-2419' or SessionWSTRNumber == 'WS-3145' or SessionWSTRNumber == 'WS-3191' or SessionWSTRNumber == 'TS-77D2' %}#}
-                                                    {#                                                        <div class="onimg-caption"> {{SessionWSTRName}}<br><font style="color: red"><b>Premiers Nov. 2</b></font>#}
-                                                    {#                                                        </div>#}
-                                                    {#                                                    {% else %}#}
-                                                    <div class="onimg-caption">{{SessionWSTRName}}
-                                                    </div>
-                                                    {#                                                    {% endif %}#}
+                                                    {% if SessionWSTRNumber == 'WS-2434' or SessionWSTRNumber == 'WS-2391' or SessionWSTRNumber == 'WS-2418' %}
+                                                        <div class="onimg-caption"> {{SessionWSTRName}}<br><font style="color: yellow"><b>New Release</b></font>
+                                                        </div>
+                                                    {% else %}
+                                                        <div class="onimg-caption">{{SessionWSTRName}}
+                                                        </div>
+                                                    {% endif %}
                                                 </a>
                                                 </div>
                                             {% endif %}
@@ -529,11 +529,11 @@
                     <img src="{% static 'img/Banner/Bronze/EAI Technology.png'%}">
                 </a>
             </div>
-{#        <div class="partnerlogo">#}
-{#                <a target="_blank" href="https://usa.honda-ri.com/">#}
-{#                    <img src="{% static 'img/Banner/Bronze/Honda Research Institute.png'%}">#}
-{#                </a>#}
-{#            </div>#}
+        <div class="partnerlogo">
+                <a target="_blank" href="https://www.jp.honda-ri.com/en/index.html">
+                    <img src="{% static 'img/Banner/Bronze/Honda Research Institute.png'%}">
+                </a>
+            </div>
             <div class="partnerlogo">
                 <a target="_blank" href="https://www.independentrobotics.com/">
                     <img src="{% static 'img/Banner/Bronze/Independent Robotics.png'%}">

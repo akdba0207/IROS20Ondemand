@@ -82,3 +82,4 @@ class ActivityRecords(models.Model):
     active_user_count = models.PositiveIntegerField(default=0)
     active_time_in_seconds = models.PositiveIntegerField(default=0)
     average_active_time = models.PositiveIntegerField(default=0)
+

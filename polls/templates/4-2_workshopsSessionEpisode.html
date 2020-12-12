@@ -182,7 +182,7 @@
             <h3 style="padding-bottom: 2%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; More Talks in this tutorials : </h3>
         {% endif %}
 
-        {% for Speaker, Institution, TalkTitle, workshopEpisodeNumber, workshopLikeButtonColor, workshopLikeCount, workshopSaveButtonStatus, workshopHitCount, workshopsVideo, Abstract, Dummy in WorkshopsContext %}
+        {% for Speaker, Institution, TalkTitle, workshopEpisodeNumber, workshopLikeButtonColor, workshopLikeCount, workshopSaveButtonStatus, workshopHitCount, workshopsVideo, Abstract, Dummy, workshopNewRelease in WorkshopsContext %}
             {% if TalkTitle == workshopsTalkTitle %}
             {% else %}
                 {% if workshopsVideo == 'missing' %}
@@ -260,6 +260,11 @@
                                                     </div>
                                                 </div>
                                             </a>
+                                        {% endif %}
+                                        {% if workshopNewRelease == 1 %}
+                                            <div class="pdfopenButton">
+                                                <p style="color: yellow;">Newly Released &#9733;</p>
+                                            </div>
                                         {% endif %}
                                     </div>
                                     <br>
@@ -370,7 +375,7 @@
                     data:{'paperNumber':titleNumber, 'comment':comment},
                     dataType:'json',
                     success: function(json) {
-                         {#alert("Failed to Retrieve JSON file from Server");#}
+                        {#alert("Failed to Retrieve JSON file from Server");#}
                         $('#comment_input')[0].value = '';
                         {#$('#commentList').replaceWith($("#commentList", json['arrayComments']))#}
                         commentIndex = json['lengthComments'];

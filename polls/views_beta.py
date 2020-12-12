@@ -933,6 +933,7 @@ def workshops(request):
     Video = workshopsEpisodeList['Video'].reset_index()
     Abstract = workshopsEpisodeList['Presentation Abstract'].reset_index()
     Dummy = workshopsEpisodeList['Dummy'].reset_index()
+    workshopNewRelease = workshopsEpisodeList['New Release'].reset_index()
 
     workshopLikeCount = []
     workshopLikeButtonColor = []
@@ -956,7 +957,7 @@ def workshops(request):
 
     # print(workshopLikeButtonColor)
     WorkshopsContext = zip(Speaker['Speaker'], Institution['Institution'], Talktitle['Title'], workshopNumber['Nr'], workshopLikeButtonColor,
-                           workshopLikeCount, workshopSaveButtonStatus, workshopHitCount,Video['Video'], Abstract['Presentation Abstract'],Dummy['Dummy'])
+                           workshopLikeCount, workshopSaveButtonStatus, workshopHitCount,Video['Video'], Abstract['Presentation Abstract'],Dummy['Dummy'], workshopNewRelease['New Release'])
 
     count = 0
     for k in range(len(Video['Video'])):
@@ -1129,7 +1130,7 @@ def trendingnow(request):
                 paperSaveButtonStatus.append(buttonStatus)
 
                 paperHitCount.append(paper.paper_hitcount)
-
+            WSresultList = []
             resultList = zip(AuthorList1['Author1'], AuthorList2['Author2'],
                              AuthorList3['Author3'],
                              AuthorList4['Author4'],
@@ -1194,14 +1195,14 @@ def trendingnow(request):
             specialSaveButtonStatus.append(buttonStatus)
 
             specialHitCount.append(paper.paper_hitcount)
-
+        WSresultList = []
         resultList = zip(speakerName['Speaker'],
-                                    speakerBiography['Bio'],
-                                    specialEpisodeAbstract['Abstract'],
-                                    specialEpisodeNumber['Nr'], specialLikeCount, specialLikeButtonColor,
-                                    specialSaveButtonStatus, specialHitCount, specialEpisodeTitle['Title'],
-                                    speakerAffiliation['Affiliation'], speakerVideo['Video'],speakerGenre['Genre']
-                                    )
+                         speakerBiography['Bio'],
+                         specialEpisodeAbstract['Abstract'],
+                         specialEpisodeNumber['Nr'], specialLikeCount, specialLikeButtonColor,
+                         specialSaveButtonStatus, specialHitCount, specialEpisodeTitle['Title'],
+                         speakerAffiliation['Affiliation'], speakerVideo['Video'],speakerGenre['Genre']
+                         )
     elif selectedTrending == 'Workshops/Tutorials':
         selectedContents = 3
 
@@ -1270,7 +1271,7 @@ def trendingnow(request):
 
                 paperSaveButtonStatus.append(buttonStatus)
                 paperHitCount.append(paper.paper_hitcount)
-
+            WSresultList = []
             resultList = zip(WorkshopTitle['Workshop Title'],
                              WorkshopNr['WS/TR Nr'],
                              Speaker['Speaker'],
@@ -1329,11 +1330,85 @@ def trendingnow(request):
                          speakerAffiliation['Affiliation'], speakerVideo['Video'], speakerGenre['Genre']
                          )
 
+        ##WS/TR New Release
+        WSTRTopNumber = ['3501', '3502', '3503', '3504', '3505', '3506', '3507', '3508', '3509', '3510', '3511', '3512',
+                         '3513', '3514', '3515', '3602', '3603', '3604', '3605']
+
+        searchWSTitle = iros_wstr[(iros_wstr['Nr'] == int(WSTRTopNumber[0]))]
+
+        for i in range(1, len(WSTRTopNumber)):
+            main2 = searchWSTitle.append(iros_wstr[(iros_wstr['Nr'] == int(WSTRTopNumber[i]))])
+            searchWSTitle = main2
+
+        # print(searchTitle)
+        WorkshopTitle = searchWSTitle['Workshop Title'].reset_index()
+        WorkshopNr = searchWSTitle['WS/TR Nr'].reset_index()
+        WSSpeaker = searchWSTitle['Speaker'].reset_index()
+        WSInstitution = searchWSTitle['Institution'].reset_index()
+        WSTalktitle = searchWSTitle['Title'].reset_index()
+        WStitleNumber = searchWSTitle['Nr'].reset_index()
+        WSAbstract = searchWSTitle['Presentation Abstract'].reset_index()
+        WSVideoList = searchWSTitle['Video'].reset_index()
+        WSDummy = searchWSTitle['Dummy'].reset_index()
+        WSSessionDate = searchWSTitle['Date'].reset_index()
+        WSgetPav = zip(WSSessionDate['Date'], WorkshopNr['WS/TR Nr'])
+
+        # 'Workshops', 'More Workshops', 'Tutorials', 'More Tutorials'
+        pavilionWSTRList = []
+        for SessionCode, WorkshopNumber in WSgetPav:
+            if WorkshopNumber[0] == 'W':
+                if SessionCode[0] == 'S':
+                    pavilionWSTRName = 'Workshops'
+                else:
+                    pavilionWSTRName = 'More Workshops'
+            else:
+                if SessionCode[0] == 'S':
+                    pavilionWSTRName = 'Tutorials'
+                else:
+                    pavilionWSTRName = 'More Tutorials'
+            pavilionWSTRList.append(pavilionWSTRName)
+        # print(pavilionWSTRList)
+
+        WSLikeCount = []
+        WSLikeButtonColor = []
+        WSSaveButtonStatus = []
+        WSHitCount = []
+        if request.method == "GET":
+            for titleNr in WStitleNumber['Nr']:
+                paper = get_object_or_404(Papers, paper_id=int(titleNr))
+
+                if current_account in paper.like_users.all():
+                    buttonColor = 1
+                else:
+                    buttonColor = 0
+
+                WSLikeButtonColor.append(buttonColor)
+                WSLikeCount.append(paper.like_users.count())
+
+                if current_account in paper.save_users.all():
+                    buttonStatus = 1
+                else:
+                    buttonStatus = 0
+
+                WSSaveButtonStatus.append(buttonStatus)
+                WSHitCount.append(paper.paper_hitcount)
+
+        WSresultList = zip(WorkshopTitle['Workshop Title'],
+                           WorkshopNr['WS/TR Nr'],
+                           WSSpeaker['Speaker'],
+                           WSInstitution['Institution'],
+                           WSTalktitle['Title'], WStitleNumber['Nr'],
+                           WSLikeCount, WSLikeButtonColor,
+                           WSSaveButtonStatus,
+                           WSHitCount, WSVideoList['Video'], WSAbstract['Presentation Abstract'], WSDummy['Dummy'],
+                           pavilionWSTRList)
+
     return render(request, './beta/3-4_trending_beta.html', {'EpisodeContext': resultList,
                                                              'showcontents': int(showcontents),
-                                                             'selectedContents':int(selectedContents),
-                                                             'selectedTrending':selectedTrending,
-                                                             'TrendingSession':TrendingSession
+                                                             'selectedContents': int(selectedContents),
+                                                             'selectedTrending': selectedTrending,
+                                                             'TrendingSession': TrendingSession,
+                                                             'WSresultList': WSresultList
                                                              })
 
 
@@ -1734,6 +1809,7 @@ def workshopsepisode(request):
         workshopTitle = workshopsEpisodeList['Title'].reset_index()
         workshopAbstract = workshopsEpisodeList['Presentation Abstract'].reset_index()
         workshopDummy = workshopsEpisodeList['Dummy'].reset_index()
+        workshopNewRelease = workshopsEpisodeList['New Release'].reset_index()
 
         # Other Workshops Like
         workshopLikeCount = []
@@ -1758,8 +1834,11 @@ def workshopsepisode(request):
 
             workshopHitCount.append(paper.paper_hitcount)
 
-        WorkshopsContext = zip(workshopSpeaker['Speaker'], workshopInstitution['Institution'], workshopTitle['Title'], workshopNumber['Nr'], workshopLikeButtonColor,
-                               workshopLikeCount, workshopSaveButtonStatus, workshopHitCount, workshopsVideo['Video'], workshopAbstract['Presentation Abstract'],workshopDummy['Dummy'])
+        WorkshopsContext = zip(workshopSpeaker['Speaker'], workshopInstitution['Institution'], workshopTitle['Title'],
+                               workshopNumber['Nr'], workshopLikeButtonColor,
+                               workshopLikeCount, workshopSaveButtonStatus, workshopHitCount, workshopsVideo['Video'],
+                               workshopAbstract['Presentation Abstract'], workshopDummy['Dummy'],
+                               workshopNewRelease['New Release'])
         # print(selectedTitleNumber)
         return render(request, './beta/4-2_workshopsSessionEpisode_beta.html',
                       {'workshopsVideo': selectedWorkshopVideo,

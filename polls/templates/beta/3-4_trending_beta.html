@@ -603,6 +603,124 @@
                     </table>
                 </div>
             {% endfor %}
+            {% if selectedContents == 4 %}
+                {% for WorkshopTitle, WorkshopNr, Speaker, Institution, TalkTitle, workshopEpisodeNumber, workshopLikeCount,workshopLikeButtonColor, workshopSaveButtonStatus, workshopHitCount, Video, Abstract, Dummy, pavilionWSTRList in WSresultList %}
+                    {% if Video == 'missing' %}
+                    {% else %}
+                        <div class="epilisttable">
+                            <div style="width: 100%;text-align: left">
+                                <p class="papertitle" style="margin-bottom: 0%">
+                                    <a href="workshops?id={{WorkshopNr}}&id2={{ pavilionWSTRList }}" style="color: floralwhite;">
+                                        {% if pavilionWSTRList == 'Workshops' or pavilionWSTRList == 'More Workshops' %}
+                                            <mark style="background-color: darkslategray;color: floralwhite">Under Workshops>> {{ WorkshopTitle }}</mark>
+                                        {% else %}
+                                            <mark style="background-color: darkslategray;color: floralwhite">Under Tutorials>> {{ WorkshopTitle }}</mark>
+                                        {% endif %}
+                                    </a></p>
+                            </div>
+                            <table border="0" cellpadding="0" cellspacing="0" style="border-radius: 10px" >
+                                <tr>
+                                    <td class="epilisttableleft">
+                                        <img width="100%" onError="this.onerror=null;this.src='{% static './resources/logo2.png' %}';" src="{% static './resources/logo2.png' %}">
+                                    </td>
+                                    <td valign="top" align="left" class="epilisttableright">
+                                        <p class="papertitle" style="color: white;">{{ TalkTitle }}</p>
+                                        <table class="paperInfo" border="0" cellpadding="0" cellspacing="0" width="100% "style="background-color: #323232; text-align: left;color: white;">
+                                            <tbody>
+                                            <tr>
+                                                <td>&nbsp;</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width: 20%;word-break: break-word">Speaker / Organizer</td>
+                                                <td style="width: 60%;">{{ Speaker }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>&nbsp;</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Affiliation</td>
+                                                <td>{{ Institution }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>&nbsp;</td>
+                                                <td>&nbsp;</td>
+                                            </tr>
+                                            {% if Abstract == 'missing' %}
+                                            {% else %}
+                                                <tr>
+                                                    <td>Abstract</td>
+                                                    <td><div class="more">{{ Abstract }}</div></td>
+                                                </tr>
+                                            {% endif %}
+                                            </tbody>
+                                        </table>
+                                        <br>
+                                        {% if Dummy != 1 %}
+                                            <div style="color: white;">
+                                                {% csrf_token %}
+                                                {% if workshopSaveButtonStatus == 1 %}
+                                                    <button class="saveButton" type="submit" style="margin: auto;background-color: #323232; color: white" onclick="updateSave({{ workshopEpisodeNumber|floatformat:"0" }})">
+                                                        <i id="savebutton{{workshopEpisodeNumber|floatformat:"0"}}" class="fa fa-check-circle"  aria-hidden="true" style="color:white;vertical-align: top"></i>
+                                                        <font id="buttonMessage{{workshopEpisodeNumber|floatformat:"0"}}" style="color: white;">&nbsp;&nbsp;&nbsp;Added to my list</font>
+                                                        <input type="hidden" name="paperNumber" value="{{ workshopEpisodeNumber|floatformat:"0" }}">
+                                                    </button>
+                                                {% else %}
+                                                    <button class="saveButton" type="submit" style="padding: 0% ;background-color: #323232;" onclick="updateSave({{ workshopEpisodeNumber|floatformat:"0" }})">
+                                                        <i id="savebutton{{workshopEpisodeNumber|floatformat:"0"}}" class="fa fa-plus"  aria-hidden="true" style="color:white;vertical-align: top"></i>
+                                                        <font id="buttonMessage{{workshopEpisodeNumber|floatformat:"0"}}" style="color: white;">&nbsp;&nbsp;&nbsp;Add to my List</font>
+                                                        <input type="hidden" name="paperNumber" value="{{ workshopEpisodeNumber|floatformat:"0" }}">
+                                                    </button>
+                                                {% endif %}
+                                            </div>
+                                        {% endif %}
+                                        <br>
+                                        <div>
+                                            {% if Dummy == 1 %}
+                                                <div class="videoPlayButton">
+                                                    <div class="videoPlayButtonText">Expected to be released
+                                                    </div>
+                                                </div>
+                                            {% else %}
+                                                <a style="text-decoration: none" href="workshopsepisode?id={{workshopEpisodeNumber|floatformat:"0"}}&id2={{WorkshopNr}}" onClick="this.href=this.href+'&'+new Date().getTime()">
+                                                    <div class="videoPlayButton">
+                                                        <div class="videoPlayButtonIcon">
+                                                            <i class="fa fa-play-circle" style="vertical-align: middle;"></i>
+                                                        </div>
+                                                        <div class="videoPlayButtonText">Watch Now
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            {% endif %}
+                                            <div class="pdfopenButton">
+                                                <p style="color: yellow;">Newly Released &#9733;</p>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        {% if Dummy != 1 %}
+                                            <div class="paperlikeviewcountdiv">
+                                                {% if workshopLikeButtonColor == 1 %}
+                                                    <button class="likeButton" type="submit" style="margin: auto;background-color: #323232 ;" onclick="updateLike({{ workshopEpisodeNumber|floatformat:"0" }})">
+                                                        <i id="thumbs{{workshopEpisodeNumber|floatformat:"0"}}" class="fa fa-thumbs-up" style="color:yellow;"></i>
+                                                        <input type="text" id="{{ workshopEpisodeNumber|floatformat:"0" }}" value="{{ workshopLikeCount }}" class="thumbsuptext" name="likeCount" readonly/>
+                                                        <input type="hidden" name="paperNumber" value="{{ workshopEpisodeNumber|floatformat:"0" }}">
+                                                    </button>
+                                                {% else %}
+                                                    <button class="likeButton" type="submit" style="padding: 0% ;background-color: #323232;" onclick="updateLike({{ workshopEpisodeNumber|floatformat:"0" }})">
+                                                        <i id="thumbs{{workshopEpisodeNumber|floatformat:"0"}}" class="fa fa-thumbs-up" style="color:grey;"></i>
+                                                        <input type="text" id="{{ workshopEpisodeNumber|floatformat:"0" }}" value="{{ workshopLikeCount }}" class="thumbsuptext" name="likeCount" readonly/>
+                                                        <input type="hidden" name="paperNumber" value="{{ workshopEpisodeNumber|floatformat:"0" }}">
+                                                    </button>
+                                                {% endif %}
+                                                <span class="listHitCount">{{ workshopHitCount }} views</span>
+                                            </div>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
         {% endif %}
         <p>&nbsp;</p>
         <div class="netflix-slider">
