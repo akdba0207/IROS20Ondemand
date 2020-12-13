@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'session_security',
-    'geoip2'
+    'geoip2',
+    'online_users',
 ]
 
 MIDDLEWARE = [
@@ -58,6 +59,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'session_security.middleware.SessionSecurityMiddleware',
     'django_currentuser.middleware.ThreadLocalUserMiddleware',
+    'online_users.middleware.OnlineNowMiddleware',
 ]
 
 ROOT_URLCONF = 'mysite.urls'
@@ -159,8 +161,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # EMAIL_HOST_PASSWORD = 'dasldrchubo1325'
 # EMAIL_USE_TLS = True
 
-SESSION_SECURITY_EXPIRE_AFTER=10
-SESSION_SECURITY_WARN_AFTER=5
+SESSION_SECURITY_EXPIRE_AFTER=200
+SESSION_SECURITY_WARN_AFTER=100
 SESSION_EXPIRE_AT_BROWSER_CLOSE=True
 SESSION_SECURITY_PASSIVE_URL_NAMES = ['save_last_activity']
 

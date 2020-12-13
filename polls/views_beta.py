@@ -14,6 +14,8 @@ from django.forms import forms
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
+from online_users.models import OnlineUserActivity
+
 from polls.models import Papers, Comments, Users, Profile, VideoTimers, OverallActivity, ActivityRecords, RealtimeUsers
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth import login as auth_login, authenticate
@@ -27,13 +29,12 @@ from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.template.loader import render_to_string
 from polls.tokens_beta import account_activation_token
-
+from datetime import timedelta
 
 from ipware import get_client_ip
 import pandas as pd
 import os
 import pytz, datetime
-
 from polls.forms_beta import SignUpForm
 
 from polls.search import searchByKeyword, findSimilarTopic, searchWSByKeyword
@@ -208,7 +209,7 @@ def login(request):
                     record_active_count(login_user, currentPST, targetPST)
                     auth_login(request, login_form.get_user())
 
-                    RealtimeUsers.objects.create(current_user=login_account, current_location=locationCatcher.country_name('174.72.128.168'))
+                    updateOnlineUsers()
                     return redirect('entrance')
                 else:
                     messages.info(request,
@@ -229,7 +230,7 @@ def login(request):
                     record_active_count(login_user, currentPST, targetPST)
                     auth_login(request, login_form.get_user())
 
-                    RealtimeUsers.objects.create(current_user=login_account, current_location=locationCatcher.country_name('174.72.128.168'))
+                    updateOnlineUsers()
                     return redirect('entrance')
                 else:
                     messages.info(request, 'Please visit again IROS On-Demand when it opens on October 25th, 2020 (PST)')
@@ -2656,3 +2657,25 @@ def placeyourads(request):
 #                                                              'jobhiringsZip':jobhiringsZip
 #                                                              })
 #
+
+
+def updateOnlineUsers():
+    RealtimeUsers.objects.all().delete()
+
+    user_status = OnlineUserActivity.get_user_activities(timedelta(seconds=60))
+    for user in user_status:
+        u = User.objects.filter(id=user.user_id)
+        profile = Profile.objects.filter(user_id=user.user_id)
+        ip = ""
+        if profile[0].ip == '127.0.0.1':
+            ip = "174.72.128.168"
+        else:
+            ip = profile[0].ip
+
+        RealtimeUsers.objects.create(current_user=u[0].username,
+                                         current_location=locationCatcher.country_name(ip))
+
+
+
+
+
