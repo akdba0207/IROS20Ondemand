@@ -172,6 +172,21 @@ PavilionWSTR = ['Workshops', 'More Workshops','Tutorials', 'More Tutorials', 'Fo
 @csrf_exempt
 def login(request):
     TotalCount = User.objects.all().count()
+    totalrtuserCount = RealtimeUsers.objects.count()
+    rtuserlocation = RealtimeUsers.objects.values_list('current_location',flat=True)
+    rtuserlocationnumber = rtuserlocation.count()
+    rtuserlocationlist=[]
+    if totalrtuserCount != 0:
+        for i in range(rtuserlocationnumber):
+            rtuserlocationlist.append(rtuserlocation[i])
+        rtuserlocationlistFinal = sorted(list(set(rtuserlocationlist)))
+
+        rtuserlocationnumberFinal=[]
+        for j in rtuserlocationlistFinal:
+            j1 = RealtimeUsers.objects.filter(current_location=j)
+            rtuserlocationnumberFinal.append(j1.count())
+        rtuserinformation = zip(rtuserlocationlistFinal, rtuserlocationnumberFinal)
+
     # print("not_authenticated")
     if request.method == 'POST':
         login_form = AuthenticationForm(request, request.POST)
@@ -209,7 +224,7 @@ def login(request):
                     record_active_count(login_user, currentPST, targetPST)
                     auth_login(request, login_form.get_user())
 
-                    updateOnlineUsers()
+                    # updateOnlineUsers()
                     return redirect('entrance')
                 else:
                     messages.info(request,
@@ -230,7 +245,7 @@ def login(request):
                     record_active_count(login_user, currentPST, targetPST)
                     auth_login(request, login_form.get_user())
 
-                    updateOnlineUsers()
+                    # updateOnlineUsers()
                     return redirect('entrance')
                 else:
                     messages.info(request, 'Please visit again IROS On-Demand when it opens on October 25th, 2020 (PST)')
@@ -243,7 +258,10 @@ def login(request):
         if request.user.is_authenticated:
             return redirect('entrance')
 
-    return render(request, './beta/1_login_beta.html',{'TotalCount':TotalCount})
+    return render(request, './beta/1_login_beta.html',{'TotalCount':TotalCount,
+                                                       'totalrtuserCount':totalrtuserCount,
+                                                       'rtuserinformation':rtuserinformation,
+                                                       })
 
 @csrf_exempt
 def record_active_time(login_user, profile):
@@ -434,6 +452,7 @@ def entrance(request):
     else:
         user_verification(request)
 
+    updateOnlineUsers()
     return render(request, './beta/2_1entrance_beta.html')
 
 
@@ -2662,7 +2681,7 @@ def placeyourads(request):
 def updateOnlineUsers():
     RealtimeUsers.objects.all().delete()
 
-    user_status = OnlineUserActivity.get_user_activities(timedelta(seconds=60))
+    user_status = OnlineUserActivity.get_user_activities(timedelta(seconds=600))
     for user in user_status:
         u = User.objects.filter(id=user.user_id)
         profile = Profile.objects.filter(user_id=user.user_id)
@@ -2673,7 +2692,7 @@ def updateOnlineUsers():
             ip = profile[0].ip
 
         RealtimeUsers.objects.create(current_user=u[0].username,
-                                         current_location=locationCatcher.country_name(ip))
+                                         current_location=locationCatcher.country_name(ip), login_time=u[0].last_login)
 
 
 

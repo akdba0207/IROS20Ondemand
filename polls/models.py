@@ -85,3 +85,4 @@ class ActivityRecords(models.Model):
 class RealtimeUsers(models.Model):
     current_user = models.CharField(max_length=50)
     current_location = models.CharField(max_length=50)
+    login_time = models.DateTimeField(null=True, blank=True)

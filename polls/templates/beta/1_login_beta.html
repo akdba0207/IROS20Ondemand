@@ -61,6 +61,12 @@
             <p class="message">IROS2020 On-Demand is only for <br>The conference participants</p>
         </form>
     </div>
+    {% if totalrtuserCount != 0 %}
+        <p class="loginRibbon" id="currentregistercount3" style="color: white;margin: 0 auto;padding-top: 0">Currently {{ totalrtuserCount }} users online</p>
+        {% for rtuserlocationlistFinal, rtuserlocationnumberFinal in rtuserinformation %}
+            <p class="loginRibbon" id="currentregistercount3" style="color: white;margin: 0 auto"> {{ rtuserlocationlistFinal}} : {{ rtuserlocationnumberFinal }}</p>
+        {% endfor %}
+    {% endif %}
 </div>
 
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>

@@ -14,7 +14,9 @@ from django.forms import forms
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
-from polls.models import Papers, Comments, Users, Profile, VideoTimers, OverallActivity, ActivityRecords
+from online_users.models import OnlineUserActivity
+
+from polls.models import Papers, Comments, Users, Profile, VideoTimers, OverallActivity, ActivityRecords, RealtimeUsers
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth import login as auth_login, authenticate
 from django.contrib.auth import logout as auth_logout
@@ -27,7 +29,7 @@ from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.template.loader import render_to_string
 from polls.tokens_beta import account_activation_token
-
+from datetime import timedelta
 
 from ipware import get_client_ip
 import pandas as pd
@@ -37,7 +39,9 @@ import pytz, datetime
 from polls.forms_beta import SignUpForm
 
 from polls.search import searchByKeyword, findSimilarTopic, searchWSByKeyword
+from django.contrib.gis.geoip2 import GeoIP2
 
+locationCatcher = GeoIP2()
 pre = os.path.dirname(os.path.realpath(__file__))
 
 # IROS2020 Excel file
@@ -401,7 +405,7 @@ def logout(request):
 
     record_metrics(last_login, ct)
     Profile.objects.filter(user_id=request.user.id).update(last_logout=currentTime)
-
+    RealtimeUsers.objects.filter(current_user=request.user.username).delete()
     auth_logout(request)
     return redirect('login_main')
 
@@ -421,6 +425,7 @@ def entrance(request):
     else:
         user_verification(request)
 
+    updateOnlineUsers()
     return render(request, './2_1entrance.html')
 
 
@@ -2606,3 +2611,19 @@ def placeyourads(request):
     return render(request, './11_Placeyourads.html', {'showcontents': int(showcontents),
                                                       })
 
+
+def updateOnlineUsers():
+    RealtimeUsers.objects.all().delete()
+
+    user_status = OnlineUserActivity.get_user_activities(timedelta(seconds=600))
+    for user in user_status:
+        u = User.objects.filter(id=user.user_id)
+        profile = Profile.objects.filter(user_id=user.user_id)
+        ip = ""
+        if profile[0].ip == '127.0.0.1':
+            ip = "174.72.128.168"
+        else:
+            ip = profile[0].ip
+
+        RealtimeUsers.objects.create(current_user=u[0].username,
+                                         current_location=locationCatcher.country_name(ip), login_time=u[0].last_login)
