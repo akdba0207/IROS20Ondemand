@@ -1,0 +1,54 @@
+{#* Copyright (C) Dongbin Kim - All Rights Reserved*/#}
+{#* Unauthorized copying of this file, via any medium is strictly prohibited*/#}
+{#* Proprietary and confidential*/#}
+{#* Written by Dongbin Kim <akdba0207@gmail.com>, September, 2020#}
+
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>IROS 2020 On-Demand : Sign-Up</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+
+    <script src="https://s3-us-west-2.amazonaws.com/ieeeshutpages/gdpr/settings.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js"></script>
+    <script>
+        window.addEventListener("load", function() {
+            window.cookieconsent.initialise(json)
+        });
+    </script>
+
+    <style>
+        body {
+            background:#1F1F1F;
+            font-family: "Source Sans Pro", sans-serif;
+        }
+        @media only screen and (max-width: 400px){
+            h1{
+                font-size: 15px;
+            }
+        }
+        @media only screen and (max-width: 600px) and (min-width: 401px){
+            h1{
+                font-size: 15px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+<div style="text-align: center">
+    <a href="/ondemandbeta"><img src="{% static './resources/logo.png'%}" width="30%"></a>
+</div>
+<div style="text-align: center;padding-top: 5%; color: white">
+{% block content %}
+    <h1>Please confirm your email address to complete the registration. </h1>
+    <h1>If you don't find the confirmation E-mail in your Inbox, </h1>
+    <h1>Please check your spam or junk mail folder</h1>
+
+{% endblock %}
+</div>
+</body>
+</html>

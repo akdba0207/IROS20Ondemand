@@ -1,3 +1,7 @@
+# * Copyright (C) Dongbin Kim - All Rights Reserved
+# * Unauthorized copying of this file, via any medium is strictly prohibited
+# * Proprietary and confidential
+# * Written by Dongbin Kim <akdba0207@gmail.com>, September, 2020
 """
 Django settings for mysite project.
 
@@ -32,13 +36,17 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'six',
+    'polls',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'polls',
+    'session_security',
+    'geoip2',
+    'online_users',
 ]
 
 MIDDLEWARE = [
@@ -49,6 +57,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'session_security.middleware.SessionSecurityMiddleware',
+    'django_currentuser.middleware.ThreadLocalUserMiddleware',
+    'online_users.middleware.OnlineNowMiddleware',
 ]
 
 ROOT_URLCONF = 'mysite.urls'
@@ -72,27 +83,29 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'mysite.wsgi.application'
 
-
+#
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     }
-# }
-
+#
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'iros2020_ondemand',
-        'USER': 'iros2020dbk',
-        'PASSWORD': 'dasldrchubo1325',
-        'HOST': 'iros2020ondemand.iros2020.org',
-        'PORT': '',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'iros2020_ondemand',
+#         'USER': 'iros2020dbk',
+#         'PASSWORD': 'dasldrchubo1325',
+#         'HOST': 'iros2020ondemand.iros2020.org',
+#         'PORT': '',
+#         'TEST': {
+#             'NAME': 'iros2020_ondemand',
+#         },
+#     }
+# }
 
 
 # Password validation
@@ -140,3 +153,17 @@ STATICFILES_DIRS = (
 )
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# EMAIL_HOST = 'smtp.dreamhost.com'
+# EMAIL_PORT = 587
+# EMAIL_HOST_USER = 'ondemandinfo@iros2020.org'
+# EMAIL_HOST_PASSWORD = 'dasldrchubo1325'
+# EMAIL_USE_TLS = True
+
+SESSION_SECURITY_EXPIRE_AFTER=200
+SESSION_SECURITY_WARN_AFTER=100
+SESSION_EXPIRE_AT_BROWSER_CLOSE=True
+SESSION_SECURITY_PASSIVE_URL_NAMES = ['save_last_activity']
+
+GEOIP_PATH =os.path.join('geoip')

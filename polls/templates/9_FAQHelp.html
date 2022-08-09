@@ -1,0 +1,232 @@
+{#* Copyright (C) Dongbin Kim - All Rights Reserved*/#}
+{#* Unauthorized copying of this file, via any medium is strictly prohibited*/#}
+{#* Proprietary and confidential*/#}
+{#* Written by Dongbin Kim <akdba0207@gmail.com>, September, 2020#}
+<!DOCTYPE html>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+{% include 'beta/session_security/all.html' %}
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>IROS 2020 On-Demand : Search Failed</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+
+    <script src="https://s3-us-west-2.amazonaws.com/ieeeshutpages/gdpr/settings.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js"></script>
+    <script>
+        window.addEventListener("load", function() {
+            window.cookieconsent.initialise(json)
+        });
+    </script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8QZDWZH3X6"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-8QZDWZH3X6');
+    </script>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <!-- Link Swiper's CSS -->
+    <link rel="stylesheet" href="{% static 'package/css/swiper.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles1018.css' %}">
+    <script
+            src="https://kit.fontawesome.com/7541329784.js"
+            crossorigin="anonymous"
+    ></script>
+    <link
+            href="https://fonts.googleapis.com/css?family=Source+Sans+Pro&display=swap"
+            rel="stylesheet"
+    />
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link rel="stylesheet" href="{% static 'css/index_header1006.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/aboutStyle1021.css' %}" />
+    <style>
+        .morecontent span {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div class="onDemandwidthControl">
+    <nav style="background-color: rgba(0,0,0,0.7)" class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <!-- Brand/logo -->
+        {% if showcontents == 3 %}
+            <a class="navbar-brand" href="main?id=competition">
+        {% elif showcontents == 2 %}
+            <a class="navbar-brand" href="main?id=wstr">
+        {% else %}
+            <a class="navbar-brand" href="main?id=technicalpaper">
+        {% endif %}
+        <img src="{% static './resources/logo.png'%}" width="150px"/>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+            <!-- Links -->
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    {% if showcontents == 3 %}
+                        <a class="nav-link" href="main?id=competition" style="color:white; ">Home</a>
+                    {% elif showcontents == 2 %}
+                        <a class="nav-link" href="main?id=wstr" style="color:white; ">Home</a>
+                    {% else %}
+                        <a class="nav-link" href="main?id=technicalpaper" style="color:white; ">Home</a>
+                    {% endif %}
+                </li>
+                <!-- Dropdown -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" style="color: white" href="#" id="navbardrop" data-toggle="dropdown">
+                        Entrance
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="main?id=technicalpaper">Technical Talks</a>
+                        <a class="dropdown-item" href="main?id=wstr">Workshops and Tutorials</a>
+                        <a class="dropdown-item" href="main?id=competition">Robot Competition</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="mylist?id={{ showcontents }}" onClick="this.href=this.href+'&'+new Date().getTime()" style="color:white;">My Lists</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="logout" style="color:white;">Logout</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="placeyourads?id={{ showcontents }}"  onClick="this.href=this.href+'&'+new Date().getTime()" style="color:white;">Place your Ad</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="partners?id={{ showcontents }}" onClick="this.href=this.href+'&'+new Date().getTime()" style="color:white;">Partners</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="about?id={{ showcontents }}" onClick="this.href=this.href+'&'+new Date().getTime()" style="color:white;">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="faqhelp?id={{ showcontents }}" onClick="this.href=this.href+'&'+new Date().getTime()" style="color:white;">FAQ/Help</a>
+                </li>
+                <form class="form-inline navbar-right">
+                    <input type="text" id="search_bar" value="" class="searchBar" onkeydown="if(event.keyCode === 13) {event.preventDefault(); document.getElementById('searchBtn').click()}"/>
+                    <d onclick="if(search_bar.value.length > 0)search()">
+                        <a id = "keywordDelivery" href="javascript: void(0)">
+                            <i id="searchBtn" class="fa fa-search" style="color:white;margin-left: 100%;font-size: 18px"></i>
+                        </a>
+                    </d>
+                </form>
+            </ul>
+
+        </div>
+    </nav>
+
+    <div style="width:95%; margin:0 auto; padding-top: 100px;" align="justify">
+        <h3 class="pavtitle">&nbsp;&nbsp; </h3>
+        <p>&nbsp;</p>
+        <center>
+            <h3 class="committeeGroup">FAQ / HELP</h3>
+            <h3 class="committeeGroup" style="background-color: transparent">&nbsp;</h3>
+            <div class="committeeDiv">
+                <p class="committeeMember" style="color: floralwhite;line-height: 1.0;background-color: transparent;font-weight: lighter;text-align: left;">
+                    Preamble: IROS On-Demand is a front-end interface.  It pulls content that authors submitted to
+                    PaperPlaza.  Thus the paper's title, digest slide, authors' names and affiliations, are copied verbatim
+                    as the authors entered it in PaperPlaza.  Also, like most web-based content, IROS On-Demand uses a browser's
+                    embedded video player to play the video.  These videos should comply to HTML5 protocol (and hence employ Video: H.264 CODEC, Audio: MP3/AAC CODEC).
+                    Lastly, Paper Plaza employs globally-distributed edge servers.  This network structure allows content to be "cached"
+                    to a server nearest you and those in the same region.</p>
+
+                <p class="committeeTitle">Q1. My video doesn't play (e.g. black screen, no audio, etc)</p>
+                <p class="committeeMember"style="line-height: 1.2">A1. Unlike PDFs, videos are not checked for compliance by PaperPlaza. After beta-testing the 1400+ videos,
+                    we discovered about 20% failed compliance; they did not have either the H264 CODEC for Video or the MP3/AAC CODEC for Audio.  For these, we updated them with this CODEC and uploaded it to PaperPlaza.
+                    We apologize for not catching your video during our beta-test.  It would be helpful if you provide the following info:</p>
+                <p class="committeeMember" style="line-height: 1.2">a. Paper# and Title<br></p>
+                <p class="committeeMember" style="line-height: 1.2">b. Process the video you had submitted to PaperPlaza with the HTML5 Compliant CODEC<p>
+                <p class="committeeMember" style="line-height: 1.2">- Free video converter for the CODEC conversion<a target="_blank" href="https://www.freeconvert.com/video-converter">(Freeconvert - Video Converter)</a><br>
+                    - Select "MP4" for the file type<br>
+                    - Find the video option "Video Codec", then select "H.264"<br>
+                    - By the default, Audio Codec will be automatically converted AAC Codec<br>
+                    - Click "Convert To MP4"<br>
+                <p class="committeeMember" style="line-height: 1.2">c. Once the conversion is done, download to your computer<br>
+                    - (Important) Name your video as <font style="color: red">"Attachment_(Submission Number)_PV.mp4"</font><br>
+                    - (Important) For Workshops/Tutorials name<font style="color: red">"Attachment_(Submission Number)_WV.mp4"</font></p>
+                <p class="committeeMember"style="line-height: 1.2">d. Deposit your processed video on your own Google Drive or DropBox</p>
+                <p class="committeeMember"style="line-height: 1.2">e. Email <font style="color: orangered">info@iros2020.org</font> "A" and video filename, and shareable link from "C"</p>
+                <p class="committeeMember"style="line-height: 1.2">We aim to update IROS On-Demand with any received emails and updated videos within 72-hours.</p>
+                <p class="committeeTitle">Q2. Why does it take a long time (e.g. more than 10-sec) for a video to play?</p>
+                <p class="committeeMember" style="line-height: 1.2">A2. Given the preamble, it's likely you were the first one in your edge server's region, to click on the video.
+                    That should be a one-time delay; once the video caches into your region's server, you should not experience delays.
+                </p>
+                <p class="committeeTitle">Q3. There is/are typo(s)/error(s) in On-Demand e.g. mis-spelling of paper title, author's name, institution, etc</p>
+                <p class="committeeMember" style="line-height: 1.2">A3. Given the preamble, On-Demand pulls content verbatim, as entered by the author, from PaperPlaza.  Only author's can edit
+                    their information; we don't have their PIN, etc.  During beta-test, we did our best to catch these verbatim typos and reflect them in On-Demand correctly.
+                    We apologize for not catching these typo(s)/error(s) during beta-testing.  It would be helpful if you provide the following info:</p>
+                <p class="committeeMember" style="line-height: 1.2">a. Email <font style="color: orangered">info@iros2020.org</font> with Title <font style="color: dodgerblue">"IROS On-Demand Typo Edit Request: #(Your Submission Number)"</font><p>
+                <p class="committeeMember" style="line-height: 1.2">b. Please provide information you would like to correct (e.g. Author First/Last Name, Affiliation, Paper Title, etc)<p>
+                <p class="committeeMember" style="line-height: 1.2">We aim to update IROS On-Demand with any received emails and updated videos within 72-hours.<p>
+                <p class="committeeTitle">Q4. Can I replace my video?</p>
+                <p class="committeeMember" style="line-height: 1.2">A4. We can not guarantee that we could do this replacement; it will depend on how many requests we get.
+                    Please follow the steps in "A1" above, "A1-c to A1-e". We will do our best to work with PaperPlaza to replace your video</p>
+            </div>
+            <h3 class="committeeGroup" style="background-color: transparent">&nbsp;</h3>
+            <h3 class="committeeMember" style="color: darkred; background-color: whitesmoke;line-height: 1.2;width: 70%;margin-left: 0%;border-radius: 5px"><b>For additional questions/concerns/issues, please email "info@iros2020.org"</b></h3>
+        </center>
+
+
+        <script src="{% static 'package/js/swiper.min.js' %}"></script>
+        <script>
+            function search(){
+                const query = document.getElementById("search_bar").value;
+                document.getElementById("keywordDelivery").href = "searchresult?id2={{ showcontents }}&id="+query;
+            }
+
+        </script>
+        <!-- Initialize Swiper -->
+
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+        <script>
+            $(document).ready(function() {
+                // Configure/customize these variables.
+                var showChar = 0;  // How many characters are shown by default
+                var ellipsestext = "...";
+                var moretext = "Show more";
+                var lesstext = "Show less";
+
+                $('.more').each(function() {
+                    var content = $(this).html();
+
+                    if(content.length > showChar) {
+                        var c = content.substr(0, showChar);
+                        var h = content.substr(showChar, content.length - showChar);
+                        {#console.log(h)#}
+                        var html = c + '<span class="moreellipses">' + ellipsestext+ '&nbsp;</span><span class="morecontent"><span>' + h + '</span>&nbsp;&nbsp;<a href="" class="morelink">' + moretext + '</a></span>';
+                        $(this).html(html);
+                    }
+                });
+
+                $(".morelink").click(function(){
+                    if($(this).hasClass("less")) {
+                        $(this).removeClass("less");
+                        $(this).html(moretext);
+                    } else {
+                        $(this).addClass("less");
+                        $(this).html(lesstext);
+                    }
+                    $(this).parent().prev().toggle();
+                    $(this).prev().toggle();
+                    return false;
+                });
+            });
+        </script>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,230 @@
+/** Copyright (C) Dongbin Kim - All Rights Reserved*/
+/** Unauthorized copying of this file, via any medium is strictly prohibited*/
+/** Proprietary and confidential*/
+/** Written by Dongbin Kim <akdba0207@gmail.com>, September, 2020*/
+.episodeDiv{
+    display: inline-flex;width: 100%;margin-top: 2%;
+}
+.episodeVid{
+    display: inline-block;width: 60%
+}
+.episodeTitle{
+    font-size: 24px;
+    padding-top: 3%;
+    width: 100%;
+    word-break: break-all;
+}
+.episodeBtn{
+    background-color: #1F1F1F; color: white;margin-top: 3%;
+    margin-left: 40%;
+    width: 60%;
+    text-align: center;
+}
+#mainHitCount{
+    font-size: 20px;
+}
+.episodeBtn i{
+    font-size: 30px;
+}
+.episodeBtn font{
+    font-size: 18px;
+}
+.gobackButton{
+    font-size: 24px;
+    outline: none;
+    background-color:transparent;
+    border-style: none;
+    color: lightgrey;
+}
+.gobackButton:hover{
+    cursor: pointer;
+    color: white;
+    text-decoration: underline;
+}
+.episodeCmt{
+    display: inline-block;width: 40%;
+}
+.commentBlock{
+    padding: 0% 10% 0% 10%;
+}
+.commentList{
+    overflow-y:scroll; overflow-wrap: break-word; border-color: white;border-style: solid;
+}
+.commentInputbox{
+    width: 75%;
+    font-size: 18px;
+    height: 50px;
+    padding: 10px;
+    background-color: #323232;
+    color:white;
+}
+.commentInputBtn{
+}
+.comment{
+    text-align: left;
+    color:white;
+    width: 90%;
+    margin:auto;
+}
+@media only screen and (max-width: 400px){
+
+    .gobackButton{
+        font-size: 120%;
+    }
+    .episodeDiv{
+        display: block;width: 100%;margin-top: 5%;
+    }
+    .episodeVid{
+        display: inline-block;width: 100%
+    }
+    .episodeTitle{
+        font-size: 100%;
+        padding-top: 3%;
+    }
+    .episodeBtn{
+        margin-left: 0%;
+        margin-top: 3%;
+        margin-bottom: 3%;
+        width: 100%;
+    }
+    #mainHitCount{
+        font-size: 100%;
+    }
+    .episodeBtn i{
+        font-size: 200%;
+    }
+    .episodeBtn font{
+        font-size: 100%;
+    }
+    .episodeCmt{
+        display: inline-block;width: 100%;
+    }
+    .commentBlock{
+        padding: 0%;
+    }
+    .commentList{
+        overflow-y:scroll; overflow-wrap: break-word; border-color: white;border-style: solid;
+    }
+    .commentInputbox{
+        width: 80%;
+        font-size: 90%;
+        background-color: #323232;
+        color:white;
+    }
+    .commentInputBtn{
+        font-size: 80%;
+    }
+    .comment{
+        width: 90%;
+        margin:auto;
+    }
+}
+
+@media only screen and (max-width: 600px) and (min-width: 401px){
+
+    .gobackButton{
+        font-size: 120%;
+    }
+    .episodeDiv{
+        display: block;width: 100%;margin-top: 5%;
+    }
+    .episodeVid{
+        display: inline-block;width: 100%
+    }
+    .episodeTitle{
+        font-size: 120%;
+        padding-top: 3%;
+    }
+    .episodeBtn{
+        margin-left: 0%;
+        margin-top: 3%;
+        margin-bottom: 3%;
+        width: 100%;
+    }
+    #mainHitCount{
+        font-size: 100%;
+    }
+    .episodeBtn i{
+        font-size: 200%;
+    }
+    .episodeBtn font{
+        font-size: 100%;
+    }
+    .episodeCmt{
+        display: inline-block;width: 100%;
+    }
+    .commentBlock{
+        padding: 0%;
+    }
+    .commentList{
+        overflow-y:scroll; overflow-wrap: break-word; border-color: white;border-style: solid;
+    }
+    .commentInputbox{
+        width: 80%;
+        font-size: 90%;
+        background-color: #323232;
+        color:white;
+    }
+    .commentInputBtn{
+        font-size: 80%;
+    }
+    .comment{
+        width: 90%;
+        margin:auto;
+    }
+}
+
+@media only screen and (max-width: 1200px) and (min-width: 601px) {
+
+    .gobackButton{
+        font-size: 150%;
+    }
+    .episodeDiv{
+        display: block;width: 100%;margin-top: 3%;
+    }
+    .episodeVid{
+        display: inline-block;width: 100%
+    }
+    .episodeTitle{
+        font-size: 150%;
+        padding-top: 3%;
+    }
+    .episodeBtn{
+        margin-left: 0%;
+        margin-top: 3%;
+        margin-bottom: 3%;
+        width: 80%;
+    }
+    #mainHitCount{
+        font-size: 120%;
+    }
+    .episodeBtn i{
+        font-size: 200%;
+    }
+    .episodeBtn font{
+        font-size: 120%;
+    }
+    .episodeCmt{
+        display: inline-block;width: 90%;margin-left: 5%;
+    }
+    .commentBlock{
+        padding: 0%;
+    }
+    .commentList{
+        overflow-y:scroll; overflow-wrap: break-word; border-color: white;border-style: solid;
+    }
+    .commentInputbox{
+        width: 85%;
+        font-size: 120%;
+        background-color: #323232;
+        color:white;
+    }
+    .commentInputBtn{
+        font-size: 100%;
+    }
+    .comment{
+        width: 90%;
+        margin:auto;
+        font-size: 120%;
+    }
+}

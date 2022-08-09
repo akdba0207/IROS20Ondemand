@@ -1,0 +1,2 @@
+An ICRA 2020 Keynote from Cordelia Schmid. Recent progress in deep learning has significantly advanced the performance in understanding actions in videos. We start by presenting an approach for localizing spatio-temporally actions. We describe how action tublets result in state-of-the-art performance for action detection and show how modeling relations with objects and humans further improve the performance. Next we introduce an approach for behavior prediction for self-driving cars. We conclude by giving results how to use multi-modals information in video understanding.
+

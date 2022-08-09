@@ -1,0 +1,17 @@
+{#* Copyright (C) Dongbin Kim - All Rights Reserved*/#}
+{#* Unauthorized copying of this file, via any medium is strictly prohibited*/#}
+{#* Proprietary and confidential*/#}
+{#* Written by Dongbin Kim <akdba0207@gmail.com>, September, 2020#}
+
+<div class="commentBlock">
+    <div id="commentbox" class="commentList">
+        {% for comments in arrayComments %}
+            <p class="comment" id="comment{{ forloop.counter0 }}">{{ forloop.counter0|add:1 }} : {{ comments }}</p>
+        {% endfor %}
+    </div>
+    <span>
+        <input id="comment_input" type="text"
+               name="text" class="commentInputbox" onkeydown="if(event.keyCode === 13) {event.preventDefault(); document.getElementById('comment_submit_btn').click()}"/>
+        <input class="commentInputBtn" id="comment_submit_btn" type="submit" value="Comment" onclick="if(comment_input.value.trim().length > 0 )addComment({{ SelectedPaperNumber|floatformat:"0" }}, document.getElementById('comment_input').value)"/>
+    </span>
+</div>

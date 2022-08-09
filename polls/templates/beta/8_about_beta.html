@@ -1,0 +1,315 @@
+{#* Copyright (C) Dongbin Kim - All Rights Reserved*/#}
+{#* Unauthorized copying of this file, via any medium is strictly prohibited*/#}
+{#* Proprietary and confidential*/#}
+{#* Written by Dongbin Kim <akdba0207@gmail.com>, September, 2020#}
+<!DOCTYPE html>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+{% include 'beta/session_security/all.html' %}
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>IROS 2020 On-Demand : Search Failed</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+
+    <script src="https://s3-us-west-2.amazonaws.com/ieeeshutpages/gdpr/settings.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js"></script>
+    <script>
+        window.addEventListener("load", function() {
+            window.cookieconsent.initialise(json)
+        });
+    </script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8QZDWZH3X6"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-8QZDWZH3X6');
+    </script>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <!-- Link Swiper's CSS -->
+    <link rel="stylesheet" href="{% static 'package/css/swiper.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles1018.css' %}">
+    <script
+            src="https://kit.fontawesome.com/7541329784.js"
+            crossorigin="anonymous"
+    ></script>
+    <link
+            href="https://fonts.googleapis.com/css?family=Source+Sans+Pro&display=swap"
+            rel="stylesheet"
+    />
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link rel="stylesheet" href="{% static 'css/index_header1006.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/aboutStyle1021.css' %}" />
+    <style>
+        .morecontent span {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div class="onDemandwidthControl">
+    <nav style="background-color: rgba(0,0,0,0.7)" class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <!-- Brand/logo -->
+        {% if showcontents == 3 %}
+            <a class="navbar-brand" href="main?id=competition">
+        {% elif showcontents == 2 %}
+            <a class="navbar-brand" href="main?id=wstr">
+        {% else %}
+            <a class="navbar-brand" href="main?id=technicalpaper">
+        {% endif %}
+        <img src="{% static './resources/logo.png'%}" width="150px"/>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+            <!-- Links -->
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    {% if showcontents == 3 %}
+                        <a class="nav-link" href="main?id=competition" style="color:white; ">Home</a>
+                    {% elif showcontents == 2 %}
+                        <a class="nav-link" href="main?id=wstr" style="color:white; ">Home</a>
+                    {% else %}
+                        <a class="nav-link" href="main?id=technicalpaper" style="color:white; ">Home</a>
+                    {% endif %}
+                </li>
+                <!-- Dropdown -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" style="color: white" href="#" id="navbardrop" data-toggle="dropdown">
+                        Entrance
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="main?id=technicalpaper">Technical Talks</a>
+                        <a class="dropdown-item" href="main?id=wstr">Workshops and Tutorials</a>
+                        <a class="dropdown-item" href="main?id=competition">Robot Competition</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="mylist?id={{ showcontents }}" onClick="this.href=this.href+'&'+new Date().getTime()" style="color:white;">My Lists</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="logout" style="color:white;">Logout</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav">
+{#                <li class="nav-item">#}
+{#                    <a class="nav-link" href="jobs?id={{ showcontents }}" onClick="this.href=this.href+'&'+new Date().getTime()" style="color:yellow;">Jobs</a>#}
+{#                </li>#}
+                <li class="nav-item">
+                    <a class="nav-link" href="placeyourads?id={{ showcontents }}"  onClick="this.href=this.href+'&'+new Date().getTime()" style="color:white;">Place your Ad</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="partners?id={{ showcontents }}" onClick="this.href=this.href+'&'+new Date().getTime()" style="color:white;">Partners</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="about?id={{ showcontents }}" onClick="this.href=this.href+'&'+new Date().getTime()" style="color:white;">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="faqhelp?id={{ showcontents }}" onClick="this.href=this.href+'&'+new Date().getTime()" style="color:white;">FAQ/Help</a>
+                </li>
+                <form class="form-inline navbar-right">
+                    <input type="text" id="search_bar" value="" class="searchBar" onkeydown="if(event.keyCode === 13) {event.preventDefault(); document.getElementById('searchBtn').click()}"/>
+                    <d onclick="if(search_bar.value.length > 0)search()">
+                        <a id = "keywordDelivery" href="javascript: void(0)">
+                            <i id="searchBtn" class="fa fa-search" style="color:white;margin-left: 100%;font-size: 18px"></i>
+                        </a>
+                    </d>
+                </form>
+            </ul>
+
+        </div>
+    </nav>
+
+    <div style="width:95%; margin:0 auto; padding-top: 100px;" align="justify">
+        <h3 class="pavtitle">&nbsp;&nbsp; </h3>
+        <p>&nbsp;</p>
+        <center>
+            <h3 class="committeeGroup">IROS 2020 ORGANIZING COMMITTEE</h3>
+            <div class="committeeDiv">
+
+                <p class="committeeTitle">Honorary Chairs</p>
+                <p class="committeeMember">Nikolaos Papanikolopoulos, University of Minnesota, USA</p>
+                <p class="committeeMember">Toshio Fukuda, Nagoya/Meijo University, Japan; Beijing Institute of Technology, China</p>
+                <p class="committeeMember">Fumio Harashima, Tokyo Metropolitan University, Japan</p>
+                <p class="committeeMember"> C.S. George Lee, Purdue University, USA</p>
+
+                <p class="committeeTitle">Special Acknowledgement</p>
+                <p class="committeeMember">Dongbin Kim, IROS On-Demand Creator/Architect; University of Nevada, Las Vegas, USA </p>
+                <p class="committeeMember">Pradeep Misra, PaperPlaza</p>
+                <p class="committeeMember">Lukrecija LeLong, IEEE Meetings, Conferences & Events</p>
+
+                <p class="committeeTitle">General Chair</p>
+                <p class="committeeMember">Paul Oh, University of Nevada, Las Vegas, USA </p>
+
+                <p class="committeeTitle">Program Chair</p>
+                <p class="committeeMember">Marcia O&#146;Malley, Rice University, USA </p>
+
+                <p class="committeeTitle">Program Co-Chairs</p>
+                <p class="committeeMember">Ayanna Howard, Georgia Institute of Technology, USA</p>
+                <p class="committeeMember">Frank Park, Seoul National University, S. Korea</p>
+                <p class="committeeMember">Jose A. Castellanos, University of Zaragoza, Spain</p>
+
+                <p class="committeeTitle">Conference Editorial Board Editor-in-Chief</p>
+                <p class="committeeMember">Hong Zhang, University of Alberta, Canada </p>
+
+                <p class="committeeTitle">Finance Chair</p>
+                <p class="committeeMember">Yi Guo, Stevens Institute of Technology, USA</p>
+
+                <p class="committeeTitle">Local Arrangements Committees</p>
+                <p class="committeeMember">Woosoon Yim, University of Nevada, Las Vegas, USA</p>
+                <p class="committeeMember">Robert Rippee, University of Nevada, Las Vegas, USA</p>
+
+                <p class="committeeTitle">Corporate Relations Committee</p>
+                <p class="committeeMember"><strong>Chair :</strong> Emel Dermican, California State University, Long Beach, USA</p>
+                <p class="committeeMember">Oussama Khatib, Stanford University, USA</p>
+                <p class="committeeMember">Henrik Christensen, UC San Diego, USA</p>
+
+                <p class="committeeTitle">Travel Award Committee</p>
+                <p class="committeeMember">Jindong Tan, University of Tennessee Knoxville, USA</p>
+                <p class="committeeMember">Yan Gu, University of Massachusetts Lowell, USA</p>
+
+                <p class="committeeTitle">Workshop Co-Chairs</p>
+                <p class="committeeMember">Kam K. Leang, University of Utah, USA</p>
+                <p class="committeeMember">Hesheng Wang, Shanghai Jiao Tong University, China</p>
+
+                <p class="committeeTitle">Tutorial Chair</p>
+                <p class="committeeMember">Blake Hament, University of Nevada, Las Vegas, USA</p>
+
+                <p class="committeeTitle">Robot Challenges Chair</p>
+                <p class="committeeMember">Brendan Morris, University of Nevada, Las Vegas, USA</p>
+
+                <p class="committeeTitle">Publications Chair</p>
+                <p class="committeeMember">Hyunglae Lee, Arizona State University, USA</p>
+
+                <p class="committeeTitle">Awards Chair</p>
+                <p class="committeeMember">Cecilia Laschi, Scuola Superiore Sant'Anna, Italy</p>
+                <p class="committeeMember">&nbsp;</p>
+            </div>
+
+
+            <h3 class="committeeGroup">IROS 2020 SENIOR PROGRAM COMMITTEE</h3>
+            <div class="committeeDiv">
+                {% for i in SPCmember%}
+                    {% if forloop.counter0 == 5 %}
+                        <div class="more">
+                        <p class="committeeMember">{{ i}}</p>
+                    {% else %}
+                        <p class="committeeMember">{{ i}}</p>
+                    {% endif %}
+                {% endfor %}
+                </div>
+            </div>
+            <br><br>
+
+            <h3 class="committeeGroup">IROS 2020 CONFERENCE PAPER REVIEW BOARD(CPRB)</h3>
+            <div class="committeeDiv">
+                <p class="committeeTitle">Editor-in-Chief</p>
+                <p class="committeeMember">Hong Zhang, University of Alberta, Canada</p>
+
+                <p class="committeeTitle">Editors</p>
+                {% for CPRBMember, CPRBInstitution in CPRBzip%}
+                    {% if forloop.counter0 == 5 %}
+                        <div class="more">
+                        <p class="committeeMember">{{CPRBMember}}, {{ CPRBInstitution }}</p>
+                    {% else %}
+                        <p class="committeeMember">{{CPRBMember}}, {{ CPRBInstitution }}</p>
+                    {% endif %}
+                {% endfor %}
+                </div>
+
+                <p class="committeeTitle">Associate Editors</p>
+
+                <p class="committeeMember">
+                <div class="more2">
+                    {% for j in AEMember %}
+                        {{j}}; &nbsp;
+                    {% endfor %}
+                </div>
+                </p>
+
+                <p class="committeeTitle">Reviewers</p>
+                <p class="committeeMember">
+                <div class="more2">
+                    {% for k in ReviewerName %}
+                        {{k}}; &nbsp;
+                    {% endfor %}
+                </div>
+                </p>
+            </div>
+
+        </center>
+
+
+        <script src="{% static 'package/js/swiper.min.js' %}"></script>
+        <script>
+            function search(){
+                const query = document.getElementById("search_bar").value;
+                document.getElementById("keywordDelivery").href = "searchresult?id2={{ showcontents }}&id="+query;
+            }
+
+        </script>
+        <!-- Initialize Swiper -->
+
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+        <script>
+            $(document).ready(function() {
+                // Configure/customize these variables.
+                var showChar = 0;  // How many characters are shown by default
+                var showChar2 = 300;
+                var ellipsestext = "...";
+                var moretext = "Show more";
+                var lesstext = "Show less";
+
+                $('.more').each(function() {
+                    var content = $(this).html();
+
+                    if(content.length > showChar) {
+                        var c = content.substr(0, showChar);
+                        var h = content.substr(showChar, content.length - showChar);
+                        {#console.log(h)#}
+                        var html = c + '<span class="moreellipses">' + ellipsestext+ '&nbsp;</span><span class="morecontent"><span>' + h + '</span>&nbsp;&nbsp;<a href="" class="morelink">' + moretext + '</a></span>';
+                        $(this).html(html);
+                    }
+                });
+                $('.more2').each(function() {
+                    var content = $(this).html();
+
+                    if(content.length > showChar2) {
+                        var c = content.substr(0, showChar2);
+                        var h = content.substr(showChar2, content.length - showChar2);
+                        {#console.log(h)#}
+                        var html = c + '<span class="moreellipses">' + ellipsestext+ '&nbsp;</span><span class="morecontent"><span>' + h + '</span>&nbsp;&nbsp;<a href="" class="morelink">' + moretext + '</a></span>';
+                        $(this).html(html);
+                    }
+                });
+
+                $(".morelink").click(function(){
+                    if($(this).hasClass("less")) {
+                        $(this).removeClass("less");
+                        $(this).html(moretext);
+                    } else {
+                        $(this).addClass("less");
+                        $(this).html(lesstext);
+                    }
+                    $(this).parent().prev().toggle();
+                    $(this).prev().toggle();
+                    return false;
+                });
+            });
+        </script>
+    </div>
+</div>
+</body>
+</html>

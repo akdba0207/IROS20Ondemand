@@ -1,0 +1,445 @@
+{#* Copyright (C) Dongbin Kim - All Rights Reserved*/#}
+{#* Unauthorized copying of this file, via any medium is strictly prohibited*/#}
+{#* Proprietary and confidential*/#}
+{#* Written by Dongbin Kim <akdba0207@gmail.com>, September, 2020#}
+<!doctype html>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+{% include 'beta/session_security/all.html' %}
+{% load static %}
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>IROS 2020 On-Demand</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <!-- Link Swiper's CSS -->
+    <link rel="stylesheet" href="{% static 'package/css/swiper.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles1018.css' %}">
+
+    <script src="https://s3-us-west-2.amazonaws.com/ieeeshutpages/gdpr/settings.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js"></script>
+    <script>
+        window.addEventListener("load", function() {
+            window.cookieconsent.initialise(json)
+        });
+    </script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8QZDWZH3X6"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-8QZDWZH3X6');
+    </script>
+    <script
+            src="https://kit.fontawesome.com/7541329784.js"
+            crossorigin="anonymous"
+    ></script>
+
+    <link
+            href="https://fonts.googleapis.com/css?family=Source+Sans+Pro&display=swap"
+            rel="stylesheet"
+    />
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+
+    <link rel="stylesheet" href="{% static '/css/login0922.css' %}">
+    <link rel="stylesheet" href="{% static '/css/entranceStyle1015.css' %}">
+    <link rel="stylesheet" href="{% static '/css/partnerlogo1019.css' %}">
+    <style>
+        .warmTechcarousel{
+            width: 40%;
+        }
+        /* ===== media query ===== */
+        @media only screen and (max-width: 400px){
+            .warmTechcarousel{
+                width: 80%;
+            }
+        }
+
+        @media only screen and (max-width: 600px) and (min-width: 401px) {
+            .warmTechcarousel{
+                width: 80%;
+            }
+
+        }
+        @media only screen and (max-width: 960px) and (min-width: 601px) {
+            .warmTechcarousel{
+                width: 70%;
+            }
+        }
+    </style>
+</head>
+
+<body bgcolor="#1F1F1F">
+<div class="entranceLogo">
+    <img src="{% static './resources/logo.png'%}">
+</div>
+<center>
+    <span class="entranceSponsorImgOrganizer">
+        <div class="entranceSponsorImg">
+            <div style="width: 28%;display: inline-block"><a target="_blank" href="https://www.rsj.or.jp/en/"><img src="{% static 'img/Sponsors/RSJ.png'%}"></a></div>
+            <div style="width: 28%;display: inline-block"><a target="_blank" href="https://www.ieee-ras.org/"><img src="{% static 'img/Sponsors/IEEERAS.png'%}"></a></div>
+            <div style="width: 28%;display: inline-block"><a target="_blank" href="http://www.ieee-ies.org/"><img src="{% static 'img/Sponsors/IES.png'%}"></a></div>
+        </div>
+        <div class="entranceSponsorImg">
+            <div style="width: 32%;display: inline-block"><a target="_blank" href="https://www.sice.jp/english/"><img src="{% static 'img/Sponsors/SICE.png'%}"></a></div>
+            <div style="width: 32%;display: inline-block"><a target="_blank" href="http://www.ntf.or.jp/"><img src="{% static 'img/Sponsors/NTF.png'%}"></a></div>
+            <div style="width: 32%;display: inline-block"><a target="_blank" href="https://www.ieee.org/"><img src="{% static 'img/Sponsors/IEEE.png'%}"></a></div>
+        </div>
+        </span>
+    <br>
+
+    <div class="warmTechcarousel">
+        <div style="padding-top: 10px" id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+            {#        <ol class="carousel-indicators ">#}
+            {##}
+            {#            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active">#}
+            {#            </li>#}
+            {#            <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>#}
+            {#            <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>#}
+            {#        </ol>#}
+            <div class="carousel-inner" >
+                <div class="carousel-item active">
+                    <div class="carousel-covers" style="display: block">
+                        <div class="carousel-video" id="carousel-video-reader">
+                            <video id="video1" loop playsinline autoplay controlsList="nodownload">
+                            </video>
+                        </div>
+                        <div class="carousel-caption1" style="width: 60%;">
+                            <div class="carousel-pbox">
+                                <span style="display: inline-block;vertical-align: middle;line-height: normal;">
+{#                                <img id="psponsorImg1" width="100%">#}
+                                <p class="carousel-p1" style="color:coral;width: 100%;word-break: keep-all;">IROS Specials</p>
+                                <p class="carousel-p2" id="psponsorAbstract1" style="text-align: center"><a id="psponsorLink1" style="color: yellow">Click to Watch Now</a></p>
+                                <p class="carousel-p3"></p>
+                                <div class="pltVolumeBtn">
+                                    <button style="background-color: transparent;border: none; margin:0 auto; outline: none;color: red;" class="UnmuteBtn"  onclick="disbleMute('muteBtn1')" type="button">
+                                        <i id="muteBtn1" class="fas fa-volume-up"></i>
+                                    </button>
+                                </div></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="carousel-covers"style="display: block">
+                        <div class="carousel-video" id="carousel-video-reader">
+                            <video id="video2" loop playsinline controlsList="nodownload">
+                            </video>
+                        </div>
+                        <div class="carousel-caption1" style="width: 60%;">
+                            <div class="carousel-pbox">
+                                <span style="display: inline-block;vertical-align: middle;line-height: normal;">
+{#                                <img id="psponsorImg2" width="100%">#}
+                                <p class="carousel-p1" style="width: 100%;word-break: keep-all">IROS Specials</p>
+                                <p class="carousel-p2" id="psponsorAbstract2" style="text-align: center"><a id="psponsorLink2" style="color: yellow">Click to Watch Now</a></p>
+                                <p class="carousel-p3"></p>
+                                <div class="pltVolumeBtn">
+                                    <button style="background-color: transparent;border: none; margin:0 auto; outline: none;color: red;" class="UnmuteBtn" onclick="disbleMute('muteBtn2')" type="button">
+                                        <i id="muteBtn2" class="fas fa-volume-up"></i>
+                                    </button>
+                                </div></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="carousel-covers"style="display: block">
+                        <div class="carousel-video" id="carousel-video-reader">
+                            <video id="video3" loop playsinline controlsList="nodownload">
+                            </video>
+                        </div>
+                        <div class="carousel-caption1" style="width: 60%;">
+                            <div class="carousel-pbox">
+                                <span style="display: inline-block;vertical-align: middle;line-height: normal;">
+{#                                <img id="psponsorImg3" width="100%">#}
+                                <p class="carousel-p1" style="width: 100%;word-break: keep-all">IROS Specials</p>
+                                <p class="carousel-p2" id="psponsorAbstract3" style="text-align: center"><a id="psponsorLink3" style="color: yellow">Click to Watch Now</a></p>
+                                <p class="carousel-p3"></p>
+                                <div class="pltVolumeBtn">
+                                    <button style="background-color: transparent;border: none; margin:0 auto; outline: none;color: red;" class="UnmuteBtn"  onclick="disbleMute('muteBtn3')" type="button">
+                                        <i id="muteBtn3" class="fas fa-volume-up"></i>
+                                    </button>
+                                </div></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span> </a>
+            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span> </a>
+        </div>
+    </div>
+    <span class="entranceOrganizer">
+        <a href="main?id=technicalpaper" style="text-decoration: none;"><div class="entranceToggle">
+            <div class="entranceToggleContainer" style="background-color: black;">
+                <img width="100%" src = {% static 'img/entrance/TechnicalTalks.png' %}>
+            </div>
+            <p class="entranceToggleCaption" style="font-size: 20px;font-weight: bold">Technical Talks</p>
+        </div>
+        </a>
+        <p>&nbsp;</p>
+        <a href="main?id=wstr" style="text-decoration: none;"><div class="entranceToggle">
+            <div class="entranceToggleContainer"  style="background-color: darkslategrey;">
+                <img width="100%" src = {% static 'img/entrance/WSTR.png' %}>
+            </div>
+            <p class="entranceToggleCaption" style="font-size: 20px;font-weight: bold">Workshops and Tutorials</p>
+        </div>
+        </a>
+        <p>&nbsp;</p>
+        <a href="main?id=competition" style="text-decoration: none;"><div class="entranceToggle">
+            <div class="entranceToggleContainer"  style="background-color: lightgoldenrodyellow;">
+                <img width="100%" src = {% static 'img/entrance/Competition.png' %}>
+            </div>
+            <p class="entranceToggleCaption"style="font-size: 20px;font-weight: bold">Robot Competition</p>
+        </div>
+        </a>
+        <p>&nbsp;</p>
+    </span>
+</center>
+<center>
+    <div class="partnerTitleOrganizer" style="border-top-left-radius: 30px; border-top-right-radius: 30px;">
+        <p class="parterbanner1"><b>IROS 2020 Partners</b></p>
+    </div>
+    <span class="partnerLogoOranizer">
+            <div class="partnerlogo">
+               <a target="_blank" href="https://www.amazon.science/conferences-and-events/iros-2020?utm_campaign=events2020&utm_medium=recruiting&utm_source=collat&utm_content=event_page&utm_term=iros">
+                <img src="{% static 'img/Banner/Platinum/Amazon.png'%}">
+               </a>
+            </div>
+            <div class="partnerlogo">
+                <a target="_blank" href="https://www.kuka.com/en-us">
+                <img src="{% static 'img/Banner/Platinum/KUKA.png'%}">
+            </a>
+            </div>
+            <div class="partnerlogo">
+                <a target="_blank" href="https://www.naverlabs.com/en/">
+                    <img src="{% static 'img/Banner/Platinum/NAVER LABS.png'%}">
+            </a>
+            </div>
+{#    </span>#}
+{#    <span class="partnerLogoOranizer">#}
+            <div class="partnerlogo">
+                <a target="_blank" href="https://www.tri.global/">
+                <img src="{% static 'img/Banner/Platinum/Toyota Research Institute.png'%}">
+            </a>
+            </div>
+        <div class="partnerlogo">
+                <a target="_blank" href="https://www.yaskawa.com/">
+                <img src="{% static 'img/Banner/Platinum/Yaskawa.png'%}">
+            </a>
+            </div>
+    </span>
+    {##}
+    <span class="partnerLogoOranizer">
+            <div class="partnerlogo">
+                <a target="_blank" href="http://www.rainbow-robotics.com/new/">
+                <img src="{% static 'img/Banner/Gold/Rainbow Robotics.png'%}">
+            </a>
+            </div>
+            <div class="partnerlogo">
+                <a target="_blank" href="https://sra.samsung.com/join-us">
+                <img src="{% static 'img/Banner/Gold/SAMSUNG.png'%}">
+            </a>
+            </div>
+{#    </span>#}
+{##}
+{#    <span class="partnerLogoOranizer">#}
+                        <div class="partnerlogo">
+                <a target="_blank" href="https://www.intuitive.com/en-us">
+                    <img src="{% static 'img/Banner/Silver/Intuitive.png'%}">
+            </a>
+            </div>
+            <div class="partnerlogo">
+               <a target="_blank" href="https://www.nvidia.com/en-us/">
+                <img src="{% static 'img/Banner/Silver/NVIDIA.png'%}">
+               </a>
+            </div>
+            <div class="partnerlogo">
+                <a target="_blank" href="http://www.robotis.us/">
+                    <img src="{% static 'img/Banner/Silver/Robotis.png'%}">
+                </a>
+            </div>
+            <div class="partnerlogo">
+                <a target="_blank" href="https://cse.umn.edu/mnri">
+                    <img src="{% static 'img/Banner/Silver/UMN.png'%}">
+                </a>
+            </div>
+    </span>
+    {##}
+    <span class="partnerLogoOranizer"style="border-bottom-left-radius: 30px; border-bottom-right-radius: 30px">
+        <div class="partnerlogo">
+                <a target="_blank" href="https://www.ydlidar.com/">
+                    <img src="{% static 'img/Banner/Bronze/EAI Technology.png'%}">
+                </a>
+            </div>
+        <div class="partnerlogo">
+                <a target="_blank" href="https://www.jp.honda-ri.com/en/index.html">
+                    <img src="{% static 'img/Banner/Bronze/Honda Research Institute.png'%}">
+                </a>
+            </div>
+            <div class="partnerlogo">
+                <a target="_blank" href="https://www.independentrobotics.com/">
+                    <img src="{% static 'img/Banner/Bronze/Independent Robotics.png'%}">
+                </a>
+            </div>
+                <div class="partnerlogo">
+                    <a target="_blank" href="https://pal-robotics.com/">
+                        <img src="{% static 'img/Banner/Bronze/PAL Robotics.png'%}">
+                    </a>
+                </div>
+            <div class="partnerlogo">
+                <a target="_blank" href="https://robotics.sciencemag.org/">
+                    <img src="{% static 'img/Banner/Bronze/Science Robotics.png'%}">
+                </a>
+            </div>
+
+    </span>
+
+</center>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#carouselExampleIndicators').carousel({
+            interval:5000,
+        }).on('slide.bs.carousel', function (args){
+            var videoList = document.getElementsByTagName("video");
+            videoList[args.from].pause();
+            videoList[args.to].play();
+        })
+    });
+</script>
+<script>
+
+    videoList = [];
+    videoList.push("{% static 'video/Entrance/warmTechCynthiaBreazeal-102420b'%}");
+    videoList.push("{% static 'video/Entrance/warmTechAndreaThomaz-102420a'%}");
+    videoList.push("{% static 'video/Entrance/warmTechSarahBergbreiter-102420a'%}");
+
+    videoMap = new Map();
+    videoMap.set(videoList[0], "specialsepisode?id=10002&id2=Plenaries");
+    videoMap.set(videoList[1], "specialsepisode?id=10012&id2=Keynotes");
+    videoMap.set(videoList[2], "specialsepisode?id=10011&id2=Keynotes");
+
+    maxIndex = videoList.length - 1;
+
+
+    for(i = 0; i < maxIndex; i++){
+        randomIndex = Math.floor(Math.random() * (maxIndex - i + 1)) + i;
+
+        if(randomIndex !== i){
+            temp = videoList[i];
+            videoList[i] = videoList[randomIndex];
+            videoList[randomIndex] = temp;
+        }
+    }
+
+    document.getElementById('video1').setAttribute('src', videoList[0]+'.mp4');
+    document.getElementById('video1').load();
+    document.getElementById('psponsorLink1').href = videoMap.get(videoList[0]);
+
+    document.getElementById('video2').setAttribute('src', videoList[1]+'.mp4');
+    document.getElementById('video2').load();
+    document.getElementById('psponsorLink2').href = videoMap.get(videoList[1]);
+
+    document.getElementById('video3').setAttribute('src', videoList[2]+'.mp4');
+    document.getElementById('video3').load();
+    document.getElementById('psponsorLink3').href = videoMap.get(videoList[2]);
+</script>
+<script>
+    function disbleMute(mutebtn) {
+        {#var vid = document.getElementById(video);#}
+        var mutebuttonClass = document.getElementById(mutebtn).className;
+        var mutebuttonClass1 = document.getElementById('muteBtn1').className;
+        var mutebuttonClass2 = document.getElementById('muteBtn2').className;
+        var mutebuttonClass3 = document.getElementById('muteBtn3').className;
+        var vid1 = document.getElementById('video1')
+        var vid2 = document.getElementById('video2')
+        var vid3 = document.getElementById('video3')
+        if(mutebuttonClass == 'fas fa-volume-up'){
+            $('#muteBtn1').removeClass(mutebuttonClass1);
+            $('#muteBtn1').addClass('fas fa-volume-mute');
+            $('#muteBtn2').removeClass(mutebuttonClass2);
+            $('#muteBtn2').addClass('fas fa-volume-mute');
+            $('#muteBtn3').removeClass(mutebuttonClass3);
+            $('#muteBtn3').addClass('fas fa-volume-mute');
+            vid1.muted=true;
+            vid2.muted=true;
+            vid3.muted=true;
+        }else{
+            $('#muteBtn1').removeClass(mutebuttonClass1);
+            $('#muteBtn1').addClass('fas fa-volume-up');
+            $('#muteBtn2').removeClass(mutebuttonClass2);
+            $('#muteBtn2').addClass('fas fa-volume-up');
+            $('#muteBtn3').removeClass(mutebuttonClass3);
+            $('#muteBtn3').addClass('fas fa-volume-up');
+            vid1.muted=false;
+            vid2.muted=false;
+            vid3.muted=false;
+        }
+    }
+</script>
+<script>
+    if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
+        document.write("mobile");
+        var mutebuttonClass1 = document.getElementById('muteBtn1').className;
+        var mutebuttonClass2 = document.getElementById('muteBtn2').className;
+        var mutebuttonClass3 = document.getElementById('muteBtn3').className;
+        var vid1 = document.getElementById('video1')
+        var vid2 = document.getElementById('video2')
+        var vid3 = document.getElementById('video3')
+        $('#muteBtn1').removeClass(mutebuttonClass1);
+        $('#muteBtn1').addClass('fas fa-volume-mute');
+        $('#muteBtn2').removeClass(mutebuttonClass2);
+        $('#muteBtn2').addClass('fas fa-volume-mute');
+        $('#muteBtn3').removeClass(mutebuttonClass3);
+        $('#muteBtn3').addClass('fas fa-volume-mute');
+        vid1.muted=true;
+        vid2.muted=true;
+        vid3.muted=true;
+    }else{
+        document.write("not mobile");
+    }
+</script>
+<script>
+    var sBrowser, sUsrAg = navigator.userAgent;
+
+    if (sUsrAg.indexOf("Firefox") > -1) {
+        var mutebuttonClass1 = document.getElementById('muteBtn1').className;
+        var mutebuttonClass2 = document.getElementById('muteBtn2').className;
+        var mutebuttonClass3 = document.getElementById('muteBtn3').className;
+        var vid1 = document.getElementById('video1')
+        var vid2 = document.getElementById('video2')
+        var vid3 = document.getElementById('video3')
+        $('#muteBtn1').removeClass(mutebuttonClass1);
+        $('#muteBtn1').addClass('fas fa-volume-mute');
+        $('#muteBtn2').removeClass(mutebuttonClass2);
+        $('#muteBtn2').addClass('fas fa-volume-mute');
+        $('#muteBtn3').removeClass(mutebuttonClass3);
+        $('#muteBtn3').addClass('fas fa-volume-mute');
+        vid1.muted=true;
+        vid2.muted=true;
+        vid3.muted=true;
+    }
+</script>
+<script>
+    $(document).ready(function(){
+        $('#video1').bind('contextmenu',function() { return false; });
+        $('#video2').bind('contextmenu',function() { return false; });
+        $('#video3').bind('contextmenu',function() { return false; });
+    });
+</script>
+</body>
+</html>

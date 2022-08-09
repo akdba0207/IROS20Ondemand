@@ -1,0 +1,127 @@
+{#* Copyright (C) Dongbin Kim - All Rights Reserved*/#}
+{#* Unauthorized copying of this file, via any medium is strictly prohibited*/#}
+{#* Proprietary and confidential*/#}
+{#* Written by Dongbin Kim <akdba0207@gmail.com>, September, 2020#}
+<!doctype html>
+{% load static %}
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>IROS 2020 On-Demand : Log-In</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="{% static '/css/login0922.css' %}">
+
+    <script src="https://s3-us-west-2.amazonaws.com/ieeeshutpages/gdpr/settings.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js"></script>
+    <script>
+        window.addEventListener("load", function() {
+            window.cookieconsent.initialise(json)
+        });
+    </script>
+
+    <style>
+        .loginRibbon{
+            font-size: 24px;
+        }
+        @media only screen and (max-width: 400px){
+            .loginRibbon{
+                font-size: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body bgcolor="#1F1F1F">
+<div class="entranceLogo">
+    <img src="{% static './resources/logo.png'%}">
+</div>
+
+<div class="login-page">
+    <h2 style="color: white">BETA Page</h2>
+    <p class="loginRibbon" id="currentregistercount1" style="color: white;text-align: center;">Welcome to IROS On-Demand<br><br><font>Extended by Popular Demand to<br> <font style="color: orangered">Dec 24, 2020</font></font></p>
+    <p class="loginRibbon" id="currentregistercount2" style="color: white;text-align: center;margin: 0 auto"></p>
+    <p class="loginRibbon" id="currentregistercount3" style="color: coral;text-align: center;margin: 0 auto">{{ TotalCount }} Registrations !</p>
+    <p class="loginRibbon" style="color: coral;text-align: center;margin: 0 auto">&nbsp;</p>
+    <div class="form">
+        <form id="login_action" onsubmit="login()" method="post">
+            {#            <input type="text" placeholder="username"/>#}
+            {% if messages %}
+                {% for message in messages %}
+                    <p style="color: darkred">{{ message.message }}</p>
+                {% endfor %}
+            {% endif %}
+            <input id="login_bar1" name="password" value="a" class="loginBar" type="hidden"/>
+            <input id="login_bar2" name="username" value="" class="loginBar" type="text" placeholder="Enter your E-mail address"
+                   onkeydown="if(event.keyCode === 13) {event.preventDefault(); document.getElementById('loginButton').click()}"/>
+
+            <button id="loginButton" type="submit">Login</button>
+            {#            </a>#}
+            <p class="messageSignup">Not registered? <a href="signup" style="color: red; text-decoration: none;">Create your account</a></p>
+            <p class="message">IROS2020 On-Demand is only for <br>The conference participants</p>
+        </form>
+    </div>
+    {% if totalrtuserCount != 0 %}
+        <p class="loginRibbon" id="currentregistercount3" style="color: white;margin: 0 auto;padding-top: 0">Currently {{ totalrtuserCount }} users online</p>
+        {% for rtuserlocationlistFinal, rtuserlocationnumberFinal in rtuserinformation %}
+            <p class="loginRibbon" id="currentregistercount3" style="color: white;margin: 0 auto"> {{ rtuserlocationlistFinal}} : {{ rtuserlocationnumberFinal }}</p>
+        {% endfor %}
+    {% endif %}
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+{#<script>#}
+{#    function agreed(e) {#}
+{#        if (e.checked){#}
+{#            btn = document.getElementById("loginButton").disabled = false;#}
+{#            document.getElementById("loginButton").innerHTML = "Login";#}
+{#            $("button").css("background-color","#5C0000");#}
+{#            $("button").hover(function () {#}
+{#                $(this).css("background-color","#2B0000");#}
+{#            },function () {#}
+{#                $(this).css("background-color","#5C0000");#}
+{#            });#}
+{#        } else {#}
+{#            btn = document.getElementById("loginButton").disabled = true;#}
+{#            $("button").css("background-color","grey");#}
+{#            document.getElementById("loginButton").innerHTML = "Please accept the policy";#}
+{#        }#}
+{#    }#}
+{#</script>#}
+<script>
+    function login(){
+        var inputID = document.getElementById("login_bar2");
+        inputID.value = inputID.value.toLowerCase();
+        document.getElementById("login_action").action = "";
+    }
+</script>
+<script>
+    var timeOffset = new Date().getTimezoneOffset()/60;
+    var PSToffset = 8;
+    var registercount2 = document.getElementById("currentregistercount2");
+    const monthNames = ["Jan", "Feb", "March", "April", "May", "June",
+        "July", "August", "Sep", "Oct", "Nov", "Dec"
+    ];
+    var x = setInterval(function () {
+        var now = new Date()
+        now.setHours(now.getHours() + (timeOffset - PSToffset));
+
+        if (now.getHours() < 10){
+            hour = '0' + now.getHours().toString();
+        }
+        else{
+            hour =now.getHours();
+        }
+        if (now.getMinutes() < 10){
+            minutes = '0' + now.getMinutes().toString();
+        }
+        else{
+            minutes =now.getMinutes();
+        }
+        registercount2.innerHTML = 'As of '+monthNames[now.getMonth()] + ' '+now.getDate()+' '+
+            now.getFullYear() + ' '+ hour +':'+minutes+' PST:'
+
+    }, 1000);
+</script>
+</body>
+</html>

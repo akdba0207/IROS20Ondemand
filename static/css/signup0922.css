@@ -1,0 +1,244 @@
+/** Copyright (C) Dongbin Kim - All Rights Reserved*/
+/** Unauthorized copying of this file, via any medium is strictly prohibited*/
+/** Proprietary and confidential*/
+/** Written by Dongbin Kim <akdba0207@gmail.com>, September, 2020*/
+body {
+    background:#1F1F1F;
+    font-family: "Source Sans Pro", sans-serif;
+}
+.entranceLogo{
+    padding-left: 0%;
+    text-align: center;
+}
+.entranceLogo img{
+    width:30%;
+}
+.ddaycounter{
+    color: yellowgreen;
+    text-align: center;
+}
+.createAccount{
+    padding-left: 35%
+}
+.creatAccountContents{
+    padding-top: 0%; color: white; width: 50%
+}
+.GDPR{
+    font-family: sans-serif;
+    position: relative;
+    z-index: 1;
+    background: #323232;
+    max-width: 100%;
+    padding: 10px 0px 0 10px;
+    font-size: 100%;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+    color: white;
+}
+.signupSubmit {
+    font-family: sans-serif;
+    text-transform: uppercase;
+    outline: 0;
+    background: grey;
+    width: 100%;
+    border: 0;
+    padding: 15px;
+    color: #FFFFFF;
+    font-size: 14px;
+}
+.resendButton{
+    font-family: sans-serif;
+    outline: 0;
+    background: #5C0000;
+    width: 30%;
+    border: 0;
+    color: #FFFFFF;
+    font-size: 14px;
+    padding: 15px;
+    cursor: pointer;
+}
+
+@media only screen and (max-width: 400px){
+
+    .entranceLogo{
+        padding-left: 0%;
+    }
+    .entranceLogo img{
+        width:70%;
+    }
+    .ddaycounter{
+        color: yellowgreen;
+        padding-left: 0%;
+        text-align: center;
+    }
+    .ddaycounter h2{
+        font-size: 20px;
+    }
+    .createAccount{
+        padding-left: 2%;
+    }
+    .createAccount h2{
+        font-size: 20px;
+    }
+    .creatAccountContents{
+        padding-top: 0%;
+        color: white;
+        width: 100%;
+        font-size: 15px;
+    }
+    .GDPR{
+        font-family: sans-serif;
+        position: relative;
+        z-index: 1;
+        background: #323232;
+        max-width: 100%;
+        padding: 10px 0px 0 10px;
+        font-size: 12px;
+        box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+        color: white;
+    }
+    .signupSubmit {
+        font-family: sans-serif;
+        text-transform: uppercase;
+        outline: 0;
+        background: grey;
+        width: 100%;
+        border: 0;
+        padding: 15px;
+        color: #FFFFFF;
+        font-size: 14px;
+    }
+    .resendButton{
+        font-family: sans-serif;
+        outline: 0;
+        background: #5C0000;
+        width: 30%;
+        border: 0;
+        color: #FFFFFF;
+        font-size: 14px;
+        padding: 15px;
+        cursor: pointer;
+    }
+}
+@media only screen and (max-width: 600px) and (min-width: 401px){
+    .entranceLogo{
+        padding-left: 0%;
+    }
+    .entranceLogo img{
+        width:70%;
+    }
+    .ddaycounter{
+        color: yellowgreen;
+        padding-left: 0%;
+        text-align: center;
+    }
+    .ddaycounter h2{
+        font-size: 20px;
+    }
+    .createAccount{
+        padding-left: 2%;
+    }
+    .createAccount h2{
+        font-size: 20px;
+    }
+    .creatAccountContents{
+        padding-top: 0%;
+        color: white;
+        width: 100%;
+        font-size: 15px;
+    }
+    .GDPR{
+        font-family: sans-serif;
+        position: relative;
+        z-index: 1;
+        background: #323232;
+        max-width: 100%;
+        padding: 10px 0px 0 10px;
+        font-size: 12px;
+        box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+        color: white;
+    }
+    .signupSubmit {
+        font-family: sans-serif;
+        text-transform: uppercase;
+        outline: 0;
+        background: grey;
+        width: 100%;
+        border: 0;
+        padding: 15px;
+        color: #FFFFFF;
+        font-size: 14px;
+    }
+    .resendButton{
+        font-family: sans-serif;
+        outline: 0;
+        background: #5C0000;
+        width: 30%;
+        border: 0;
+        color: #FFFFFF;
+        font-size: 14px;
+        padding: 15px;
+        cursor: pointer;
+    }
+}
+@media only screen and (max-width: 1200px) and (min-width: 601px) {
+    .entranceLogo{
+        padding-left: 0%;
+    }
+    .entranceLogo img{
+        width:50%;
+    }
+    .ddaycounter{
+        color: yellowgreen;
+        padding-left: 0%;
+        text-align: center;
+    }
+    .ddaycounter h2{
+        font-size: 20px;
+    }
+    .createAccount{
+        padding-left: 20%;
+    }
+    .createAccount h2{
+        font-size: 20px;
+    }
+    .creatAccountContents{
+        padding-top: 0%;
+        color: white;
+        width: 80%;
+        font-size: 15px;
+    }
+    .GDPR{
+        font-family: sans-serif;
+        position: relative;
+        z-index: 1;
+        background: #323232;
+        max-width: 100%;
+        padding: 10px 0px 0 10px;
+        font-size: 12px;
+        box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+        color: white;
+    }
+    .signupSubmit {
+        font-family: sans-serif;
+        text-transform: uppercase;
+        outline: 0;
+        background: grey;
+        width: 100%;
+        border: 0;
+        padding: 15px;
+        color: #FFFFFF;
+        font-size: 14px;
+    }
+    .resendButton{
+        font-family: sans-serif;
+        outline: 0;
+        background: #5C0000;
+        width: 30%;
+        border: 0;
+        color: #FFFFFF;
+        font-size: 14px;
+        padding: 15px;
+        cursor: pointer;
+    }
+}
+

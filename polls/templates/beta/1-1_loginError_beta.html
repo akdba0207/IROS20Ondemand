@@ -1,0 +1,58 @@
+{#* Copyright (C) Dongbin Kim - All Rights Reserved*/#}
+{#* Unauthorized copying of this file, via any medium is strictly prohibited*/#}
+{#* Proprietary and confidential*/#}
+{#* Written by Dongbin Kim <akdba0207@gmail.com>, September, 2020#}
+<!doctype html>
+{% load static %}
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>IROS 2020 On-Demand : Failed to Log-in</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+
+    <script src="https://s3-us-west-2.amazonaws.com/ieeeshutpages/gdpr/settings.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js"></script>
+    <script>
+        window.addEventListener("load", function() {
+            window.cookieconsent.initialise(json)
+        });
+    </script>
+
+    <style>
+        body {
+            background:#1F1F1F;
+            font-family: "Source Sans Pro", sans-serif;
+        }
+        @media only screen and (max-width: 400px){
+            h1{
+                font-size: 15px;
+            }
+        }
+        @media only screen and (max-width: 600px) and (min-width: 401px){
+            h1{
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div style="text-align: center">
+    <a href="/ondemand"><img src="{% static './resources/logo.png'%}" width="30%"></a>
+</div>
+
+<div style="text-align: center;padding-top: 10%; color: white">
+    <h1> You are not logged-in <br> Please log-in again</h1>
+    <p>&nbsp;</p>
+    <a href="/ondemandbeta"style="color:white;"><h1>Go Back to Login Page</h1></a>
+{#    <button onclick="goBack()">Go Back</button>#}
+</div>
+
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+</body>
+</html>

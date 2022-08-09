@@ -1,0 +1,28 @@
+/** Copyright (C) Dongbin Kim - All Rights Reserved*/
+/** Unauthorized copying of this file, via any medium is strictly prohibited*/
+/** Proprietary and confidential*/
+/** Written by Dongbin Kim <akdba0207@gmail.com>, September, 2020*/
+.nav-item{
+    font-size: 18px;
+    text-align: center;
+}
+.nav-item:hover{
+    background-color: #b3b3b3;
+}
+.dropdown-menu{
+    text-align: center;
+    background-color: rgba(0,0,0,0.9)
+}
+.dropdown-item{
+    color: white;
+}
+.form-inline{
+    padding-right: 30px;
+}
+.form-inline{
+    text-align: center;
+    margin: 0 auto;
+}
+#search_bar{
+    width: 200px;
+}

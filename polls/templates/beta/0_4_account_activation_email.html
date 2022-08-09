@@ -1,0 +1,13 @@
+{#* Copyright (C) Dongbin Kim - All Rights Reserved*/#}
+{#* Unauthorized copying of this file, via any medium is strictly prohibited*/#}
+{#* Proprietary and confidential*/#}
+{#* Written by Dongbin Kim <akdba0207@gmail.com>, September, 2020#}
+{% autoescape off %}
+    Hello, {{ user.email }}
+
+    Thank you for signing up for IROS On-Demand.
+    Please use this E-mail address in the future as your username whenever you visit IROS On-Demand.
+    Please click on the link below to confirm your IROS 2020 On-Demand registration:
+
+    https://{{ domain }}{% url 'activate' uidb64=uid token=token %}
+{% endautoescape %}

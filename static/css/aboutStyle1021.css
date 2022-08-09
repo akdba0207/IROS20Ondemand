@@ -1,0 +1,144 @@
+/** Copyright (C) Dongbin Kim - All Rights Reserved*/
+/** Unauthorized copying of this file, via any medium is strictly prohibited*/
+/** Proprietary and confidential*/
+/** Written by Dongbin Kim <akdba0207@gmail.com>, September, 2020*/
+
+.committeeDiv{
+    width: 70%;
+    color: white;
+    text-align: left;
+}
+
+.committeeTitle{
+    font-size:28px;
+    color: coral;
+}
+
+.committeeMember{
+    font-size:24px;
+    /*margin-left: 10%;*/
+    line-height: 0.9;
+}
+.more2{
+    font-size:24px;
+    margin-left: 10%;
+    line-height: 1.1;
+}
+.more{
+    font-size:24px;
+    line-height: 1.2;
+}
+.committeeGroup{
+    font-size: 32px;
+    color: coral;
+    width: 70%;
+    background-color: whitesmoke;
+    font-weight: bold;
+    border-radius: 10px;
+}
+
+@media only screen and (max-width: 400px) {
+    .committeeDiv{
+        width: 90%;
+    }
+
+    .committeeTitle{
+        font-size:100%;
+        color: coral;
+    }
+
+    .committeeMember{
+        font-size:90%;
+    }
+
+    .committeeGroup{
+        font-size: 120%;
+        width: 90%;
+        margin-top: 3%;
+    }
+    .more2{
+        font-size:90%;
+    }
+    .more{
+        font-size:90%;
+    }
+}
+
+@media only screen and (max-width: 600px) and (min-width: 401px){
+    .committeeDiv{
+        width: 90%;
+    }
+
+    .committeeTitle{
+        font-size:110%;
+        color: coral;
+    }
+
+    .committeeMember{
+        font-size:100%;
+    }
+    .more2{
+        font-size:100%;
+    }
+    .more{
+        font-size:100%;
+    }
+
+    .committeeGroup{
+        font-size: 120%;
+        width: 90%;
+        margin-top: 3%;
+    }
+}
+
+@media only screen and (min-width: 601px) and (max-width: 970px){
+    .committeeDiv{
+        width: 90%;
+    }
+
+    .committeeTitle{
+        font-size:140%;
+        color: coral;
+    }
+
+    .committeeMember{
+        font-size:130%;
+    }
+    .more2{
+        font-size:130%;
+    }
+    .more{
+        font-size:130%;
+    }
+    .committeeGroup{
+        font-size: 150%;
+        width: 90%;
+        margin-top: 3%;
+    }
+}
+
+@media only screen and (min-width: 971px) and (max-width: 1380px){
+    .committeeDiv{
+        width: 90%;
+    }
+
+    .committeeTitle{
+        font-size:160%;
+        color: coral;
+    }
+
+    .committeeMember{
+        font-size:140%;
+    }
+    .more2{
+        font-size:140%;
+    }
+    .more{
+        font-size:140%;
+    }
+    .committeeGroup{
+        font-size: 180%;
+        width: 90%;
+        margin-top: 3%;
+    }
+}
