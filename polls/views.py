@@ -349,6 +349,10 @@ def record_metrics(login, logout):
             first_day = 0
 
         print("first time: ", first_time_in_seconds)
+        
+        if ActivityRecords.objects.filter(day=dday).count() == 0:
+            ActivityRecords.objects.create(day=dday)
+            
         record = ActivityRecords.objects.filter(day=first_day)
         number = record[0].active_user_count
         if number == 0:
